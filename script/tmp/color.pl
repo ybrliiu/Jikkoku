@@ -1,0 +1,59 @@
+$ELE_C[0] = "#f1f1f1";
+$ELE_C[1] = "#ffcfcf";
+$ELE_C[2] = "#cfefff";
+$ELE_C[3] = "#c8ffc8";
+$ELE_C[4] = "#cccca8";
+$ELE_C[5] = "#efffff";
+$ELE_C[6] = "#fffff8";
+$ELE_C[7] = "#FFF0FF";
+$ELE_C[8] = "#ffcc99";
+$ELE_C[9] = "#A5AADD";
+$ELE_C[10] = "#ccffff";
+$ELE_C[11] = "#ffffff";
+$ELE_C[12] = "#66EE66";
+$ELE_C[13] = "#DDFFDD";
+$ELE_C[14] = "#FFFDCF";
+$ELE_C[15] = "#FFCCBB";
+$ELE_C[16] = "#99CCFF";
+$ELE_C[17] = "#FFD0DB";
+
+# 属性色２
+$ELE_BG[0] = "#666666";
+$ELE_BG[1] = "#800000";
+$ELE_BG[2] = "#000080";
+$ELE_BG[3] = "#006000";
+$ELE_BG[4] = "#404000";
+$ELE_BG[5] = "#0f6080";
+$ELE_BG[6] = "#ac8a3a";
+$ELE_BG[7] = "#400040";
+$ELE_BG[8] = "#ff6633";
+$ELE_BG[9] = "#6666CC";
+$ELE_BG[10] = "#66CCCC";
+$ELE_BG[11] = "#000000";
+$ELE_BG[12] = "#008000";
+$ELE_BG[13] = "#00DD00";
+$ELE_BG[14] = "#FFD700";
+$ELE_BG[15] = "#FF0000";
+$ELE_BG[16] = "#0000FF";
+$ELE_BG[17] = "#FF69B4";
+
+# 属性色２(rgba)
+$ELE_RGBA[0] = "102,102,102,";
+$ELE_RGBA[1] = "128,0,0,";
+$ELE_RGBA[2] = "0,0,128,";
+$ELE_RGBA[3] = "0,96,0,";
+$ELE_RGBA[4] = "64,64,0,";
+$ELE_RGBA[5] = "15,96,128,";
+$ELE_RGBA[6] = "172,138,58,";
+$ELE_RGBA[7] = "64,0,64,";
+$ELE_RGBA[8] = "255,102,51,";
+$ELE_RGBA[9] = "102,102,204,";
+$ELE_RGBA[10] = "102,204,204,";
+$ELE_RGBA[11] = "0,0,0,";
+$ELE_RGBA[12] = "0,128,0,";
+$ELE_RGBA[13] = "0,221,0,";
+$ELE_RGBA[14] = "255,215,0,";
+$ELE_RGBA[15] = "255,0,0,";
+$ELE_RGBA[16] = "0,0,255,";
+$ELE_RGBA[17] = "255,105,180,";
+
