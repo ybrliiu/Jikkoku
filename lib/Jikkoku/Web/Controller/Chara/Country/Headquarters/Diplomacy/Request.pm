@@ -174,6 +174,7 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Reque
       if ($e =~ '既に外交要請を出しています。') {
 
         my $delete_diplomacy = $self->{diplomacy_model}->delete( \%diplomacy_param );
+        $self->render_error('既に要請は受理されています。') if $delete_diplomacy->is_accepted;
         $self->{diplomacy_model}->save;
 
         $self->{letter_model}->add_country_letter({

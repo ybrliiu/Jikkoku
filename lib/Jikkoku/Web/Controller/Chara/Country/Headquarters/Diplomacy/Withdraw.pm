@@ -28,6 +28,8 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Withd
     }
     
     $self->{diplomacy_model}->save;
+    $self->{letter_model}->add_country_letter({
+    });
 
     $self->render('chara/result.pl', {message => $delete_diplomacy->name . 'を取り消しました。'});
   }

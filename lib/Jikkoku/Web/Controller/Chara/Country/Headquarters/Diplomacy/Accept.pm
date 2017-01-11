@@ -46,16 +46,12 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Accep
         receive_country_id => $self->{country}->id,
         request_country_id => $self->{request_country_id},
       };
-      $diplomacy   = $self->{diplomacy_model}->get( $param );
+      $diplomacy = $self->{diplomacy_model}->get( $param );
       $diplomacy_name = $diplomacy->name;
       if ( $self->{is_accept} ) {
         $diplomacy->accept;
       } else {
-        if ( $diplomacy->is_accept ) {
-          die "既に外交要請が出されています。";
-        } else {
-          $self->{diplomacy_model}->delete( $param );
-        }
+        $self->{diplomacy_model}->delete( $param );
       }
     };
 
