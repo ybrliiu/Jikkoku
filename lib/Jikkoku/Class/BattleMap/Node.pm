@@ -34,15 +34,9 @@ package Jikkoku::Class::BattleMap::Node {
     WEAPON_SHOP  => 21,
     WATER_CASTLE => 22,      # 水塞
 
-    
     # 定数
-    WATER_NAVY_COST => 1,
-    BOG_NAVY_COST   => 2,
-
-    LAND_NAVY_TIMES => 5,
-    SLOW_TIMES      => 1.7,
-
-    KINTOUN_COST    => 3,
+    SLOW_TIMES   => 1.7,
+    KINTOUN_COST => 3,
   };
 
   {
@@ -68,6 +62,10 @@ package Jikkoku::Class::BattleMap::Node {
     }
   }
 
+  sub set_town_info {}
+
+  sub check_point {}
+
   sub set_exist_charactors {
     my ($self, $chara) = @_;
     push @{ $self->{exist_charactors} }, $chara;
@@ -78,9 +76,38 @@ package Jikkoku::Class::BattleMap::Node {
     weaken $_ for @$new;
   }
 
-  sub cost {
-    my ($self, $chara) = @_;
+  sub name {
+    my $self = shift;
+    state $terrain_name = {
+      NOTHING      ,=> '',
+      PLAIN        ,=> '平地',
+      FOREST       ,=> '森',
+      MOUNTAIN     ,=> '山',
+      FORTRESS     ,=> '砦',
+      RIVER        ,=> '川',
+      POISON       ,=> '毒',
+      ALPINE       ,=> '高山',
+      BOG          ,=> '沼地',
+      POND         ,=> '池',
+      SEA          ,=> '海',
+      WOODS        ,=> '林',
+      ROCKY_FIELD  ,=> '岩場',
+      DESERT       ,=> '砂漠',
+      SNOWY_FIELD  ,=> '雪原',
+      ICE_FIELD    ,=> '氷原',
+      ENTRY        ,=> '関所(入)',
+      EXIT         ,=> '関所(出)',
+      CASTLE       ,=> '城',
+      HOUSES_FIELD ,=> '住宅地',
+      BARREN       ,=> '荒地',
+      WEAPON_SHOP  ,=> '武器屋',
+      WATER_CASTLE ,=> '水塞',
+    };
+    $terrain_name->{ $self->{terrain} };
+  }
 
+  sub origin_cost {
+    my $self = shift;
     state $node_cost = {
       NOTHING      ,=> 0,
       PLAIN        ,=> 2,
@@ -106,43 +133,73 @@ package Jikkoku::Class::BattleMap::Node {
       WEAPON_SHOP  ,=> 2,
       WATER_CASTLE ,=> 5,
     };
+    $node_cost->{ $self->{terrain} };
+  }
 
-    my $cost = do {
-      if ( $chara->soldier->attr eq '水' ) {
-        do {
-          if (
-            $self->{terrain} == WATER_CASTLE ||
-            $self->{terrain} == RIVER        ||
-            $self->{terrain} == POND         ||
-            $self->{terrain} == SEA   
-          ) {
-            WATER_NAVY_COST;
-          } elsif ( $self->{terrain} == BOG ) {
-            BOG_NAVY_COST;
-          } else {
-            $node_cost->{$self->{terrain}} * LAND_NAVY_TIMES;
-          }
-        };
-      }
-      # 足止め
-      elsif ( 0 ) {
-        $node_cost->{$self->{terrain}} * SLOW_TIMES;
-      }
-      else {
-        $node_cost->{$self->{terrain}};
-      };
+  sub color {
+    my $self = shift;
+    state $terrain_color = {
+      NOTHING      ,=> 'black',
+      PLAIN        ,=> 'green',
+      FOREST       ,=> 'darkgreen',
+      MOUNTAIN     ,=> 'darkgoldenrod',
+      FORTRESS     ,=> 'saddlebrown',
+      RIVER        ,=> 'deepskyblue',
+      POISON       ,=> 'purple',
+      ALPINE       ,=> 'peru',
+      BOG          ,=> 'dimgray',
+      POND         ,=> '#66ccff',
+      SEA          ,=> '#000099',
+      WOODS        ,=> 'forestgreen',
+      ROCKY_FIELD  ,=> 'Gray',
+      DESERT       ,=> 'yellow',
+      SNOWY_FIELD  ,=> 'White',
+      ICE_FIELD    ,=> 'Aquamarine',
+      ENTRY        ,=> 'indigo',
+      EXIT         ,=> 'indigo',
+      CASTLE       ,=> '#FF4444',
+      HOUSES_FIELD ,=> 'lightcoral',
+      BARREN       ,=> 'darkred',
+      WEAPON_SHOP  ,=> '#FF8000',
+      WATER_CASTLE ,=> '#008B8B',
     };
+    $terrain_color->{ $self->{terrain} };
+  }
 
-    # 筋斗雲もらっている時
-    if ( 0 ) {
+  sub cost {
+    my ($self, $chara) = @_;
+    my $cost = $self->origin_cost;
+
+    # 筋斗雲
+    if (0) {
       $cost = $cost > KINTOUN_COST ? KINTOUN_COST : $cost;
+    }
+    # 足止め
+    if (0) {
+      $cost = $cost * SLOW_TIMES;
     }
     $cost;
   }
 
+  sub is_castle { is_terrain_castle(@_) }
+
+  sub is_check_point {
+    my $self = shift;
+    my $terrain = ref $self ? $self->{terrain} : shift;
+    $terrain == EXIT || $terrain == ENTRY;
+  }
+
   sub is_terrain_castle {
     my $self = shift;
-    $self->{terrain} == CASTLE || $self->{terrain} == WATER_CASTLE;
+    my $terrain = ref $self ? $self->{terrain} : shift;
+    $terrain == CASTLE || $terrain == WATER_CASTLE;
+  }
+
+  sub is_water {
+    my $self = shift;
+    state $water_terrains = [WATER_CASTLE, RIVER, POND, SEA, BOG];
+    my $terrain = ref $self ? $self->{terrain} : shift;
+    grep { $_ == $terrain } @$water_terrains;
   }
 
   # 辺のコスト
@@ -150,6 +207,74 @@ package Jikkoku::Class::BattleMap::Node {
     my ($self, $node) = @_;
     my ($target_node) = grep { $node eq $_ } @{ $self->{edges_node} };
     defined $target_node ? $target_node->cost : TEMP_INF;
+  }
+
+}
+
+package Jikkoku::Class::BattleMap::Node::Castle {
+
+  use Jikkoku;
+  use Carp;
+  use parent 'Jikkoku::Class::BattleMap::Node';
+  use Role::Tiny::With;
+  with 'Jikkoku::Class::BattleMap::Node::Role::Castle';
+
+  # override
+  sub new {
+    my ($class, $args) = @_;
+    my $self = $class->SUPER::new($args);
+    Carp::croak "城地形ではありません" if $self->{terrain} != $self->CASTLE;
+    $self;
+  }
+
+}
+
+package Jikkoku::Class::BattleMap::Node::WaterCastle {
+
+  use Jikkoku;
+  use Carp;
+  use parent 'Jikkoku::Class::BattleMap::Node';
+  use Role::Tiny::With;
+  with map { "Jikkoku::Class::BattleMap::Node::Role::$_" } qw/Castle Water/;
+
+  # override
+  sub new {
+    my ($class, $args) = @_;
+    my $self = $class->SUPER::new($args);
+    Carp::croak "水塞ではありません" if $self->{terrain} != $self->WATER_CASTLE;
+    $self;
+  }
+
+}
+
+package Jikkoku::Class::BattleMap::Node::Water {
+
+  use Jikkoku;
+  use parent 'Jikkoku::Class::BattleMap::Node';
+  use Role::Tiny::With;
+  with 'Jikkoku::Class::BattleMap::Node::Role::Water';
+
+}
+
+package Jikkoku::Class::BattleMap::Node::CheckPoint {
+
+  use Jikkoku;
+  use Carp;
+  use parent 'Jikkoku::Class::BattleMap::Node';
+  use Class::Accessor::Lite new => 0;
+
+  {
+    my %attributes = (check_point => undef);
+    Class::Accessor::Lite->mk_accessors( keys %attributes );
+
+    # override
+    sub new {
+      my ($class, $args) = @_;
+      my $self = $class->SUPER::new($args);
+      Carp::croak "関所ではありません" unless $self->is_check_point;
+      $self->{$_} = $attributes{$_} for keys %attributes;
+      $self;
+    }
   }
 
 }

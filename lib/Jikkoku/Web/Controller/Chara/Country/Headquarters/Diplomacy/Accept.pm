@@ -21,7 +21,16 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Accep
 
   sub cease_war {
     my $self = shift;
-    $self->_accept( $self->class('Diplomacy')->CEASE_WAR );
+    $self->_accept(
+      $self->class('Diplomacy')->CEASE_WAR,
+      sub {
+        my ($self, $diplomacy) = @_;
+        my $declare_war = $self->{diplomacy_model}->get_by_type_and_both_country_id(
+          $self->class('Diplomacy')->DECLARE_WAR, $self->{country}->id, $self->{request_country_id} );
+        $self->{diplomacy_model}->delete( $declare_war->type_and_both_country_id );
+        $self->{diplomacy_model}->delete( $diplomacy->type_and_both_country_id );
+      },
+    );
   }
 
   sub cession_or_accept_territory {
@@ -35,7 +44,7 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Accep
   }
 
   sub _accept {
-    my ($self, $type) = @_;
+    my ($self, $type, $add_process) = @_;
 
     my ($diplomacy, $diplomacy_name);
     my $action = $self->{is_accept} ? '承諾' : '拒否';
@@ -50,6 +59,7 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Accep
       $diplomacy_name = $diplomacy->name;
       if ( $self->{is_accept} ) {
         $diplomacy->accept;
+        $self->$add_process( $diplomacy ) if defined $add_process;
       } else {
         $self->{diplomacy_model}->delete( $param );
       }
@@ -70,7 +80,7 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Accep
 
       if ( $self->{is_accept} ) {
         my $log = qq{<span style="color: #ff6600"><strong>【${diplomacy_name}】</strong></span>}
-          . qq{@{[ $self->{request_country}->name ]}は@{[ $self->{country}->name ]}と${diplomacy_name}を行いました！@{[ $diplomacy->message ]}};
+          . qq{@{[ $self->{request_country}->name ]}は@{[ $self->{country}->name ]}へ${diplomacy_name}を行いました！@{[ $diplomacy->message ]}};
         $self->model('MapLog')->new->add( $log )->save;
         $self->model('HistoryLog')->new->add( $log )->save;
       }

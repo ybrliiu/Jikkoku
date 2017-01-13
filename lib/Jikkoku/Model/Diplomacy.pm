@@ -58,17 +58,19 @@ package Jikkoku::Model::Diplomacy {
       sort {
         $a->type_and_both_country_id cmp $b->type_and_both_country_id
       } grep { 
-        $_->has_country( $country_id )
+        $_->has_country_id( $country_id )
       } values %{ $self->{data} }
     ];
   }
 
-  sub get_by_type_and_country_id {
-    my ($self, $type, $country_id) = @_;
-    first {
-      $_->type == $type and
-      ($_->request_country_id == $country_id or $_->receive_country_id == $country_id)
+  sub get_by_type_and_both_country_id {
+    my ($self, $type, $country_id, $country_id2) = @_;
+    croak "引数が足りません" if @_ < 4;
+    my $diplomacy = first {
+      $_->has_type_and_both_country_id( $type, $country_id, $country_id2 )
     } values %{ $self->{data} };
+    blessed $diplomacy && $diplomacy->DOES( ROLE )
+      ? $diplomacy : croak "データが見つかりませんでした (type : $type, country_id : $country_id)";
   }
 
   sub add {
@@ -108,9 +110,44 @@ package Jikkoku::Model::Diplomacy {
     $self->{data} = +{
       map {
         my $diplomacy = $_;
-        $diplomacy->has_country( $country_id ) ? () : ($diplomacy->type_and_both_country_id => $diplomacy);
+        $diplomacy->has_country_id( $country_id ) ? () : ($diplomacy->type_and_both_country_id => $diplomacy);
       } values %{ $self->{data} }
     };
+  }
+
+  sub can_attack {
+    my ($self, $country_id, $target_country_id, $now_game_date) = @_;
+    croak "引数が足りません" if @_ < 4;
+    my $can_attack = 0;
+    my $cession_or_accept_territory = eval {
+      $self->get_by_type_and_both_country_id(
+        CLASS->CESSION_OR_ACCEPT_TERRITORY, $country_id, $target_country_id );
+    };
+    unless ($@) {
+      $can_attack = 1 if $cession_or_accept_territory->is_accepted
+    }
+    my $declare_war = eval {
+      $self->get_by_type_and_both_country_id(
+        CLASS->DECLARE_WAR, $country_id, $target_country_id );
+    };
+    unless ($@) {
+      $can_attack = 1 if $declare_war->can_invation( $now_game_date );
+    }
+    $can_attack;
+  }
+
+  sub can_passage {
+    my ($self, $country_id, $target_country_id, $now_game_date) = @_;
+    croak "引数が足りません" if @_ < 4;
+    my $can_passage = $self->can_attack( $country_id, $target_country_id, $now_game_date );
+    my $allow_passge = eval {
+      $self->get_by_type_and_both_country_id(
+        CLASS->ALLOW_PASSAGE, $country_id, $target_country_id );
+    };
+    unless ($@) {
+      $can_passage = 1 if $allow_passge->is_accepted;
+    }
+    $can_passage;
   }
 
 }

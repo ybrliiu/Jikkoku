@@ -9,6 +9,11 @@ package Jikkoku::Class::BattleMap {
   use Jikkoku::Class::BattleMap::Node;
   use Jikkoku::Class::BattleMap::CheckPoint;
 
+  use constant {
+    # shorcut
+    Node => 'Jikkoku::Class::BattleMap::Node',
+  };
+
   {
     my %attributes = (
       id           => undef,
@@ -34,12 +39,25 @@ package Jikkoku::Class::BattleMap {
   sub set_nodes {
     my ($self) = @_;
     $self->loop(sub {
-      my ($terrain, $y, $x) = @_;
       # 第1引数 は まだNode Obj でない( terrain )
-      my $new_node = Jikkoku::Class::BattleMap::Node->new({
+      my ($terrain, $y, $x) = @_;
+      my $new_node_class = do {
+        if ( $terrain == Node->CASTLE ) {
+          Node . '::Castle';
+        } elsif ( $terrain == Node->WATER_CASTLE ) {
+          Node . '::WaterCastle';
+        } elsif ( Node->is_water($terrain) ) {
+          Node . '::Water';
+        } elsif ( Node->is_check_point($terrain) ){
+          Node . '::CheckPoint';
+        } else {
+          Node;
+        }
+      };
+      my $new_node = $new_node_class->new({
         x       => $x,
         y       => $y,
-        terrain => $terrain,
+        terrain => $terrain || 0,
       });
       $self->{map_data}[$y][$x] = $new_node;
     });
@@ -62,8 +80,22 @@ package Jikkoku::Class::BattleMap {
   sub set_check_points {
     my ($self) = @_;
     for my $point (keys %{ $self->{check_points} }) {
-      $self->{check_points}{$point} = Jikkoku::Class::BattleMap::CheckPoint->new( $self->{check_points}{$point} );
+      my $check_point = Jikkoku::Class::BattleMap::CheckPoint->new( $self->{check_points}{$point} );
+      $self->{check_points}{$point} = $check_point; 
+      my $check_point_node = $self->{map_data}[ $check_point->y ][ $check_point->x ];
+      $check_point_node->check_point( $check_point );
     }
+  }
+
+  sub set_town_info {
+    my ($self, $town) = @_;
+    Carp::croak "引数が足りません" if @_ < 2;
+    my $castle = $self->get_node(sub {
+      my $node = shift;
+      $node->is_castle;
+    });
+    Carp::croak "城地形が見つかりませんでした" unless defined $castle;
+    $castle->set_town_info($town);
   }
 
   sub loop {
@@ -71,7 +103,7 @@ package Jikkoku::Class::BattleMap {
     for my $i (0 .. $self->{height} - 1) {
       for my $j (0 .. $self->{width} - 1) {
         my $node = $self->{map_data}[$i][$j];
-        $code->($node, $i, $j) unless $node eq '';
+        $code->($node, $i, $j);
       }
     }
   }
@@ -97,29 +129,25 @@ package Jikkoku::Class::BattleMap {
   sub get_up_node {
     my ($self, $node) = @_;
     return undef if $node->y - 1 < 0;
-    my $result_node = $self->{map_data}[ $node->y - 1 ][ $node->x ];
-    return $result_node eq '' ? undef : $result_node;
+    $self->{map_data}[ $node->y - 1 ][ $node->x ];
   }
   
   sub get_down_node {
     my ($self, $node) = @_;
     return undef if $node->y + 1 >= $self->{height};
-    my $result_node = $self->{map_data}[ $node->y + 1 ][ $node->x ];
-    return $result_node eq '' ? undef : $result_node;
+    $self->{map_data}[ $node->y + 1 ][ $node->x ];
   }
   
   sub get_right_node {
     my ($self, $node) = @_;
     return undef if $node->x + 1 >= $self->{width};
-    my $result_node = $self->{map_data}[ $node->y ][ $node->x + 1 ];
-    return $result_node eq '' ? undef : $result_node;
+    $self->{map_data}[ $node->y ][ $node->x + 1 ];
   }
   
   sub get_left_node {
     my ($self, $node) = @_;
     return undef if $node->x - 1 < 0;
-    my $result_node = $self->{map_data}[ $node->y ][ $node->x - 1 ];
-    return $result_node eq '' ? undef : $result_node;
+    $self->{map_data}[ $node->y ][ $node->x - 1 ];
   }
 
   sub get_check_point {

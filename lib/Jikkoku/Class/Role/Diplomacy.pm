@@ -34,10 +34,22 @@ package Jikkoku::Class::Role::Diplomacy {
     $self->{is_accepted} && ($self->{type} == CESSION_OR_ACCEPT_TERRITORY() || $self->{type} == ALLOW_PASSAGE());
   }
 
-  sub has_country {
+  sub has_country_id {
     my ($self, $country_id) = @_;
     Carp::croak "引数が足りません" if @_ < 2;
     $self->{request_country_id} == $country_id || $self->{receive_country_id} == $country_id;
+  }
+
+  sub has_both_country_id {
+    my ($self, $country_id, $country_id2) = @_;
+    Carp::croak "引数が足りません" if @_ < 3;
+    $self->has_country_id( $country_id ) && $self->has_country_id( $country_id2 );
+  }
+
+  sub has_type_and_both_country_id {
+    my ($self, $type, $country_id, $country_id2) = @_;
+    Carp::croak "引数が足りません" if @_ < 4;
+    $self->{type} == $type && $self->has_both_country_id( $country_id, $country_id2 );
   }
 
   sub name {
@@ -77,6 +89,14 @@ package Jikkoku::Class::Role::Diplomacy {
         : qq{<span style="color: red">【外交要請】</span>} . $country->name . 'から' . $self->name . '要請が来ています';
     }
   }
+
+  # 以下3つ 宣戦布告オブジェクトの時は上書きしていく
+  sub show_already_accepted_error {
+    my $self = shift;
+    "既に@{[ $self->name ]}要請は受理されています";
+  }
+
+  sub show_hope_start_game_date { q{} }
 
   sub other_country_id {
     my ($self, $country_id) = @_;

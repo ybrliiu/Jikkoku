@@ -6,7 +6,10 @@ package Jikkoku::Class::LoginList {
 
   use constant {
     PRIMARY_KEY => 'name',
-    COLUMNS     => [qw/time name country_id town_id/],
+    COLUMNS     => [qw/
+      time name country_id town_id
+      not_need
+    /],
   };
 
   sub show {

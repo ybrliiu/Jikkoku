@@ -1,7 +1,7 @@
 package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy {
 
   use Jikkoku;
-  use parent 'Jikkoku::Web::Controller::Chara';
+  use parent 'Jikkoku::Web::Controller::Chara::Base';
 
   use Jikkoku::Template;
 

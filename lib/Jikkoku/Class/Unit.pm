@@ -11,6 +11,7 @@ package Jikkoku::Class::Unit {
       id name country_id
       member_is_leader member_id member_name member_icon
       message join_permit base_town auto_gather
+      not_need
     /],
   };
 

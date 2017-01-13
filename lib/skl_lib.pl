@@ -26,11 +26,7 @@ sub TETTAI {
 	$kiti = "";
 	$kx = "";
 	$ky = "";
-	$kkicn = 0;
-	$kksup = 0;
-	$kmsup = 0;
-	$ksakup = 0;
-	$konmip = 0;
+  RESET_STATE();
 	if($_[0] eq ""){
 	&K_LOG("【撤退】部隊が全滅しているので撤退しました。");
 	&K_LOG2("【撤退】部隊が全滅しているので撤退しました。");
@@ -52,6 +48,15 @@ sub TETTAI {
 	}
 	&SAVE_DATA("./log_file/engolist.cgi",@NEWENGO);
 
+}
+
+# 状態のリセット
+sub RESET_STATE {
+	$kkicn = 0;
+	$kksup = 0;
+	$kmsup = 0;
+	$ksakup = 0;
+	$konmip = 0;
 }
 
 #相手撤退時の動作

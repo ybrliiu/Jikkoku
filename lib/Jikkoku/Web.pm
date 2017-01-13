@@ -16,47 +16,55 @@ package Jikkoku::Web {
       $ABSOLUTERY_URL =~ s/$file_name//g;
     }
 
-    bless {router => Router::Boom->new}, $class;
+    my $self = bless {router => Router::Boom->new}, $class;
+    $self->dispatch;
+
+    $self;
   }
 
   sub dispatch {
     my $self = shift;
     my $router = $self->{router};
 
+    my $root = '/chara';
+    my $controller = 'Jikkoku::Web::Controller::Chara';
+    $router->add("$root/",               {controller => $controller});
+    $router->add("$root/battle-map", {controller => $controller});
+
     {
       my $root = '/chara/country/headquarters';
       my $controller = 'Jikkoku::Web::Controller::Chara::Country::Headquarters';
-      $router->add("$root/",                   {controller => $controller, action => 'root'});
+      $router->add("$root/", {controller => $controller});
 
       {
         my $root = "$root/diplomacy";
         my $controller = "${controller}::Diplomacy";
-        $router->add("$root/", {controller => $controller, action => 'root'});
+        $router->add("$root/", {controller => $controller});
 
         {
           my $root = "$root/request";
           my $controller = "${controller}::Request";
-          $router->add("$root/declare-war",                 {controller => $controller, action => 'declare_war'});
-          $router->add("$root/short-declare-war",           {controller => $controller, action => 'short_declare_war'});
-          $router->add("$root/cease-war",                   {controller => $controller, action => 'cease_war'});
-          $router->add("$root/cession-or-accept-territory", {controller => $controller, action => 'cession_or_accept_territory'});
-          $router->add("$root/allow-passage",               {controller => $controller, action => 'allow_passage'});
+          $router->add("$root/declare-war",                 {controller => $controller});
+          $router->add("$root/short-declare-war",           {controller => $controller});
+          $router->add("$root/cease-war",                   {controller => $controller});
+          $router->add("$root/cession-or-accept-territory", {controller => $controller});
+          $router->add("$root/allow-passage",               {controller => $controller});
         }
 
         {
           my $root = "$root/accept";
           my $controller = "${controller}::Accept";
-          $router->add("$root/short-declare-war",           {controller => $controller, action => 'short_declare_war'});
-          $router->add("$root/cease-war",                   {controller => $controller, action => 'cease_war'});
-          $router->add("$root/cession-or-accept-territory", {controller => $controller, action => 'cession_or_accept_territory'});
-          $router->add("$root/allow-passage",               {controller => $controller, action => 'allow_passage'});
+          $router->add("$root/short-declare-war",           {controller => $controller});
+          $router->add("$root/cease-war",                   {controller => $controller});
+          $router->add("$root/cession-or-accept-territory", {controller => $controller});
+          $router->add("$root/allow-passage",               {controller => $controller});
         }
 
         {
           my $root = "$root/withdraw";
           my $controller = "${controller}::Withdraw";
-          $router->add("$root/cession-or-accept-territory", {controller => $controller, action => 'cession_or_accept_territory'});
-          $router->add("$root/allow-passage",               {controller => $controller, action => 'allow_passage'});
+          $router->add("$root/cession-or-accept-territory", {controller => $controller});
+          $router->add("$root/allow-passage",               {controller => $controller});
         }
       }
 
@@ -65,9 +73,10 @@ package Jikkoku::Web {
 
   sub run {
     my $self = shift;
-    $self->dispatch;
     my ($dest, $capture) = $self->{router}->match( $ENV{PATH_INFO} );
-    
+    # rooter 継承して...
+    uri_to_action($dest, $ENV{PATH_INFO});
+
     if (defined $dest) {
       my $controller = $dest->{controller};
       my $action     = $dest->{action};
@@ -77,6 +86,14 @@ package Jikkoku::Web {
     } else {
       my $c = Jikkoku::Web::Controller->new;
       $c->render_error('そのページは存在しません');
+    }
+  }
+
+  sub uri_to_action($$) {
+    my ($dest, $path_info) = @_;
+    my ($last_uri) = ($path_info =~ m!([^/]+$)!);
+    unless (exists $dest->{action}) {
+      $dest->{action} = $last_uri ? $last_uri =~ s/-/_/gr : 'root';
     }
   }
 

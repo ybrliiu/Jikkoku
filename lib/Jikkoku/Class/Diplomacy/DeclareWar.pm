@@ -65,10 +65,20 @@ package Jikkoku::Class::Diplomacy::DeclareWar {
     my $message = $self->$origin( $country_id, $country_model );
     if ( $self->{is_accepted} ) {
       $message = chop_utf8($message);
-      "@{[ $self->start_game_date->year ]}年@{[ $self->start_game_date->month ]}月から$message";
+      "@{[ $self->start_game_date->date ]}から$message";
     } else {
-      "$message (@{[ $self->start_game_date->year ]}年@{[ $self->start_game_date->month ]}月より開戦)";
+      "$message (@{[ $self->start_game_date->date ]}より開戦)";
     }
+  };
+
+  around show_already_accepted_error => sub {
+    my ($origin, $self) = @_;
+    "その国とは既に@{[ $self->name ]}中です。";
+  };
+
+  around show_hope_start_game_date => sub {
+    my ($origin, $self) = @_;
+    '開戦希望時間 : ' . $self->start_game_date->date;
   };
 
   # use utf8じゃないと辛いね

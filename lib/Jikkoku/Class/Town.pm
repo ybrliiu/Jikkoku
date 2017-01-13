@@ -14,6 +14,7 @@ package Jikkoku::Class::Town {
       name country_id
       farmer farm business wall farm_max business_max wall_max loyalty x y price
       wall_power technology farmer_max
+      not_need0 not_need1 not_need2 not_need3 not_need4 not_need5 not_need6 not_need7 not_need8
       id
     /],
     YEAR_COEF   => 5.833,
