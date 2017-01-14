@@ -7,7 +7,7 @@ package Jikkoku::Class::BattleMap::Node {
   use Scalar::Util qw/weaken/;
   
   use constant {
-    TEMP_INF => 100_0000,
+    TEMP_INF => 1000_0000,
 
     # 地形番号
     NOTHING      => 0,
@@ -109,7 +109,7 @@ package Jikkoku::Class::BattleMap::Node {
   sub origin_cost {
     my $self = shift;
     state $node_cost = {
-      NOTHING      ,=> 0,
+      NOTHING      ,=> TEMP_INF,
       PLAIN        ,=> 2,
       FOREST       ,=> 3,
       MOUNTAIN     ,=> 4,

@@ -104,6 +104,136 @@ package Jikkoku::Util {
     return $average_loyalty;
   }
 
+  {
+    my %escape_table = (
+      q{&} => '&amp;',
+      q{<} => '&lt;',
+      q{>} => '&gt;',
+      q{"} => '&quot;',
+      q{'} => '&#39;',
+      q{,} => '&#44;',
+    );
+
+    my @colors      = qw/red blue darkblue lightblue black green/;
+    my @decorations = qw/b s u i sub/;
+    my @tags        = (@colors, @decorations, 'a');
+
+    sub escape {
+      my $str = shift;
+
+      # そのままテキストデータとして保存すると危険な文字を特殊文字に変換
+      # <>と,はデータの区切りとして使っている
+      # 他の文字はそのままhtmlとして出力すると危険(インジェクション)
+      for (keys %escape_table) {
+        $str =~ s/$_/$escape_table{$_}/g;
+      }
+
+      # 改行文字 -> 改行タグ
+      $str =~ s/(\n|\r\n|\r)/<br>/g;
+
+      # 使用可能なタグの変換
+      for (0 .. $#tags) {
+        my $tag = $tags[$_];
+        if ($str =~ /&lt;$tag&gt;/) {
+          if ($_ < @colors + @decorations) {
+            return $str if _validate($str, $tag);
+            if ($_ < @colors) {
+              $str = _make_color($str, $tag);
+            } elsif ($_ < @colors + @decorations) {
+              $str = _make_decoration($str, $tag);
+            }
+          } else {
+            $str = _make_link($str);
+          }
+        }
+      }
+      
+      $str;
+    }
+      
+    # 不正な形のタグが含まれていないか検査
+    sub _validate {
+      my ($str, $tag) = @_;
+      return 1 if $str =~ qr/&lt;$tag&gt;$/;     # 末尾に開始タグがあればアウト
+      
+      my @validate = split /&lt;$tag&gt;/, $str; # 開始タグで分割し、全てのタグに閉じタグがあるか検査
+      for (1 .. @validate - 1) {
+        return 1 if $validate[$_] !~ m!&lt;/$tag&gt;!;
+      }
+      return 0;
+    }
+    
+    # 色タグの作成
+    sub _make_color {
+      my ($str, $tag) = @_;
+      $str =~ s/&lt;$tag&gt;/<span style="color:$tag">/g;
+      $str =~ s!&lt;/$tag&gt;!</span>!g;  
+      $str;
+    }
+    
+    # 装飾タグの作成
+    sub _make_decoration {
+      my ($str, $tag) = @_;
+      $str =~ s/&lt;$tag&gt;/<$tag>/g;
+      $str =~ s!&lt;/$tag&gt;!</$tag>!g;
+      $str;
+    }   
+    
+    # リンクタグの検査、作成
+    sub _make_link {
+      my $str = shift;
+      return $str if $str =~ /&lt;a&gt;$/;
+      
+      my @validate = split(/&lt;a&gt;/, $str);
+      my (@url, @name);
+      for(1 .. @validate-1){
+        ($url[$_])  = $validate[$_] =~ /url:(.*?) name:/;          # URL抽出
+        ($name[$_]) = $validate[$_] =~ / name:(.*?)&lt;\/a&gt;/;   # リンク名抽出
+        return $str unless $name[$_] && $url[$_];                  # URLかリンク名、閉じタグがなければアウト
+        ($validate[$_]) = $validate[$_] =~ /(?<=&lt;\/a&gt;)(.*)/; # 閉じタグより後ろの部分を抽出
+      }
+      
+      my $result = $validate[0];
+      $result .= qq{<a href="$url[$_]">$name[$_]</a>$validate[$_]} for 1 .. @validate - 1;
+      $result;
+    }
+
+    sub unescape {
+      my $str = shift;
+      $str = _restore_color($str, $_) for @colors;
+      _restore_link($str);
+    }
+
+    sub _restore_color {
+      my ($str, $tag) = @_;
+      my $start_tag = qq{<span style="color:$tag">};
+      my @restore = split /$start_tag/, $str;
+      my $head = shift @restore;
+      @restore = map {
+        my $tmp = $start_tag . $_;
+        $tmp =~ s/$start_tag/<$tag>/;
+        $tmp =~ s!</span>!</$tag>!;
+        $tmp;
+      } @restore;
+      $head . join '', @restore;
+    }
+    
+    sub _restore_link {
+      my ($str) = @_;
+      my $start_tag = "<a";
+      my @restore = split /$start_tag/, $str;
+      my $head    = shift @restore;
+      @restore = map {
+        my $tmp = $start_tag . $_;
+        my ($url, $name) = $tmp =~ m!<a href="(.*)">(.*)</a>!;
+        $tmp =~ s/ href="$url"//;
+        $tmp =~ s/<a>/<a>url:$url name:$name/;
+        $tmp;
+      } @restore;
+      $head . join '', @restore;
+    }
+  }
+  
 }
 
 1;

@@ -10,6 +10,11 @@ package Jikkoku::Web::Controller {
 
   my $CONFIG = Jikkoku::Model::Config->get;
 
+  sub new {
+    my $class = shift;
+    my $self  = $class->SUPER::new(@_);
+  }
+
   sub render {
     my ($self, $template_file, $args) = @_;
     Carp::croak(" テンプレートファイルを指定してください ") unless defined $template_file;
