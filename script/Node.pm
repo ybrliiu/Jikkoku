@@ -38,7 +38,7 @@ package Node {
 
   has [qw/x y/]            => (is => 'ro', required => 1);
   # 地形
-  has 'terrain'            => (is => 'ro', required => 1);
+  has 'terrain'            => (is => 'rw', required => 1);
   # 隣接ノード
   has 'edges_node'         => (is => 'rw', isa => 'ArrayRef[Node]', trigger => \&_edges_node_set);
   has 'is_calced'          => (is => 'rw', default => 0);

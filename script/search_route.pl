@@ -53,6 +53,7 @@ while ( my $path = $iter->() ) {
 }
 
 calc_route();
+# print_nodes_distance();
 
 sub calc_route {
   for my $route_id (@route_list) {
@@ -61,24 +62,46 @@ sub calc_route {
     my ($start_map, $middle_map, $end_map) = get_use_map($route_id)->@*;
 
     my $handle = do {
+     # $anon に標準出力に出力された文字列が貯まるようになる
      my $anon = tie local *STDOUT, 'TieSTDOUT';
-      $start_map->calc_shortest_route;
-      # $start_map->print_nodes_distance;
-      $start_map->print_route( $middle_map->id );
 
-      $middle_map->calc_shortest_route;
-      # $middle_map->print_nodes_distance;
-      $middle_map->print_route( $end_map->id );
+      my $handle = do {
+        my $anon = tie local *STDOUT, 'TieSTDOUT';
+        $start_map->calc_shortest_route;
+        $start_map->print_route( undef, $middle_map->id );
+        $anon;
+      };
+      my $calced_castle = $start_map->get_castle_node;
+      $start_map->calc_around_castle_route( $calced_castle ) if $calced_castle;
+      say $handle->to_s;
+
+      $middle_map->calc_shortest_route( $start_map->id );
+      $middle_map->print_route( $start_map->id, $end_map->id );
 
       $end_map->calc_shortest_route( $middle_map->id );
-      # $end_map->print_nodes_distance;
-      $end_map->print_route( $middle_map->id );
+      $end_map->print_route( $middle_map->id, undef );
 
       $anon;
     };
     say $handle->to_s;
     path( SAVE_DIR . $route_id . '.pl' )->spew( $handle->to_s );
 
+  }
+}
+
+sub print_nodes_distance {
+  for my $route_id (@route_list) {
+    say "route_id : $route_id";
+    my ($start_map, $middle_map, $end_map) = get_use_map($route_id)->@*;
+
+    $start_map->calc_shortest_route;
+    $start_map->print_nodes_distance;
+
+    $middle_map->calc_shortest_route( $start_map->id );
+    $middle_map->print_nodes_distance;
+
+    $end_map->calc_shortest_route( $middle_map->id );
+    $end_map->print_nodes_distance;
   }
 }
 

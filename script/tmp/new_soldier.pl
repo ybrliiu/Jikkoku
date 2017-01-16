@@ -1079,7 +1079,7 @@
     attr         => '歩',
     price        => 260,
     attack       => sub { $_[0]->force * 1.2 },
-    defence      => sub { $_[0]->force * .6 },
+    defence      => sub { $_[0]->force * 0.6 },
     attack_show  => '武力×1.2',
     defence_show => '武力×.6',
     move_point   => 13,

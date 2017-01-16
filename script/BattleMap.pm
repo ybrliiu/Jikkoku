@@ -4,9 +4,12 @@ package BattleMap {
   use Mouse::Role;
   use feature qw/signatures/;
   no warnings 'experimental::signatures';
+
   use Carp qw/croak/;
   use List::Util qw/min/;
   use Data::Dumper;
+  use Node;
+  use CalcAroundCastleNode;
 
   has [qw/id name/]      => (is => 'ro', isa => 'Str', required => 1);
   has [qw/width height/] => (is => 'ro', isa => 'Int', required => 1);
@@ -88,41 +91,48 @@ package BattleMap {
 
   sub calc_shortest_route($self, $map_id = '') {
     my $start_node = $self->get_start_node($map_id);
-
     unless ($start_node) {
       warn " start_node を取得できませんでした。終了します。";
       return;
     }
+    $self->calc_shortest_route_by_node($start_node);
+  }
 
-    # 始点の初期化
-    $start_node->distance(0);
-
+  sub calc_shortest_route_by_node($self, $start_node, $end_node = '') {
+    $start_node->distance(0);              # 始点の初期化
     while (1) {
-      my $vertex_node;
-
-      # どの頂点を使って距離を求めるか調べる
-      # まだ計算されていない頂点の中で、距離最小の点を探す
-      $self->loop_map(sub ($node, @) {
-        my $is_node_distance_shorter = !defined $vertex_node || $node->distance < $vertex_node->distance;
-        if ( !$node->is_calced && $is_node_distance_shorter ) {
-          $vertex_node = $node;
-        }
-      });
-
-      # 全ての頂点で計算されていた場合, ループを抜ける
-      last unless defined $vertex_node;
-
-      $vertex_node->is_calced(1);
-
-      # 各Node最短距離計算
-      $self->loop_map(sub ($node, @) {
-        my $min_distance = min( $node->distance, $vertex_node->distance + $vertex_node->edges_node_cost($node) );
-        # $vertex_node からの距離の方が小さかった場合、 $vertex_node を記録 (後からルート作成する用)
-        $node->from( $vertex_node ) if $min_distance != $node->distance;
-        $node->distance( $min_distance );
-      });
+      my $vertex_node = $self->get_not_calced_min_distance_node;
+      last unless defined $vertex_node;    # 全ての頂点で計算されていた場合, ループを抜ける
+      if ($end_node) {
+        last if $vertex_node == $end_node; # 終了ノードと同じ場合、ループを抜ける
+      }
+      $vertex_node->is_calced(1);          # 計算した目印をつける
+      $self->calc_each_node_min_distance($vertex_node);
     }
+  }
 
+
+  # どの頂点を使って距離を求めるか調べる
+  # まだ計算されていない頂点の中で、距離最小の点を探す
+  sub get_not_calced_min_distance_node($self) {
+    my $vertex_node;
+    $self->loop_map(sub ($node, @) {
+      my $is_node_distance_shorter = !defined $vertex_node || $node->distance < $vertex_node->distance;
+      if ( !$node->is_calced && $is_node_distance_shorter ) {
+        $vertex_node = $node;
+      }
+    });
+    $vertex_node;
+  }
+
+  # 各Node最短距離計算
+  sub calc_each_node_min_distance($self, $vertex_node) {
+    $self->loop_map(sub ($node, @) {
+      my $min_distance = min( $node->distance, $vertex_node->distance + $vertex_node->edges_node_cost($node) );
+      # $vertex_node からの距離の方が小さかった場合、 $vertex_node を記録 (後からルート作成する用)
+      $node->from( $vertex_node ) if $min_distance != $node->distance;
+      $node->distance( $min_distance );
+    });
   }
 
   sub get_castle_node($self) {
@@ -157,21 +167,21 @@ package BattleMap {
     }
   }
 
-  sub call_from_node($from) {
+  sub reverse_route($class, $from) {
     return unless $from;
     my $before = $from->from;
     return unless $before;
     $before->next( $from );
-    call_from_node( $before );
+    $class->reverse_route( $before );
   }
 
-  sub call_next_node($self, $current) {
+  sub trace_route($self, $current) {
     return unless $current;
     my $next = $current->next;
     return unless $next;
     # say " x: @{[ $current->x ]}, y : @{[ $current->y ]}";
     say '$ROOT[' . $current->y . '][' . $current->x . ']->{"' . $self->id . '"} = "' . $next->y . ',' . $next->x . '";';
-    $self->call_next_node( $next );
+    $self->trace_route( $next );
   }
 
   sub print_route_last_node($self, $end_node, $map_id) {
@@ -179,12 +189,12 @@ package BattleMap {
     say '$ROOT[' . $end_node->y . '][' . $end_node->x . ']->{"' . $self->id . '"} = "' . $map_id . '";';
   }
 
-  sub print_route($self, $map_id = '') {
-    my $end_node = $self->get_end_node($map_id);
-    call_from_node($end_node);
-    my $start_node = $self->get_start_node($map_id);
-    $self->call_next_node($start_node);
-    $self->print_route_last_node($end_node, $map_id);
+  sub print_route($self, $start_map_id, $end_map_id) {
+    my $end_node = $self->get_end_node($end_map_id);
+    $self->reverse_route($end_node);
+    my $start_node = $self->get_start_node($start_map_id);
+    $self->trace_route($start_node);
+    $self->print_route_last_node($end_node, $end_map_id);
   }
 
 }
