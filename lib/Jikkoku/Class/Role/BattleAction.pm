@@ -11,7 +11,7 @@ package Jikkoku::Class::Role::BattleAction {
 
   around new => sub {
     my ($origin, $class, $args) = @_;
-    validate_values $args => [qw/chara battle_map_model/];
+    validate_values $args => [qw/chara/];
     my $self = $class->$origin($args);
     weaken $self->{chara};
     $self;

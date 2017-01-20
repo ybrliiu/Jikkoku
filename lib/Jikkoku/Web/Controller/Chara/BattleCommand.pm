@@ -15,16 +15,14 @@ package Jikkoku::Web::Controller::Chara::BattleCommand {
   sub move {
     my $self = shift;
 
-    my $move = $self->class('BattleCommand::Move')->new({
-      chara            => $self->{chara},
-      battle_map_model => $self->model('BattleMap')->new,
-    });
+    my $move = $self->class('BattleCommand::Move')->new({ chara => $self->{chara} });
 
     eval {
       $move->action({
-        direction   => $self->param('direction'),
-        town_model  => $self->model('Town')->new,
-        chara_model => $self->model('Chara')->new,
+        direction        => $self->param('direction'),
+        town_model       => $self->model('Town')->new,
+        chara_model      => $self->model('Chara')->new,
+        battle_map_model => $self->model('BattleMap')->new,
       });
     };
 
@@ -38,10 +36,7 @@ package Jikkoku::Web::Controller::Chara::BattleCommand {
   sub charge_move_point {
     my $self = shift;
 
-    my $charger = $self->class('BattleCommand::ChargeMovePoint')->new({
-      chara            => $self->{chara},
-      battle_map_model => $self->model('BattleMap')->new,
-    });
+    my $charger = $self->class('BattleCommand::ChargeMovePoint')->new({ chara => $self->{chara} });
 
     eval { $charger->action };
     if (my $e = $@) {
@@ -54,16 +49,14 @@ package Jikkoku::Web::Controller::Chara::BattleCommand {
   sub stuck {
     my $self = shift;
 
-    my $stuck = $self->class('Skill::Disturb::Stuck')->new({
-      chara            => $self->{chara},
-      battle_map_model => $self->model('BattleMap')->new,
-    });
+    my $stuck = $self->class('Skill::Disturb::Stuck')->new({ chara => $self->{chara} });
 
     eval {
       $stuck->action({
-        target_id     => $self->param('target_id') || undef,
-        chara_model   => $self->{chara_model},
-        map_log_model => $self->model('MapLog')->new,
+        target_id => $self->param('target_id') || undef,
+        chara_model      => $self->{chara_model},
+        map_log_model    => $self->model('MapLog')->new,
+        battle_map_model => $self->model('BattleMap')->new,
       });
     };
     if (my $e = $@) {

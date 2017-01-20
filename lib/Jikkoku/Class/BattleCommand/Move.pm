@@ -24,10 +24,10 @@ package Jikkoku::Class::BattleCommand::Move {
 
   sub ensure_can_action {
     my ($self, $args) = @_;
-    validate_values $args => [qw/direction chara_model town_model/];
+    validate_values $args => [qw/direction chara_model town_model battle_map_model/];
 
     my $bm_id = $self->{chara}->soldier_battle_map('battle_map_id');
-    my $bm    = $self->{battle_map_model}->get($bm_id);
+    my $bm    = $args->{battle_map_model}->get($bm_id);
     my $next_node  = $bm->can_move({
       chara       => $self->{chara},
       direction   => $args->{direction},
