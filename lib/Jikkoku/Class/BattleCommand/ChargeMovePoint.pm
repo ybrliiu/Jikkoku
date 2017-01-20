@@ -1,31 +1,50 @@
 package Jikkoku::Class::BattleCommand::ChargeMovePoint {
 
-  use v5.14;
-  use warnings;
-  use Role::Tiny::With;
+  use Jikkoku;
+  use Class::Accessor::Lite new => 0;
   use parent 'Jikkoku::Class::BattleCommand::Base';
+  use Role::Tiny::With;
   with 'Jikkoku::Class::Role::BattleAction';
 
-  sub ensure_can_action {
-    my ($self) = @_;
-    my $time = time;
-    if ( $self->{chara}->soldier_battle_map('move_point_charge_time') > $time ) {
-      my $wait_time = $self->{chara}->soldier_battle_map('move_point_charge_time') - $time;
-      die "あと $wait_time 秒補充できません。\n";
+  use Jikkoku::Model::Config;
+
+  {
+    my $config = Jikkoku::Model::Config->get;
+    my %attributes = (
+      move_point_charge_time => $config->{game}{action_interval_time},
+    );
+    Class::Accessor::Lite->mk_accessors(keys %attributes);
+
+    sub new {
+      my ($class, $args) = @_;
+      bless {
+        %attributes,
+        %$args,
+      }, $class;
     }
   }
 
+  sub ensure_can_action {
+    my $self = shift;
+    my $time = time;
+    my $sub  = $self->{chara}->soldier_battle_map('move_point_charge_time') - $time;
+    die "あと $sub 秒移動Pは補充できません。" if $sub > 0;
+    $time;
+  }
+
   sub action {
-    my ($self) = @_;
+    my ($self, $time) = @_;
 
     eval {
-      $self->{chara}->charge_move_point;
-      $self->{chara}->occur_move_point_charge_time;
+      $self->{chara}->soldier_battle_map(move_point => $self->{chara}->soldier->move_point);
+      $self->{chara}->soldier_battle_map(move_point_charge_time => $time + $self->{move_point_charge_time});
     };
 
     if (my $e = $@) {
       $self->{chara}->abort;
-      die " $@ \n";
+      die "$@ \n";
+    } else {
+      $self->{chara}->save;
     }
 
   }

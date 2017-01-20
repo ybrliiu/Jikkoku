@@ -23,16 +23,18 @@ package Jikkoku::Class::BattleMap::Node::Role::Castle {
     };
   }
 
-  around set_town_info => sub {
-    my ($orig, $self, $town) = @_;
+  sub set_town_info {
+    my ($self, $town) = @_;
     Carp::croak "引数が足りません" if @_ < 2;
     $self->{town_wall} = $town->wall;
     $self->{town_name} = $town->name;
-  };
+  }
 
   around name => sub {
-    my ($orig, $self, $chara) = @_;
-    $self->$orig($chara) . ($self->{town_name} ? "<br>$self->{town_name}<br>城壁 : $self->{town_wall}" : '');
+    my ($orig, $self) = @_;
+    $self->{town_name}
+      ? "$self->{town_name}@{[ $self->$orig() ]}<br>城壁 : $self->{town_wall}"
+      : $self->$orig();
   };
 
 }

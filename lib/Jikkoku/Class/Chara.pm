@@ -8,19 +8,30 @@ package Jikkoku::Class::Chara {
   use Module::Load;
   use Jikkoku::Class::Chara::Soldier;
   use Jikkoku::Model::Soldier;
+  use Jikkoku::Model::State;
   map { load "Jikkoku::Model::Chara::$_" } qw/Protector BattleLog CommandLog Profile/;
 
   use constant {
     FILE_DIR_PATH   => 'charalog/main/',
     PRIMARY_KEY     => 'id',
     COLUMNS         => [qw/
-      id pass name icon
-      force intellect leadership popular
-      soldier_num training
+      id
+      pass
+      name
+      icon
+      force
+      intellect
+      leadership
+      popular
+      soldier_num
+      training
       country_id
-      money rice
-      contribute class
-      weapon_power book_power
+      money
+      rice
+      contribute
+      class
+      weapon_power
+      book_power
       loyalty
       ability_exp
       delete_turn
@@ -39,14 +50,21 @@ package Jikkoku::Class::Chara {
       weapon_skill
       soldier_battle_map
       enter_to_maze
-      guard_name weapon_name book_name
-      weapon_attr weapon_attr_power
-      battle_and_command_record buffer_and_reward_and_command_skill
+      guard_name
+      weapon_name
+      book_name
+      weapon_attr
+      weapon_attr_power
+      battle_and_command_record
+      buffer_and_reward_and_command_skill
       weapon2_data
       bought_skill_point
-      skill_data skill_data2
+      skill_data
+      skill_data2
       morale_data
-      sub7 sub8
+      debuff
+      sub8
+      not_need
     /],
     SUBDATA_COLUMNS => {
       ability_exp       => [qw/force intellect leadership popular soldier_id what_is_this/],
@@ -81,6 +99,8 @@ package Jikkoku::Class::Chara {
       weapon2_data => [qw/power name attr attr_power/],
       skill_data   => [qw/singeki_time not_used/],
       morale_data  => [qw/morale morale_max/],
+      # stuck = 足止め
+      debuff       => [qw/stuck/],
     },
 
     PROTECT_RANGE          => 3,
@@ -94,14 +114,14 @@ package Jikkoku::Class::Chara {
   __PACKAGE__->after(money => sub {
     my ($self) = @_;
     if (@_ != 1) {
-      die "金が足りません。\n" if $self->{money} < 0;
+      die "金が足りません。" if $self->{money} < 0;
     }
   });
 
   __PACKAGE__->after(rice => sub {
     my ($self) = @_;
     if (@_ != 1) {
-      die "米が足りません。\n" if $self->{rice} < 0;
+      die "米が足りません。" if $self->{rice} < 0;
     }
   });
 
@@ -109,7 +129,7 @@ package Jikkoku::Class::Chara {
     my ($self, $key) = @_;
     if (@_ != 2) {
       if ($key eq 'move_point') {
-        die "移動ポイントが足りません。\n" if $self->{soldier_battle_map}{$key} < 0;
+        die "移動ポイントが足りません。" if $self->{soldier_battle_map}{$key} < 0;
       }
     }
   });
@@ -118,21 +138,10 @@ package Jikkoku::Class::Chara {
     my ($self, $key) = @_;
     if (@_ != 2) {
       if ($key eq 'morale') {
-        die "士気が足りません。\n" if $self->{morale_data}{$key} < 0;
+        die "士気が足りません。" if $self->{morale_data}{$key} < 0;
       }
     }
   });
-
-  sub charge_move_point {
-    my ($self) = @_;
-    $self->{soldier_battle_map}{move_point} = $self->soldier->move_point;
-  }
-
-  sub occur_move_point_charge_time {
-    my ($self) = @_;
-    $self->{soldier_battle_map}{move_point_charge_time} = time + MOVE_POINT_CHARGE_TIME;
-    # スキルによって移動P補充時間を調整
-  }
 
   sub soldier_retreat {
     my ($self) = @_;
@@ -149,12 +158,18 @@ package Jikkoku::Class::Chara {
       $self->{soldier_battle_map}{plus_attack_power},
       $self->{soldier_battle_map}{plus_defence_power},
       $self->{skill_data}{singeki_time},
+      $self->{debuff}{stuck},
     )
-      = (0) x 4;
+      = (0) x 5;
 
     my $protector_model = Jikkoku::Model::Chara::Protector->new;
     $protector_model->delete( $self->{id} );
     $protector_model->save;
+  }
+
+  sub soldier_can_move {
+    my ($self, $move_node) = @_;
+    $self->{soldier_battle_map}{move_point} - $move_node->cost($self) >= 0;
   }
 
   sub recover_morale {
@@ -164,7 +179,7 @@ package Jikkoku::Class::Chara {
       if $self->{morale_data}{morale} > $self->{morale_data}{morale_max};
   }
 
-  sub distance_of_chara_soldiers {
+  sub distance_to_chara_soldier {
     my ($self, $chara) = @_;
     my $self_bm = $self->{soldier_battle_map};
     my $chara_bm = $chara->{soldier_battle_map};
@@ -235,6 +250,12 @@ package Jikkoku::Class::Chara {
     return $self->{soldier} if exists $self->{soldier};
     my $soldier_data = Jikkoku::Model::Soldier->new->get( $self->{ability_exp}{soldier_id} );
     $self->{soldier} = Jikkoku::Class::Chara::Soldier->new( $soldier_data );
+  }
+
+  sub states {
+    my $self = shift;
+    return $self->{states} if exists $self->{states};
+    $self->{states} = Jikkoku::Model::State->new($self);
   }
 
   __PACKAGE__->_generate_save_log_method;

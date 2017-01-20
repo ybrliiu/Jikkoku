@@ -21,7 +21,6 @@ package Jikkoku::Web::Router::Root {
 
   sub any {
     my ($self, $path) = @_;
-    warn $self->{controller};
     $self->{router}->any("$self->{path}${path}", +{ controller => $self->{controller} });
   }
 

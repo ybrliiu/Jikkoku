@@ -17,13 +17,10 @@ package Jikkoku::Web::Router {
     my $is_method_allowed = not $is_method_not_allowed;
 
     my ($last_uri) = ($path_info =~ m!([^/]+$)!);
-    unless ( exists $dest->{action} ) {
+    if ( exists $dest->{controller} and not exists $dest->{action} ) {
       $dest->{action} = $last_uri ? $last_uri =~ s/-/_/gr : 'root';
     }
-
-    use Data::Dumper;
-    warn Dumper $dest;
-
+    
     ($dest, $captured, $is_method_allowed);
   }
 

@@ -1,7 +1,6 @@
 package Jikkoku::Class::Role::Diplomacy {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use Role::Tiny;
 
   use Carp;
@@ -16,7 +15,17 @@ package Jikkoku::Class::Role::Diplomacy {
 
   sub PRIMARY_KEY() { 'type_and_both_country_id' }
 
-  sub COLUMNS() { [qw/type is_accepted request_country_id receive_country_id start_year start_month message/] }
+  sub COLUMNS() {
+    [qw/
+      type
+      is_accepted
+      request_country_id
+      receive_country_id
+      start_year
+      start_month
+      message
+    /]
+  }
 
   sub accept {
     my ($self) = @_;

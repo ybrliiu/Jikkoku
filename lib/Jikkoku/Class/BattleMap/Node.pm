@@ -45,7 +45,10 @@ package Jikkoku::Class::BattleMap::Node {
       y       => undef,
       terrain => undef,
 
-      exist_charactors => [],
+      allies             => [],
+      enemies            => [],
+      is_current         => 0,
+      can_move_direction => undef,
 
       edges_node => [],
       is_calced  => 0,
@@ -58,17 +61,25 @@ package Jikkoku::Class::BattleMap::Node {
 
     sub new {
       my ($class, $args) = @_;
+      # 上で宣言したArrayRefは全オブジェクトで共有されてしまうため
+      $args->{$_} = [] for qw/allies enemies edges_node/;
       bless {%attributes, %$args}, $class;
     }
   }
 
-  sub set_town_info {}
+  sub current {
+    my $self = shift;
+    $self->{is_current} = 1;
+  }
 
-  sub check_point {}
-
-  sub set_exist_charactors {
+  sub push_ally {
     my ($self, $chara) = @_;
-    push @{ $self->{exist_charactors} }, $chara;
+    push @{ $self->{allies} }, $chara;
+  }
+
+  sub push_enemy {
+    my ($self, $chara) = @_;
+    push @{ $self->{enemies} }, $chara;
   }
 
   sub _edges_node_set {
@@ -107,7 +118,7 @@ package Jikkoku::Class::BattleMap::Node {
   }
 
   sub origin_cost {
-    my $self = shift;
+    my ($self, $chara) = @_;
     state $node_cost = {
       NOTHING      ,=> TEMP_INF,
       PLAIN        ,=> 2,
@@ -168,15 +179,17 @@ package Jikkoku::Class::BattleMap::Node {
 
   sub cost {
     my ($self, $chara) = @_;
-    my $cost = $self->origin_cost;
+    my $cost = $self->origin_cost($chara);
 
     # 筋斗雲
     if (0) {
       $cost = $cost > KINTOUN_COST ? KINTOUN_COST : $cost;
     }
     # 足止め
-    if (0) {
-      $cost = $cost * SLOW_TIMES;
+    require Jikkoku::Class::State::Stuck;
+    my $stuck = Jikkoku::Class::State::Stuck->new({chara => $chara});
+    if ( $stuck->is_in_the_state(time) ) {
+      $cost = $stuck->move_cost($cost);
     }
     $cost;
   }
@@ -275,6 +288,12 @@ package Jikkoku::Class::BattleMap::Node::CheckPoint {
       $self->{$_} = $attributes{$_} for keys %attributes;
       $self;
     }
+  }
+
+  # override
+  sub name {
+    my $self = shift;
+    $self->SUPER::name . "<br>@{[ $self->{check_point}->target_town_name ]}";
   }
 
 }

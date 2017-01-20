@@ -1,30 +1,36 @@
 package Jikkoku::Class::Role::BattleAction {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use Role::Tiny;
 
-  around new => sub {
-    my ($origin, $class, @args) = @_;
-    my $self = $class->$origin(@args);
-    die " chara attribute がありません " unless exists $self->{chara};
-    $self;
-  };
+  use Jikkoku::Model::Config;
+  use Scalar::Util qw/weaken/;
+  use Jikkoku::Util qw/validate_values is_game_update_hour/;
 
   requires qw/ensure_can_action action/;
 
+  around new => sub {
+    my ($origin, $class, $args) = @_;
+    validate_values $args => [qw/chara battle_map_model/];
+    my $self = $class->$origin($args);
+    weaken $self->{chara};
+    $self;
+  };
+
   before ensure_can_action => sub {
-    my ($self, @args) = @_;
-    die "出撃していません。\n" unless $self->{chara}->is_sortie;
+    my ($self) = @_;
+    die "BM上で行動可能な時間帯ではありません。" unless is_game_update_hour;
+    die "出撃していません。" unless $self->{chara}->is_sortie;
     if ( $self->{chara}->soldier_num < 0 ) {
-      # 退却処理
-      die "兵士がいません。\n";
+      $self->{chara}->soldier_retreat;
+      $self->{chara}->save;
+      die "兵士がいません。";
     }
   };
 
   around action => sub {
-    my ($origin, $self, @args) = @_;
-    my @ret = $self->ensure_can_action( @args );
+    my ($origin, $self, $args) = @_;
+    my @ret = $self->ensure_can_action($args);
     $self->{chara}->commit;
     # ensure_can_action で最後に返された値が引数として渡される
     $self->$origin( @ret );

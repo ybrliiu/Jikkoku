@@ -1,65 +1,39 @@
 package Jikkoku::Class::BattleCommand::Move {
 
-  use v5.14;
-  use warnings;
-  use Role::Tiny::With;
+  use Jikkoku;
+  use Class::Accessor::Lite new => 0;
   use parent 'Jikkoku::Class::BattleCommand::Base';
+  use Role::Tiny::With;
   with 'Jikkoku::Class::Role::BattleAction';
 
   use Carp qw/croak/;
   use Jikkoku::Util qw/validate_values/;
 
-  use Jikkoku::Model::Chara;
-  use Jikkoku::Model::Town;
-  use Jikkoku::Model::BattleMap;
+  {
+    my %attributes = (poison_die_pc => 0.05);
+    Class::Accessor::Lite->mk_accessors(keys %attributes);
 
-  use constant {
-    LEFT  => 2,
-    RIGHT => 3,
-    DOWN  => 4,
-    UP    => 5,
-
-    POISON_DIE_PC => 20,
-  };
+    sub new {
+      my ($class, $args) = @_;
+      bless {
+        %attributes,
+        %$args,
+      }, $class;
+    }
+  }
 
   sub ensure_can_action {
-    my ($self, $direction) = @_;
-    croak "引数が足りません" if @_ < 2;
+    my ($self, $args) = @_;
+    validate_values $args => [qw/direction chara_model town_model/];
 
-    my $chara_model  = Jikkoku::Model::Chara->new;
-    my $town_model   = Jikkoku::Model::Town->new;
-    my $bm_id        = $self->{chara}->soldier_battle_map('battle_map_id');
-    my $battle_map   = Jikkoku::Model::BattleMap->new->get( $bm_id );
-    my $current_node = $battle_map->get_node_by_point(
-      $self->{chara}->soldier_battle_map('x'), 
-      $self->{chara}->soldier_battle_map('y'), 
-    );
-    my $next_node = do {
-      if ( $direction == LEFT ) {
-        $battle_map->get_left_node( $current_node );
-      } elsif ( $direction == RIGHT ) {
-        $battle_map->get_right_node( $current_node );
-      } elsif ( $direction == DOWN ) {
-        $battle_map->get_down_node( $current_node );
-      } elsif ( $direction == UP ) {
-        $battle_map->get_up_node( $current_node );
-      } else {
-        undef;
-      }
-    };
-    die " その座標は存在しません \n" unless defined $next_node;
-
-    die " 他国の城の上に移動することはできません \n"
-      if $next_node->terrain == $next_node->CASTLE && $battle_map->id eq $self->{chara}->town_id;
-
-    my $enemy = $chara_model->first(sub {
-      my ($chara) = @_;
-      $chara->is_soldier_same_position( $bm_id, $next_node->x, $next_node->y )
-        && $chara->country_id != $self->{chara}->country_id;
+    my $bm_id = $self->{chara}->soldier_battle_map('battle_map_id');
+    my $bm    = $self->{battle_map_model}->get($bm_id);
+    my $next_node  = $bm->can_move({
+      chara       => $self->{chara},
+      direction   => $args->{direction},
+      chara_model => $args->{chara_model},
+      town_model  => $args->{town_model},
     });
-    die " そのマスには敵がいるので移動できません \n" if defined $enemy;
-
-    $next_node;
   }
 
   sub action {
@@ -68,7 +42,6 @@ package Jikkoku::Class::BattleCommand::Move {
     eval {
       my $move_point = $self->{chara}->soldier_battle_map('move_point');
       $self->{chara}->soldier_battle_map( move_point => $move_point - $next_node->cost( $self->{chara} ) );
-      $self->{chara}->occur_move_point_charge_time;
       $self->{chara}->move_to( $next_node );
       $self->_move_to_poison( $next_node );
     };
@@ -76,6 +49,8 @@ package Jikkoku::Class::BattleCommand::Move {
     if (my $e = $@) {
       $self->{chara}->abort;
       die " $@ \n";
+    } else {
+      $self->{chara}->save;
     }
 
   }
@@ -83,7 +58,7 @@ package Jikkoku::Class::BattleCommand::Move {
   sub _move_to_poison {
     my ($self, $next_node) = @_;
     if ($next_node->terrain == $next_node->POISON) {
-      my $minus = $self->{chara}->soldier_num / POISON_DIE_PC;
+      my $minus = $self->{chara}->soldier_num * $self->{poison_die_pc};
       $self->{chara}->soldier_num( $self->{chara}->soldier_num - $minus );
       $self->{chara}->save_battle_log(
         "【<font color=purple>地形効果</font>】" . 

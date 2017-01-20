@@ -34,10 +34,14 @@ package Jikkoku::Web {
     $chara->any('/battle-map');
 
     {
-      my $headquarters = $chara->root(
-        path       => '/country/headquarters',
-        controller => 'Country::Headquarters'
-      );
+      my $battle_command = $chara->root(path => '/battle-command', controller => 'BattleCommand');
+      $battle_command->any('/move');
+      $battle_command->any('/charge-move-point');
+      $battle_command->any('/stuck');
+    }
+
+    {
+      my $headquarters = $chara->root(path => '/country/headquarters', controller => 'Country::Headquarters');
       $headquarters->any('/');
 
       {
@@ -76,7 +80,7 @@ package Jikkoku::Web {
     my ($dest, $capture, $is_method_allowed)
       = $self->{router}->match($ENV{REQUEST_METHOD}, $ENV{PATH_INFO});
 
-    if (defined $dest && $is_method_allowed) {
+    if (%$dest && $is_method_allowed) {
       my $controller = $dest->{controller};
       my $action     = $dest->{action};
       load $controller;

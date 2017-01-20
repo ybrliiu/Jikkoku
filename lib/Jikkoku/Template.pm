@@ -3,7 +3,7 @@ package Jikkoku::Template {
   use Jikkoku;
   use Jikkoku::Web;
   use Exporter 'import';
-  our @EXPORT = qw/take_in static_file/;
+  our @EXPORT = qw/take_in url_for static_file/;
 
   use Carp ();
   use Cwd ();
@@ -41,7 +41,7 @@ package Jikkoku::Template {
 
   sub url_for {
     my $url = shift;
-    "http://$ENV{HTTP_HOST}$ENV{SCRIPT_NAME}";
+    "http://$ENV{HTTP_HOST}$ENV{SCRIPT_NAME}$url";
   }
 
 }

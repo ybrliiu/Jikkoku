@@ -53,6 +53,12 @@ package Jikkoku::Web::Controller {
     exit;
   }
 
+  sub redirect_to {
+    my ($self, $path) = @_;
+    print $self->redirect( url_for $path );
+    exit;
+  }
+
   sub class {
     my ($self, $class_name) = @_;
     my $pkg = "Jikkoku::Class::${class_name}";

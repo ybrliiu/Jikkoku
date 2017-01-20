@@ -21,7 +21,7 @@ sub NOUMIN_NPC{
 		my $count,$i,$j,$nx,$ny = 0;
 		for($n=$randy;$n<$BM_Y;$n++){
 			for($j=$randx;$j<$BM_X;$j++){
-				if($BM_TIKEI[$n][$j] ne "" && $BM_TIKEI[$n][$j] ne "18"){
+				if($BM_TIKEI[$n][$j] ne "" && ($BM_TIKEI[$n][$j] != 18 && $BM_TIKEI[$n][$j] != 22) ){
 				$nx = $j;
 				$ny = $n;
 				$count = 2;

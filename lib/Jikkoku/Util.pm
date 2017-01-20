@@ -1,22 +1,31 @@
 package Jikkoku::Util {
 
-  use v5.14;
-  use warnings;
-
+  use Jikkoku;
   use Exporter 'import';
   our @EXPORT_OK = qw/
-    open_data save_data create_data
+    open_data
+    save_data
+    create_data
     validate_values
-    daytime datetime
+    daytime
+    datetime
+    load_child
+    child_module_list
+    is_game_update_hour
   /;
   use Carp qw/croak/;
   use Time::Piece;
+  use Module::Load;
+  use Jikkoku::Model::Config;
 
-  use constant CHARA_DATA_DIR_PATH => 'charalog/main';
+  use constant {
+    HOUR_OF_THE_DAY     => 24,
+    CHARA_DATA_DIR_PATH => 'charalog/main',
+  };
 
   sub open_data {
     my ($file_name) = @_;
-    open(my $fh, '<', $file_name) or croak "$file_nameを開けませんでした";
+    open(my $fh, '<', $file_name) or croak "$file_nameを開けませんでした($!)";
     my @file_data = map { chomp $_; $_; } <$fh>;
     $fh->close();
     return \@file_data;
@@ -24,7 +33,7 @@ package Jikkoku::Util {
 
   sub save_data {
     my ($file_name, $file_data) = @_;
-		open(my $fh, '+<', $file_name) or croak "$file_nameを開けませんでした";
+		open(my $fh, '+<', $file_name) or croak "$file_nameを保存できませんでした($!)";
     flock($fh, 2);
     truncate($fh, 0);
     seek($fh, 0, 0);
@@ -64,6 +73,48 @@ package Jikkoku::Util {
     my ($time) = @_;
     my $t = localtime($time);
     $t->strftime('%Y/%m/%d(%a) %H:%M:%S');
+  }
+
+  sub is_game_update_hour {
+    my $config = Jikkoku::Model::Config->get;
+    my ($start_hour, $end_hour) = ($config->{game}{update_start_hour}, $config->{game}{update_end_hour});
+    is_hour_in(localtime->hour, $start_hour, $end_hour);
+  }
+
+  sub is_hour_in {
+    my ($hour, $start_hour, $end_hour) = @_;
+    if ($start_hour > $end_hour) {
+		  $hour >= $start_hour or $hour < $end_hour;
+    } else {
+      $hour >= $start_hour and $hour < $end_hour;
+    }
+  }
+
+  sub child_list {
+    my $class = shift;
+    
+    # パッケージ名からそのモジュールのパスを作成する
+    my $dir = $class;
+    $dir =~ s!::!/!g;
+    $dir = "lib/$dir/";
+    
+    opendir(my $dh, $dir) or die "can't opendir $dir: $!";
+    my @list = map { 
+      if ($_ !~ /^Base/ && $_ =~ /.pm$/) {
+        $class . '::' . $_ =~ s/.pm$//r;
+      } else {
+        ()
+      }
+    } readdir $dh;
+    closedir $dh; 
+    \@list;
+  }
+  
+  sub load_child {
+    my $class = shift;
+    my $list = child_list($class);
+    load $_ for @$list;
+    $list;
   }
 
   sub open_all_chara_data {

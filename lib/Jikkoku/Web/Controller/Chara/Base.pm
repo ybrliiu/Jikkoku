@@ -44,6 +44,13 @@ package Jikkoku::Web::Controller::Chara::Base {
   }
 
   # override
+  sub redirect_to {
+    my ($self, $path) = @_;
+    $path .= '?id=' . $self->{chara}->id . '&pass=' . $self->{chara}->pass;
+    $self->SUPER::redirect_to($path);
+  }
+
+  # override
   sub render_error {
     my ($self, $message) = @_;
     Carp::croak "引数が足りません" if @_ < 2;
