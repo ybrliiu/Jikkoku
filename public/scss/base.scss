@@ -1,0 +1,190 @@
+@charset "UTF-8";
+
+/* default 装飾 */
+* {
+  font-family : "メイリオ", "Yu Gothic", "VL Gothic", "Ubuntu", "monospace";
+}
+
+body {
+  background: #fff url("../../image/o.gif");
+  margin: 0;
+}
+
+p { margin: 5px; }
+
+a { text-decoration:none; }
+a:link    { color: #4682B4; }
+a:visited { color: #4682B4; }
+a:hover   { color: #FFFF00; }
+a:active  { color: #00FF00; }
+
+/* フォーム */
+textarea, input[type="text"], input[type="password"] {
+  background-color:#F7F7F7;
+  border: 1px #888888 solid;
+  margin: 2px;
+  padding: 2px;
+  border-radius:4px;
+}
+
+textarea:hover, input[type="text"]:hover, input[type="password"]:hover {
+  background-color:#FFFFFF;
+  border: 1px #0000FF solid;
+  margin: 2px;
+  padding: 2px;
+  border-radius:4px;
+}
+
+textarea:focus, input[type="text"]:focus, input[type="password"]:focus {
+  background-color:#FFFFFF;
+  border: 1px #0000FE solid;
+  margin: 2px;
+  padding: 2px;
+  border-radius:4px;
+}
+
+select {
+  border: 1px #888888 solid;
+  margin: 2px;
+  padding: 2px;
+  border-radius:4px;
+}
+
+input[type="text"][disabled] {
+  background-color: #CCCCCC;
+}
+
+input[type="submit"], button {
+  background-color: rgba(235, 235, 235, 0.65);
+  border: 1px #888888 solid;
+  margin: 2px;
+  font-size: 125%;
+  color: #111111;
+  padding : 4px;
+  min-width: 60px;
+  border-radius: 4px;
+  box-shadow: inset -1px -1px 3px rgba(000, 000, 000, 0.5);
+}
+
+button:hover, input[type="submit"]:hover {
+  background-color: #66A2D4;
+  box-shadow: inset 0px 0px 0px rgba(000, 000, 000, 0);
+}
+
+button:active, input[type="submit"]:active {
+  background-color: #366294;
+  box-shadow: inset 1px 1px 3.3px rgba(000, 000, 000, 0.7);
+}
+
+/* レイアウト */
+body, footer, .centering {                                                                                                                    
+  width: 100%;
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* レイアウト用ボックス */
+%base {
+  width: 100%;
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 中央揃え */
+.center {
+  @extend %base;
+  float: left;
+  $margin: 20px;
+
+  > * {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: $margin;
+    margin-bottom: $margin;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  > .touch-top {
+    margin-top: -$margin;
+  }
+}
+
+/* Nカラムでhtml書くときの枠 */
+body {
+  @extend %base;
+  $pad: 11px;
+
+  * { box-sizing: border-box; }
+
+  %content {
+    > * {
+      margin-bottom: $pad;
+      &:last-child { margin-bottom: 0; }
+    }
+  }
+
+  .padding-top {
+    padding-top: $pad !important;
+  }
+
+  .grid-around {
+    @extend %content;
+    padding: $pad;
+  }
+
+  .grid {
+    @extend %content;
+    padding:0 0 $pad $pad;
+    float: left;
+  }
+
+  .grid-right {
+    @extend %content;
+    padding:0 $pad $pad $pad;
+    float: left;
+  }
+
+  footer {
+    @extend .center;
+    border-top: solid 1px #AAA;
+    padding: 0;
+  }
+
+  .divider {
+    float: left;
+  }
+}
+
+/* utils */
+
+/* 横の大きさ */
+$width-list: 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100;
+@each $pc in $width-list {
+  .width-#{$pc}pc{
+    $tmp: "%";
+    width: #{$pc}#{$tmp};
+  }
+}
+
+/* 文字色 */
+.black     { color: #000000; }
+.blue      { color: #0000ff; }
+.lightblue { color: #87ceeb; }
+.darkblue  { color: #00008b; }
+.red       { color: #ff0000; }
+.green     { color: #008000; }
+.white     { color: #f9f9f9; }
+.navy      { color: #000080; }
+.silver    { color: #998877; }
+
+.icon {
+  width: 64px;
+  height: 64px;
+}
+
+@import 'tool-tip.scss';
+@import 'menu.scss';
+

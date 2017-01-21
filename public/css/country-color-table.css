@@ -1,0 +1,687 @@
+@charset "UTF-8";
+/* 各国色テーブル */
+.table-0 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-0 th {
+  background-color: rgba(102, 102, 102, 0.75);
+  color: #f1f1f1;
+  padding: 3px;
+}
+.table-0 th.first, .table-0 div.color {
+  background-color: #666666;
+  color: #f1f1f1;
+  padding: 3px;
+}
+.table-0 th.first a, .table-0 div.color a {
+  color: #f1f1f1;
+}
+.table-0 td, .table-0 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #f1f1f1;
+  padding: 3px;
+  border: 1px rgba(102, 102, 102, 0.4) solid;
+}
+.table-0 td.color {
+  color: #666666;
+  font-weight: bold;
+}
+.table-0 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-0 td.right {
+  text-align: right;
+}
+
+.table-1 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-1 th {
+  background-color: rgba(128, 0, 0, 0.75);
+  color: #ffcfcf;
+  padding: 3px;
+}
+.table-1 th.first, .table-1 div.color {
+  background-color: maroon;
+  color: #ffcfcf;
+  padding: 3px;
+}
+.table-1 th.first a, .table-1 div.color a {
+  color: #ffcfcf;
+}
+.table-1 td, .table-1 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #ffcfcf;
+  padding: 3px;
+  border: 1px rgba(128, 0, 0, 0.4) solid;
+}
+.table-1 td.color {
+  color: maroon;
+  font-weight: bold;
+}
+.table-1 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-1 td.right {
+  text-align: right;
+}
+
+.table-2 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-2 th {
+  background-color: rgba(0, 0, 128, 0.75);
+  color: #cfefff;
+  padding: 3px;
+}
+.table-2 th.first, .table-2 div.color {
+  background-color: navy;
+  color: #cfefff;
+  padding: 3px;
+}
+.table-2 th.first a, .table-2 div.color a {
+  color: #cfefff;
+}
+.table-2 td, .table-2 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #cfefff;
+  padding: 3px;
+  border: 1px rgba(0, 0, 128, 0.4) solid;
+}
+.table-2 td.color {
+  color: navy;
+  font-weight: bold;
+}
+.table-2 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-2 td.right {
+  text-align: right;
+}
+
+.table-3 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-3 th {
+  background-color: rgba(0, 96, 0, 0.75);
+  color: #c8ffc8;
+  padding: 3px;
+}
+.table-3 th.first, .table-3 div.color {
+  background-color: #006000;
+  color: #c8ffc8;
+  padding: 3px;
+}
+.table-3 th.first a, .table-3 div.color a {
+  color: #c8ffc8;
+}
+.table-3 td, .table-3 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #c8ffc8;
+  padding: 3px;
+  border: 1px rgba(0, 96, 0, 0.4) solid;
+}
+.table-3 td.color {
+  color: #006000;
+  font-weight: bold;
+}
+.table-3 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-3 td.right {
+  text-align: right;
+}
+
+.table-4 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-4 th {
+  background-color: rgba(64, 64, 0, 0.75);
+  color: #cccca8;
+  padding: 3px;
+}
+.table-4 th.first, .table-4 div.color {
+  background-color: #404000;
+  color: #cccca8;
+  padding: 3px;
+}
+.table-4 th.first a, .table-4 div.color a {
+  color: #cccca8;
+}
+.table-4 td, .table-4 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #cccca8;
+  padding: 3px;
+  border: 1px rgba(64, 64, 0, 0.4) solid;
+}
+.table-4 td.color {
+  color: #404000;
+  font-weight: bold;
+}
+.table-4 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-4 td.right {
+  text-align: right;
+}
+
+.table-5 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-5 th {
+  background-color: rgba(15, 96, 128, 0.75);
+  color: #efffff;
+  padding: 3px;
+}
+.table-5 th.first, .table-5 div.color {
+  background-color: #0f6080;
+  color: #efffff;
+  padding: 3px;
+}
+.table-5 th.first a, .table-5 div.color a {
+  color: #efffff;
+}
+.table-5 td, .table-5 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #efffff;
+  padding: 3px;
+  border: 1px rgba(15, 96, 128, 0.4) solid;
+}
+.table-5 td.color {
+  color: #0f6080;
+  font-weight: bold;
+}
+.table-5 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-5 td.right {
+  text-align: right;
+}
+
+.table-6 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-6 th {
+  background-color: rgba(172, 138, 58, 0.75);
+  color: #fffff8;
+  padding: 3px;
+}
+.table-6 th.first, .table-6 div.color {
+  background-color: #ac8a3a;
+  color: #fffff8;
+  padding: 3px;
+}
+.table-6 th.first a, .table-6 div.color a {
+  color: #fffff8;
+}
+.table-6 td, .table-6 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #fffff8;
+  padding: 3px;
+  border: 1px rgba(172, 138, 58, 0.4) solid;
+}
+.table-6 td.color {
+  color: #ac8a3a;
+  font-weight: bold;
+}
+.table-6 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-6 td.right {
+  text-align: right;
+}
+
+.table-7 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-7 th {
+  background-color: rgba(64, 0, 64, 0.75);
+  color: #fff0ff;
+  padding: 3px;
+}
+.table-7 th.first, .table-7 div.color {
+  background-color: #400040;
+  color: #fff0ff;
+  padding: 3px;
+}
+.table-7 th.first a, .table-7 div.color a {
+  color: #fff0ff;
+}
+.table-7 td, .table-7 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #fff0ff;
+  padding: 3px;
+  border: 1px rgba(64, 0, 64, 0.4) solid;
+}
+.table-7 td.color {
+  color: #400040;
+  font-weight: bold;
+}
+.table-7 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-7 td.right {
+  text-align: right;
+}
+
+.table-8 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-8 th {
+  background-color: rgba(255, 102, 51, 0.75);
+  color: #ffcc99;
+  padding: 3px;
+}
+.table-8 th.first, .table-8 div.color {
+  background-color: #ff6633;
+  color: #ffcc99;
+  padding: 3px;
+}
+.table-8 th.first a, .table-8 div.color a {
+  color: #ffcc99;
+}
+.table-8 td, .table-8 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #ffcc99;
+  padding: 3px;
+  border: 1px rgba(255, 102, 51, 0.4) solid;
+}
+.table-8 td.color {
+  color: #ff6633;
+  font-weight: bold;
+}
+.table-8 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-8 td.right {
+  text-align: right;
+}
+
+.table-9 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-9 th {
+  background-color: rgba(102, 102, 204, 0.75);
+  color: #a5aadd;
+  padding: 3px;
+}
+.table-9 th.first, .table-9 div.color {
+  background-color: #6666cc;
+  color: #a5aadd;
+  padding: 3px;
+}
+.table-9 th.first a, .table-9 div.color a {
+  color: #a5aadd;
+}
+.table-9 td, .table-9 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #a5aadd;
+  padding: 3px;
+  border: 1px rgba(102, 102, 204, 0.4) solid;
+}
+.table-9 td.color {
+  color: #6666cc;
+  font-weight: bold;
+}
+.table-9 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-9 td.right {
+  text-align: right;
+}
+
+.table-10 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-10 th {
+  background-color: rgba(102, 204, 204, 0.75);
+  color: #ccffff;
+  padding: 3px;
+}
+.table-10 th.first, .table-10 div.color {
+  background-color: #66cccc;
+  color: #ccffff;
+  padding: 3px;
+}
+.table-10 th.first a, .table-10 div.color a {
+  color: #ccffff;
+}
+.table-10 td, .table-10 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #ccffff;
+  padding: 3px;
+  border: 1px rgba(102, 204, 204, 0.4) solid;
+}
+.table-10 td.color {
+  color: #66cccc;
+  font-weight: bold;
+}
+.table-10 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-10 td.right {
+  text-align: right;
+}
+
+.table-11 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-11 th {
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #ffffff;
+  padding: 3px;
+}
+.table-11 th.first, .table-11 div.color {
+  background-color: black;
+  color: #ffffff;
+  padding: 3px;
+}
+.table-11 th.first a, .table-11 div.color a {
+  color: #ffffff;
+}
+.table-11 td, .table-11 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #ffffff;
+  padding: 3px;
+  border: 1px rgba(0, 0, 0, 0.4) solid;
+}
+.table-11 td.color {
+  color: black;
+  font-weight: bold;
+}
+.table-11 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-11 td.right {
+  text-align: right;
+}
+
+.table-12 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-12 th {
+  background-color: rgba(0, 128, 0, 0.75);
+  color: #66ee66;
+  padding: 3px;
+}
+.table-12 th.first, .table-12 div.color {
+  background-color: green;
+  color: #66ee66;
+  padding: 3px;
+}
+.table-12 th.first a, .table-12 div.color a {
+  color: #66ee66;
+}
+.table-12 td, .table-12 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #66ee66;
+  padding: 3px;
+  border: 1px rgba(0, 128, 0, 0.4) solid;
+}
+.table-12 td.color {
+  color: green;
+  font-weight: bold;
+}
+.table-12 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-12 td.right {
+  text-align: right;
+}
+
+.table-13 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-13 th {
+  background-color: rgba(0, 221, 0, 0.75);
+  color: #ddffdd;
+  padding: 3px;
+}
+.table-13 th.first, .table-13 div.color {
+  background-color: #00dd00;
+  color: #ddffdd;
+  padding: 3px;
+}
+.table-13 th.first a, .table-13 div.color a {
+  color: #ddffdd;
+}
+.table-13 td, .table-13 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #ddffdd;
+  padding: 3px;
+  border: 1px rgba(0, 221, 0, 0.4) solid;
+}
+.table-13 td.color {
+  color: #00dd00;
+  font-weight: bold;
+}
+.table-13 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-13 td.right {
+  text-align: right;
+}
+
+.table-14 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-14 th {
+  background-color: rgba(255, 215, 0, 0.75);
+  color: #fffdcf;
+  padding: 3px;
+}
+.table-14 th.first, .table-14 div.color {
+  background-color: gold;
+  color: #fffdcf;
+  padding: 3px;
+}
+.table-14 th.first a, .table-14 div.color a {
+  color: #fffdcf;
+}
+.table-14 td, .table-14 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #fffdcf;
+  padding: 3px;
+  border: 1px rgba(255, 215, 0, 0.4) solid;
+}
+.table-14 td.color {
+  color: gold;
+  font-weight: bold;
+}
+.table-14 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-14 td.right {
+  text-align: right;
+}
+
+.table-15 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-15 th {
+  background-color: rgba(255, 0, 0, 0.75);
+  color: #ffccbb;
+  padding: 3px;
+}
+.table-15 th.first, .table-15 div.color {
+  background-color: red;
+  color: #ffccbb;
+  padding: 3px;
+}
+.table-15 th.first a, .table-15 div.color a {
+  color: #ffccbb;
+}
+.table-15 td, .table-15 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #ffccbb;
+  padding: 3px;
+  border: 1px rgba(255, 0, 0, 0.4) solid;
+}
+.table-15 td.color {
+  color: red;
+  font-weight: bold;
+}
+.table-15 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-15 td.right {
+  text-align: right;
+}
+
+.table-16 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-16 th {
+  background-color: rgba(0, 0, 255, 0.75);
+  color: #99ccff;
+  padding: 3px;
+}
+.table-16 th.first, .table-16 div.color {
+  background-color: blue;
+  color: #99ccff;
+  padding: 3px;
+}
+.table-16 th.first a, .table-16 div.color a {
+  color: #99ccff;
+}
+.table-16 td, .table-16 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #99ccff;
+  padding: 3px;
+  border: 1px rgba(0, 0, 255, 0.4) solid;
+}
+.table-16 td.color {
+  color: blue;
+  font-weight: bold;
+}
+.table-16 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-16 td.right {
+  text-align: right;
+}
+
+.table-17 {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+}
+.table-17 th {
+  background-color: rgba(255, 105, 180, 0.75);
+  color: #ffd0db;
+  padding: 3px;
+}
+.table-17 th.first, .table-17 div.color {
+  background-color: hotpink;
+  color: #ffd0db;
+  padding: 3px;
+}
+.table-17 th.first a, .table-17 div.color a {
+  color: #ffd0db;
+}
+.table-17 td, .table-17 td.color {
+  text-align: left;
+  vertical-align: middle;
+  background-color: #ffd0db;
+  padding: 3px;
+  border: 1px rgba(255, 105, 180, 0.4) solid;
+}
+.table-17 td.color {
+  color: hotpink;
+  font-weight: bold;
+}
+.table-17 td.middle {
+  text-align: center;
+  font-weight: bold;
+}
+.table-17 td.right {
+  text-align: right;
+}
+
+/*# sourceMappingURL=country-color-table.css.map */
