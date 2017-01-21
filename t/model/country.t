@@ -46,9 +46,9 @@ ok(my $model = $CLASS->new);
 
   subtest 'color' => sub {
     ok 1;
-    is $country->color, '#f1f1f1';
-    is $country->background_color, '#666666';
-    is $country->background_color_rgba, '102,102,102,';
+    is $country->color, '#ff69b4';
+    is $country->background_color, '#ffd0db';
+    is $country->background_color_rgba, '255,105,180,';
   };
 
 }

@@ -15,7 +15,7 @@ ok $model->save;
 is $game_date->month, $month + 1;
 ok $game_date->month( $month );
 ok $game_date->date;
-is $game_date->map_bg_color, '#FFE0E0';
+is $game_date->map_bg_color, '#60AF60';
 ok $model->save;
 
 subtest 'init' => sub {

@@ -30,7 +30,7 @@ subtest not_accpted => sub {
   );
 
   is $declare_war->start_game_date->year, 885;
-  is $declare_war->show_status( 0, $country_model ), '(本当は)平和主義共和国へ短縮布告を要請中 (885年3月より開戦)';
+  is $declare_war->show_status( 0, $country_model ), '(本当は)平和主義共和国へ短縮布告を要請中 (885年03月より開戦)';
 };
 
 subtest accepted => sub {
