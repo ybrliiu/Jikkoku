@@ -47,8 +47,27 @@ subtest 'distance' => sub {
   my $tonkou = $model->get_by_name('敦煌');
 
   is $town2->distance($tonkou), 3;
-  ok !$town2->can_move($tonkou);
+  ok not $town2->can_move($tonkou);
   ok $town2->can_move($town1);
+
+  my $isyu   = $model->get(15);
+  my $sensyu = $model->get(17);
+  ok $isyu->can_move($sensyu);
+  ok $sensyu->can_move($isyu);
+
+  my $raisyu = $model->get(16);
+  ok $isyu->can_move($raisyu);
+  ok $raisyu->can_move($isyu);
+
+  my $kousyu = $model->get(9);
+  ok $raisyu->can_move($kousyu);
+  ok $kousyu->can_move($raisyu);
+
+  ok not $isyu->can_move($kousyu);
+  ok not $sensyu->can_move($kousyu);
+  ok not $raisyu->can_move($sensyu);
+
+  ok not $isyu->can_move($town1);
 };
 
 subtest 'defender_list' => sub {
