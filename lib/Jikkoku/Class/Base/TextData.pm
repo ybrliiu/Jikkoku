@@ -144,7 +144,11 @@ package Jikkoku::Class::Base::TextData {
       no warnings 'uninitialized';
       @subdata = split /,/, $self->{$subdata_type};
     }
-    $self->{$subdata_type} = +{ map { $self->SUBDATA_COLUMNS->{$subdata_type}[$_] => $subdata[$_] } 0 .. $#subdata};
+    $self->{$subdata_type} = +{
+      map {
+        $self->SUBDATA_COLUMNS->{$subdata_type}[$_] => $subdata[$_]
+      } 0 .. $#subdata
+    };
   }
 
   sub output {
@@ -155,7 +159,7 @@ package Jikkoku::Class::Base::TextData {
     }
     # データがない領域を join すると鬱陶しいので、本来推奨されないがここだけ
     no warnings 'uninitialized';
-    my $textdata = join '<>', map { $self->{$_} } @{ $self->COLUMNS };
+    my $textdata = join('<>', map { $self->{$_} } @{ $self->COLUMNS }) . '<>';
     $self->{$_} = $temp->{$_} for keys %{ $self->SUBDATA_COLUMNS };
     \$textdata;
   }
@@ -164,7 +168,8 @@ package Jikkoku::Class::Base::TextData {
     my ($self, $subdata_type) = @_;
     # データがない領域を join すると鬱陶しいので、本来推奨されないがここだけ
     no warnings 'uninitialized';
-    my $textdata = join ',', map { $self->{$subdata_type}{$_} } @{ $self->SUBDATA_COLUMNS->{$subdata_type} };
+    # 最後に separator をつけないと、後で set_subdata でsplit する時にバグる
+    my $textdata = join(',', map { $self->{$subdata_type}{$_} } @{ $self->SUBDATA_COLUMNS->{$subdata_type} }) . ',';
     \$textdata;
   }
 

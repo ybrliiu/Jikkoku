@@ -10,12 +10,9 @@ package Jikkoku::Class::Country {
 
   use constant {
     PRIMARY_KEY     => 'id',
-    # not_need は旧APIを正常に動作させるために必要なもの
-    # 完全に切り替え終わったら削除する
     COLUMNS         => [qw/
       id name color_id months_after_establish king_id command position
       not_use
-      not_need
     /],
     SUBDATA_COLUMNS => {
       # strategist = 軍師 infantry = 歩兵

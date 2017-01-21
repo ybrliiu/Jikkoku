@@ -17,7 +17,7 @@ package Jikkoku::Class::Base::TextData::Division {
   sub save {
     my ($self) = @_;
     $self->{_textdata} = $self->output;
-    save_data( $self->file_path( $self->{id}), [ ${ $self->{_textdata} } ] );
+    save_data( $self->file_path( $self->{id} ), [ ${ $self->{_textdata} } ] );
     $self->set_data;
   }
 

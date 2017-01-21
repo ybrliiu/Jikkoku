@@ -8,7 +8,6 @@ package Jikkoku::Class::LoginList {
     PRIMARY_KEY => 'name',
     COLUMNS     => [qw/
       time name country_id town_id
-      not_need
     /],
   };
 
