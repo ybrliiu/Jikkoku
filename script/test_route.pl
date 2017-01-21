@@ -2,7 +2,7 @@
 
 use v5.24;
 use warnings;
-use lib '../lib', '../';
+use lib '../lib', '../', './lib';
 use Path::Tiny;
 use Test::More;
 use List::Util qw/first/;

@@ -21,6 +21,7 @@ use constant {
   SAVE_DIR => '../etc/battle_map_route/',
 };
 
+use lib './lib';
 use Node;
 use BattleMap::Start;
 use BattleMap::Middle;
@@ -52,8 +53,8 @@ while ( my $path = $iter->() ) {
   }
 }
 
-calc_route();
-# print_nodes_distance();
+# calc_route();
+print_nodes_distance();
 
 sub calc_route {
   for my $route_id (@route_list) {
