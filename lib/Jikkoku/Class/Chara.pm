@@ -24,7 +24,7 @@ package Jikkoku::Class::Chara {
       leadership
       popular
       soldier_num
-      training
+      soldier_training
       country_id
       money
       rice

@@ -70,6 +70,8 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
     $chara->skill_point( $chara->skill_point - $self->{consume_skill_point} );
   }
 
+  # 行動などのタイプは使用しているRoleで判断
+  # 依存能力はjapanese.coefで表示させる
   sub explain_effect_simple {
     my $self = shift;
 << "EOS";

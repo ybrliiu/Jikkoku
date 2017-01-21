@@ -12,6 +12,8 @@ package Jikkoku::Util {
     load_child
     child_module_list
     is_game_update_hour
+    escape
+    unescape
   /;
   use Carp qw/croak/;
   use Time::Piece;
@@ -83,11 +85,8 @@ package Jikkoku::Util {
 
   sub is_hour_in {
     my ($hour, $start_hour, $end_hour) = @_;
-    if ($start_hour > $end_hour) {
-		  $hour >= $start_hour or $hour < $end_hour;
-    } else {
-      $hour >= $start_hour and $hour < $end_hour;
-    }
+    my ($start, $end) = ($hour >= $start_hour, $hour < $end_hour);
+    $start_hour > $end_hour ? $start || $end : $start && $end;
   }
 
   sub child_list {
@@ -157,7 +156,6 @@ package Jikkoku::Util {
 
   {
     my %escape_table = (
-      q{&} => '&amp;',
       q{<} => '&lt;',
       q{>} => '&gt;',
       q{"} => '&quot;',
@@ -175,7 +173,7 @@ package Jikkoku::Util {
       # そのままテキストデータとして保存すると危険な文字を特殊文字に変換
       # <>と,はデータの区切りとして使っている
       # 他の文字はそのままhtmlとして出力すると危険(インジェクション)
-      for (keys %escape_table) {
+      for ( keys %escape_table ) {
         $str =~ s/$_/$escape_table{$_}/g;
       }
 
@@ -276,9 +274,10 @@ package Jikkoku::Util {
       my $head    = shift @restore;
       @restore = map {
         my $tmp = $start_tag . $_;
+        # $name はタグの後ろに残したままで、ちゃんと復元できる
         my ($url, $name) = $tmp =~ m!<a href="(.*)">(.*)</a>!;
         $tmp =~ s/ href="$url"//;
-        $tmp =~ s/<a>/<a>url:$url name:$name/;
+        $tmp =~ s/<a>/<a>url:$url name:/;
         $tmp;
       } @restore;
       $head . join '', @restore;

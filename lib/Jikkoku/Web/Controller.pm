@@ -13,6 +13,10 @@ package Jikkoku::Web::Controller {
   sub new {
     my $class = shift;
     my $self  = $class->SUPER::new(@_);
+    # 全てをエスケープするなら
+    # for my $key (keys %{ $self->{param} }) {
+    #   $self->{param}{$key} = [ map { Jikkoku::Util::escape($_) } @{ $self->{param}{$_} } ];
+    # }
   }
 
   sub render {
@@ -20,7 +24,9 @@ package Jikkoku::Web::Controller {
     Carp::croak(" テンプレートファイルを指定してください ") unless defined $template_file;
     $args //= {};
 
-    $args->{config} = $CONFIG;
+    $args->{config}    = $CONFIG;
+    $args->{CSS_FILES} //= [];
+    $args->{JS_FILES}  //= [];
     $self->hook_before_render( $args );
 
     my $header = $self->header(

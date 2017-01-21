@@ -13,6 +13,8 @@ package Jikkoku::Class::Skill::Disturb {
   }
 
   sub get {
+    my ($self, $name) = @_;
+    $self->{belong_skill}{$name};
   }
 
   sub trace {
@@ -25,6 +27,15 @@ package Jikkoku::Class::Skill::Disturb {
     for my $skill (@next_skill) {
       _trace( @{ $skill->next_skill } );
     }
+  }
+
+  sub grep {
+    my ($self, $code) = @_;
+    my @stack;
+    for my $skill ( values %{ $self->{belong_skill} } ) {
+      push $skill if $code->($skill);
+    }
+    \@stack;
   }
 
 }

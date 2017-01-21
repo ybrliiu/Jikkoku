@@ -6,6 +6,8 @@ package Jikkoku::Class::Town {
   use parent 'Jikkoku::Class::Base::TextData';
 
   use Carp qw/croak/;
+  use List::Util qw/first/;
+  use Data::List::CircularlyLinked;
 
   use constant {
     PRIMARY_KEY => 'id',
@@ -37,6 +39,7 @@ package Jikkoku::Class::Town {
   # override
   sub output {
     my ($self) = @_;
+    no warnings 'uninitialized';
     my $textdata = join '<>', map { $self->{COLUMNS->[$_]} } 0 .. @{ COLUMNS() } - 2;
     \$textdata;
   }
@@ -46,12 +49,27 @@ package Jikkoku::Class::Town {
     abs( $self->{x} - $town->{x} ) + abs( $self->{y} - $town->{y} );
   }
 
-  sub can_move {
-    my ($self, $town) = @_;
-    my $distance = $self->distance($town);
-    # 斜めの時
-    my $oblique = $distance == 2 && $self->x != $town->x && $self->y != $town->y;
-    $distance == 1 || $oblique;
+  {
+    # 泉州 <-> 夷州, 夷州 <-> 雷州, 雷州 <-> 広州 移動できるようにする
+    # 数字は各都市のID
+    my @special_move = (
+      Data::List::CircularlyLinked->new(17 => 15),
+      Data::List::CircularlyLinked->new(15 => 16),
+      Data::List::CircularlyLinked->new(16 => 9),
+    );
+
+    sub can_move {
+      my ($self, $town) = @_;
+      my $distance = $self->distance($town);
+      # 斜めの時
+      my $oblique = $distance == 2 && $self->x != $town->x && $self->y != $town->y;
+      # 特殊移動(海をまたいで)
+      my $can_special_move = first {
+        my $town_id = $_->get($town->id);
+        defined $town_id ? $self->id == $town_id->next : undef;
+      } @special_move;
+      $distance == 1 || $oblique || $can_special_move;
+    }
   }
 
   sub _salary {

@@ -19,8 +19,12 @@ package Jikkoku::Web::Controller::Chara {
       town_model  => $self->{town_model},
     });
 
+    my $country_model = $self->model('Country')->new;
+    my $country       = $country_model->get( $self->{chara}->country_id );
+
     $self->render('chara/battle_map.pl', {
       battle_map => $battle_map,
+      country    => $country,
     });
   }
 
