@@ -1,6 +1,6 @@
 // 各国毎に異なる色のテーブルを作る際に使うひな形
 
-$country_white:#ffffff; 
+$country_white:#ffffff;
 
 @mixin country-table-base($color, $color2) {
   background-color: $country_white;
