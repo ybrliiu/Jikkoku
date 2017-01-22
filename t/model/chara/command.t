@@ -10,7 +10,7 @@ ok( my $model = $CLASS->new('ybrliiu') );
 ok( my $list = $model->get(10) );
 is @$list, 10;
 
-my $test_id = 'hogehoge';
+my $test_id = 'test_player';
 ok $CLASS->create($test_id);
 ok( $model = $CLASS->new($test_id) );
 is scalar @{ $model->get_all }, $model->MAX;

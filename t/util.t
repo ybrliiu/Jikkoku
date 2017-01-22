@@ -52,6 +52,9 @@ subtest 'is hour in overdated' => sub {
   ok not Jikkoku::Util::is_hour_in(1, 19, 1);
 };
 
-ok Jikkoku::Util::is_game_update_hour();
+SKIP : {
+  skip "時間により結果が変わるので", 1;
+  ok Jikkoku::Util::is_game_update_hour();
+};
 
 done_testing;

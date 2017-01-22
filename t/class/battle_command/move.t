@@ -10,6 +10,12 @@ use_ok $CLASS;
 use Jikkoku::Model::Chara;
 use Jikkoku::Model::Town;
 use Jikkoku::Model::BattleMap;
+
+# 設定ファイル通りの時間だといつでもテストできないので
+my $game_config = Jikkoku::Model::Config->get->{game};
+local $game_config->{update_start_hour} = 0;
+local $game_config->{update_end_hour}   = 24;
+
 my $c_m = Jikkoku::Model::Chara->new;
 my $chara = $c_m->get('ybrliiu');
 
