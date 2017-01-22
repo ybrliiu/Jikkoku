@@ -13,13 +13,23 @@ package Option::Some {
   }
 
   # override
-  sub foreach {
+  sub exists {
     my ($self, $code) = @_;
-    $self->SUPER::foreach($code);
-    # NOTE : in Scala, return value is empty tuple ( () )
-    #        in this module, return value is desided by $code
+    $self->SUPER::exists($code);
     local $_ = $self->{contents};
     $code->( $self->{contents} );
+  }
+
+  # override
+  sub fold {
+    my ($self, $default) = @_;
+    $self->SUPER::fold($default);
+    sub {
+      my $code = shift;
+      Carp::confess "please specify CodeRef" if ref $code ne 'CODE';
+      local $_ = $self->{contents};
+      $code->( $self->{contents} );
+    };
   }
 
   # override
@@ -33,17 +43,38 @@ package Option::Some {
   }
 
   # override
-  sub is_defined { 1 }
+  sub is_empty { 0 }
 
   # override
-  sub is_empty { 0 }
+  sub map {
+    my ($self, $code) = @_;
+    $self->SUPER::map($code);
+    local $_ = $self->{contents};
+    my $ret = $code->( $self->{contents} );
+    Option::Some->new($ret);
+  }
 
   # override
   sub match {
     my ($self, %args) = @_;
-    $self->SUPER::match(%args);
     local $_ = $self->{contents};
+    $self->SUPER::match(%args);
     $args{Some}->( $self->{contents} );
+  }
+
+  # override
+  sub to_list {
+    my $self = shift;
+    ($self->{contents});
+  }
+
+  # override
+  sub yield {
+    my ($self, $code) = @_;
+    local $_ = $self->{contents};
+    $self->SUPER::forall($code);
+    # NOTE : in Scala, for - yield 
+    $code->( $self->{contents} );
   }
 
 }

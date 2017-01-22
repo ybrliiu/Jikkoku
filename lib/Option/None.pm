@@ -12,22 +12,47 @@ package Option::None {
   }
 
   # override
+  sub exists {
+    my ($self, $code) = @_;
+    $self->SUPER::exists($code);
+    '';
+  }
+
+  # override
+  sub fold {
+    my ($self, $default) = @_;
+    $self->SUPER::fold($default);
+    sub {
+      my $code = shift;
+      Carp::confess "please specify CodeRef" if ref $code ne 'CODE';
+      $default;
+    };
+  }
+
+  # override
   sub get {
     Option::NoSuchElementException->throw;
   }
 
   # override
   sub get_or_else {
-    my ($self, $default_value) = @_;
-    $self->SUPER::get_or_else($default_value);
-    $default_value;
+    my ($self, $default) = @_;
+    $self->SUPER::get_or_else($default);
+    $default;
   }
 
   # override
-  sub is_defined { 0 }
+  sub is_empty { 1 }
 
   # override
-  sub is_empty { 1 }
+  sub to_list { () }
+
+  # override
+  sub map {
+    my ($self, $code) = @_;
+    $self->SUPER::map($code);
+    $self;
+  }
 
   # override
   sub match {

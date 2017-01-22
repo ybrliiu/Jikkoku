@@ -118,10 +118,10 @@ package Jikkoku::Model::Diplomacy {
     croak "引数が足りません" if @_ < 4;
     my $is_territory_trading = $self
       ->get_by_type_and_both_country_id( CLASS->CESSION_OR_ACCEPT_TERRITORY, $country_id, $target_country_id )
-      ->foreach( sub { shift->is_accepted } );
+      ->exists( sub { $_->is_accepted } );
     my $is_war_started = $self
       ->get_by_type_and_both_country_id( CLASS->DECLARE_WAR, $country_id, $target_country_id )
-      ->foreach( sub { shift->can_invation( $now_game_date ) } );
+      ->exists( sub { $_->can_invation( $now_game_date ) } );
     $is_territory_trading || $is_war_started;
   }
 
@@ -131,7 +131,7 @@ package Jikkoku::Model::Diplomacy {
     my $can_attack = $self->can_attack( $country_id, $target_country_id, $now_game_date );
     my $is_passage_allowed = $self
       ->get_by_type_and_both_country_id( CLASS->ALLOW_PASSAGE, $country_id, $target_country_id )
-      ->foreach( sub { shift->is_accepted } );
+      ->exists( sub { $_->is_accepted } );
     $can_attack || $is_passage_allowed;
   }
 

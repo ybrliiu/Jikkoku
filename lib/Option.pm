@@ -3,17 +3,30 @@ package Option {
   use v5.14;
   use warnings;
   use Carp;
+  use Option::Some;
+  use Option::None;
   
   sub new {
     Carp::confess "few arguments" if @_ < 2;
     my ($class, $data) = @_;
+    $class = ref $class || $class;
     bless { contents => $data }, $class;
   }
 
-  sub foreach {
+  sub exists {
     Carp::confess "few arguments" if @_ < 2;
     my ($self, $code) = @_;
     Carp::confess "please specify CodeRef" if ref $code ne 'CODE';
+  }
+
+  sub fold {
+    Carp::confess "few arguments" if @_ < 2;
+  }
+
+  sub foreach {
+    my ($self, $code) = @_;
+    $self->forall($code);
+    ();
   }
 
   sub get {}
@@ -22,7 +35,7 @@ package Option {
     Carp::confess "few arguments" if @_ < 2;
   }
 
-  sub is_defined {}
+  sub is_defined { not shift->is_empty }
 
   sub is_empty {}
 
@@ -33,6 +46,20 @@ package Option {
       my $code = $args{$_};
       Carp::confess " please specify process $_ " if ref $code ne 'CODE';
     }
+  }
+
+  sub map {
+    Carp::confess "few arguments" if @_ < 2;
+    my ($self, $code) = @_;
+    Carp::confess "please specify CodeRef" if ref $code ne 'CODE';
+  }
+
+  sub to_list {}
+
+  sub yield {
+    Carp::confess "few arguments" if @_ < 2;
+    my ($self, $code) = @_;
+    Carp::confess "please specify CodeRef" if ref $code ne 'CODE';
   }
 
 }
