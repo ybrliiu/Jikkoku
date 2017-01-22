@@ -6,11 +6,13 @@ package Jikkoku::Web::Controller::Chara {
   sub battle_map {
     my $self = shift;
 
+    $self->render_error('出撃していません。') unless $self->{chara}->is_sortie;
+
     my $bm_id      = $self->{chara}->soldier_battle_map('battle_map_id');
     my $battle_map = $self->model('BattleMap')->new->get($bm_id);
     if ( $battle_map->is_castle_around_map ) {
-      my $bm_town = $self->model('Town')->new->get($bm_id);
-      $battle_map->set_town_info($bm_town);
+      my $bm_town = eval { $self->model('Town')->new->get($bm_id) };
+      $battle_map->set_town_info($bm_town) if defined $bm_town;
     }
     $battle_map->set_charactors($self->{chara_model}, $self->{chara});
     $battle_map->set_can_move({

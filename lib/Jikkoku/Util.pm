@@ -3,9 +3,11 @@ package Jikkoku::Util {
   use Jikkoku;
   use Exporter 'import';
   our @EXPORT_OK = qw/
+    if_test
     open_data
     save_data
     create_data
+    remove_data
     validate_values
     daytime
     datetime
@@ -21,12 +23,23 @@ package Jikkoku::Util {
   use Jikkoku::Model::Config;
 
   use constant {
+    TEST_DIR            => 't/for_test/',
     HOUR_OF_THE_DAY     => 24,
     CHARA_DATA_DIR_PATH => 'charalog/main',
   };
 
+  # テストの時のみ if_test の中を実行し、書き換える
+  BEGIN {
+    if ($ENV{HARNESS_ACTIVE}) {
+      *if_test = sub (&) { shift->() }
+    } else {
+      *if_test = sub (&) {}
+    }
+  }
+
   sub open_data {
     my ($file_name) = @_;
+    if_test { $file_name = TEST_DIR . $file_name }; 
     open(my $fh, '<', $file_name) or croak "$file_nameを開けませんでした($!)";
     my @file_data = map { chomp $_; $_; } <$fh>;
     $fh->close();
@@ -35,6 +48,7 @@ package Jikkoku::Util {
 
   sub save_data {
     my ($file_name, $file_data) = @_;
+    if_test { $file_name = TEST_DIR . $file_name }; 
 		open(my $fh, '+<', $file_name) or croak "$file_nameを保存できませんでした($!)";
     flock($fh, 2);
     truncate($fh, 0);
@@ -45,10 +59,21 @@ package Jikkoku::Util {
 
   sub create_data {
     my ($file_name, $file_data) = @_;
+    if_test { $file_name = TEST_DIR . $file_name }; 
     croak "$file_name というファイルは既に存在しています" if -f $file_name;
     open(my $fh, '>', $file_name);
     $fh->print( map { "$_\n" } @$file_data );
     $fh->close;
+  }
+
+  sub remove_data {
+    my ($file_name) = @_;
+    if_test { $file_name = TEST_DIR . $file_name }; 
+    if (-f $file_name) {
+      unlink $file_name;
+    } else {
+      croak " ファイルが存在しないので削除できませんでした($file_name) ";
+    }
   }
 
   sub validate_values {

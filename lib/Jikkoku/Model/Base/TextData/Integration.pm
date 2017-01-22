@@ -1,6 +1,8 @@
 package Jikkoku::Model::Base::TextData::Integration {
 
   use Jikkoku;
+  use Option::Some;
+  use Option::None;
   use Carp qw/croak/;
   use Jikkoku::Util qw/open_data save_data/;
   use List::Util qw/max/;

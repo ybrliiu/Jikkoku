@@ -120,18 +120,16 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Reque
 
   sub cease_war {
     my $self = shift;
-
-    my $declare_war = eval {
-      $self->{diplomacy_model}->get_by_type_and_both_country_id(
-        $self->class('Diplomacy')->DECLARE_WAR, $self->{country}->id, $self->{receive_country_id} );
-    };
-    if (my $e = $@) {
-      $self->render_error("その国とは戦争をしていません。");
-    } else {
-      $self->render_error("その国とは戦争をしていません。") unless $declare_war->is_accepted;
-    }
-
-    $self->_request( $self->class('Diplomacy')->CEASE_WAR );
+    $self->{diplomacy_model}->get_by_type_and_both_country_id(
+      $self->class('Diplomacy')->DECLARE_WAR, $self->{country}->id, $self->{receive_country_id}
+    )->match(
+      Some => sub {
+        my $declare_war = shift;
+        $self->render_error("その国とは戦争をしていません。") unless $declare_war->is_accepted;
+        $self->_request( $self->class('Diplomacy')->CEASE_WAR );
+      },
+      None => sub { $self->render_error("その国とは戦争をしていません。") },
+    );
   }
 
   sub cession_or_accept_territory {

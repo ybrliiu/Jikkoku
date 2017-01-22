@@ -25,10 +25,17 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Accep
       $self->class('Diplomacy')->CEASE_WAR,
       sub {
         my ($self, $diplomacy) = @_;
-        my $declare_war = $self->{diplomacy_model}->get_by_type_and_both_country_id(
-          $self->class('Diplomacy')->DECLARE_WAR, $self->{country}->id, $self->{request_country_id} );
-        $self->{diplomacy_model}->delete( $declare_war->type_and_both_country_id );
-        $self->{diplomacy_model}->delete( $diplomacy->type_and_both_country_id );
+        my $declare_war =
+        $self->{diplomacy_model}->get_by_type_and_both_country_id(
+          $self->class('Diplomacy')->DECLARE_WAR, $self->{country}->id, $self->{request_country_id}
+        )->match(
+          Some => sub {
+            my $declare_war = shift;
+            $self->{diplomacy_model}->delete( $declare_war->type_and_both_country_id );
+            $self->{diplomacy_model}->delete( $diplomacy->type_and_both_country_id );
+          },
+          None => sub { $self->render_error("停戦できませんでした。") },
+        );
       },
     );
   }

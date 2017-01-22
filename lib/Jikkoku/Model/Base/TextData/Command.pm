@@ -2,7 +2,10 @@ package Jikkoku::Model::Base::TextData::Command {
 
   use Jikkoku;
   use Carp qw/croak/;
-  use Jikkoku::Util qw/create_data open_data save_data validate_values daytime/;
+  use Jikkoku::Util qw(
+    create_data open_data save_data remove_data
+    validate_values daytime
+  );
 
   sub MAX() { croak " 定数 MAX を宣言してください " }
 
@@ -39,12 +42,7 @@ package Jikkoku::Model::Base::TextData::Command {
 
   sub remove {
     my ($self) = @_;
-    my $file_path = $self->file_path($self->{id});
-    if (-f $file_path) {
-      unlink $self->file_path($self->{id});
-    } else {
-      croak " ファイルが存在しないので削除できませんでした($file_path) ";
-    }
+    remove_data $self->file_path($self->{id});
   }
   
   sub delete {

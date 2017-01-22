@@ -17,17 +17,18 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Withd
     my ($self, $type) = @_;
 
     my $target_country_id = $self->param('cou');
-
+ 
     my $delete_diplomacy_name;
-    eval {
-      my $delete_diplomacy
-        = $self->{diplomacy_model}->get_by_type_and_both_country_id( $type, $self->{country}->id, $target_country_id );
-      $self->{diplomacy_model}->delete( $delete_diplomacy->type_and_both_country_id );
-      $delete_diplomacy_name = $delete_diplomacy->name;
-    };
-    if (my $e = $@) {
-      $self->render_error($e);
-    }
+    $self->{diplomacy_model}
+      ->get_by_type_and_both_country_id( $type, $self->{country}->id, $target_country_id )
+      ->match(
+        Some => sub {
+          my $delete_diplomacy = shift;
+          $self->{diplomacy_model}->delete( $delete_diplomacy->type_and_both_country_id );
+          $delete_diplomacy_name = $delete_diplomacy->name;
+        },
+        None => sub { $self->render_error("外交状況を終了できませんでした。") },
+      );
     
     $self->{diplomacy_model}->save;
 

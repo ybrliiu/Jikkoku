@@ -1,7 +1,6 @@
 package Jikkoku::Model::Diplomacy {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use parent 'Jikkoku::Model::Base::TextData::Integration';
 
   use Jikkoku::Class::Diplomacy;
@@ -69,8 +68,7 @@ package Jikkoku::Model::Diplomacy {
     my $diplomacy = first {
       $_->has_type_and_both_country_id( $type, $country_id, $country_id2 )
     } values %{ $self->{data} };
-    blessed $diplomacy && $diplomacy->DOES( ROLE )
-      ? $diplomacy : croak "データが見つかりませんでした (type : $type, country_id : $country_id)";
+    blessed $diplomacy && $diplomacy->DOES( ROLE ) ? Option::Some->new($diplomacy) : Option::None->new;
   }
 
   sub add {
@@ -118,36 +116,23 @@ package Jikkoku::Model::Diplomacy {
   sub can_attack {
     my ($self, $country_id, $target_country_id, $now_game_date) = @_;
     croak "引数が足りません" if @_ < 4;
-    my $can_attack = 0;
-    my $cession_or_accept_territory = eval {
-      $self->get_by_type_and_both_country_id(
-        CLASS->CESSION_OR_ACCEPT_TERRITORY, $country_id, $target_country_id );
-    };
-    unless ($@) {
-      $can_attack = 1 if $cession_or_accept_territory->is_accepted
-    }
-    my $declare_war = eval {
-      $self->get_by_type_and_both_country_id(
-        CLASS->DECLARE_WAR, $country_id, $target_country_id );
-    };
-    unless ($@) {
-      $can_attack = 1 if $declare_war->can_invation( $now_game_date );
-    }
-    $can_attack;
+    my $is_territory_trading = $self
+      ->get_by_type_and_both_country_id( CLASS->CESSION_OR_ACCEPT_TERRITORY, $country_id, $target_country_id )
+      ->foreach( sub { shift->is_accepted } );
+    my $is_war_started = $self
+      ->get_by_type_and_both_country_id( CLASS->DECLARE_WAR, $country_id, $target_country_id )
+      ->foreach( sub { shift->can_invation( $now_game_date ) } );
+    $is_territory_trading || $is_war_started;
   }
 
   sub can_passage {
     my ($self, $country_id, $target_country_id, $now_game_date) = @_;
     croak "引数が足りません" if @_ < 4;
-    my $can_passage = $self->can_attack( $country_id, $target_country_id, $now_game_date );
-    my $allow_passge = eval {
-      $self->get_by_type_and_both_country_id(
-        CLASS->ALLOW_PASSAGE, $country_id, $target_country_id );
-    };
-    unless ($@) {
-      $can_passage = 1 if $allow_passge->is_accepted;
-    }
-    $can_passage;
+    my $can_attack = $self->can_attack( $country_id, $target_country_id, $now_game_date );
+    my $is_passage_allowed = $self
+      ->get_by_type_and_both_country_id( CLASS->ALLOW_PASSAGE, $country_id, $target_country_id )
+      ->foreach( sub { shift->is_accepted } );
+    $can_attack || $is_passage_allowed;
   }
 
 }
