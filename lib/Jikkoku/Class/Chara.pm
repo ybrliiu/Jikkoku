@@ -1,7 +1,6 @@
 package Jikkoku::Class::Chara {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use parent 'Jikkoku::Class::Base::TextData::Division';
 
   use Carp qw/croak/;

@@ -1,7 +1,6 @@
 package Jikkoku::Model::Chara {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use Jikkoku::Util qw/open_data create_data/;
   use Jikkoku::Class::Chara;
 

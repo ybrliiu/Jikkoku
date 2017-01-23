@@ -1,7 +1,6 @@
 package Jikkoku::Model::Base::TextData::Log::Division {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use parent 'Jikkoku::Model::Base::TextData::Log';
 
   use Jikkoku::Util qw/create_data open_data save_data/;

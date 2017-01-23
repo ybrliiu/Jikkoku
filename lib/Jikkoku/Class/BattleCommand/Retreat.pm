@@ -1,7 +1,6 @@
 package Jikkoku::Class::BattleCommand::Retreat {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use Role::Tiny::With;
   use parent 'Jikkoku::Class::BattleCommand::Base';
   with 'Jikkoku::Class::Role::BattleAction::ActionTime';

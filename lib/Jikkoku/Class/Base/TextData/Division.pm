@@ -1,7 +1,6 @@
 package Jikkoku::Class::Base::TextData::Division {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use parent 'Jikkoku::Class::Base::TextData';
 
   use Carp qw/croak/;

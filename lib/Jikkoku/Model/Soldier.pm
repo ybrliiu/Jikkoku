@@ -1,7 +1,6 @@
 package Jikkoku::Model::Soldier {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
 
   use constant {
     FILE_PATH => 'etc/soldier.conf',

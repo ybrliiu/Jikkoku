@@ -1,7 +1,6 @@
 package Jikkoku::Model::HistoryLog {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use parent 'Jikkoku::Model::Base::TextData::Log::Integration';
 
   use constant {

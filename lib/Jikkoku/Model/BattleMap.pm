@@ -1,7 +1,6 @@
 package Jikkoku::Model::BattleMap {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
 
   use Jikkoku::Class::BattleMap;
 

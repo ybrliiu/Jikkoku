@@ -1,7 +1,6 @@
 package Jikkoku::Class::Role::BattleAction::ActionTime {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use Role::Tiny;
   use Role::Tiny::With;
   with 'Jikkoku::Class::Role::BattleAction';

@@ -1,7 +1,6 @@
 package Jikkoku::Model::Config {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
 
   use constant DIR_PATH => 'etc/';
 

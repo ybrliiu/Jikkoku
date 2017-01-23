@@ -1,7 +1,6 @@
 package Jikkoku::Class::Diplomacy {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use parent 'Jikkoku::Class::Base::TextData';
   use Role::Tiny::With;
   with 'Jikkoku::Class::Role::Diplomacy';

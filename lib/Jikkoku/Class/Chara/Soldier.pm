@@ -1,7 +1,6 @@
 package Jikkoku::Class::Chara::Soldier {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use Class::Accessor::Lite;
 
   {

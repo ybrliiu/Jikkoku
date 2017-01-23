@@ -1,7 +1,6 @@
 package Jikkoku::Model::Country {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use parent 'Jikkoku::Model::Base::TextData::Integration';
 
   use List::Util qw/max/;

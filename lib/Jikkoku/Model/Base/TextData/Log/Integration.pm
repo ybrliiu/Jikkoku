@@ -1,7 +1,6 @@
 package Jikkoku::Model::Base::TextData::Log::Integration {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use parent 'Jikkoku::Model::Base::TextData::Log';
 
   use Jikkoku::Util qw/open_data save_data/;

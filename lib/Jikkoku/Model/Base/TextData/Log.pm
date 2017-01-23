@@ -1,7 +1,6 @@
 package Jikkoku::Model::Base::TextData::Log {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use Carp qw/croak/;
   use Jikkoku::Util qw/daytime/;
 

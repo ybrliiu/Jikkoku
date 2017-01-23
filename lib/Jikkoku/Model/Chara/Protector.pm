@@ -1,7 +1,6 @@
 package Jikkoku::Model::Chara::Protector {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use parent 'Jikkoku::Model::Base::TextData::Integration::Expires';
 
   use Jikkoku::Model::Chara;

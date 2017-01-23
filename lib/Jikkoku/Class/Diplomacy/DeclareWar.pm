@@ -1,7 +1,6 @@
 package Jikkoku::Class::Diplomacy::DeclareWar {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use parent 'Jikkoku::Class::Base::TextData';
   use Class::Method::Modifiers;
   use Role::Tiny::With;

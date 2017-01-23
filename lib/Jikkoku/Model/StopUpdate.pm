@@ -1,7 +1,6 @@
 package Jikkoku::Model::StopUpdate {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use Jikkoku::Util qw/open_data save_data/;
 
   use constant {

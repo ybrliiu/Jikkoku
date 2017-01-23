@@ -1,7 +1,6 @@
 package Jikkoku::Class::Town {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use Class::Accessor::Lite new => 0;
   use parent 'Jikkoku::Class::Base::TextData';
 

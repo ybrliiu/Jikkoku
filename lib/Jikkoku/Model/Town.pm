@@ -1,7 +1,6 @@
 package Jikkoku::Model::Town {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use parent 'Jikkoku::Model::Base::TextData::Integration';
 
   use Jikkoku::Util qw/open_data save_data/;

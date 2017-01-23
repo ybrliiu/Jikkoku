@@ -1,7 +1,6 @@
 package Jikkoku::Model::Unite {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use Jikkoku::Util qw/open_data save_data/;
 
   use constant FILE_PATH => "log_file/touitu_flag.cgi";

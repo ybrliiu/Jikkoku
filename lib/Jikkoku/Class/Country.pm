@@ -1,7 +1,6 @@
 package Jikkoku::Class::Country {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use parent 'Jikkoku::Class::Base::TextData';
 
   use List::Util qw/first/;

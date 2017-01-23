@@ -1,7 +1,6 @@
 package Jikkoku::Class::Base::TextData {
 
-  use v5.14;
-  use warnings;
+  use Jikkoku;
   use Carp;
   use Jikkoku::Util qw/validate_values/;
 
