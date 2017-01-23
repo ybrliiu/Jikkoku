@@ -24,7 +24,7 @@ qq{
     @{[ map { qq{<link rel="stylesheet" href="} . static_file "public/css/$_.css" . qq{">\n} } @CSS_FILES ]}
   
     <style type="text/css">
-      * { font-size: $font_size; }
+      table, table *, input, input *, button, button *, p, span, div, div * { font-size: $font_size; }
     </style>
         
   </head>
