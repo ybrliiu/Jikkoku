@@ -102,12 +102,14 @@ package Jikkoku::Util {
     $t->strftime('%Y/%m/%d(%a) %H:%M:%S');
   }
 
+  # -> is_game_time
   sub is_game_update_hour {
     my $config = Jikkoku::Model::Config->get;
     my ($start_hour, $end_hour) = ($config->{game}{update_start_hour}, $config->{game}{update_end_hour});
     is_hour_in(localtime->hour, $start_hour, $end_hour);
   }
 
+  # -> is_in_hours
   sub is_hour_in {
     my ($hour, $start_hour, $end_hour) = @_;
     my ($start, $end) = ($hour >= $start_hour, $hour < $end_hour);

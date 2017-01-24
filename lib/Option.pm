@@ -9,8 +9,7 @@ package Option {
   sub new {
     Carp::confess "few arguments" if @_ < 2;
     my ($class, $data) = @_;
-    $class = ref $class || $class;
-    bless { contents => $data }, $class;
+    defined $data ? Option::Some->new($data) : Option::None->new;
   }
 
   sub exists {
@@ -25,7 +24,7 @@ package Option {
 
   sub foreach {
     my ($self, $code) = @_;
-    $self->forall($code);
+    $self->yield($code);
     ();
   }
 

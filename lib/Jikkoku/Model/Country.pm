@@ -14,6 +14,10 @@ package Jikkoku::Model::Country {
   # 無所属
   our $NEUTRAL = CLASS->new("0<>無所属<>0");
 
+  sub neutral {
+    $NEUTRAL;
+  }
+
   # override
   sub get {
     my ($self, $id) = @_;

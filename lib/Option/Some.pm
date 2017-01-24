@@ -6,10 +6,11 @@ package Option::Some {
 
   # override
   sub new {
+    Carp::confess "few arguments" if @_ < 2;
     my ($class, $data) = @_;
-    my $self = $class->SUPER::new($data);
+    # Scala では null を許容するが、このモジュールでは許容しない
     Carp::confess "cant use undefined value at $class" unless defined $data;
-    $self;
+    bless +{ contents => $data }, $class;
   }
 
   # override
@@ -51,7 +52,7 @@ package Option::Some {
     $self->SUPER::map($code);
     local $_ = $self->{contents};
     my $ret = $code->( $self->{contents} );
-    Option::Some->new($ret);
+    (ref $self)->new($ret);
   }
 
   # override
@@ -65,14 +66,18 @@ package Option::Some {
   # override
   sub to_list {
     my $self = shift;
-    ($self->{contents});
+    if ( $self->{contents}->isa('Option::Some') ) {
+      ($self->{contents}, $self->{contents}->to_list);
+    } else {
+      ($self->{contents});
+    }
   }
 
   # override
   sub yield {
     my ($self, $code) = @_;
     local $_ = $self->{contents};
-    $self->SUPER::forall($code);
+    $self->SUPER::yield($code);
     # NOTE : in Scala, for - yield 
     $code->( $self->{contents} );
   }

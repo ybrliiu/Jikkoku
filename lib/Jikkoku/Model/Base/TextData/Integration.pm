@@ -1,8 +1,7 @@
 package Jikkoku::Model::Base::TextData::Integration {
 
   use Jikkoku;
-  use Option::Some;
-  use Option::None;
+  use Option;
   use Carp qw/croak/;
   use Jikkoku::Util qw/open_data save_data/;
   use List::Util qw/max/;
@@ -19,7 +18,10 @@ package Jikkoku::Model::Base::TextData::Integration {
 
   sub new {
     my ($class) = @_;
-    my $self = bless {}, $class;
+    my $self = bless {
+      _textdata_list => [],
+      data           => {},
+    }, $class;
     $self->_new;
     $self;
   }
@@ -33,6 +35,11 @@ package Jikkoku::Model::Base::TextData::Integration {
     my ($self, $id) = @_;
     my $object = $self->{data}{$id};
     ref $object eq $self->CLASS ? $object : Carp::croak " データが見つかりませんでした ($id) ";
+  }
+
+  sub opt_get {
+    my ($self, $id) = @_;
+    Option->new( $self->{data}{$id} );
   }
 
   sub get_all {

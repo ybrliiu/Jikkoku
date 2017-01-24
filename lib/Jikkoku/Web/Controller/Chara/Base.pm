@@ -22,14 +22,19 @@ package Jikkoku::Web::Controller::Chara::Base {
   sub auth {
     my $self = shift;
     $self->{chara_model} = $self->model('Chara')->new;
-    my $chara = eval {
-      $self->{chara_model}->get( $self->param('id') );
-    };
-    if (my $e = $@) {
-      $self->SUPER::render_error("ID, もしくは パスワードが間違っています。");
-    }
-    $self->SUPER::render_error("ID, もしくはパスワードが間違っています。") unless $chara->check_pass( $self->param('pass') );
-    $self->{chara} = $chara;
+    $self->{chara_model}
+      ->opt_get( $self->param('id') )
+      ->match(
+        Some => sub {
+          my $chara = shift;
+          $self->SUPER::render_error("ID, もしくはパスワードが間違っています。")
+            unless $chara->check_pass( $self->param('pass') );
+          $self->{chara} = $chara;
+        },
+        None => sub {
+          $self->SUPER::render_error("ID, もしくはパスワードが間違っています。");
+        },
+      );
   }
   
   # override

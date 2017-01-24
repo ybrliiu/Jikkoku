@@ -1,6 +1,9 @@
 #農民NPC作成
 
-sub NOUMIN_NPC{
+use lib './lib';
+use Jikkoku::Model::Chara::AutoModeList;
+
+sub NOUMIN_NPC {
 
 	open(IN, "./log_file/npc_con.cgi");
 	my $nid = <IN>;
@@ -9,6 +12,8 @@ sub NOUMIN_NPC{
 
 	#バトルマップ読み込み
 	require "./log_file/map_hash/$zi.pl";
+
+  my $auto_list_model = Jikkoku::Model::Chara::AutoModeList->new;
 
 	#農民NPCデータ生成
 	my $proba=int(rand(5))+1;
@@ -147,15 +152,9 @@ sub NOUMIN_NPC{
 	close(OUT);
 
 	# autocomリストに登録
-	open(IN,"./log_file/auto_list.cgi");
-	my @auto_list = <IN>;
-	close(IN);
-	push (@auto_list, "nouminn_$nid.cgi\n");
-	open(OUT,">\./log_file/auto_list.cgi");
-	print OUT @auto_list;
-	close(OUT);
+  $auto_list_model->add("nouminn_$nid");
+
 	$n=0;
-	
 	
 	$nid++;
 	}
@@ -163,6 +162,8 @@ sub NOUMIN_NPC{
 open(OUT, "> ./log_file/npc_con.cgi");
 print OUT "$nid";
 close(OUT);
+
+$auto_list_model->save;
 
 }
 1;

@@ -8,7 +8,7 @@ package Option::None {
   # override
   sub new {
     my $class = shift;
-    $class->SUPER::new(undef);
+    bless +{}, $class;
   }
 
   # override

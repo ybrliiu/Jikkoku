@@ -3,12 +3,13 @@ package Jikkoku::Model::Chara {
   use Jikkoku;
   use Jikkoku::Util qw/open_data create_data/;
   use Jikkoku::Class::Chara;
+  use Option;
 
   sub new {
     my ($class) = @_;
     bless {
-      all_list   => [],
-      stock_list => [],
+      data  => {},
+      stock => [],
     }, $class;
   }
 
@@ -18,10 +19,30 @@ package Jikkoku::Model::Chara {
     Jikkoku::Class::Chara->new($textdata);
   }
 
+  sub opt_get {
+    my ($self, $id) = @_;
+
+    if (exists $self->{data}{$id}) {
+      my $chara = $self->{data}{$id};
+      return Option->new($chara);
+    }
+
+    my $textdata = eval {
+      open_data( Jikkoku::Class::Chara->file_path($id) )->[0];
+    };
+    if (defined $textdata) {
+      my $chara = Jikkoku::Class::Chara->new($textdata);
+      $self->{data}{$id} = $chara;
+      Option->new($chara);
+    } else {
+      Option::None->new;
+    }
+  }
+
   sub get_all {
     my ($self) = @_;
 
-    return $self->{all_list} if ref $self and @{ $self->{all_list} };
+    return [ values %{ $self->{data} } ] if ref $self and %{ $self->{data} };
 
 		opendir(my $dh, Jikkoku::Class::Chara->FILE_DIR_PATH);
     my @chara_list = map {
@@ -35,7 +56,8 @@ package Jikkoku::Model::Chara {
 		closedir $dh;
 
     return \@chara_list unless ref $self;
-    $self->{all_list} = \@chara_list;
+    $self->{data} = $self->to_hash(\@chara_list);
+    return \@chara_list;
   }
 
   sub first {

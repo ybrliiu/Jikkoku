@@ -68,7 +68,7 @@ package Jikkoku::Model::Diplomacy {
     my $diplomacy = first {
       $_->has_type_and_both_country_id( $type, $country_id, $country_id2 )
     } values %{ $self->{data} };
-    blessed $diplomacy && $diplomacy->DOES( ROLE ) ? Option::Some->new($diplomacy) : Option::None->new;
+    Option->new($diplomacy);
   }
 
   sub add {
