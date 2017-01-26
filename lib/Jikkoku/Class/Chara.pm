@@ -58,11 +58,11 @@ package Jikkoku::Class::Chara {
       buffer_and_reward_and_command_skill
       weapon2_data
       bought_skill_point
+      interval_time
       skill_data
-      skill_data2
       morale_data
       debuff
-      sub8
+      buff
       not_need
     /],
     SUBDATA_COLUMNS => {
@@ -81,25 +81,50 @@ package Jikkoku::Class::Chara {
       equipment_skill   => [qw/book guard/],
       # domestic_administration = 内政, conscription = 徴兵、
       battle_and_command_record => [qw/
-        kill_soldier die_soldier
-        defence_win attack_win attack_lose defence_lose
-        training_soldier domestic_administration conscription
-        draw attack_town
-        trick training_self
-        conquer_town destroy_wall maybe_not_used maybe_not_used2
+        kill_soldier
+        die_soldier
+        defence_win
+        attack_win
+        attack_lose
+        defence_lose
+        training_soldier
+        domestic_administration 
+        conscription
+        draw 
+        attack_town
+        trick 
+        training_self
+        conquer_town 
+        destroy_wall 
+        maybe_not_used 
+        maybe_not_used2
       /], 
       buffer_and_reward_and_command_skill => [qw/
-        training_soldier_skill kill_soldier_reward win_reward lose_reward attack_town_skill
-        kago kago_strong youdou youdou_strong kobu kobu_strong sendou sendou_strong
-        domestic_administration_skill trick_skill training_self_skill
+        training_soldier_skill
+        kill_soldier_reward
+        win_reward
+        lose_reward
+        attack_town_skill
+        kago
+        kago_strong
+        youdou
+        youdou_strong
+        kobu
+        kobu_strong
+        sendou
+        sendou_strong
+        domestic_administration_skill
+        trick_skill
+        training_self_skill
         kintoun
         not_used not_used2
       /],
-      weapon2_data => [qw/power name attr attr_power/],
-      skill_data   => [qw/singeki_time not_used/],
-      morale_data  => [qw/morale morale_max/],
+      weapon2_data  => [qw/power name attr attr_power/],
+      interval_time => [qw/protect singeki/],
+      morale_data   => [qw/morale morale_max/],
       # stuck = 足止め
-      debuff       => [qw/stuck/],
+      debuff => [qw/stuck/],
+      buff   => [qw/not_used/],
     },
 
     PROTECT_RANGE          => 3,
@@ -144,7 +169,9 @@ package Jikkoku::Class::Chara {
 
   sub soldier_retreat {
     my ($self) = @_;
+
     $self->{soldier_battle_map}{is_sortie} = 0;
+
     (
       $self->{soldier_battle_map}{x},
       $self->{soldier_battle_map}{y},
@@ -156,10 +183,11 @@ package Jikkoku::Class::Chara {
       $self->{soldier_battle_map}{keisu_count},
       $self->{soldier_battle_map}{plus_attack_power},
       $self->{soldier_battle_map}{plus_defence_power},
-      $self->{skill_data}{singeki_time},
-      $self->{debuff}{stuck},
     )
-      = (0) x 5;
+      = (0) x 3;
+
+    $self->{interval_time}{$_} = 0 for keys %{ $self->{interval_time} };
+    $self->{debuff}{$_}        = 0 for keys %{ $self->{debuff} };
 
     my $protector_model = Jikkoku::Model::Chara::Protector->new;
     $protector_model->delete( $self->{id} );

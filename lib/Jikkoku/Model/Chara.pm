@@ -1,7 +1,7 @@
 package Jikkoku::Model::Chara {
 
   use Jikkoku;
-  use Jikkoku::Util qw/open_data create_data/;
+  use Jikkoku::Util qw/if_test TEST_DIR open_data create_data/;
   use Jikkoku::Class::Chara;
   use Option;
 
@@ -44,7 +44,9 @@ package Jikkoku::Model::Chara {
 
     return [ values %{ $self->{data} } ] if ref $self and %{ $self->{data} };
 
-		opendir(my $dh, Jikkoku::Class::Chara->FILE_DIR_PATH);
+    my $dir_path = Jikkoku::Class::Chara->FILE_DIR_PATH;
+    if_test { $dir_path = TEST_DIR . $dir_path };
+		opendir(my $dh, $dir_path);
     my @chara_list = map {
       if ( (my $file = $_) =~ /\.cgi/i ) {
         my $id = ($file =~ s/\.cgi//r);

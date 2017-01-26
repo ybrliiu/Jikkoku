@@ -164,7 +164,6 @@ package Jikkoku::Class::Town {
 
   sub defender_list {
     my ($self, $battle_map, $chara_model) = @_;
-    my @defender_list;
     my $castle = $battle_map->get_node(sub {
       my $node = shift;
       $node->is_terrain_castle;

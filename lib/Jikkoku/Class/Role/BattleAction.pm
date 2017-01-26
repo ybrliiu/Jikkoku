@@ -3,9 +3,12 @@ package Jikkoku::Class::Role::BattleAction {
   use Jikkoku;
   use Role::Tiny;
 
+  use Jikkoku::Class::Role::BattleActionException;
   use Jikkoku::Model::Config;
   use Scalar::Util qw/weaken/;
   use Jikkoku::Util qw/validate_values is_game_update_hour/;
+
+  my $EXCEPTION = 'Jikkoku::Class::Role::BattleActionException';
 
   requires qw/ensure_can_action action/;
 
@@ -19,12 +22,12 @@ package Jikkoku::Class::Role::BattleAction {
 
   before ensure_can_action => sub {
     my ($self) = @_;
-    die "BM上で行動可能な時間帯ではありません。" unless is_game_update_hour;
-    die "出撃していません。" unless $self->{chara}->is_sortie;
+    $EXCEPTION->throw("BM上で行動可能な時間帯ではありません。") unless is_game_update_hour;
+    $EXCEPTION->throw("出撃していません。") unless $self->{chara}->is_sortie;
     if ( $self->{chara}->soldier_num < 0 ) {
       $self->{chara}->soldier_retreat;
       $self->{chara}->save;
-      die "兵士がいません。";
+      $EXCEPTION->throw("兵士がいません。");
     }
   };
 

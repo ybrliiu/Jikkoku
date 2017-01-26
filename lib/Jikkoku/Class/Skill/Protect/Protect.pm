@@ -1,86 +1,96 @@
 package Jikkoku::Class::Skill::Protect::Protect {
 
   use Jikkoku;
-  use Class::Accessor::Lite new => 0;
+  use Class::Accessor::Lite::Lazy new => 0;
+  use Role::Tiny::With;
+  with 'Jikkoku::Class::Skill::Role::BattleAction';
 
-  use Jikkoku::Model::MapLog;
-  use Jikkoku::Model::BattleMap;
-  use Jikkoku::Model::Chara::Protector;
+  use Jikkoku::Util qw/validate_values/;
+
+  my $EXCEPTION = 'Jikkoku::Class::Role::BattleActionException';
 
   {
-    my %my_attributes = (
-      chara => undef,
-    );
-
     my %attributes = (
       name           => '掩護',
       consume_morale => 10,
-      get_contribute => 5,
-      effect_reach   => 3,
+      get_contribute => 2,
+      effect_range   => 3,
       effect_time    => 250,
-      child_skill    => [],
+      interval_time  => 240,
     );
 
-    Class::Accessor::Lite->mk_accessors(keys %attributes);
+    Class::Accessor::Lite::Lazy->mk_accessors(keys %attributes);
+    Class::Accessor::Lite::Lazy->mk_lazy_accessors('next_skill');
 
     sub new {
       my ($class, $args) = @_;
-      validate_values $args => ['chara'];
-
-      my $self = bless {
-        %my_attributes,
-        %$args
+      bless {
+        %attributes,
+        %$args,
       }, $class;
-
-      weaken $self->{chara};
-
-      $self;
     }
   }
+  
+  sub _build_next_skill { [] }
 
-  sub explain_action {
-    my ($self) = @_;
-    "使用後$self->{effect_time}秒間、自分の周囲$self->{effect_reach}マス以内にいる味方が敵の攻撃を受けた時、身代わりになって攻撃を受ける。";
+  sub is_acquired {
+    my $self = shift;
+    $self->{chara}->soldier->attr eq '歩';
   }
 
-  sub explain_learning_terms {
+  sub explain_effect {
     my ($self) = @_;
+    "使用後$self->{effect_time}秒間、自分の周囲$self->{effect_range}マス以内にいる味方が敵の攻撃を受けた時、身代わりになって攻撃を受ける。(行動)";
+  }
+
+  sub explain_acquire {
     "歩兵属性兵科を使用時。";
   }
 
   sub explain_status {
     my ($self) = @_;
-    "消費士気 : $self->{consume_morale}";
+<< "EOS";
+消費士気 : $self->{consume_morale}<br>
+再使用時間 : $self->{interval_time}秒<br>
+EOS
+  }
+
+  sub ensure_can_action {
+    my ($self, $args) = @_;
+    validate_values $args => ['protector_model'];
+
+    $EXCEPTION->throw("$self->{name}スキルを修得していません。") unless $self->is_acquired;
+
+    my $time = time;
+    my $sub = $self->{chara}->interval_time('protect') - $time;
+    $EXCEPTION->throw("あと $sub秒 使用できません。") if $sub > 0;
+
+    $args->{protector_model}, $time;
   }
 
   sub action {
-    my ($self) = @_;
+    my ($self, $protector_model, $time) = @_;
+    my $chara = $self->{chara};
 
     eval {
-      die "出撃していません。" unless $self->{chara}->is_sortie;
-      die "歩兵を雇っていません。" if $self->{chara}->soldier->type ne '歩';
-      $self->{chara}->morale_data( morale => $self->{chara}->morale_data('morale') - $self->{consume_morale} );
-      $self->{chara}->contribute( $self->{chara}->contribute + $self->{get_contribute} );
+      $chara->morale_data( morale => $chara->morale_data('morale') - $self->{consume_morale} );
+      $chara->contribute( $chara->contribute + $self->{get_contribute} );
+      $chara->interval_time( protect => $time + $self->{interval_time} );
+      $protector_model->add( $chara->id );
     };
 
     if (my $e = $@) {
-      $self->{chara}->abort;
-      die " $self->{name} を実行できませんでした ($@) ";
+      $chara->abort;
+      $EXCEPTION->throw("$e \n");
     } else {
-      $self->{chara}->save;
-
-      my $protector_model = Jikkoku::Model::Chara::Protector->new;
-      $protector_model->add( $self->{chara}->id );
+      $chara->save;
       $protector_model->save;
-
-      my $log_base  = qq{<font color="#FF69B4">【掩護】</font>@{[ $self->{chara}->name ]}は掩護態勢を取りました！敵の攻撃から味方を守ります。 };
-      my $self->{chara}_log = $log_base . qq{士気-<font color="red">$self->{consume_morale}</font> 貢献値+<font color=red>$self->{get_contribute}</font>};
-      $self->{chara}->save_command_log( $self->{chara}_log );
-      $self->{chara}->save_battle_log( $self->{chara}_log );
-
-      my $bm_id = $self->{chara}->soldier_battle_map('battle_map_id');
-      my $bm_name = Jikkoku::Model::BattleMap->new->get( $bm_id )->name;
-      Jikkoku::Model::MapLog->new->add( $log_base . "($bm_name)" )->save;
+      my $log_base  = qq{<font color="#FF69B4">【$self->{name}】</font>@{[ $chara->name ]}は$self->{name}を行いました！敵の攻撃から味方を守ります。 };
+      my $chara_log = $log_base . qq{士気-<font color="red">$self->{consume_morale}</font> 貢献値+<font color=red>$self->{get_contribute}</font>};
+      $chara->save_command_log( $chara_log );
+      $chara->save_battle_log( $chara_log );
+      my $bm = $self->{battle_map_model}->get( $chara->soldier_battle_map('battle_map_id') );
+      $self->{map_log_model}->add( $log_base . '(' . $bm->name . ')' )->save;
     }
 
   }

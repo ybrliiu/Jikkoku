@@ -4,6 +4,7 @@ package Jikkoku::Util {
   use Exporter 'import';
   our @EXPORT_OK = qw/
     if_test
+    TEST_DIR
     open_data
     save_data
     create_data
