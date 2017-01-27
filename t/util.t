@@ -1,7 +1,6 @@
 use Jikkoku;
 use Test::More;
 use Test::Exception;
-use Test::Name::FromLine;
 
 use_ok 'Jikkoku::Util';
 use Jikkoku::Util qw/escape unescape/;

@@ -12,6 +12,7 @@ package Jikkoku::Util {
     validate_values
     daytime
     datetime
+    year_month_day
     load_child
     child_module_list
     is_game_update_hour
@@ -101,6 +102,12 @@ package Jikkoku::Util {
     my ($time) = @_;
     my $t = localtime($time);
     $t->strftime('%Y/%m/%d(%a) %H:%M:%S');
+  }
+
+  sub year_month_day {
+    my $time = shift;
+    my $t = localtime($time);
+    $t->strftime('%Y/%m/%d');
   }
 
   # -> is_game_time

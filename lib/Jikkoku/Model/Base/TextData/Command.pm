@@ -1,20 +1,14 @@
 package Jikkoku::Model::Base::TextData::Command {
 
   use Jikkoku;
+  use parent 'Jikkoku::Model::Base::TextData::List';
+
   use Carp qw/croak/;
-  use Jikkoku::Util qw(
-    create_data open_data save_data remove_data
-    validate_values daytime
-  );
-
-  sub MAX() { croak " 定数 MAX を宣言してください " }
-
-  sub FILE_PATH() { croak " 定数 FILE_PATH を宣言してください " }
-
-  sub COLUMNS() { croak " 定数 COLUMNS を宣言してください " }
+  use Jikkoku::Util qw( create_data open_data save_data remove_data );
 
   sub EMPTY_DATA() {croak " 定数 EMPTY_DATA を宣言してください " }
 
+  # override
   sub create {
     my ($class, $id) = @_;
     my $empty_string = join '<>', map { $class->EMPTY_DATA->{$_} } @{ $class->COLUMNS };
@@ -26,23 +20,30 @@ package Jikkoku::Model::Base::TextData::Command {
     $class->FILE_DIR_PATH . $id . '.cgi';
   }
 
+  # override
   sub new {
     my ($class, $id) = @_;
-    my $textdata_list = open_data $class->file_path($id);
-    no warnings 'uninitialized';
-    my @data = map {
-      my @data_array = split /<>/, $_;
-      +{ map { $class->COLUMNS->[$_] => $data_array[$_] } 0 .. $#data_array };
-    } @$textdata_list;
-    bless {
-      id   => $id,
-      data => \@data,
-    }, $class;
+    my $self = $class->SUPER::new($id);
+    $self->{id} = $id;
+    $self;
+  }
+  
+  # override
+  sub _open {
+    my ($class, $id) = @_;
+    open_data $class->file_path($id);
   }
 
+  # override
   sub remove {
-    my ($self) = @_;
+    my $self = shift;
     remove_data $self->file_path($self->{id});
+  }
+
+  # override
+  sub save {
+    my $self = shift;
+    save_data $self->file_path($self->{id}), $self->_hash_list_to_textdata_list;
   }
   
   sub delete {
@@ -53,16 +54,6 @@ package Jikkoku::Model::Base::TextData::Command {
     push @command, @empty;
     $self->{data} = \@command;
     return $self;
-  }
-
-  sub get {
-    my ($self, $limit) = @_;
-    [ @{ $self->{data} }[0 .. $limit - 1] ];
-  }
-
-  sub get_all {
-    my ($self) = @_;
-    $self->{data};
   }
 
   sub input {
@@ -82,17 +73,6 @@ package Jikkoku::Model::Base::TextData::Command {
     $self->{data} = \@new_command;
     $self;
   } 
-
-  sub save {
-    my ($self) = @_;
-    my @columns = @{ $self->COLUMNS };
-    my @data = map {
-      my $data = $_;
-      join '<>', map { $data->{$_} } @columns;
-    } @{ $self->{data} };
-    splice @data, $self->MAX;
-    save_data $self->file_path($self->{id}), \@data;
-  }
 
 }
 

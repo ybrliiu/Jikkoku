@@ -7,8 +7,6 @@ package Jikkoku::Class::Skill::Protect::Protect {
 
   use Jikkoku::Util qw/validate_values/;
 
-  my $EXCEPTION = 'Jikkoku::Class::Role::BattleActionException';
-
   {
     my %attributes = (
       name           => '掩護',
@@ -38,10 +36,14 @@ package Jikkoku::Class::Skill::Protect::Protect {
     $self->{chara}->soldier->attr eq '歩';
   }
 
+  sub acquire {}
+
   sub explain_effect {
     my ($self) = @_;
     "使用後$self->{effect_time}秒間、自分の周囲$self->{effect_range}マス以内にいる味方が敵の攻撃を受けた時、身代わりになって攻撃を受ける。(行動)";
   }
+
+  sub explain_effect_simple {}
 
   sub explain_acquire {
     "歩兵属性兵科を使用時。";
@@ -59,11 +61,9 @@ EOS
     my ($self, $args) = @_;
     validate_values $args => ['protector_model'];
 
-    $EXCEPTION->throw("$self->{name}スキルを修得していません。") unless $self->is_acquired;
-
     my $time = time;
     my $sub = $self->{chara}->interval_time('protect') - $time;
-    $EXCEPTION->throw("あと $sub秒 使用できません。") if $sub > 0;
+    EXCEPTION()->throw("あと $sub秒 使用できません。") if $sub > 0;
 
     $args->{protector_model}, $time;
   }
@@ -81,7 +81,7 @@ EOS
 
     if (my $e = $@) {
       $chara->abort;
-      $EXCEPTION->throw("$e \n");
+      EXCEPTION()->throw("$e \n");
     } else {
       $chara->save;
       $protector_model->save;

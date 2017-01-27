@@ -12,8 +12,6 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
 
   use constant ACQUIRE_SIGN => 2;
 
-  my $EXCEPTION = 'Jikkoku::Class::Role::BattleActionException';
-
   {
     my $config = Jikkoku::Model::Config->get;
     my %attributes = (
@@ -66,7 +64,7 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
     my $self = shift;
     my $chara = $self->{chara};
     # ここはメソッドとして切り出すか、混乱クラスのメソッドを呼び出すように変更すべき
-    $EXCEPTION->throw("修得条件を満たしていません") if $chara->skill('disturb') < ACQUIRE_SIGN - 1;
+    EXCEPTION()->throw("修得条件を満たしていません") if $chara->skill('disturb') < ACQUIRE_SIGN - 1;
     $chara->skill(disturb => ACQUIRE_SIGN);
     $chara->skill_point( $chara->skill_point - $self->{consume_skill_point} );
   }
@@ -113,23 +111,21 @@ EOS
   sub ensure_can_action {
     my ($self, $args) = @_;
     validate_values $args => [qw/target_id chara_model/];
-
     my $chara = $self->{chara};
 
+    # ERR('相手武将が選択されていません') unless $in{eid};
     my $time = time;
     my $sub = $chara->soldier_battle_map('action_time') - $time;
-    $EXCEPTION->throw("あと $sub秒 行動できません。") if $sub > 0;
-    $EXCEPTION->throw("$self->{name}スキルを習得していません。") unless $self->is_acquired;
-    # ERR('相手武将が選択されていません') unless $in{eid};
+    EXCEPTION()->throw("あと $sub秒 行動できません。") if $sub > 0;
 
     my $you = $args->{chara_model}->get( $args->{target_id} );
-    $EXCEPTION->throw($you->name . 'は出撃していません。') unless $you->is_sortie;
-    $EXCEPTION->throw('相手と同じBM上にいません。')
+    EXCEPTION()->throw($you->name . 'は出撃していません。') unless $you->is_sortie;
+    EXCEPTION()->throw('相手と同じBM上にいません。')
       if $you->soldier_battle_map('battle_map_id') ne $chara->soldier_battle_map('battle_map_id');
-    $EXCEPTION->throw('味方には使用できません。') if $you->country_id == $chara->country_id;
+    EXCEPTION()->throw('味方には使用できません。') if $you->country_id == $chara->country_id;
 
     my $distance = $chara->distance_to_chara_soldier($you);
-    $EXCEPTION->throw('相手が足止めを使える範囲にいません。') if $distance > $self->{range};
+    EXCEPTION()->throw('相手が足止めを使える範囲にいません。') if $distance > $self->{range};
 
     # 相手 = 自分の時
     # $you = $chara;
@@ -176,7 +172,7 @@ EOS
     if (my $e = $@) {
       $chara->abort;
       $you->abort;
-      $EXCEPTION->throw("$e \n");
+      $e->rethrow;
     } else {
       $chara->save;
       $you->save;
