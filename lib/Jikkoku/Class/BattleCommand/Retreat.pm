@@ -2,13 +2,15 @@ package Jikkoku::Class::BattleCommand::Retreat {
 
   use Moo;
   use Jikkoku;
-  with qw(
-    Jikkoku::Class::BattleCommand::BattleCommand
-    Jikkoku::Class::Role::BattleAction::ActionTime
-  );
 
   use Jikkoku::Model::Town;
   use Jikkoku::Model::BattleMap;
+
+  with qw(
+    Jikkoku::Class::BattleCommand::BattleCommand
+    Jikkoku::Class::Role::BattleAction
+    Jikkoku::Class::Role::BattleAction::ActionTime
+  );
 
   sub ensure_can_action {
     my ($self) = @_;

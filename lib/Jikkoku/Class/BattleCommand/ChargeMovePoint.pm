@@ -2,15 +2,16 @@ package Jikkoku::Class::BattleCommand::ChargeMovePoint {
 
   use Moo;
   use Jikkoku;
-  with qw(
-    Jikkoku::Class::BattleCommand::BattleCommand
-    Jikkoku::Class::Role::BattleAction
-  );
 
   use Jikkoku::Model::Config;
   my $CONFIG = Jikkoku::Model::Config->get;
 
   has 'move_point_charge_time' => (is => 'rw', default => $CONFIG->{game}{action_interval_time});
+
+  with qw(
+    Jikkoku::Class::BattleCommand::BattleCommand
+    Jikkoku::Class::Role::BattleAction
+  );
 
   sub ensure_can_action {
     my $self = shift;

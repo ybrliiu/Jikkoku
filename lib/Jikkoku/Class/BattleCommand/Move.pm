@@ -2,15 +2,16 @@ package Jikkoku::Class::BattleCommand::Move {
 
   use Moo;
   use Jikkoku;
-  with qw(
-    Jikkoku::Class::BattleCommand::BattleCommand
-    Jikkoku::Class::Role::BattleAction
-  );
 
   use Carp qw( croak );
   use Jikkoku::Util qw( validate_values );
 
   has 'poison_die_pc' => (is => 'rw', default => 0.05);
+
+  with qw(
+    Jikkoku::Class::BattleCommand::BattleCommand
+    Jikkoku::Class::Role::BattleAction
+  );
 
   sub ensure_can_action {
     my ($self, $args) = @_;

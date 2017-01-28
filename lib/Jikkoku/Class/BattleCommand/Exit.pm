@@ -2,6 +2,7 @@ package Jikkoku::Class::BattleCommand::Exit {
 
   use Moo;
   use Jikkoku;
+
   with qw(
     Jikkoku::Class::BattleCommand::BattleCommand
     Jikkoku::Class::Role::BattleAction

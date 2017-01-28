@@ -2,6 +2,7 @@ package Jikkoku::Class::BattleCommand::Entry {
 
   use Moo;
   use Jikkoku;
+
   with qw(
     Jikkoku::Class::BattleCommand::BattleCommand
     Jikkoku::Class::Role::BattleAction

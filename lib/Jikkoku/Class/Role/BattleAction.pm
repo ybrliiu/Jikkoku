@@ -3,10 +3,8 @@ package Jikkoku::Class::Role::BattleAction {
   use Moo::Role;
   use Jikkoku;
 
-  use Scalar::Util qw( weaken );
   use Jikkoku::Util qw( validate_values is_game_update_hour );
   use Jikkoku::Model::Config;
-  use Jikkoku::Class::Role::BattleActionException;
 
   sub throw {
     my $mes = shift;
@@ -35,6 +33,13 @@ package Jikkoku::Class::Role::BattleAction {
     # ensure_can_action で最後に返された値が引数として渡される
     $self->$origin( @ret );
   };
+
+}
+
+package Jikkoku::Class::Role::BattleActionException {
+
+  use Jikkoku;
+  use parent 'Jikkoku::Exception';
 
 }
 
