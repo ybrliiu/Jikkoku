@@ -1,9 +1,11 @@
 package Jikkoku::Class::BattleCommand::Retreat {
 
+  use Moo;
   use Jikkoku;
-  use Role::Tiny::With;
-  use parent 'Jikkoku::Class::BattleCommand::Base';
-  with 'Jikkoku::Class::Role::BattleAction::ActionTime';
+  with qw(
+    Jikkoku::Class::BattleCommand::BattleCommand
+    Jikkoku::Class::Role::BattleAction::ActionTime
+  );
 
   use Jikkoku::Model::Town;
   use Jikkoku::Model::BattleMap;
@@ -11,11 +13,11 @@ package Jikkoku::Class::BattleCommand::Retreat {
   sub ensure_can_action {
     my ($self) = @_;
 
-    my $bm_id        = $self->{chara}->soldier_battle_map('battle_map_id');
+    my $bm_id        = $self->chara->soldier_battle_map('battle_map_id');
     my $battle_map   = Jikkoku::Model::BattleMap->new->get( $bm_id );
     my $current_node = $battle_map->get_node_by_point(
-      $self->{chara}->soldier_battle_map('x'), 
-      $self->{chara}->soldier_battle_map('y'), 
+      $self->chara->soldier_battle_map('x'), 
+      $self->chara->soldier_battle_map('y'), 
     );
 
     throw("退却できる地形の上にいません")
@@ -26,9 +28,9 @@ package Jikkoku::Class::BattleCommand::Retreat {
 
   sub _try_retreat {
     my ($self, $town) = @_;
-    if ( $town->country_id == $self->{chara}->country_id ) {
-      $self->{chara}->town_id( $town->id );
-      $self->{chara}->soldier_retreat;
+    if ( $town->country_id == $self->chara->country_id ) {
+      $self->chara->town_id( $town->id );
+      $self->chara->soldier_retreat;
     } else {
       throw("他国の都市です。");
     }
@@ -48,7 +50,7 @@ package Jikkoku::Class::BattleCommand::Retreat {
         $self->_try_retreat( $town );
       }
       elsif ( $current_node->is_castle ) {
-        my $town = $town_model->get( $self->{chara}->soldier_battle_map('battle_map_id') );
+        my $town = $town_model->get( $self->chara->soldier_battle_map('battle_map_id') );
         $self->_try_retreat( $town );
       }
       else {
@@ -58,12 +60,12 @@ package Jikkoku::Class::BattleCommand::Retreat {
     };
 
     if (my $e = $@) {
-      $self->{chara}->abort;
+      $self->chara->abort;
       throw($e);
     } else {
       my $log = "【退却】$retreat_town_name に退却しました。";
-      $self->{chara}->save_battle_log($log);
-      $self->{chara}->save_command_log($log);
+      $self->chara->save_battle_log($log);
+      $self->chara->save_command_log($log);
     }
 
   }
