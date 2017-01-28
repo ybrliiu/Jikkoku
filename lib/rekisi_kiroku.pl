@@ -2,7 +2,7 @@
 
 use v5.14;
 use warnings;
-use lib './lib';
+use lib './lib', './extlib';
 
 use Jikkoku::Util qw/create_data/;
 use Jikkoku::Model::Country;

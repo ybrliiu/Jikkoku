@@ -5,9 +5,9 @@ package Jikkoku::Class::Skill::Role::BattleAction {
   use Role::Tiny::With;
   with 'Jikkoku::Class::Role::BattleAction';
 
-  use Jikkoku::Util qw/validate_values/;
+  use Jikkoku::Util qw( validate_values );
 
-  requires qw/
+  requires qw(
     ensure_can_action
     action
 
@@ -19,7 +19,7 @@ package Jikkoku::Class::Skill::Role::BattleAction {
     _build_next_skill
     acquire
     is_acquired
-  /;
+  );
 
   around new => sub {
     my ($orig, $class, $args) = @_;

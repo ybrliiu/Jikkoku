@@ -1,6 +1,6 @@
 #農民NPC作成
 
-use lib './lib';
+use lib './lib', './extlib';
 use Jikkoku::Model::Chara::AutoModeList;
 
 sub NOUMIN_NPC {

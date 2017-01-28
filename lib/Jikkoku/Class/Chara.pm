@@ -218,7 +218,7 @@ package Jikkoku::Class::Chara {
     $self->{id}                                 ne $chara->{id}                               &&
     $self->{country_id}                         eq $chara->{country_id}                       &&
     $self->{soldier_battle_map}{battle_map_id}  eq $self->{soldier_battle_map}{battle_map_id} &&
-    $self->distance_of_chara_soldiers( $chara ) <= PROTECT_RANGE;
+    $self->distance_to_chara_soldier( $chara ) <= PROTECT_RANGE;
   }
 
   sub check_pass {

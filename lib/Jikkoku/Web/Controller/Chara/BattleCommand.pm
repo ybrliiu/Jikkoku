@@ -27,7 +27,7 @@ package Jikkoku::Web::Controller::Chara::BattleCommand {
     };
 
     if (my $e = $@) {
-      $self->render_error($e);
+      $self->render_error($e->message);
     }
 
     $self->redirect_to($self->{return_url_origin});
@@ -40,7 +40,7 @@ package Jikkoku::Web::Controller::Chara::BattleCommand {
 
     eval { $charger->action };
     if (my $e = $@) {
-      $self->render_error($e);
+      $self->render_error($e->message);
     }
 
     $self->redirect_to($self->{return_url_origin});
@@ -60,7 +60,7 @@ package Jikkoku::Web::Controller::Chara::BattleCommand {
       });
     };
     if (my $e = $@) {
-      $self->render_error($e);
+      $self->render_error($e->message);
     }
 
     $self->render('chara/result.pl', {message => $stuck->name . "を行いました。"});

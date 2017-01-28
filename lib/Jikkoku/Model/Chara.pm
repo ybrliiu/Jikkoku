@@ -22,6 +22,11 @@ package Jikkoku::Model::Chara {
   sub opt_get {
     my ($self, $id) = @_;
 
+    # for class method ...
+    if (not ref $self) {
+      return Option->new( $self->get($id) );
+    }
+
     if (exists $self->{data}{$id}) {
       my $chara = $self->{data}{$id};
       return Option->new($chara);
@@ -30,19 +35,19 @@ package Jikkoku::Model::Chara {
     my $textdata = eval {
       open_data( Jikkoku::Class::Chara->file_path($id) )->[0];
     };
-    if (defined $textdata) {
+
+    if (my $e = $@) {
+      Option::None->new;
+    } else {
       my $chara = Jikkoku::Class::Chara->new($textdata);
       $self->{data}{$id} = $chara;
       Option->new($chara);
-    } else {
-      Option::None->new;
     }
+
   }
 
   sub get_all {
     my ($self) = @_;
-
-    return [ values %{ $self->{data} } ] if ref $self and %{ $self->{data} };
 
     my $dir_path = Jikkoku::Class::Chara->FILE_DIR_PATH;
     if_test { $dir_path = TEST_DIR . $dir_path };
@@ -50,7 +55,7 @@ package Jikkoku::Model::Chara {
     my @chara_list = map {
       if ( (my $file = $_) =~ /\.cgi/i ) {
         my $id = ($file =~ s/\.cgi//r);
-        $self->get($id);
+        $self->opt_get($id)->get;
       } else {
         ();
       }

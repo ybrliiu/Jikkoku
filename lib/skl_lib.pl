@@ -1,6 +1,6 @@
 #スキル設定ファイル#
 
-use lib './lib';
+use lib './lib', './extlib';
 
 #スキルの消費士気設定
 $MOR_ENGO = 10;
