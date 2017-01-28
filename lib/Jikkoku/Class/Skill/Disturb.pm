@@ -1,16 +1,11 @@
 package Jikkoku::Class::Skill::Disturb {
 
+  use Moo;
   use Jikkoku;
 
-  sub new {
-    my ($class, $chara) = @_;
-    my $self = bless {
-      name         => '妨害',
-      belong_skill => {}
-    }, $class;
-    $self->{root_skill} = '';
-    $self;
-  }
+  has 'nme'          => (is => 'ro', default => '妨害');
+  has 'belong_skill' => (is => 'rw', default => sub { {} });
+  has 'root_skill'   => (is => 'ro', default => '');
 
   sub get {
     my ($self, $name) = @_;

@@ -1,20 +1,22 @@
 package Jikkoku::Class::Skill::Skill {
 
+  use Moo::Role;
   use Jikkoku;
-  use Role::Tiny;
   use Jikkoku::Util qw( validate_values );
 
+  requires qw( name );
+
+  has 'next_skill' => (is => 'rw', lazy => 1, builder => '_build_next_skill');
+
   requires qw(
+    acquire
+    is_acquired
     explain_effect
     explain_status
     explain_acquire
   );
 
-  sub new {
-    my ($class, $args) = @_;
-    validate_values $args => ['name'];
-    bless {%$args}, $class;
-  }
+  sub _build_next_skill { [] }
 
 }
 

@@ -2,26 +2,13 @@ package Jikkoku::Class::Skill::Role::BattleAction {
 
   use Moo::Role;
   use Jikkoku;
-  with 'Jikkoku::Class::Role::BattleAction';
 
   use Jikkoku::Util qw( validate_values );
 
   has 'map_log_model'    => (is => 'rw');
   has 'battle_map_model' => (is => 'rw');
 
-  requires qw(
-    ensure_can_action
-    action
-
-    explain_effect
-    explain_effect_simple
-    explain_status
-    explain_acquire
-
-    _build_next_skill
-    acquire
-    is_acquired
-  );
+  with 'Jikkoku::Class::Role::BattleAction';
 
   before ensure_can_action => sub {
     my ($self, $args) = @_;

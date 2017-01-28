@@ -23,10 +23,14 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
   has 'action_interval_time' => ( is => 'rw', default => $CONFIG->{game}{action_interval_time} * 0.5 );
   has 'consume_skill_point'  => ( is => 'rw', default => 10 );
   has 'depend_abilities'     => ( is => 'rw', lazy => 1, default => sub { ['intellect'] } );
-  has 'next_skill'           => ( is => 'rw', lazy => 1, builder => '_build_next_skill' );
 
-  with 'Jikkoku::Class::Skill::Role::BattleAction';
+  with qw(
+    Jikkoku::Class::Skill::Skill
+    Jikkoku::Class::Skill::Role::BattleAction
+    Jikkoku::Class::Skill::Role::Purchasable
+  );
 
+  # override
   sub _build_next_skill {
     my $self = shift;
     [ 'Jikkoku::Class::Skill::Disturb::MakingMischief' ];
@@ -43,7 +47,6 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
     # ここはメソッドとして切り出すか、混乱クラスのメソッドを呼び出すように変更すべき
     throw("修得条件を満たしていません") if $chara->skill('disturb') < ACQUIRE_SIGN - 1;
     $chara->skill(disturb => ACQUIRE_SIGN);
-    $chara->skill_point( $chara->skill_point - $self->{consume_skill_point} );
   }
 
   # 行動などのタイプは使用しているRoleで判断
@@ -71,23 +74,23 @@ EOS
     my $self = shift;
 << "EOS";
 混乱を修得していること。<br>
-スキル修得ページでSPを$self->{consume_skill_point}消費して修得。<br>
+スキル修得ページでSPを@{[ $self->consume_skill_point ]}消費して修得。<br>
 EOS
   }
 
   sub explain_status {
     my $self = shift;
 << "EOS";
-待機時間 : $self->{action_interval_time}秒<br>
+待機時間 : @{[ $self->action_interval_time ]}秒<br>
 成功率 : <strong>@{[ $self->calc_success_pc * 100 ]}</strong>%<br>
-リーチ : $self->{range}<br>
-消費士気 : $self->{consume_morale}<br>
+リーチ : @{[ $self->range ]}<br>
+消費士気 : @{[ $self->consume_morale ]}<br>
 EOS
   }
 
   sub ensure_can_action {
     my ($self, $args) = @_;
-    validate_values $args => [qw/target_id chara_model/];
+    validate_values $args => [qw( target_id chara_model )];
     my $chara = $self->chara;
 
     # ERR('相手武将が選択されていません') unless $in{eid};

@@ -11,11 +11,11 @@ package Jikkoku::Class::Skill::Protect::Protect {
   has 'effect_range'   => ( is => 'rw', default => 3 );
   has 'effect_time'    => ( is => 'rw', default => 250 );
   has 'interval_time'  => ( is => 'rw', default => 240 );
-  has 'next_skill'     => ( is => 'rw', lazy => 1, builder => '_build_next_skill' );
 
-  with 'Jikkoku::Class::Skill::Role::BattleAction';
-
-  sub _build_next_skill { [] }
+  with qw(
+    Jikkoku::Class::Skill::Skill
+    Jikkoku::Class::Skill::Role::BattleAction
+  );
 
   sub is_acquired {
     my $self = shift;
@@ -32,8 +32,6 @@ package Jikkoku::Class::Skill::Protect::Protect {
 身代わりになって攻撃を受ける。(行動)
 EOS
   }
-
-  sub explain_effect_simple {}
 
   sub explain_acquire { "歩兵属性兵科を使用時。" }
 
