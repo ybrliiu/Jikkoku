@@ -1,10 +1,10 @@
 package Jikkoku::Class::BattleMap::Node {
 
+  use Moo;
   use Jikkoku;
-  use Class::Accessor::Lite new => 0;
 
-  use Carp qw/croak/;
-  use Scalar::Util qw/weaken/;
+  use Carp qw( croak );
+  use Scalar::Util qw( weaken );
   
   use constant {
     TEMP_INF => 1000_0000,
@@ -39,47 +39,36 @@ package Jikkoku::Class::BattleMap::Node {
     KINTOUN_COST => 3,
   };
 
-  {
-    my %attributes = (
-      x       => undef,
-      y       => undef,
-      terrain => undef,
+  has 'x'       => ( is => 'ro', required => 1 );
+  has 'y'       => ( is => 'ro', required => 1 );
+  has 'terrain' => ( is => 'ro', required => 1 );
 
-      allies             => [],
-      enemies            => [],
-      is_current         => 0,
-      can_move_direction => undef,
+  has 'allies'             => ( is => 'rw', default => sub { [] } );
+  has 'enemies'            => ( is => 'rw', default => sub { [] } );
+  has 'is_current'         => ( is => 'rw', default => 0 );
+  has 'can_move_direction' => ( is => 'rw' );
 
-      edges_node => [],
-      is_calced  => 0,
-      distance   => TEMP_INF,
-      from       => undef,
-      next       => undef,
-    );
+  has 'edges_node' => ( is => 'rw', default => sub { [] } );
+  has 'is_calced'  => ( is => 'rw', default => 0 );
+  has 'distance'   => ( is => 'rw', default => TEMP_INF );
+  has 'from'       => ( is => 'rw' );
+  has 'next'       => ( is => 'rw' );
 
-    Class::Accessor::Lite->mk_accessors( keys %attributes );
-
-    sub new {
-      my ($class, $args) = @_;
-      # 上で宣言したArrayRefは全オブジェクトで共有されてしまうため
-      $args->{$_} = [] for qw/allies enemies edges_node/;
-      bless {%attributes, %$args}, $class;
-    }
-  }
+  sub BUILD {}
 
   sub current {
     my $self = shift;
-    $self->{is_current} = 1;
+    $self->is_current(1);
   }
 
   sub push_ally {
     my ($self, $chara) = @_;
-    push @{ $self->{allies} }, $chara;
+    push @{ $self->allies }, $chara;
   }
 
   sub push_enemy {
     my ($self, $chara) = @_;
-    push @{ $self->{enemies} }, $chara;
+    push @{ $self->enemies }, $chara;
   }
 
   sub _edges_node_set {
@@ -114,7 +103,7 @@ package Jikkoku::Class::BattleMap::Node {
       WEAPON_SHOP  ,=> '武器屋',
       WATER_CASTLE ,=> '水塞',
     };
-    $terrain_name->{ $self->{terrain} };
+    $terrain_name->{ $self->terrain };
   }
 
   sub origin_cost {
@@ -144,7 +133,7 @@ package Jikkoku::Class::BattleMap::Node {
       WEAPON_SHOP  ,=> 2,
       WATER_CASTLE ,=> 5,
     };
-    $node_cost->{ $self->{terrain} };
+    $node_cost->{ $self->terrain };
   }
 
   sub color {
@@ -174,7 +163,7 @@ package Jikkoku::Class::BattleMap::Node {
       WEAPON_SHOP  ,=> '#FF8000',
       WATER_CASTLE ,=> '#008B8B',
     };
-    $terrain_color->{ $self->{terrain} };
+    $terrain_color->{ $self->terrain };
   }
 
   sub cost {
@@ -186,11 +175,11 @@ package Jikkoku::Class::BattleMap::Node {
       $cost = $cost > KINTOUN_COST ? KINTOUN_COST : $cost;
     }
     # 足止め
-    require Jikkoku::Class::State::Stuck;
-    my $stuck = Jikkoku::Class::State::Stuck->new({chara => $chara});
+    my $stuck = $chara->states->get('Stuck');
     if ( $stuck->is_in_the_state(time) ) {
       $cost = $stuck->move_cost($cost);
     }
+
     $cost;
   }
 
@@ -198,27 +187,27 @@ package Jikkoku::Class::BattleMap::Node {
 
   sub is_check_point {
     my $self = shift;
-    my $terrain = ref $self ? $self->{terrain} : shift;
+    my $terrain = ref $self ? $self->terrain : shift;
     $terrain == EXIT || $terrain == ENTRY;
   }
 
   sub is_terrain_castle {
     my $self = shift;
-    my $terrain = ref $self ? $self->{terrain} : shift;
+    my $terrain = ref $self ? $self->terrain : shift;
     $terrain == CASTLE || $terrain == WATER_CASTLE;
   }
 
   sub is_water {
     my $self = shift;
     state $water_terrains = [WATER_CASTLE, RIVER, POND, SEA, BOG];
-    my $terrain = ref $self ? $self->{terrain} : shift;
+    my $terrain = ref $self ? $self->terrain : shift;
     grep { $_ == $terrain } @$water_terrains;
   }
 
   # 辺のコスト
   sub edges_node_cost {
     my ($self, $node) = @_;
-    my ($target_node) = grep { $node eq $_ } @{ $self->{edges_node} };
+    my ($target_node) = grep { $node eq $_ } @{ $self->edges_node };
     defined $target_node ? $target_node->cost : TEMP_INF;
   }
 
@@ -226,75 +215,64 @@ package Jikkoku::Class::BattleMap::Node {
 
 package Jikkoku::Class::BattleMap::Node::Castle {
 
-  use Jikkoku;
+  use Moo;
   use Carp;
-  use parent 'Jikkoku::Class::BattleMap::Node';
-  use Role::Tiny::With;
+  use Jikkoku;
+  extends 'Jikkoku::Class::BattleMap::Node';
   with 'Jikkoku::Class::BattleMap::Node::Role::Castle';
 
-  # override
-  sub new {
-    my ($class, $args) = @_;
-    my $self = $class->SUPER::new($args);
-    Carp::croak "城地形ではありません" if $self->{terrain} != $self->CASTLE;
-    $self;
+  sub BUILD {
+    my $self = shift;
+    Carp::croak "城地形ではありません" if $self->terrain != $self->CASTLE;
   }
 
 }
 
 package Jikkoku::Class::BattleMap::Node::WaterCastle {
 
-  use Jikkoku;
+  use Moo;
   use Carp;
-  use parent 'Jikkoku::Class::BattleMap::Node';
-  use Role::Tiny::With;
-  with map { "Jikkoku::Class::BattleMap::Node::Role::$_" } qw/Castle Water/;
+  use Jikkoku;
+  extends 'Jikkoku::Class::BattleMap::Node';
+  with qw(
+    Jikkoku::Class::BattleMap::Node::Role::Castle
+    Jikkoku::Class::BattleMap::Node::Role::Water
+  );
 
-  # override
-  sub new {
-    my ($class, $args) = @_;
-    my $self = $class->SUPER::new($args);
-    Carp::croak "水塞ではありません" if $self->{terrain} != $self->WATER_CASTLE;
-    $self;
+  sub BUILD {
+    my $self = shift;
+    Carp::croak( $self->name . 'ではありません' ) if $self->terrain != $self->WATER_CASTLE;
   }
 
 }
 
 package Jikkoku::Class::BattleMap::Node::Water {
 
+  use Moo;
   use Jikkoku;
-  use parent 'Jikkoku::Class::BattleMap::Node';
-  use Role::Tiny::With;
+  extends 'Jikkoku::Class::BattleMap::Node';
   with 'Jikkoku::Class::BattleMap::Node::Role::Water';
 
 }
 
 package Jikkoku::Class::BattleMap::Node::CheckPoint {
 
-  use Jikkoku;
+  use Moo;
   use Carp;
-  use parent 'Jikkoku::Class::BattleMap::Node';
-  use Class::Accessor::Lite new => 0;
+  use Jikkoku;
+  extends 'Jikkoku::Class::BattleMap::Node';
 
-  {
-    my %attributes = (check_point => undef);
-    Class::Accessor::Lite->mk_accessors( keys %attributes );
+  has 'check_point' => ( is => 'rw' );
 
-    # override
-    sub new {
-      my ($class, $args) = @_;
-      my $self = $class->SUPER::new($args);
-      Carp::croak "関所ではありません" unless $self->is_check_point;
-      $self->{$_} = $attributes{$_} for keys %attributes;
-      $self;
-    }
-  }
-
-  # override
-  sub name {
+  sub BUILD {
     my $self = shift;
-    $self->SUPER::name . "<br>@{[ $self->{check_point}->target_town_name ]}";
+    Carp::croak "関所ではありません" unless $self->is_check_point;
   }
+
+  around name => sub {
+    my ($orig, $self) = @_;
+    $self->$orig() . "<br>@{[ $self->check_point->target_town_name ]}";
+  };
 
 }
 

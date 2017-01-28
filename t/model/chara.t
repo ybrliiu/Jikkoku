@@ -7,6 +7,8 @@ use Test::Name::FromLine;
 my $CLASS = 'Jikkoku::Model::Chara';
 use_ok $CLASS;
 
+ok my $model = $CLASS->new;
+
 my $chara_list = $CLASS->get_all;
 diag $_->name for @$chara_list;
 
@@ -52,6 +54,11 @@ is ref $chara_list_to_hash, 'HASH';
     ok $@;
     lives_ok { $chara->abort };
     is $chara->soldier_battle_map('move_point'), 20;
+  };
+
+  subtest 'can_protect' => sub {
+    my $you = $model->opt_get('meemee')->get;
+    ok not $you->can_protect($chara);
   };
 
 }
