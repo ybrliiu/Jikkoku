@@ -38,6 +38,8 @@ package Jikkoku::Class::BattleCommand::ChargeMovePoint {
 
   }
 
+  __PACKAGE__->meta->make_immutable;
+
 }
 
 1;

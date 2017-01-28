@@ -1,42 +1,28 @@
 package Jikkoku::Class::State::Stuck {
 
+  use Moo;
   use Jikkoku;
-  use Class::Accessor::Lite new => 0;
 
-  use Carp qw/croak/;
-  use Scalar::Util qw/weaken/;
-  use Jikkoku::Util qw/validate_values/;
+  use Carp qw( croak );
+  use Jikkoku::Util qw( validate_values );
 
-  {
-    my %attributes = (
-      name            => '足止め',
-      icon            => 'stuck.png',
-      effect_multiple => 1.7,
-    );
-    Class::Accessor::Lite->mk_accessors(keys %attributes);
-
-    sub new {
-      my ($class, $args) = @_;
-      validate_values $args => [qw/chara/];
-      my $self = bless {
-        %attributes,
-        %$args,
-      }, $class;
-      weaken $self->{chara};
-      $self;
-    }
-  }
+  has 'name'            => ( is => 'ro', default => '足止め' );
+  has 'icon'            => ( is => 'ro', default => 'stuck.png' );
+  has 'effect_multiple' => ( is => 'rw', default => 1.7 );
+  has 'chara'           => ( is => 'ro', weak_ref => 1, required => 1 );
 
   sub is_in_the_state {
     my ($self, $time) = @_;
     croak "引数が足りません" if @_ < 2;
-    $self->{chara}->debuff('stuck') > $time;
+    $self->chara->debuff('stuck') > $time;
   }
 
   sub move_cost {
     my ($self, $origin_cost) = @_;
-    $self->{effect_multiple} * $origin_cost;
+    $self->effect_multiple * $origin_cost;
   }
+
+  __PACKAGE__->meta->make_immutable;
 
 }
 

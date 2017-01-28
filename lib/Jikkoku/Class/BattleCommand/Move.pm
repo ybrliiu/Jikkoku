@@ -58,6 +58,8 @@ package Jikkoku::Class::BattleCommand::Move {
     }
   }
 
+  __PACKAGE__->meta->make_immutable;
+
 }
 
 1;
