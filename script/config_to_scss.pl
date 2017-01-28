@@ -1,6 +1,6 @@
 use v5.24;
 use warnings;
-use lib './lib', 'script/lib';
+use lib './lib', './extlib', 'script/lib';
 
 use Config::PL;
 use File::Generator;

@@ -3,7 +3,7 @@ use warnings;
 use utf8;
 use Encode;
 use Path::Tiny;
-use lib './lib';
+use lib './lib', './extlib';
 use Jikkoku::Model::Announce;
 
 use constant {

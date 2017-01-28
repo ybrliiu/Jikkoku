@@ -21,7 +21,7 @@ use constant {
   SAVE_DIR => '../etc/battle_map_route/',
 };
 
-use lib './lib';
+use lib './lib', './extlib';
 use Node;
 use BattleMap::Start;
 use BattleMap::Middle;

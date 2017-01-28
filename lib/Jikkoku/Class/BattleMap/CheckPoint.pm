@@ -1,24 +1,15 @@
 package Jikkoku::Class::BattleMap::CheckPoint {
 
+  use Moo;
   use Jikkoku;
-  use Class::Accessor::Lite new => 0;
 
-  {
-    my %attributes = (
-      x                => undef,
-      y                => undef,
-      target_bm_id     => undef,
-      target_bm_name   => undef,
-      target_town_name => undef,
-    );
+  has 'x'                => ( is => 'ro', required => 1 );
+  has 'y'                => ( is => 'ro', required => 1 );
+  has 'target_bm_id'     => ( is => 'ro', required => 1 );
+  has 'target_bm_name'   => ( is => 'ro', required => 1 );
+  has 'target_town_name' => ( is => 'ro', required => 1 );
 
-    Class::Accessor::Lite->mk_accessors( keys %attributes );
-
-    sub new {
-      my ($class, $args) = @_;
-      bless {%attributes, %$args}, $class;
-    }
-  }
+  __PACKAGE__->meta->make_immutable;
 
 }
 

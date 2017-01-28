@@ -62,7 +62,7 @@ sub {
           font-size: 10pt;
           font-weight: bold;
           text-align: center;
-          min-width: 60px;
+          min-width: 40px;
           height: 40px;
         }
         .battle-map .num {
