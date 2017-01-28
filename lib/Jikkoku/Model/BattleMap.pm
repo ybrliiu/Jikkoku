@@ -1,7 +1,7 @@
 package Jikkoku::Model::BattleMap {
 
   use Jikkoku;
-
+  use Option;
   use Jikkoku::Class::BattleMap;
 
   use constant {
@@ -18,6 +18,12 @@ package Jikkoku::Model::BattleMap {
     my ($self, $map_id) = @_;
     return $self->{data}{$map_id} if exists $self->{data}{$map_id};
     $self->load( $map_id );
+  }
+
+  sub opt_get {
+    my ($self, $map_id) = @_;
+    return $self->{data}{$map_id} if exists $self->{data}{$map_id};
+    Option->new( $self->load( $map_id ) );
   }
 
   sub load {

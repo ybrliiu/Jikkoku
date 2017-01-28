@@ -35,7 +35,7 @@ package Jikkoku::Class::Skill::Role::BattleAction {
     $self->{map_log_model}    = $args->{map_log_model};
     $self->{battle_map_model} = $args->{battle_map_model};
 
-    EXCEPTION()->throw("$self->{name}スキルを修得していません。") unless $self->is_acquired;
+    throw("$self->{name}スキルを修得していません。") unless $self->is_acquired;
   };
 
 }

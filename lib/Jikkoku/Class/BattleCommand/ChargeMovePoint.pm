@@ -28,7 +28,7 @@ package Jikkoku::Class::BattleCommand::ChargeMovePoint {
     my $self = shift;
     my $time = time;
     my $sub  = $self->{chara}->soldier_battle_map('move_point_charge_time') - $time;
-    die "あと $sub 秒移動Pは補充できません。" if $sub > 0;
+    throw("あと $sub 秒移動Pは補充できません。") if $sub > 0;
     $time;
   }
 
@@ -42,7 +42,7 @@ package Jikkoku::Class::BattleCommand::ChargeMovePoint {
 
     if (my $e = $@) {
       $self->{chara}->abort;
-      die "$@ \n";
+      throw($e);
     } else {
       $self->{chara}->save;
     }

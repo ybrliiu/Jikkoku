@@ -63,7 +63,7 @@ EOS
 
     my $time = time;
     my $sub = $self->{chara}->interval_time('protect') - $time;
-    EXCEPTION()->throw("あと $sub秒 使用できません。") if $sub > 0;
+    throw("あと $sub秒 使用できません。") if $sub > 0;
 
     $args->{protector_model}, $time;
   }
@@ -81,7 +81,7 @@ EOS
 
     if (my $e = $@) {
       $chara->abort;
-      EXCEPTION()->throw("$e \n");
+      throw("$e \n");
     } else {
       $chara->save;
       $protector_model->save;

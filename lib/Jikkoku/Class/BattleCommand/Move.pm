@@ -15,10 +15,7 @@ package Jikkoku::Class::BattleCommand::Move {
 
     sub new {
       my ($class, $args) = @_;
-      bless {
-        %attributes,
-        %$args,
-      }, $class;
+      $class->SUPER::new({ %attributes, %$args });
     }
   }
 
@@ -48,7 +45,7 @@ package Jikkoku::Class::BattleCommand::Move {
 
     if (my $e = $@) {
       $self->{chara}->abort;
-      die " $@ \n";
+      throw($e);
     } else {
       $self->{chara}->save;
     }

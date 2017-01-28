@@ -12,7 +12,7 @@ package Jikkoku::Class::Role::BattleAction::ActionTime {
     my $time = time;
     if ( $self->{chara}->soldier_battle_map('action_time') > $time ) {
       my $wait_time = $self->{chara}->soldier_battle_map('action_time') - $time;
-      die "あと $wait_time 秒行動できません。\n";
+      throw("あと $wait_time 秒行動できません。\n");
     }
   };
 

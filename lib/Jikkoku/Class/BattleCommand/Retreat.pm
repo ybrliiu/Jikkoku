@@ -18,7 +18,7 @@ package Jikkoku::Class::BattleCommand::Retreat {
       $self->{chara}->soldier_battle_map('y'), 
     );
 
-    die "退却できる地形の上にいません。\n"
+    throw("退却できる地形の上にいません")
       if $current_node->terrain != $current_node->ENTRY && $current_node->terrain != $current_node->CASTLE;
 
     $battle_map, $current_node;
@@ -30,7 +30,7 @@ package Jikkoku::Class::BattleCommand::Retreat {
       $self->{chara}->town_id( $town->id );
       $self->{chara}->soldier_retreat;
     } else {
-      die "他国の都市です。\n";
+      throw("他国の都市です。");
     }
     $town->name;
   }
@@ -47,19 +47,19 @@ package Jikkoku::Class::BattleCommand::Retreat {
         my $town        = $town_model->get( $check_point->target_bm_id );
         $self->_try_retreat( $town );
       }
-      elsif ( $current_node->terrain == $current_node->CASTLE ) {
+      elsif ( $current_node->is_castle ) {
         my $town = $town_model->get( $self->{chara}->soldier_battle_map('battle_map_id') );
         $self->_try_retreat( $town );
       }
       else {
-        die "イレギュラー";
+        throw("その地形の上では退却できません。");
       }
 
     };
 
     if (my $e = $@) {
       $self->{chara}->abort;
-      die " $@ \n";
+      throw($e);
     } else {
       my $log = "【退却】$retreat_town_name に退却しました。";
       $self->{chara}->save_battle_log($log);

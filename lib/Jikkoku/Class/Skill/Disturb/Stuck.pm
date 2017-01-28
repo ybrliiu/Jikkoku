@@ -64,7 +64,7 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
     my $self = shift;
     my $chara = $self->{chara};
     # ここはメソッドとして切り出すか、混乱クラスのメソッドを呼び出すように変更すべき
-    EXCEPTION()->throw("修得条件を満たしていません") if $chara->skill('disturb') < ACQUIRE_SIGN - 1;
+    throw("修得条件を満たしていません") if $chara->skill('disturb') < ACQUIRE_SIGN - 1;
     $chara->skill(disturb => ACQUIRE_SIGN);
     $chara->skill_point( $chara->skill_point - $self->{consume_skill_point} );
   }
@@ -116,16 +116,16 @@ EOS
     # ERR('相手武将が選択されていません') unless $in{eid};
     my $time = time;
     my $sub = $chara->soldier_battle_map('action_time') - $time;
-    EXCEPTION()->throw("あと $sub秒 行動できません。") if $sub > 0;
+    throw("あと $sub秒 行動できません。") if $sub > 0;
 
     my $you = $args->{chara_model}->get( $args->{target_id} );
-    EXCEPTION()->throw($you->name . 'は出撃していません。') unless $you->is_sortie;
-    EXCEPTION()->throw('相手と同じBM上にいません。')
+    throw($you->name . 'は出撃していません。') unless $you->is_sortie;
+    throw('相手と同じBM上にいません。')
       if $you->soldier_battle_map('battle_map_id') ne $chara->soldier_battle_map('battle_map_id');
-    EXCEPTION()->throw('味方には使用できません。') if $you->country_id == $chara->country_id;
+    throw('味方には使用できません。') if $you->country_id == $chara->country_id;
 
     my $distance = $chara->distance_to_chara_soldier($you);
-    EXCEPTION()->throw('相手が足止めを使える範囲にいません。') if $distance > $self->{range};
+    throw('相手が足止めを使える範囲にいません。') if $distance > $self->{range};
 
     # 相手 = 自分の時
     # $you = $chara;
