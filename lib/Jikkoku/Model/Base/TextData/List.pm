@@ -15,9 +15,9 @@ package Jikkoku::Model::Base::TextData::List {
 
   sub new {
     my $class = shift;
-    bless {
-      data => $class->_textdata_list_to_hash_list( $class->_open(@_) )
-    }, $class;
+    my $self = bless +{ _textdata_list => $class->_open(@_) }, $class;
+    $self->{data} = $class->_textdata_list_to_hash_list( $self->{_textdata_list} );
+    $self;
   }
 
   sub _open {
@@ -31,6 +31,11 @@ package Jikkoku::Model::Base::TextData::List {
       my @data_array = split /<>/, $_;
       +{ map { $class->COLUMNS->[$_] => $data_array[$_] } 0 .. $#data_array };
     } @$textdata_list ];
+  }
+
+  sub abort {
+    my $self = shift;
+    $self->{data} = $self->_textdata_list_to_hash_list( $self->{_textdata_list} );
   }
 
   sub get {
@@ -63,6 +68,12 @@ package Jikkoku::Model::Base::TextData::List {
     } @{ $self->{data} };
     splice @data, $self->MAX;
     \@data;
+  }
+
+  sub refetch {
+    my $self = shift;
+    my $textdata_list = $self->_open(@_);
+    $self->{data} = $self->_textdata_list_to_hash_list($textdata_list);
   }
 
   sub remove {

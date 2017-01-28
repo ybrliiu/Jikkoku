@@ -26,6 +26,11 @@ package Jikkoku::Model::Base::TextData::Integration {
     $self;
   }
 
+  sub abort {
+    my $self = shift;
+    $self->{data} = $self->_textdata_list_to_objects_data;
+  }
+
   sub delete {
     my ($self, $id) = @_;
     delete $self->{data}{$id};

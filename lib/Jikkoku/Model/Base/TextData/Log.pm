@@ -24,6 +24,12 @@ package Jikkoku::Model::Base::TextData::Log {
     $self;
   }
 
+  # refetch は小クラスでの実装を期待
+  sub abort {
+    my $self = shift;
+    $self->refetch;
+  }
+
 }
 
 1;
