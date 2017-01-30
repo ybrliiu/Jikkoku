@@ -1,6 +1,6 @@
 package Jikkoku::Class::Role::BattleAction {
 
-  use Moo::Role;
+  use Mouse::Role;
   use Jikkoku;
 
   use Jikkoku::Util qw( validate_values is_game_update_hour );

@@ -1,6 +1,6 @@
 package Jikkoku::Class::BattleCommand::Move {
 
-  use Moo;
+  use Mouse;
   use Jikkoku;
 
   use Carp qw( croak );

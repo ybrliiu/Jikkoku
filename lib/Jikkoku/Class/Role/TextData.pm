@@ -1,6 +1,6 @@
 package Jikkoku::Class::Role::TextData {
 
-  use Moo::Role;
+  use Mouse::Role;
   use Carp;
   use Jikkoku;
   use Jikkoku::Util qw( validate_values );

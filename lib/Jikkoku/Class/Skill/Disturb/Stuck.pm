@@ -1,6 +1,6 @@
 package Jikkoku::Class::Skill::Disturb::Stuck {
 
-  use Moo;
+  use Mouse;
   use Jikkoku;
   
   use List::Util qw( sum );

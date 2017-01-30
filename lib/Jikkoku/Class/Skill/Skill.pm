@@ -1,6 +1,6 @@
 package Jikkoku::Class::Skill::Skill {
 
-  use Moo::Role;
+  use Mouse::Role;
   use Jikkoku;
 
   requires qw( name );

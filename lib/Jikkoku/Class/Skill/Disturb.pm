@@ -1,6 +1,6 @@
 package Jikkoku::Class::Skill::Disturb {
 
-  use Moo;
+  use Mouse;
   use Jikkoku;
 
   has 'nme'          => (is => 'ro', default => '妨害');

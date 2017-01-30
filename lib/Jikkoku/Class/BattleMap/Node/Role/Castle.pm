@@ -1,6 +1,6 @@
 package Jikkoku::Class::BattleMap::Node::Role::Castle {
 
-  use Moo::Role;
+  use Mouse::Role;
   use Carp;
   use Jikkoku;
 

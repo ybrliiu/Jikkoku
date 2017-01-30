@@ -1,6 +1,6 @@
 package Jikkoku::Class::BattleMap::Node {
 
-  use Moo;
+  use Mouse;
   use Jikkoku;
 
   use Carp qw( croak );
@@ -214,7 +214,7 @@ package Jikkoku::Class::BattleMap::Node {
 
 package Jikkoku::Class::BattleMap::Node::Castle {
 
-  use Moo;
+  use Mouse;
   use Carp;
   use Jikkoku;
   extends 'Jikkoku::Class::BattleMap::Node';
@@ -229,7 +229,7 @@ package Jikkoku::Class::BattleMap::Node::Castle {
 
 package Jikkoku::Class::BattleMap::Node::WaterCastle {
 
-  use Moo;
+  use Mouse;
   use Carp;
   use Jikkoku;
   extends 'Jikkoku::Class::BattleMap::Node';
@@ -247,7 +247,7 @@ package Jikkoku::Class::BattleMap::Node::WaterCastle {
 
 package Jikkoku::Class::BattleMap::Node::Water {
 
-  use Moo;
+  use Mouse;
   use Jikkoku;
   extends 'Jikkoku::Class::BattleMap::Node';
   with 'Jikkoku::Class::BattleMap::Node::Role::Water';
@@ -256,7 +256,7 @@ package Jikkoku::Class::BattleMap::Node::Water {
 
 package Jikkoku::Class::BattleMap::Node::CheckPoint {
 
-  use Moo;
+  use Mouse;
   use Carp;
   use Jikkoku;
   extends 'Jikkoku::Class::BattleMap::Node';

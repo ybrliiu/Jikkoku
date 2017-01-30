@@ -1,6 +1,6 @@
 package Jikkoku::Class::BattleCommand::Retreat {
 
-  use Moo;
+  use Mouse;
   use Jikkoku;
 
   use Jikkoku::Model::Town;

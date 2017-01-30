@@ -1,6 +1,6 @@
 package Jikkoku::Class::State::Stuck {
 
-  use Moo;
+  use Mouse;
   use Jikkoku;
 
   use Carp qw( croak );

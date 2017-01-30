@@ -1,6 +1,6 @@
 package Jikkoku::Class::BattleCommand::BattleCommand {
 
-  use Moo::Role;
+  use Mouse::Role;
   use Jikkoku;
 
 }

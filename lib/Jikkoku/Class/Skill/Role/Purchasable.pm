@@ -1,6 +1,6 @@
 package Jikkoku::Class::Skill::Role::Purchasable {
 
-  use Moo::Role;
+  use Mouse::Role;
   use Jikkoku;
 
   requires qw( consume_skill_point );

@@ -1,6 +1,6 @@
 package Jikkoku::Class::Skill::Protect::Protect {
 
-  use Moo;
+  use Mouse;
   use Jikkoku;
 
   use Jikkoku::Util qw( validate_values );

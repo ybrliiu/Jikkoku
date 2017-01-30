@@ -1,6 +1,6 @@
 package Jikkoku::Class::BattleCommand::Exit {
 
-  use Moo;
+  use Mouse;
   use Jikkoku;
 
   with qw(

@@ -1,6 +1,6 @@
 package Jikkoku::Class::BattleMap::CheckPoint {
 
-  use Moo;
+  use Mouse;
   use Jikkoku;
 
   has 'x'                => ( is => 'ro', required => 1 );

@@ -1,6 +1,6 @@
 package Jikkoku::Class::Role::BattleAction::ActionTime {
 
-  use Moo::Role;
+  use Mouse::Role;
   use Jikkoku;
 
   before ensure_can_action => sub {

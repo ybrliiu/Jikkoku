@@ -1,6 +1,6 @@
 package Jikkoku::Class::BattleCommand::ChargeMovePoint {
 
-  use Moo;
+  use Mouse;
   use Jikkoku;
 
   use Jikkoku::Model::Config;
