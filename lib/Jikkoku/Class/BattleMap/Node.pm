@@ -35,7 +35,6 @@ package Jikkoku::Class::BattleMap::Node {
     WATER_CASTLE => 22,      # 水塞
 
     # 定数
-    SLOW_TIMES   => 1.7,
     KINTOUN_COST => 3,
   };
 
@@ -199,7 +198,7 @@ package Jikkoku::Class::BattleMap::Node {
 
   sub is_water {
     my $self = shift;
-    state $water_terrains = [WATER_CASTLE, RIVER, POND, SEA, BOG];
+    state $water_terrains = [ WATER_CASTLE, RIVER, POND, SEA, BOG ];
     my $terrain = ref $self ? $self->terrain : shift;
     grep { $_ == $terrain } @$water_terrains;
   }

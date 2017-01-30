@@ -2,7 +2,6 @@ package Jikkoku::Class::Skill::Skill {
 
   use Moo::Role;
   use Jikkoku;
-  use Jikkoku::Util qw( validate_values );
 
   requires qw( name );
 
