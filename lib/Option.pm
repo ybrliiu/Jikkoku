@@ -67,7 +67,7 @@ package Option {
 
 =head1 NAME
   
-  Option - Option like Scala Option.
+  Option - Option class like Scala.Option.
 
 =head1 MEMO
 

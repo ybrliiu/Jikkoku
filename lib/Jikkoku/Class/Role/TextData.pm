@@ -5,118 +5,201 @@ package Jikkoku::Class::Role::TextData {
   use Jikkoku;
   use Jikkoku::Util qw( validate_values );
 
-  has 'fh'        => ( is => 'rw' );
-  has '_textdata' => ( is => 'rw', init_arg => undef );
+  has 'textdata' => ( is => 'rw', isa => 'ScalarRef' );
 
-  requires qw(
-    COLUMNS
-    PRIMARY_KEY
-  );
-
-  sub SUBDATA_COLUMNS() { +{} }
-
-  sub columns_without_subdata {
-    my @subdata_columns = keys SUBDATA_COLUMNS();
-    [
-      grep {
-        my $column = $_;
-        not grep { $column eq $_ } @subdata_columns;
-      } @{ COLUMNS() }
-    ];
-  }
-
-  sub has_hash {
-    my ($list) = @_;
-
-    my $subdata_hash = +{ map {
-      $_ => +{  map { $_ => 1 } @{ SUBDATA_COLUMNS()->{$_} } };
-    } keys %{ SUBDATA_COLUMNS() } };
-
-    for my $name (@$list) {
-      my $field = $subdata_hash->{$name};
-      no strict 'refs';
-      *{$name} = sub {
-        use strict 'refs';
-        my ($self, $key, $value) = @_;
-        Carp::croak("$key というフィールドは $name subdata に存在しません。") unless exists $field->{$key};
-        return $self->{$name}{$key} if @_ == 2;
-        $self->{$name}{$key} = $value;
-      };
-    }
-
-  }
+  requires qw( PRIMARY_KEY );
 
   around BUILDARGS => sub {
     my ($orig, $class) = (shift, shift);
-    if (ref $args eq 'HASH') {
+    if ($_[0] eq 'HASH') {
       my $args = shift;
+      my @hash_fields = grep { $_->can('keys') } $class->get_column_attributes;
+      for my $attr (@hash_fields) {
+        $args->{$attr->name} = Jikkoku::Class::Role::TextData::HashField->new({
+          keys      => $attr->keys,
+          data      => $args->{$attr->name},
+          validator => $attr->validator,
+        });
+      }
       $class->$orig($args);
-    } else {
+    }
+    else {
       my $textdata = shift;
-      my $hash = $class->textdata_to_hash;
-      my $self = $class->$orig($hash);
-      $self->_textdata( $textdata );
-      $self;
+      my $hash = $class->textdata_to_hash($textdata);
+      $hash->{textdata} = \$textdata;
+      $class->$orig($hash);
     }
   };
 
+  # キャッシュを行っているので動的に attribute の追加を行う際は注意
+  # (そんなケースは考えにくいが...)
+  sub get_column_attributes {
+    my $class = ref $_[0] || $_[0];
+    state $cache = {};
+    return @{ $cache->{$class} } if exists $cache->{$class};
+    my @attributes = grep {
+      $_->isa('Jikkoku::Class::Role::TextData::Attribute::Column')
+    } $class->meta->get_all_attributes;
+    $cache->{$class} = \@attributes;
+    @attributes;
+  }
+
   sub textdata_to_hash {
     my ($class, $textdata) = @_;
+    # NOTE : <><> -> split -> 空文字列
     my @data_array = split /<>/, $textdata;
-    my $hash = {};
-    no warnings 'uninitialized';
-    $hash->{ $class->COLUMNS->[$_] } = $data_array[$_] for 0 .. $#data_array;
-    $class->sub_textdata_to_hash($hash, $_) for keys %{ $class->SUBDATA_COLUMNS };
+    my @columns    = map { $_->name } $class->get_column_attributes;
+    # 空文字列は未定義データとして、あとで default の値を入れてもらう
+    my $hash       = +{ map {
+      $data_array[$_] ? ( $columns[$_] => $data_array[$_] ) : ()
+    } 0 .. $#data_array };
+
+    my @hash_fields = grep { $_->can('keys') } $class->get_column_attributes;
+    $class->sub_textdata_to_hash_field($hash, $_) for @hash_fields;
     $hash;
   }
 
-  sub sub_textdata_to_hash {
-    my ($class, $hash, $subdata_type) = @_;
-    my @subdata;
-    {
-      # データがない領域を split すると鬱陶しいので、本来推奨されないがここだけ
-      no warnings 'uninitialized';
-      @subdata = split /,/, $hash->{$subdata_type};
-    }
-    $hash->{$subdata_type} = +{
-      map {
-        $class->SUBDATA_COLUMNS->{$subdata_type}[$_] => $subdata[$_]
-      } 0 .. $#subdata
-    };
-  }
-
-  sub abort {
-    my ($self) = @_;
-    $self->set_data;
-  }
-
-  sub commit {
-    my ($self) = @_;
-    $self->{_textdata} = $self->output;
+  sub sub_textdata_to_hash_field {
+    my ($class, $hash, $meta_attr) = @_;
+    # 未定義データが多いと警告が出まくるので
+    no warnings 'uninitialized';
+    my @subdata = split /,/, $hash->{$meta_attr->name};
+    my $data = +{ map { $meta_attr->keys->[$_] => $subdata[$_] } 0 .. @{ $meta_attr->keys } };
+    use warnings 'uninitialized';
+    $hash->{$meta_attr->name} = Jikkoku::Class::Role::TextData::HashField->new({
+      keys      => $meta_attr->keys,
+      data      => $data,
+      validator => $meta_attr->validator,
+    });
   }
 
   sub output {
-    my ($self) = @_;
-    my $temp;
-    for (keys %{ $self->SUBDATA_COLUMNS }) {
-      ( $temp->{$_}, $self->{$_} ) = ( $self->{$_}, ${ $self->output_subdata($_)} );
-    }
-    # データがない領域を join すると鬱陶しいので、本来推奨されないがここだけ
-    no warnings 'uninitialized';
-    my $textdata = join('<>', map { $self->{$_} } @{ $self->COLUMNS }) . '<>';
-    $self->{$_} = $temp->{$_} for keys %{ $self->SUBDATA_COLUMNS };
+    my $self = shift;
+    my @columns = map { $_->name } $self->get_column_attributes;
+    # オブジェクトデータをそのままテキストデータに変換して出力するが、
+    # 元テキストデータに未定義値があった場合、オブジェクトのデフォルト値が代わりに出力される
+    my $textdata = join( '<>', map {
+      my $attr = $self->$_;
+      $attr->can('output') ? $attr->output : $attr
+    } @columns ) . '<>';
     \$textdata;
   }
 
-  sub output_subdata {
-    my ($self, $subdata_type) = @_;
-    # データがない領域を join すると鬱陶しいので、本来推奨されないがここだけ
-    no warnings 'uninitialized';
-    # 最後に separator をつけないと、後で set_subdata でsplit する時にバグる
-    my $textdata = join(',', map { $self->{$subdata_type}{$_} } @{ $self->SUBDATA_COLUMNS->{$subdata_type} }) . ',';
-    \$textdata;
+  sub commit {
+    my $self = shift;
+    $self->textdata( $self->output );
+  }
+
+  sub abort {
+    my $self = shift;
+    my $hash = $self->textdata_to_hash( ${ $self->textdata } );
+    for my $key ( keys %$hash ) {
+      $self->$key( $hash->{$key} );
+    }
+    return 1;
+  }
+
+  sub make_hash_fields {
+    my $class = shift;
+    my @hash_fields = grep { $_->can('keys') } $class->get_column_attributes;
+    for my $attr (@hash_fields) {
+      my $attr_name = $attr->name;
+      $class->meta->add_method("field_${attr_name}" => sub {
+        my ($self, $key, $value) = @_;
+        return $self->$attr_name->get($key) if @_ == 2;
+        $self->$attr_name->set($key => $value);
+      });
+    }
   }
 
 }
 
+package Jikkoku::Class::Role::TextData::HashField {
+
+  use Mouse;
+  use Jikkoku;
+  use Carp;
+
+  has 'keys'      => ( is => 'ro', isa => 'ArrayRef', required => 1 );
+  has 'data'      => ( is => 'rw', isa => 'HashRef', required => 1 );
+  has 'validator' => ( is => 'ro', isa => 'CodeRef', required => 1 );
+
+  sub get {
+    my ($self, $key) = @_;
+    my $data = $self->data;
+    Carp::croak("$key というフィールドは存在しません。") unless exists $data->{$key};
+    $data->{$key};
+  }
+
+  sub set {
+    my ($self, $key, $value) = @_;
+    $self->validator->(@_);
+    my $data = $self->data;
+    Carp::croak("$key というフィールドは存在しません。") unless exists $data->{$key};
+    $data->{$key} = $value;
+  }
+
+  sub output {
+    my $self = shift;
+    no warnings 'uninitialized';
+    join( ',', map { $self->data->{$_} } @{ $self->keys } ) . ',';
+  }
+
+  __PACKAGE__->meta->make_immutable;
+
+}
+
+# NOTE : Meta Attribute にすることによるアクセッサ速度低下は特にない。
+# Benchmark: running metaclass_attribute, nomal_mouse_attribute for at least 3 CPU seconds...
+# metaclass_attribute:  4 wallclock secs ( 3.15 usr +  0.00 sys =  3.15 CPU) @ 10954469.21/s (n=34506578)
+# nomal_mouse_attribute:  4 wallclock secs ( 3.12 usr +  0.00 sys =  3.12 CPU) @ 12655688.14/s (n=39485747)
+#                             Rate   metaclass_attribute nomal_mouse_attribute
+# metaclass_attribute   10954469/s                    --                  -13%
+# nomal_mouse_attribute 12655688/s                   16%                    --
+
+package Mouse::Meta::Attribute::Custom::Column {
+  sub register_implementation() { 'Jikkoku::Class::Role::TextData::Attribute::Column' }
+}
+
+package Jikkoku::Class::Role::TextData::Attribute::Column {
+
+  use Mouse;
+  use Jikkoku;
+  extends 'Mouse::Meta::Attribute';
+
+}
+
+package Mouse::Meta::Attribute::Custom::HashField {
+  sub register_implementation() { 'Jikkoku::Class::Role::TextData::Attribute::HashField' }
+}
+
+package Jikkoku::Class::Role::TextData::Attribute::HashField {
+
+  use Mouse;
+  use Jikkoku;
+  extends 'Jikkoku::Class::Role::TextData::Attribute::Column';
+
+  has 'keys'      => ( is => 'ro', isa => 'ArrayRef', required => 1 );
+  has 'validator' => ( is => 'ro', isa => 'CodeRef', required => 1 );
+
+}
+
 1;
+
+=encoding utf8
+
+=head1 NAME
+  Jikkoku::Class::Role::TextData
+
+=head1 SYNOPSYS
+
+=head1 NOTE
+
+HashFieldは全て書き換え
+(戦略
+  TextData でHashFieldを使用しているクラスを特定
+    HashFieldのメソッド名で全ファイル検索かける
+    書き換え
+)
+
+=cut
