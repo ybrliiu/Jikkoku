@@ -13,23 +13,34 @@ package Jikkoku::Class::Role::TextData {
     my ($orig, $class) = (shift, shift);
     if ($_[0] eq 'HASH') {
       my $args = shift;
-      my @hash_fields = grep { $_->can('keys') } $class->get_column_attributes;
-      for my $attr (@hash_fields) {
-        $args->{$attr->name} = Jikkoku::Class::Role::TextData::HashField->new({
-          keys      => $attr->keys,
-          data      => $args->{$attr->name},
-          validator => $attr->validator,
-        });
-      }
+      $class->_buildargs_hash($args);
       $class->$orig($args);
     }
     else {
       my $textdata = shift;
-      my $hash = $class->textdata_to_hash($textdata);
-      $hash->{textdata} = \$textdata;
+      my $hash = $class->_buildargs_textdata($textdata);
       $class->$orig($hash);
     }
   };
+
+  sub _buildargs_hash {
+    my ($class, $args) = @_;
+    my @hash_fields = grep { $_->can('keys') } $class->get_column_attributes;
+    for my $attr (@hash_fields) {
+      $args->{$attr->name} = Jikkoku::Class::Role::TextData::HashField->new({
+        keys      => $attr->keys,
+        data      => $args->{$attr->name},
+        validator => $attr->validator,
+      });
+    }
+  }
+
+  sub _buildargs_textdata {
+    my ($class, $textdata) = @_;
+    my $hash = $class->textdata_to_hash($textdata);
+    $hash->{textdata} = \$textdata;
+    $hash;
+  }
 
   # キャッシュを行っているので動的に attribute の追加を行う際は注意
   # (そんなケースは考えにくいが...)
@@ -51,8 +62,8 @@ package Jikkoku::Class::Role::TextData {
     my @columns    = map { $_->name } $class->get_column_attributes;
     # 空文字列は未定義データとして、あとで default の値を入れてもらう
     my $hash       = +{ map {
-      $data_array[$_] ? ( $columns[$_] => $data_array[$_] ) : ()
-    } 0 .. $#data_array };
+     ( !defined $data_array[$_] || $data_array[$_] eq '' ) ? () : ( $columns[$_] => $data_array[$_] )
+    } 0 .. $#columns };
 
     my @hash_fields = grep { $_->can('keys') } $class->get_column_attributes;
     $class->sub_textdata_to_hash_field($hash, $_) for @hash_fields;
@@ -80,23 +91,37 @@ package Jikkoku::Class::Role::TextData {
     # 元テキストデータに未定義値があった場合、オブジェクトのデフォルト値が代わりに出力される
     my $textdata = join( '<>', map {
       my $attr = $self->$_;
-      $attr->can('output') ? $attr->output : $attr
+      # 空文字列からは can が呼び出せないので...
+      if ($attr ne '') {
+        $attr->can('output') ? $attr->output : $attr
+      } else {
+        '';
+      }
     } @columns ) . '<>';
     \$textdata;
   }
 
-  sub commit {
+  sub update_textdata {
     my $self = shift;
     $self->textdata( $self->output );
+  }
+
+  sub set_hash_value {
+    my ($self, $hash) = @_;
+    my @rw_attributes = grep { $_->is eq 'rw' } $self->get_column_attributes;
+    for my $attribute (@rw_attributes) {
+      my $attr_name = $attribute->name;
+      if ( exists $hash->{$attr_name} ) {
+        $self->$attr_name( $hash->{$attr_name} );
+      }
+    }
+    return 1;
   }
 
   sub abort {
     my $self = shift;
     my $hash = $self->textdata_to_hash( ${ $self->textdata } );
-    for my $key ( keys %$hash ) {
-      $self->$key( $hash->{$key} );
-    }
-    return 1;
+    $self->set_hash_value($hash);
   }
 
   sub make_hash_fields {
@@ -167,6 +192,8 @@ package Jikkoku::Class::Role::TextData::Attribute::Column {
   use Jikkoku;
   extends 'Mouse::Meta::Attribute';
 
+  sub is { shift->{is} }
+
 }
 
 package Mouse::Meta::Attribute::Custom::HashField {
@@ -200,6 +227,9 @@ HashFieldは全て書き換え
   TextData でHashFieldを使用しているクラスを特定
     HashFieldのメソッド名で全ファイル検索かける
     書き換え
+    commit -> update_textdata に変更、注意
+    Class::Division はそのまま (commit -> commit)
+    Model にも commit を
 )
 
 =cut

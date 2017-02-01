@@ -6,7 +6,7 @@ package Jikkoku::Exception {
 
   use Class::Accessor::Lite (
     new => 0,
-    ro  => [qw/stack_trace/]
+    ro  => ['stack_trace'],
   );
   
   # override

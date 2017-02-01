@@ -2,10 +2,12 @@ package Jikkoku::Util {
 
   use Jikkoku;
   use Exporter 'import';
-  our @EXPORT_OK = qw/
+  our @EXPORT_OK = qw(
+    is_test
     if_test
     TEST_DIR
     open_data
+    _open_data
     save_data
     create_data
     remove_data
@@ -18,8 +20,8 @@ package Jikkoku::Util {
     is_game_update_hour
     escape
     unescape
-  /;
-  use Carp qw/croak/;
+  );
+  use Carp qw( croak );
   use Time::Piece;
   use Module::Load;
   use Jikkoku::Model::Config;
@@ -39,13 +41,22 @@ package Jikkoku::Util {
     }
   }
 
+  sub is_test {
+    $ENV{HARNESS_ACTIVE} // '';
+  }
+
   sub open_data {
     my ($file_name) = @_;
     if_test { $file_name = TEST_DIR . $file_name }; 
+    _open_data($file_name);
+  }
+
+  sub _open_data {
+    my $file_name = shift;
     open(my $fh, '<', $file_name) or croak "$file_nameを開けませんでした($!)";
     my @file_data = map { chomp $_; $_; } <$fh>;
     $fh->close();
-    return \@file_data;
+    \@file_data;
   }
 
   sub save_data {
