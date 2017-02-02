@@ -50,7 +50,7 @@ package Jikkoku::Class::Role::TextData::Division {
 
     open(my $fh, '+<', $self->file_path($self->id)) or throw("fileopen失敗", $!);
     $self->fh($fh);
-    flock($self->fh, $mode->{$lock}) or throw("flock失敗", $!);
+    flock($fh, $mode->{$lock}) or throw("flock失敗", $!);
     my $textdata = <$fh>;
     my $hash = $self->textdata_to_hash($textdata);
     $self->set_hash_value($hash);
@@ -58,7 +58,7 @@ package Jikkoku::Class::Role::TextData::Division {
   }
   
   sub commit {
-    my ($orig, $self) = @_;
+    my $self = shift;
     throw("file handle が存在していません。", $!) unless $self->fh;
     truncate($self->fh, 0) or throw("truncate error", $!);
     seek($self->fh, 0, 0) or throw("seek error", $!);

@@ -2,6 +2,7 @@ use Jikkoku;
 use Test::More;
 use Test::Exception;
 use Test2::IPC;
+use Time::HiRes qw( usleep );
 
 use_ok 'Jikkoku::Class::Role::TextData::Division';
 
@@ -29,7 +30,7 @@ package Player {
   has 'money'            => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
   has 'rice'             => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
   has 'contribute'       => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
-  has 'class'            => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
+  has 'class'            => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 1 );
   has 'weapon_power'     => ( metaclass => 'Column', is => 'rw', isa => 'Num', default  => 0 );
   has 'book_power'       => ( metaclass => 'Column', is => 'rw', isa => 'Num', default  => 0 );
   has 'loyalty'          => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 100 );
@@ -41,7 +42,7 @@ package Player {
     validator => sub {},
   );
   has 'delete_turn' => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
-  has 'town_id'     => ( metaclass => 'Column', is => 'rw', isa => 'Str', required => 1 );
+  has 'town_id'     => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
   has 'guard_power' => ( metaclass => 'Column', is => 'rw', isa => 'Num', default  => 0 );
   has 'host'        => ( metaclass => 'Column', is => 'rw', isa => 'Str', required => 1 );
   has 'update_time' => ( metaclass => 'Column', is => 'rw', isa => 'Str', required => 1 );
@@ -82,7 +83,7 @@ package Player {
     validator => sub {},
   );
   has 'last_login_host'    => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '' );
-  has 'weapon_skill'       => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => ',' );
+  has 'weapon_skill'       => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '' );
   has 'soldier_battle_map' => (
     metaclass => 'HashField',
     is        => 'rw',
@@ -105,10 +106,10 @@ package Player {
     validator => sub {},
   );
   has 'enter_to_maze'     => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
-  has 'guard_name'        => ( metaclass => 'Column', is => 'rw', isa => 'Str', required => 1 );
-  has 'weapon_name'       => ( metaclass => 'Column', is => 'rw', isa => 'Str', required => 1 );
-  has 'book_name'         => ( metaclass => 'Column', is => 'rw', isa => 'Str', required => 1 );
-  has 'weapon_attr'       => ( metaclass => 'Column', is => 'rw', isa => 'Str', required => 1 );
+  has 'guard_name'        => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '紙の盾' );
+  has 'weapon_name'       => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '竹槍' );
+  has 'book_name'         => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '紙切れ' );
+  has 'weapon_attr'       => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '無' );
   has 'weapon_attr_power' => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
   has 'battle_and_command_record' => (
     metaclass => 'HashField',
@@ -215,23 +216,117 @@ subtest 'いろんなデータでオブジェクト作成をためす' => sub {
   ok( Player->new('king') );
 };
 
-my $player = Player->new('ybrliiu');
-ok $player->lock;
+subtest 'lock' => sub {
+  my $player = Player->new('ybrliiu');
+  ok $player->lock;
 
-my $pid = fork();
-if ($pid == 0) {
-  dies_ok { $player->lock('NB_LOCK_SH') };
-  exit;
-}
-waitpid($pid, 0);
+  my $pid = fork();
+  if ($pid == 0) {
+    dies_ok { $player->lock('NB_LOCK_SH') };
+    exit;
+  }
+  waitpid($pid, 0);
 
-ok $player->abort;
-$pid = fork();
-if ($pid == 0) {
-  lives_ok { $player->lock('NB_LOCK_SH') };
-  exit;
-}
-waitpid($pid, 0);
+  ok $player->abort;
+  $pid = fork();
+  if ($pid == 0) {
+    lives_ok { $player->lock('NB_LOCK_SH') };
+    exit;
+  }
+  waitpid($pid, 0);
+};
+
+subtest 'commit' => sub {
+  my $player = Player->new('ybrliiu');
+  $player->lock;
+  ok $player->force(100);
+  ok $player->commit;
+  is $player->force, 100;
+  my $same_player = Player->new('ybrliiu');
+  is $same_player->force, 100;
+};
+
+subtest 'abort' => sub {
+  my $player = Player->new('ybrliiu');
+  $player->lock;
+  my $before_bm_id = $player->soldier_battle_map->get('battle_map_id');
+  ok $player->soldier_battle_map->set(battle_map_id => 22);
+  ok $player->abort;
+  is $player->soldier_battle_map->get('battle_map_id'), $before_bm_id;
+  my $same_player = Player->new('ybrliiu');
+  is $same_player->soldier_battle_map->get('battle_map_id'), $before_bm_id;
+};
+
+# usleep でタイミング調整しているが、デッドロックの可能性があるので注意...
+subtest 'lock中, 他プロセスから読み込むこと自体は可能か' => sub {
+  my $pid = fork();
+  if ($pid == 0) {
+    my $player = Player->new('ybrliiu');
+    $player->lock;
+    usleep(2000);
+    $player->intellect(99);
+    ok $player->commit;
+    exit;
+  } else {
+    usleep(1000);
+    lives_ok { my $player = Player->new('ybrliiu') };
+    waitpid($pid, 0);
+  }
+};
+
+subtest '整合性(commit)' => sub {
+  my $pid = fork();
+  if ($pid == 0) {
+    {
+      my $player = Player->new('ybrliiu');
+      ok $player->lock;
+      usleep(2000);
+      $player->intellect(99);
+      ok $player->commit;
+    }
+    exit;
+  } else {
+    {
+      my $player = Player->new('ybrliiu');
+      usleep(1000);
+      ok $player->lock;
+      is $player->intellect, 99;
+    }
+    waitpid($pid, 0);
+  }
+
+  my $player = Player->new('ybrliiu');
+  $player->lock;
+  $player->intellect(1);
+  $player->commit;
+};
+
+subtest '整合性(abort)' => sub {
+
+  my $player = Player->new('ybrliiu');
+  my $before_intellect = $player->intellect;
+
+  my $pid = fork();
+  if ($pid == 0) {
+    {
+      my $player = Player->new('ybrliiu');
+      ok $player->lock;
+      usleep(2000);
+      $player->intellect(99);
+      ok $player->abort;
+    }
+    exit;
+  } else {
+    {
+      my $player = Player->new('ybrliiu');
+      usleep(1000);
+      ok $player->lock;
+      is $player->intellect, $before_intellect;
+    }
+    waitpid($pid, 0);
+  }
+
+};
 
 done_testing;
 
