@@ -1,46 +1,21 @@
-package Jikkoku::Class::Role::TextData::Division {
+package Jikkoku::Role::FileHandler {
 
   use Mouse::Role;
   use Jikkoku;
-  use Carp;
-  use Jikkoku::Util qw( is_test TEST_DIR _open_data );
+  use Jikkoku::Util;
 
-  requires 'DIR_PATH';
-
-  around DIR_PATH => sub {
-    my ($orig, $class) = @_;
-    if ( is_test ) {
-      TEST_DIR . $class->$orig();
-    } else {
-      $class->$orig();
-    }
-  };
+  sub throw { Jikkoku::Exception::FileHandler->throw(@_) }
 
   has 'fh' => ( is => 'rw', isa => 'FileHandle' );
 
-  with 'Jikkoku::Class::Role::TextData';
+  requires qw( file_path read write abort );
 
-  sub throw {
-    Jikkoku::Class::Role::TextData::Division::Exception->throw(@_);
-  }
-
-  sub file_path {
-    my ($self, $id) = @_;
-    if (ref $self) {
-      $self->DIR_PATH . $self->id . '.cgi';
-    } else {
-      my $class = $self;
-      $class->DIR_PATH . "$id.cgi";
-    }
-  }
-
-  # $textdata -> $id
-  around _buildargs_textdata => sub {
-    my ($orig, $class, $id) = @_;
-    my $textdata = _open_data( $class->file_path($id) )->[0];
-    $class->$orig($textdata);
+  around file_path => sub {
+    my ($orig, $class) = @_;
+    ( Jikkoku::Util::is_test() ? Jikkoku::Util::TEST_DIR() : '' ) . $class->$orig();
   };
 
+  # ファイルの中身を操作する前に、必ずlockをかけて、commit か abort を行うこと
   sub lock {
     my ($self, $lock) = @_;
     $lock //= 'LOCK_EX';
@@ -53,12 +28,10 @@ package Jikkoku::Class::Role::TextData::Division {
       NB_LOCK_EX => 6, # ノンブロックな排他ロック
     };
 
-    open(my $fh, '+<', $self->file_path($self->id)) or throw("fileopen失敗", $!);
+    open(my $fh, '+<', $self->file_path) or throw("fileopen失敗", $!);
     $self->fh($fh);
     flock($fh, $mode->{$lock}) or throw("flock失敗", $!);
-    my $textdata = <$fh>;
-    my $hash = $self->textdata_to_hash($textdata);
-    $self->set_hash_value($hash);
+    $self->read;
     $self;
   }
   
@@ -67,8 +40,7 @@ package Jikkoku::Class::Role::TextData::Division {
     throw("file handle が存在していません。", $!) unless $self->fh;
     truncate($self->fh, 0) or throw("truncate error", $!);
     seek($self->fh, 0, 0) or throw("seek error", $!);
-    $self->update_textdata;
-    $self->fh->print( ${ $self->textdata } . "\n" ) or throw("write error", $!);
+    $self->write or throw("write error", $!);
     $self->fh->close or throw("close error", $!);
     $self->{fh} = undef;
     $self;
@@ -82,16 +54,18 @@ package Jikkoku::Class::Role::TextData::Division {
     $self;
   };
 
+  # close をし忘れても、メモリ解放時にcloseするようにする
   sub DEMOLISH {
     my $self = shift;
     if ($self->fh) {
+      warn 'unlock file when destory object.';
       $self->fh->close;
     }
   }
 
 }
 
-package Jikkoku::Class::Role::TextData::Division::Exception {
+package Jikkoku::Exception::FileHandler {
 
   use Jikkoku;
   use parent 'Jikkoku::Exception';
