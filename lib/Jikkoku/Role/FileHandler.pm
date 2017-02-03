@@ -11,8 +11,8 @@ package Jikkoku::Role::FileHandler {
   requires qw( file_path read write abort );
 
   around file_path => sub {
-    my ($orig, $class) = @_;
-    ( Jikkoku::Util::is_test() ? Jikkoku::Util::TEST_DIR() : '' ) . $class->$orig();
+    my ($orig, $class) = (shift, shift);
+    ( Jikkoku::Util::is_test() ? Jikkoku::Util::TEST_DIR() : '' ) . $class->$orig(@_);
   };
 
   # ファイルの中身を操作する前に、必ずlockをかけて、commit か abort を行うこと
