@@ -4,7 +4,7 @@ package Jikkoku::Role::FileHandler {
   use Jikkoku;
   use Jikkoku::Util;
 
-  sub throw { Jikkoku::Exception::FileHandler->throw(@_) }
+  sub throw { Jikkoku::Role::FileHandlerException->throw(@_) }
 
   has 'fh' => ( is => 'rw', isa => 'FileHandle' );
 
@@ -65,7 +65,7 @@ package Jikkoku::Role::FileHandler {
 
 }
 
-package Jikkoku::Exception::FileHandler {
+package Jikkoku::Role::FileHandlerException {
 
   use Jikkoku;
   use parent 'Jikkoku::Exception';

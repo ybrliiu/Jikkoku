@@ -3,7 +3,7 @@ package Jikkoku::Class::Skill::Disturb {
   use Mouse;
   use Jikkoku;
 
-  has 'nme'          => (is => 'ro', default => '妨害');
+  has 'name'         => (is => 'ro', default => '妨害');
   has 'belong_skill' => (is => 'rw', default => sub { {} });
   has 'root_skill'   => (is => 'ro', default => '');
 
@@ -22,15 +22,6 @@ package Jikkoku::Class::Skill::Disturb {
     for my $skill (@next_skill) {
       _trace( @{ $skill->next_skill } );
     }
-  }
-
-  sub grep {
-    my ($self, $code) = @_;
-    my @stack;
-    for my $skill ( values %{ $self->{belong_skill} } ) {
-      push $skill if $code->($skill);
-    }
-    \@stack;
   }
 
 }

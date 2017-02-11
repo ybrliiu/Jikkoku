@@ -53,18 +53,7 @@ package Player {
     metaclass => 'HashField',
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
-    keys      => [qw(
-      assist
-      disturb
-      cheer
-      move 
-      battle_method 
-      command 
-      auto_gather 
-      attack 
-      assist_move 
-      not_used 
-    )],
+    keys      => [qw( assist disturb cheer move battle_method command auto_gather attack assist_move not_used )],
     validator => sub {},
   );
   has 'config' => (
@@ -89,19 +78,10 @@ package Player {
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw(
-      formation 
-      is_sortie 
-      battle_map_id 
-      x 
-      y 
-      move_point_charge_time 
-      action_time 
-      move_point 
-      keisu_count 
-      plus_attack_power 
-      plus_defence_power
-      change_formation_time 
-      not_used
+      formation is_sortie battle_map_id
+      x y
+      move_point_charge_time action_time move_point
+      keisu_count plus_attack_power plus_defence_power change_formation_time not_used
     )],
     validator => sub {},
   );
@@ -116,23 +96,13 @@ package Player {
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw(
-      kill_soldier
-      die_soldier
-      defence_win
-      attack_win
-      attack_lose
-      defence_lose
-      training_soldier
-      domestic_administration 
-      conscription
-      draw 
-      attack_town
-      trick 
-      training_self
-      conquer_town 
-      destroy_wall 
-      maybe_not_used 
-      maybe_not_used2
+      kill_soldier die_soldier
+      defence_win attack_win attack_lose defence_lose
+      training_soldier domestic_administration 
+      conscription draw attack_town
+      trick training_self
+      conquer_town destroy_wall 
+      maybe_not_used maybe_not_used2
     )],
     validator => sub {},
   );

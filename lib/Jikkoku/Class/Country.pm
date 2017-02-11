@@ -3,7 +3,8 @@ package Jikkoku::Class::Country {
   use Jikkoku;
   use parent 'Jikkoku::Class::Base::TextData';
 
-  use List::Util qw/first/;
+  use Carp qw( croak );
+  use List::Util qw( first );
   use Jikkoku::Model::Chara;
   use Jikkoku::Model::Config;
 
@@ -25,10 +26,10 @@ package Jikkoku::Class::Country {
 
   __PACKAGE__->make_accessors( COLUMNS );
     
-  my @HEADQUARTERS   = qw/king strategist premier/;
+  my @HEADQUARTERS   = qw( king strategist premier );
   my @POSITIONS_ID   = ('king_id', @{ SUBDATA_COLUMNS->{position} });
   my @POSITIONS      = map { $_ =~ s/_id//; $_; } @POSITIONS_ID;
-  my @POSITIONS_NAME = qw/
+  my @POSITIONS_NAME = qw(
     君主
     宰相
     軍師
@@ -37,7 +38,7 @@ package Jikkoku::Class::Country {
     護衛将軍
     弓将軍
     将軍
-  /;
+  );
   my %POSITIONS_NAME = map { $POSITIONS[$_] => $POSITIONS_NAME[$_] } 0 .. $#POSITIONS;
 
   __PACKAGE__->_generate_positions_method();
@@ -108,6 +109,40 @@ package Jikkoku::Class::Country {
       }
     }
     ($money, $rice);
+  }
+
+  sub members {
+    my ($self, $chara_model) = @_;
+    croak "引数が足りません" if @_ < 2;
+    $chara_model->get_same_country($self->id);
+  }
+
+  sub can_participate {
+    my ($self, $chara_model, $country_model) = @_;
+    croak "引数が足りません" if @_ < 3;
+    $chara_model->get_same_country($self->id);
+    my $members_num = @{ $self->members($chara_model) };
+    $members_num < $self->number_of_chara_participate_available($chara_model, $country_model);
+  }
+
+  sub number_of_chara_participate_available {
+    my ($class, $chara_model, $country_model) = @_;
+    state $config   = Jikkoku::Model::Config->get;
+    my $chara_sum   = @{ $chara_model->get_all };
+    my $country_sum = @{ $country_model->get_all };
+    # 0除算を考慮
+    my $result = eval {
+      if ($chara_sum <= $config->{game}{participation_restriction_num}) {
+        my $available_num = int($chara_sum / $country_sum + 0.9);
+        my $amplitude     = int($chara_sum / 10 + 0.5);
+        $available_num + $amplitude;
+      } else {
+        $config->{game}{max_player};
+      }
+    };
+    ($@ || $result < $config->{game}{participation_restriction_min})
+      ? $config->{game}{participation_restriction_min}
+      : $result;
   }
 
   {

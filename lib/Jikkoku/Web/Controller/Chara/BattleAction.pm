@@ -1,4 +1,4 @@
-package Jikkoku::Web::Controller::Chara::BattleCommand {
+package Jikkoku::Web::Controller::Chara::BattleAction {
 
   use Jikkoku;
   use parent 'Jikkoku::Web::Controller::Chara::Base';

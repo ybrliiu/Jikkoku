@@ -4,7 +4,7 @@ package Jikkoku {
   use warnings;
   use feature ':5.14';
 
-  our $VERSION = "0.78_03";
+  our $VERSION = "0.79_00";
 
   sub import {
     $_->import for qw/strict warnings/;

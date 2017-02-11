@@ -67,6 +67,11 @@ package Jikkoku::Model::Chara {
     return \@chara_list;
   }
 
+  sub get_same_country {
+    my ($self, $country_id) = @_;
+    [ grep { $country_id == $_->country_id } @{ $self->get_all } ];
+  }
+
   sub first {
     my ($self, $code) = @_;
     my $chara_list = $self->get_all;

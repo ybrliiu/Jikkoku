@@ -51,6 +51,15 @@ ok(my $model = $CLASS->new);
     is $country->background_color_rgba, '255,105,180,';
   };
 
+  subtest 'number_of_chara_participate_available' => sub {
+    require Jikkoku::Model::Chara;
+    my $chara_model = Jikkoku::Model::Chara->new;
+    ok my $num = $country->number_of_chara_participate_available($chara_model, $model);
+    is $num, 5;
+    is scalar @{ $country->members($chara_model) }, 3;
+    ok $country->can_participate($chara_model, $model);
+  };
+
 }
 
 done_testing;

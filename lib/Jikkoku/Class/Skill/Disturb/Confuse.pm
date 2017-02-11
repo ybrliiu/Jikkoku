@@ -1,6 +1,6 @@
-# 足止めスキル
+# 混乱スキル
 
-package Jikkoku::Class::Skill::Disturb::Stuck {
+package Jikkoku::Class::Skill::Disturb::Confuse {
 
   use Mouse;
   use Jikkoku;
@@ -11,9 +11,9 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
   my $CONFIG = Jikkoku::Model::Config->get;
   use Jikkoku::Class::State::Stuck;
 
-  use constant ACQUIRE_SIGN => 2;
+  use constant ACQUIRE_SIGN => 1;
 
-  has 'name'                 => ( is => 'ro', default => '足止め' );
+  has 'name'                 => ( is => 'ro', default => '混乱' );
   has 'range'                => ( is => 'rw', default => 5 );
   has 'sucess_coef'          => ( is => 'rw', default => 0.005 );
   has 'max_sucess_pc'        => ( is => 'rw', default => 0.8 );
@@ -35,7 +35,7 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
   # override
   sub _build_next_skill {
     my $self = shift;
-    [ 'MakingMischief' ];
+    [ 'Stuck' ];
   }
 
   sub is_acquired {

@@ -5,7 +5,8 @@ package Jikkoku::Class::Skill::Skill {
 
   requires qw( name );
 
-  has 'next_skill' => (is => 'rw', lazy => 1, builder => '_build_next_skill');
+  has 'before_skill' => (is => 'rw', lazy => 1, builder => '_build_before_skill');
+  has 'next_skill'   => (is => 'rw', lazy => 1, builder => '_build_next_skill');
 
   requires qw(
     acquire
@@ -15,7 +16,13 @@ package Jikkoku::Class::Skill::Skill {
     explain_acquire
   );
 
+  sub _build_before_skill { [] }
+
   sub _build_next_skill { [] }
+
+  around acquire => sub {
+    my ($orig, $self) = @_;
+  };
 
 }
 
