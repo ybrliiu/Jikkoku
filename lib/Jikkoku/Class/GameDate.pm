@@ -129,6 +129,17 @@ package Jikkoku::Class::GameDate {
     $self->{elapsed_year} * ONE_YEAR_MONTH + $self->{month};
   }
 
+  sub npc_lank {
+    my $self = shift;
+    if ($self->{elapsed_year} >= 50) {
+      2;
+    } elsif ($self->{elapsed_year} >= 15) {
+      1;
+    } else {
+      0;
+    }
+  }
+
 }
 
 1;

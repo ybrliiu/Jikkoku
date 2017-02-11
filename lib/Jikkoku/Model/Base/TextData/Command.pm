@@ -58,8 +58,6 @@ package Jikkoku::Model::Base::TextData::Command {
 
   sub input {
     my ($self, $input_data, $input_list) = @_;
-    validate_values($input_data => $self->COLUMNS);
-
     splice( @{ $self->{data} }, $_, 1, $input_data ) for @$input_list;
     $self;
   }

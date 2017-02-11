@@ -1,7 +1,26 @@
 #農民NPC作成
 
 use lib './lib', './extlib';
+use Jikkoku::Model::GameDate;
 use Jikkoku::Model::Chara::AutoModeList;
+
+sub calc_npc_num {
+  my $game_date = shift;
+  use v5.14;
+  use warnings;
+
+  state $npc_lank = [
+    [0, 3, 5, 6],
+    [1, 4, 7, 8, 10, 11],
+    [2, 9],
+  ];
+  my $lank = $game_date->npc_lank;
+  my @npc_nums     = map { @$_ } @$npc_lank[0 .. $lank];
+  my $npc_nums_len = scalar @npc_nums;
+  $npc_nums[ int rand($npc_nums_len) ];
+}
+
+my $game_date = Jikkoku::Model::GameDate->new->get;
 
 sub NOUMIN_NPC {
 
@@ -45,7 +64,7 @@ sub NOUMIN_NPC {
 			}
 		}
 		if($nx eq "" || $ny eq ""){&MAP_LOG("$mmonth月:異常なバトルマップデータです。管理者に報告してください。");}
-		my $proba2=int(rand(12));
+		my $proba2 = calc_npc_num($game_date);
 
 		my $nname,$nstr,$nint,$nlea,$ncha,$nsol,$ngat,$nclass,$narm,$nbook,$nmes,$naname,$nbname,$nsname,$nhohei,$nprof,$nkome,$nhohei="";
 		my $nsenj=",,,,,,,,,,,,,";
@@ -138,7 +157,7 @@ sub NOUMIN_NPC {
 		}
 
 	my @new_chara=();
-	unshift(@new_chara,"nouminn_$nid<>農民NPC_qS+3DfV_$nid<>$nname【NPC】<>0<>$nstr<>$nint<>$nlea<>$ncha<>$nsol<>$ngat<>0<>$proba<>10000<>0<>$nclass<>$narm<>$nbook<>100<>$nsub1<>0<>$zi<>$nmes<><>$date<>mail@.mail.jp<>1<>$nkome<>$nst<><><>$nprof<><>$nhohei<>$nsenj<>0<>$nbname<>$naname<>$nsname<>無<>0<>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,<><>,,,,<>\n");
+	unshift(@new_chara,"nouminn_$nid<>農民NPC_qS+3DfV_$nid<>$nname【NPC】<>0<>$nstr<>$nint<>$nlea<>$ncha<>$nsol<>$ngat<>0<>$proba<>10000<>0<>$nclass<>$narm<>$nbook<>100<>$nsub1<>0<>$zi<>$nmes<><>$date<>mail@.mail.jp<>1<>$nkome<>$nst<><><>$nprof<><>$nhohei<>$nsenj<>0<>$nbname<>$naname<>$nsname<>無<>0<>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,<>,,,,<>,,,,<>0<>\n");
 	open(OUT,">./charalog/main/nouminn_$nid.cgi");
 	print OUT @new_chara;
 	close(OUT);
