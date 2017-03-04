@@ -139,6 +139,20 @@ package Jikkoku::Class::Role::TextData {
 
 }
 
+package Jikkoku::Class::Role::TextData::CodeField {
+
+  use Mouse;
+  use Jikkoku;
+
+  has 'code' => ( is => 'rw', isa => 'Str', required => 1 );
+  has 'data' => ( is => 'rw' );
+
+  sub output {
+    my $self = shift;
+  }
+
+}
+
 package Jikkoku::Class::Role::TextData::HashField {
 
   use Mouse;

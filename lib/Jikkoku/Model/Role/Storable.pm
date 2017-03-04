@@ -28,7 +28,10 @@ package Jikkoku::Model::Role::Storable {
 
   sub abort {
     my $self = shift;
+    open(my $fh, '<', $self->file_path) or throw("file open error", $!);
+    $self->fh($fh);
     $self->read;
+    $fh->close;
   }
 
   sub delete {

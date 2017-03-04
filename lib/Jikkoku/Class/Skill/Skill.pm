@@ -20,10 +20,6 @@ package Jikkoku::Class::Skill::Skill {
 
   sub _build_next_skill { [] }
 
-  around acquire => sub {
-    my ($orig, $self) = @_;
-  };
-
 }
 
 1;

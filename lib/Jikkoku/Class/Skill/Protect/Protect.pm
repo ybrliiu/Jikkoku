@@ -45,11 +45,15 @@ EOS
 
   sub ensure_can_action {
     my ($self, $args) = @_;
-    validate_values $args => ['protector_model'];
+    validate_values $args => [qw/ protector_model chara_model /];
 
     my $time = time;
     my $sub = $self->chara->interval_time('protect') - $time;
     throw("あと $sub秒 使用できません。") if $sub > 0;
+
+    # 暫定制限
+    my $enemy_num = @{ $args->{chara_model}->get_same_bm_and_not_same_country( $self->chara ) };
+    throw($self->name . "は敵が同じBM上にいる時にしか使用できません！") unless $enemy_num;
 
     $args->{protector_model}, $time;
   }

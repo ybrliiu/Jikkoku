@@ -72,6 +72,14 @@ package Jikkoku::Model::Chara {
     [ grep { $country_id == $_->country_id } @{ $self->get_all } ];
   }
 
+  sub get_same_bm_and_not_same_country {
+    my ($self, $chara) = @_;
+    [ grep {
+      $chara->country_id != $_->country_id
+        && $chara->soldier_battle_map('battle_map_id') eq $_->soldier_battle_map('battle_map_id')
+    } @{ $self->get_all } ];
+  }
+
   sub first {
     my ($self, $code) = @_;
     my $chara_list = $self->get_all;

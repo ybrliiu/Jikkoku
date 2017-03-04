@@ -6,7 +6,17 @@ package Jikkoku::Role::FileHandler {
 
   sub throw { Jikkoku::Role::FileHandlerException->throw(@_) }
 
-  has 'fh' => ( is => 'rw', isa => 'FileHandle' );
+  # inside-out
+  my $fh = {};
+
+  sub fh {
+    my $self = shift;
+    if (@_) {
+      $fh->{$self + 0} = shift;
+    } else {
+      $fh->{$self + 0};
+    }
+  }
 
   requires qw( file_path read write abort );
 
@@ -28,9 +38,9 @@ package Jikkoku::Role::FileHandler {
       NB_LOCK_EX => 6, # ノンブロックな排他ロック
     };
 
-    open(my $fh, '+<', $self->file_path) or throw("fileopen失敗", $!);
+    open(my $fh, '+<', $self->file_path) or throw("fileopen failed", $!);
     $self->fh($fh);
-    flock($fh, $mode->{$lock}) or throw("flock失敗", $!);
+    flock($fh, $mode->{$lock}) or throw("flock failed", $!);
     $self->read;
     $self;
   }
@@ -42,15 +52,15 @@ package Jikkoku::Role::FileHandler {
     seek($self->fh, 0, 0) or throw("seek error", $!);
     $self->write or throw("write error", $!);
     $self->fh->close or throw("close error", $!);
-    $self->{fh} = undef;
+    $self->fh(undef);
     $self;
   }
 
   around abort => sub {
     my ($orig, $self) = @_;
     $self->fh->close;
-    $self->{fh} = undef;
     $self->$orig();
+    $self->fh(undef);
     $self;
   };
 
@@ -61,6 +71,9 @@ package Jikkoku::Role::FileHandler {
       warn 'unlock file when destory object.';
       $self->fh->close;
     }
+
+    # destroy inside-out object
+    delete $fh->{$self + 0};
   }
 
 }

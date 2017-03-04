@@ -47,6 +47,9 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
     my $self = shift;
     my $chara = $self->chara;
     # ここはメソッドとして切り出すか、混乱クラスのメソッドを呼び出すように変更すべき
+    warn (ACQUIRE_SIGN - 1);
+    warn $chara->skill('disturb');
+    warn $chara->skill('disturb') < ACQUIRE_SIGN - 1;
     throw("修得条件を満たしていません") if $chara->skill('disturb') < ACQUIRE_SIGN - 1;
     $chara->skill(disturb => ACQUIRE_SIGN);
   }
