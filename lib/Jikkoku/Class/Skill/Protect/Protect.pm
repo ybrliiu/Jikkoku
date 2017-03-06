@@ -62,6 +62,8 @@ EOS
     my ($self, $protector_model, $time) = @_;
     my $chara = $self->chara;
 
+    $chara->lock;
+
     eval {
       $chara->morale_data( morale => $chara->morale_data('morale') - $self->consume_morale );
       $chara->contribute( $chara->contribute + $self->get_contribute );
@@ -73,7 +75,7 @@ EOS
       $chara->abort;
       throw("$e \n");
     } else {
-      $chara->save;
+      $chara->commit;
       $protector_model->save;
       my $log_base
         = qq{<font color="#FF69B4">【@{[ $self->name ]}】</font>@{[ $chara->name ]}は@{[ $self->name ]}を行いました！敵の攻撃から味方を守ります。 };

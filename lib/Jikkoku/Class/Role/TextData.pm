@@ -5,13 +5,16 @@ package Jikkoku::Class::Role::TextData {
   use Jikkoku;
   use Jikkoku::Util qw( validate_values );
 
+  use Jikkoku::Class::Role::TextData::HashField;
+  use Jikkoku::Class::Role::TextData::HashContainer;
+
   has 'textdata' => ( is => 'rw', isa => 'ScalarRef' );
 
   requires qw( PRIMARY_KEY );
 
   around BUILDARGS => sub {
     my ($orig, $class) = (shift, shift);
-    if ($_[0] eq 'HASH') {
+    if (ref $_[0] eq 'HASH') {
       my $args = shift;
       $class->_buildargs_hash($args);
       $class->$orig($args);
@@ -29,7 +32,7 @@ package Jikkoku::Class::Role::TextData {
     for my $attr (@hash_fields) {
       $args->{$attr->name} = Jikkoku::Class::Role::TextData::HashField->new({
         keys      => $attr->keys,
-        data      => $args->{$attr->name},
+        textdata  => $args->{$attr->name},
         validator => $attr->validator,
       });
     }
@@ -57,31 +60,41 @@ package Jikkoku::Class::Role::TextData {
 
   sub textdata_to_hash {
     my ($class, $textdata) = @_;
-    # NOTE : <><> -> split -> 空文字列
+    # NOTE : split /<>/, <><> -> 空文字列
     my @data_array = split /<>/, $textdata;
     my @columns    = map { $_->name } $class->get_column_attributes;
     # 空文字列は未定義データとして、あとで default の値を入れてもらう
-    my $hash       = +{ map {
+    my $hashed_textdata = +{ map {
      ( !defined $data_array[$_] || $data_array[$_] eq '' ) ? () : ( $columns[$_] => $data_array[$_] )
     } 0 .. $#columns };
-
-    my @hash_fields = grep { $_->can('keys') } $class->get_column_attributes;
-    $class->sub_textdata_to_hash_field($hash, $_) for @hash_fields;
-    $hash;
+    $class->sub_textdata_to_hash_field($hashed_textdata);
+    $class->container_textdata_to_hash_container($hashed_textdata);
+    $hashed_textdata;
   }
 
   sub sub_textdata_to_hash_field {
-    my ($class, $hash, $meta_attr) = @_;
-    # 未定義データが多いと警告が出まくるので
-    no warnings 'uninitialized';
-    my @subdata = split /,/, $hash->{$meta_attr->name};
-    my $data = +{ map { $meta_attr->keys->[$_] => $subdata[$_] } 0 .. @{ $meta_attr->keys } };
-    use warnings 'uninitialized';
-    $hash->{$meta_attr->name} = Jikkoku::Class::Role::TextData::HashField->new({
-      keys      => $meta_attr->keys,
-      data      => $data,
-      validator => $meta_attr->validator,
-    });
+    my ($class, $hashed_textdata) = @_;
+    my @hash_fields = grep {
+      $_->isa('Jikkoku::Class::Role::TextData::Attribute::HashField')
+    } $class->get_column_attributes;
+    for my $meta_attr (@hash_fields) {
+      $hashed_textdata->{$meta_attr->name} = Jikkoku::Class::Role::TextData::HashField->new({
+        keys      => $meta_attr->keys,
+        textdata  => $hashed_textdata->{$meta_attr->name},
+        validator => $meta_attr->validator,
+      });
+    }
+  }
+
+  sub container_textdata_to_hash_container {
+    my ($class, $hashed_textdata) = @_;
+    my @hash_containers = grep {
+      $_->isa('Jikkoku::Class::Role::TextData::Attribute::HashContainer')
+    } $class->get_column_attributes;
+    for my $meta_attr (@hash_containers) {
+      $hashed_textdata->{$meta_attr->name}
+        = Jikkoku::Class::Role::TextData::HashContainer->new(textdata => $hashed_textdata->{$meta_attr->name});
+    }
   }
 
   sub output {
@@ -118,6 +131,11 @@ package Jikkoku::Class::Role::TextData {
     return 1;
   }
 
+  sub commit {
+    my $self = shift;
+    $self->textdata($self->output);
+  }
+
   sub abort {
     my $self = shift;
     my $hash = $self->textdata_to_hash( ${ $self->textdata } );
@@ -136,55 +154,6 @@ package Jikkoku::Class::Role::TextData {
       });
     }
   }
-
-}
-
-package Jikkoku::Class::Role::TextData::CodeField {
-
-  use Mouse;
-  use Jikkoku;
-
-  has 'code' => ( is => 'rw', isa => 'Str', required => 1 );
-  has 'data' => ( is => 'rw' );
-
-  sub output {
-    my $self = shift;
-  }
-
-}
-
-package Jikkoku::Class::Role::TextData::HashField {
-
-  use Mouse;
-  use Jikkoku;
-  use Carp;
-
-  has 'keys'      => ( is => 'ro', isa => 'ArrayRef', required => 1 );
-  has 'data'      => ( is => 'rw', isa => 'HashRef', required => 1 );
-  has 'validator' => ( is => 'ro', isa => 'CodeRef', required => 1 );
-
-  sub get {
-    my ($self, $key) = @_;
-    my $data = $self->data;
-    Carp::croak("$key というフィールドは存在しません。") unless exists $data->{$key};
-    $data->{$key};
-  }
-
-  sub set {
-    my ($self, $key, $value) = @_;
-    $self->validator->(@_);
-    my $data = $self->data;
-    Carp::croak("$key というフィールドは存在しません。") unless exists $data->{$key};
-    $data->{$key} = $value;
-  }
-
-  sub output {
-    my $self = shift;
-    no warnings 'uninitialized';
-    join( ',', map { $self->data->{$_} } @{ $self->keys } ) . ',';
-  }
-
-  __PACKAGE__->meta->make_immutable;
 
 }
 
@@ -222,6 +191,18 @@ package Jikkoku::Class::Role::TextData::Attribute::HashField {
 
   has 'keys'      => ( is => 'ro', isa => 'ArrayRef', required => 1 );
   has 'validator' => ( is => 'ro', isa => 'CodeRef', required => 1 );
+
+}
+
+package Mouse::Meta::Attribute::Custom::HashContainer {
+  sub register_implementation() { 'Jikkoku::Class::Role::TextData::Attribute::HashContainer' }
+}
+
+package Jikkoku::Class::Role::TextData::Attribute::HashContainer {
+
+  use Mouse;
+  use Jikkoku;
+  extends 'Jikkoku::Class::Role::TextData::Attribute::Column';
 
 }
 

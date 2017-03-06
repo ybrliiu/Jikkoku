@@ -29,19 +29,22 @@ package Jikkoku::Class::BattleCommand::Move {
 
   sub action {
     my ($self, $next_node) = @_;
+    my $chara = $self->chara;
+
+    $chara->lock;
 
     eval {
       my $move_point = $self->chara->soldier_battle_map('move_point');
-      $self->chara->soldier_battle_map( move_point => $move_point - $next_node->cost( $self->chara ) );
-      $self->chara->move_to( $next_node );
+      $chara->soldier_battle_map( move_point => $move_point - $next_node->cost($chara) );
+      $chara->move_to( $next_node );
       $self->_move_to_poison( $next_node );
     };
 
     if (my $e = $@) {
-      $self->chara->abort;
+      $chara->abort;
       throw($e);
     } else {
-      $self->chara->save;
+      $chara->commit;
     }
 
   }

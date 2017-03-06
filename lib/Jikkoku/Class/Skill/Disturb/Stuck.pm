@@ -140,6 +140,8 @@ EOS
     my ($self, $you, $time) = @_;
     my $chara = $self->chara;
 
+    $chara->lock;
+    $you->lock;
     my ($is_success, $effect_time, $get_contribute);
     eval {
       $chara->morale_data(morale => $chara->morale_data('morale') - $self->consume_morale);
@@ -159,8 +161,8 @@ EOS
       $you->abort;
       $e->rethrow;
     } else {
-      $chara->save;
-      $you->save;
+      $chara->commit;
+      $you->commit;
       my $name_tag = qq{<span style="color: yellowgreen">【@{[ $self->name ]}】</span>};
       if ($is_success) {
         my $state     = Jikkoku::Class::State::Stuck->new({chara => $chara});

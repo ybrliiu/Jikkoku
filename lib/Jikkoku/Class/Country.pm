@@ -1,33 +1,39 @@
 package Jikkoku::Class::Country {
 
   use Jikkoku;
-  use parent 'Jikkoku::Class::Base::TextData';
+  use Mouse;
 
   use Carp qw( croak );
   use List::Util qw( first );
   use Jikkoku::Model::Chara;
   use Jikkoku::Model::Config;
 
-  use constant {
-    PRIMARY_KEY     => 'id',
-    COLUMNS         => [qw/
-      id name color_id months_after_establish king_id command position
-      not_use
-    /],
-    SUBDATA_COLUMNS => {
-      # strategist = 軍師 infantry = 歩兵
-      position => [qw/
-        strategist_id
-        great_general_id cavalry_general_id guard_general_id archery_general_id infantry_general_id
-        premier_id
-      /],
-    },
-  };
+  use constant PRIMARY_KEY => 'id';
 
-  __PACKAGE__->make_accessors( COLUMNS );
-    
+  has 'id'       => ( metaclass => 'Column', is => 'ro', isa => 'Int', required => 1 );
+  has 'name'     => ( metaclass => 'Column', is => 'rw', isa => 'Str', required => 1 );
+  has 'color_id' => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
+  has 'months_after_establish'
+    => ( metaclass => 'Column', is => 'rw', isa => 'Int', default => 0 );
+  has 'king_id'  => ( metaclass => 'Column', is => 'rw', isa => 'Str', required => 1 );
+  has 'command'  => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '' );
+  has 'position' => (
+    metaclass => 'HashField',
+    is        => 'rw',
+    isa       => 'Jikkoku::Class::Role::TextData::HashField',
+    keys      => [qw(
+      strategist_id
+      great_general_id cavalry_general_id guard_general_id archery_general_id infantry_general_id
+      premier_id
+    )],
+    validator => sub {},
+  );
+  has 'not_use' => ( metaclass => 'Column', is => 'rw', isa => 'Str', default => '' );
+
+  with 'Jikkoku::Class::Role::TextData';
+
   my @HEADQUARTERS   = qw( king strategist premier );
-  my @POSITIONS_ID   = ('king_id', @{ SUBDATA_COLUMNS->{position} });
+  my @POSITIONS_ID   = ('king_id', @{ __PACKAGE__->meta->get_attribute('position')->keys });
   my @POSITIONS      = map { $_ =~ s/_id//; $_; } @POSITIONS_ID;
   my @POSITIONS_NAME = qw(
     君主
@@ -58,6 +64,8 @@ package Jikkoku::Class::Country {
       };
 
       for my $attribute (qw/id name icon/) {
+        # redefine 回避
+        next if $position eq 'king' && $attribute eq 'id';
         __PACKAGE__->_generate_position_chara_attribute_method( $position, $attribute );
       }
     }

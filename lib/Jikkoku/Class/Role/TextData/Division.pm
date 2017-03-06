@@ -7,9 +7,9 @@ package Jikkoku::Class::Role::TextData::Division {
 
   requires 'DIR_PATH';
 
-  with qw(
-    Jikkoku::Class::Role::TextData
-    Jikkoku::Role::FileHandler
+  with (
+    'Jikkoku::Class::Role::TextData' => {-excludes => 'commit'},
+    'Jikkoku::Role::FileHandler'     => {},
   );
 
   sub file_path {
@@ -25,8 +25,10 @@ package Jikkoku::Class::Role::TextData::Division {
   # $textdata -> $id
   around _buildargs_textdata => sub {
     my ($orig, $class, $id) = @_;
-    my $textdata = _open_data( $class->file_path($id) )->[0];
-    $class->$orig($textdata);
+    open(my $fh, '<', $class->file_path($id)) or throw("file open error" . $class->file_path($id), $!);
+    my @textdata = <$fh>;
+    $fh->close;
+    $class->$orig( $textdata[0] );
   };
 
   sub read {
@@ -48,7 +50,7 @@ package Jikkoku::Class::Role::TextData::Division {
     $self->textdata( $self->output );
     open(my $fh, '+<', $self->file_path);
     $self->update_textdata;
-    $fh->print( $self->textdata . "\n" );
+    $fh->print( ${ $self->textdata } . "\n" );
     $fh->close;
   }
 

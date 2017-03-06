@@ -15,8 +15,7 @@ package Jikkoku::Model::Chara {
 
   sub get {
     my ($class, $id) = @_;
-    my $textdata = open_data( Jikkoku::Class::Chara->file_path($id) )->[0];
-    Jikkoku::Class::Chara->new($textdata);
+    Jikkoku::Class::Chara->new($id);
   }
 
   sub opt_get {
@@ -32,14 +31,13 @@ package Jikkoku::Model::Chara {
       return Option->new($chara);
     }
 
-    my $textdata = eval {
-      open_data( Jikkoku::Class::Chara->file_path($id) )->[0];
-    };
+    eval { Jikkoku::Class::Chara->new($id) };
 
     if (my $e = $@) {
+      warn $e;
       Option::None->new;
     } else {
-      my $chara = Jikkoku::Class::Chara->new($textdata);
+      my $chara = Jikkoku::Class::Chara->new($id);
       $self->{data}{$id} = $chara;
       Option->new($chara);
     }
@@ -49,11 +47,11 @@ package Jikkoku::Model::Chara {
   sub get_all {
     my ($self) = @_;
 
-    my $dir_path = Jikkoku::Class::Chara->FILE_DIR_PATH;
+    my $dir_path = Jikkoku::Class::Chara->DIR_PATH;
     if_test { $dir_path = TEST_DIR . $dir_path };
 		opendir(my $dh, $dir_path);
     my @chara_list = map {
-      if ( (my $file = $_) =~ /\.cgi/i ) {
+      if ( (my $file = $_) =~ /.+\.cgi$/i ) {
         my $id = ($file =~ s/\.cgi//r);
         $self->opt_get($id)->get;
       } else {

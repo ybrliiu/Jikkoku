@@ -23,17 +23,20 @@ package Jikkoku::Class::BattleCommand::ChargeMovePoint {
 
   sub action {
     my ($self, $time) = @_;
+    my $chara = $self->chara;
+    
+    $chara->lock;
 
     eval {
-      $self->chara->soldier_battle_map( move_point => $self->chara->soldier->move_point );
-      $self->chara->soldier_battle_map( move_point_charge_time => $time + $self->move_point_charge_time );
+      $chara->soldier_battle_map( move_point => $self->chara->soldier->move_point );
+      $chara->soldier_battle_map( move_point_charge_time => $time + $self->move_point_charge_time );
     };
 
     if (my $e = $@) {
-      $self->chara->abort;
+      $chara->abort;
       throw($e);
     } else {
-      $self->chara->save;
+      $chara->commit;
     }
 
   }

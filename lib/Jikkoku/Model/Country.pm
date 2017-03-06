@@ -12,11 +12,14 @@ package Jikkoku::Model::Country {
   };
 
   # 無所属
-  our $NEUTRAL = CLASS->new("0<>無所属<>0");
+  our $NEUTRAL = CLASS->new({
+    id      => 0,
+    name    => '無所属',
+    king_id => '',
+    command => '無所属へようこそー！',
+  });
 
-  sub neutral {
-    $NEUTRAL;
-  }
+  sub neutral { $NEUTRAL; }
 
   # override
   sub get {

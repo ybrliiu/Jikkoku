@@ -29,7 +29,6 @@ package Jikkoku::Class::Role::BattleAction {
   around action => sub {
     my ($origin, $self, $args) = @_;
     my @ret = $self->ensure_can_action($args);
-    $self->chara->commit;
     # ensure_can_action で最後に返された値が引数として渡される
     $self->$origin( @ret );
   };

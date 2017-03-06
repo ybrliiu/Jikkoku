@@ -7,6 +7,7 @@ package Jikkoku::Role::FileHandler {
   sub throw { Jikkoku::Role::FileHandlerException->throw(@_) }
 
   # inside-out
+  # シリアライズ化の時にファイルハンドルが混じっているとややこしいため
   my $fh = {};
 
   sub fh {
