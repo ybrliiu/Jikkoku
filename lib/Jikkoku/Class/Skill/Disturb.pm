@@ -3,26 +3,16 @@ package Jikkoku::Class::Skill::Disturb {
   use Mouse;
   use Jikkoku;
 
-  has 'name'         => (is => 'ro', default => '妨害');
-  has 'belong_skill' => (is => 'rw', default => sub { {} });
-  has 'root_skill'   => (is => 'ro', default => '');
+  has 'name'          => ( is => 'ro', isa => 'Str', default => '妨害' );
+  has 'root_skill_id' => ( is => 'ro', isa => 'Str', default => '' );
 
-  sub get {
-    my ($self, $name) = @_;
-    $self->{belong_skill}{$name};
-  }
+  with 'Jikkoku::Class::Skill::SkillCategory';
 
-  sub trace {
-    my $self = shift;
-    _trace( @{ $self->{root_skill}->next_skill } );
-  }
+  around _build_target_type => sub {
+    ['文官'];
+  };
 
-  sub _trace {
-    my (@next_skill) = @_;
-    for my $skill (@next_skill) {
-      _trace( @{ $skill->next_skill } );
-    }
-  }
+  __PACKAGE__->meta->make_immutable;
 
 }
 

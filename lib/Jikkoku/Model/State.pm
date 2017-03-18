@@ -1,37 +1,73 @@
 package Jikkoku::Model::State {
   
+  use Mouse;
   use Jikkoku;
-  use Carp qw/croak/;
-  use Scalar::Util qw/weaken/;
-  use Jikkoku::Util qw/load_child/;
+  use Jikkoku::Util 'validate_values';
+  use Module::Load 'load';
 
-  my $parent_class = 'Jikkoku::Class::State';
-  my $state_module_list = load_child $parent_class;
+  our @STATE_MODULES = _get_state_module_list();
 
-  sub new {
-    my ($class, $chara) = @_;
-    croak "引数が足りません" if @_ < 2;
-    my $self = bless {
-      chara  => $chara,
-      states => {},
-    }, $class;
-    weaken $self->{chara};
-    for my $klass (@$state_module_list) {
-      my $state = $klass->new({chara => $chara});
-      $self->{states}{ $klass =~ s/${parent_class}:://r } = $state;
+  sub _get_state_module_list {
+    my $dir = './lib/Jikkoku/Class/State';
+    opendir(my $dh, $dir);
+    my @state_list = grep { $_ ne 'State' } map { $_ =~ /(\.pm$)/p ? ${^PREMATCH} : () } readdir $dh;
+    close $dh;
+    @state_list;
+  }
+
+  has 'chara'  => ( is => 'ro', isa => 'Jikkoku::Class::Chara', weak_ref => 1, required => 1 );
+  has '_cache' => ( is => 'ro', isa => 'HashRef', default => sub { +{} } );
+
+  sub get_state_with_option {
+    my ($self, $args) = @_;
+    validate_values $args => [qw/ id /];
+
+    my $key = $args->{id};
+    my $load_class = "Jikkoku::Class::State::${key}";
+    state $loaded_class = {};
+    unless (exists $loaded_class->{$key}) {
+      eval {
+        load $load_class;
+        $loaded_class->{$key} = 1;
+      };
+      if (my $e = $@) {
+        return Option::None->new;
+      }
     }
-    $self;
+
+    my $state = eval {
+      $load_class->new(chara => $self->chara);
+    };
+    Option->new( $loaded_class->{$key} );
   }
 
   sub get {
-    my ($self, $name) = @_;
-    $self->{states}{$name};
+    my ($self, $id) = @_;
+    my $load_class = "Jikkoku::Class::State::${id}";
+    load $load_class;
+    $load_class->new(chara => $self->chara);
+  }
+
+  sub get_all_state {
+    my $self = shift;
+    [ map { $self->get($_) } @STATE_MODULES ];
+  }
+
+  sub get_available_states {
+    my ($self, $time) = @_;
+    $time //= time;
+    [
+      grep { $_->is_available($time) }
+      grep { $_->DOES('Jikkoku::Class::State::Role::Expires') } @{ $self->get_all_state }
+    ];
   }
 
   sub available_list {
     my $self = shift;
     [ grep { $_->is_in_the_state } values %{ $self->{states} } ];
   }
+
+  __PACKAGE__->meta->make_immutable;
 
 }
 

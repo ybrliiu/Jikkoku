@@ -9,7 +9,7 @@ package Jikkoku::Class::BattleCommand::Retreat {
   with qw(
     Jikkoku::Class::BattleCommand::BattleCommand
     Jikkoku::Class::Role::BattleAction
-    Jikkoku::Class::Role::BattleAction::ActionTime
+    Jikkoku::Class::Role::BattleAction::OccurActionTime
   );
 
   sub ensure_can_action {

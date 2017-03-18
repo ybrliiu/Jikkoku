@@ -28,7 +28,7 @@ package Jikkoku::Class::Skill::Disturb::Confuse {
 
   with qw(
     Jikkoku::Class::Skill::Skill
-    Jikkoku::Class::Skill::Role::BattleAction
+    Jikkoku::Class::Skill::Role::UsedInBattleMap
     Jikkoku::Class::Skill::Role::Purchasable
   );
 

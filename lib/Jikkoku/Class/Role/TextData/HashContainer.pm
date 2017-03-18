@@ -17,7 +17,7 @@ package Jikkoku::Class::Role::TextData::HashContainer {
   }
 
   sub get {
-    die "you must call method get_with_option.";
+    die "you must call get_with_option method.";
   }
 
   sub get_with_option {

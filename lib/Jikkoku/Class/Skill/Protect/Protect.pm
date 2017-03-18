@@ -11,10 +11,12 @@ package Jikkoku::Class::Skill::Protect::Protect {
   has 'effect_range'   => ( is => 'rw', default => 3 );
   has 'effect_time'    => ( is => 'rw', default => 250 );
   has 'interval_time'  => ( is => 'rw', default => 240 );
+  has 'success_pc'     => ( is => 'rw', default => 1 );
 
   with qw(
     Jikkoku::Class::Skill::Skill
-    Jikkoku::Class::Skill::Role::BattleAction
+    Jikkoku::Class::Skill::Role::UsedInBattleMap
+    Jikkoku::Class::Skill::Role::UsedInBattleMap::NotDependOnAbilities
   );
 
   sub is_acquired {

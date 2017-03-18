@@ -8,7 +8,7 @@ package Jikkoku::Class::Role::TextData::Generic {
   around BUILDARGS => sub {
     my ($orig, $class) = (shift, shift);
     my $args = ref $_[0] eq 'HASH' ? $_[0] : +{@_};
-    $args->{data} = $class->inflate_textdata($args);
+    $args->{data} = $class->inflate_textdata($args) if exists $args->{textdata};
     $class->$orig($args);
   };
 

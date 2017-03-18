@@ -181,7 +181,7 @@ package Jikkoku::Class::Chara {
     keys      => [qw( not_used )],
     validator => sub {},
   );
-  has 'container' => (
+  has 'states_data' => (
     metaclass => 'HashContainer',
     is        => 'ro',
     isa       => 'Jikkoku::Class::Role::TextData::HashContainer',
@@ -189,7 +189,7 @@ package Jikkoku::Class::Chara {
   );
 
   has 'soldier' => ( is => 'ro', isa => 'Jikkoku::Class::Chara::Soldier', lazy => 1, builder => '_build_soldier' );
-  has 'states'  => ( is => 'rw', isa => 'Jikkoku::Model::State', lazy => 1, default => sub { Jikkoku::Model::State->new($_[0]) } );
+  has 'states'  => ( is => 'rw', isa => 'Jikkoku::Model::State', lazy => 1, default => sub { Jikkoku::Model::State->new(chara => $_[0]) } );
 
   sub _build_soldier {
     my $self = shift;

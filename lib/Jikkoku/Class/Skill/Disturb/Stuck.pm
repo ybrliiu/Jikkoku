@@ -15,8 +15,8 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
 
   has 'name'                 => ( is => 'ro', default => '足止め' );
   has 'range'                => ( is => 'rw', default => 5 );
-  has 'sucess_coef'          => ( is => 'rw', default => 0.005 );
-  has 'max_sucess_pc'        => ( is => 'rw', default => 0.8 );
+  has 'success_coef'         => ( is => 'rw', default => 0.005 );
+  has 'max_success_pc'       => ( is => 'rw', default => 0.8 );
   has 'consume_morale'       => ( is => 'rw', default => 12 );
   has 'get_contribute_coef'  => ( is => 'rw', default => 0.01 );
   has 'add_book_power'       => ( is => 'rw', default => 0.05 );
@@ -28,14 +28,16 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
 
   with qw(
     Jikkoku::Class::Skill::Skill
-    Jikkoku::Class::Skill::Role::BattleAction
-    Jikkoku::Class::Skill::Role::Purchasable
+    Jikkoku::Class::Skill::Role::UsedInBattleMap
+    Jikkoku::Class::Skill::Role::UsedInBattleMap::DependOnAbilities
+    Jikkoku::Class::Skill::Role::UsedInBattleMap::Purchasable
+    Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara::ToEnemy
   );
 
-  # override
-  sub _build_next_skill {
-    my $self = shift;
-    [ 'MakingMischief' ];
+  around _build_next_skill => sub { [ 'MakingMischief' ] };
+
+  sub _build_items_of_depend_on_abilities {
+    []
   }
 
   sub is_acquired {
@@ -47,9 +49,6 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
     my $self = shift;
     my $chara = $self->chara;
     # ここはメソッドとして切り出すか、混乱クラスのメソッドを呼び出すように変更すべき
-    warn (ACQUIRE_SIGN - 1);
-    warn $chara->skill('disturb');
-    warn $chara->skill('disturb') < ACQUIRE_SIGN - 1;
     throw("修得条件を満たしていません") if $chara->skill('disturb') < ACQUIRE_SIGN - 1;
     $chara->skill(disturb => ACQUIRE_SIGN);
   }
@@ -77,63 +76,18 @@ EOS
 
   sub explain_acquire {
     my $self = shift;
-<< "EOS";
-混乱を修得していること。<br>
-スキル修得ページでSPを@{[ $self->consume_skill_point ]}消費して修得。<br>
-EOS
+    '混乱を修得していること。<br>';
   }
 
   sub explain_status {
     my $self = shift;
-<< "EOS";
-待機時間 : @{[ $self->action_interval_time ]}秒<br>
-成功率 : <strong>@{[ $self->calc_success_pc * 100 ]}</strong>%<br>
-リーチ : @{[ $self->range ]}<br>
-消費士気 : @{[ $self->consume_morale ]}<br>
-EOS
+    '';
   }
 
   sub ensure_can_action {
     my ($self, $args) = @_;
-    validate_values $args => [qw( target_id chara_model )];
-    my $chara = $self->chara;
-
-    # ERR('相手武将が選択されていません') unless $in{eid};
-    my $time = time;
-    my $sub = $chara->soldier_battle_map('action_time') - $time;
-    throw("あと $sub秒 行動できません。") if $sub > 0;
-
-    my $you = $args->{chara_model}->get( $args->{target_id} );
-    throw($you->name . 'は出撃していません。') unless $you->is_sortie;
-    throw('相手と同じBM上にいません。')
-      if $you->soldier_battle_map('battle_map_id') ne $chara->soldier_battle_map('battle_map_id');
-    throw('味方には使用できません。') if $you->country_id == $chara->country_id;
-
-    my $distance = $chara->distance_to_chara_soldier($you);
-    throw('相手が足止めを使える範囲にいません。') if $distance > $self->{range};
-
-    # 相手 = 自分の時
-    # $you = $chara;
-    $you, $time;
-  }
-
-  sub calc_success_pc {
-    my $self = shift;
-    my $ability_sum = sum map { $self->chara->$_ } @{ $self->depend_abilities };
-    my $probability = $ability_sum * $self->sucess_coef;
-    $probability > $self->max_sucess_pc ? $self->max_sucess_pc : $probability;
-  }
-
-  sub effect_time {
-    my $self = shift;
-    my $ability_sum = sum map { $self->chara->$_ } @{ $self->depend_abilities };
-    int($ability_sum * $self->min_effect_time_coef), int($ability_sum * $self->max_effect_time_coef);
-  }
-
-  sub calc_effect_time {
-    my $self = shift;
-    my ($min_effect_time, $max_effect_time) = $self->effect_time;
-    int rand($max_effect_time - $min_effect_time) + $min_effect_time;
+    validate_values $args => [qw/ target_id chara_model you time /];
+    $args->{you}, $args->{time};
   }
 
   sub action {
@@ -146,9 +100,10 @@ EOS
     eval {
       $chara->morale_data(morale => $chara->morale_data('morale') - $self->consume_morale);
       $chara->soldier_battle_map(action_time => $time + $self->action_interval_time);
-      $is_success = $self->calc_success_pc > rand(1);
+      my $ability_sum = $self->depend_abilities_sum;
+      $is_success = $self->calc_success_pc($ability_sum) > rand(1);
       if ($is_success) {
-        $effect_time = $self->calc_effect_time;
+        $effect_time = $self->calc_effect_time($ability_sum);
         $you->debuff(stuck => $time + $effect_time);
         $get_contribute = int $effect_time * $self->get_contribute_coef;
         $chara->contribute( $chara->contribute + $get_contribute );

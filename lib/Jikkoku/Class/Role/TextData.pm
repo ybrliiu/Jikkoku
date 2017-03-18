@@ -92,8 +92,10 @@ package Jikkoku::Class::Role::TextData {
       $_->isa('Jikkoku::Class::Role::TextData::Attribute::HashContainer')
     } $class->get_column_attributes;
     for my $meta_attr (@hash_containers) {
+      $meta_attr->get_isa->DOES('Jikkoku::Class::Role::TextData::Generic')
+        or Carp::confess('isa need to consume Jikkoku::Class::Role::TextData::Generic');
       $hashed_textdata->{$meta_attr->name}
-        = Jikkoku::Class::Role::TextData::HashContainer->new(textdata => $hashed_textdata->{$meta_attr->name});
+        = $meta_attr->get_isa->new(textdata => $hashed_textdata->{$meta_attr->name});
     }
   }
 
@@ -176,6 +178,8 @@ package Jikkoku::Class::Role::TextData::Attribute::Column {
   extends 'Mouse::Meta::Attribute';
 
   sub is { shift->{is} }
+
+  sub get_isa { shift->{isa} }
 
 }
 
