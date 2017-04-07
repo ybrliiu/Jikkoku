@@ -11,7 +11,7 @@ package Jikkoku::Player {
 
   use constant PRIMARY_KEY => 'name';
 
-  # documentation => 'column' の attribute は, テキストデータの要素として順番に定義される.
+  # metaclass => 'column' の attribute は, テキストデータの要素として順番に定義される.
   # 宣言の順番を変更するとデータ構造が崩れるのでしないこと
   has 'name' => ( metaclass => 'Column', is => 'rw', isa => 'Str', required => 1 );
   has 'buff' => (

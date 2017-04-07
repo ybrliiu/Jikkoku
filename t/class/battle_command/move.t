@@ -28,7 +28,7 @@ my $params = +{
 };
 
 subtest 'move up' => sub {
-  lives_ok { $move->action({ direction => 'up', %$params }) };
+  $move->action({ direction => 'up', %$params });
   is $chara->soldier_battle_map('x'), $x;
   is $chara->soldier_battle_map('y'), $y - 1;
 };

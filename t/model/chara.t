@@ -40,6 +40,11 @@ is ref $chara_list_to_hash, 'HASH';
   is $chara->soldier->attack_power( $chara ), 0;
   ok $chara->soldier_battle_map(move_point_charge_time => 120);
 
+  subtest 'states_data' => sub {
+    is $chara->states_data->get_with_option('hoge')->get, 100;
+    ok $chara->states_data->set(fuga => 200);
+  };
+
   subtest 'money' => sub {
     lives_ok { $chara->money };
     dies_ok { $chara->money(-100) };
@@ -49,7 +54,9 @@ is ref $chara_list_to_hash, 'HASH';
 
   subtest 'move_point' => sub {
     lives_ok { $chara->soldier_battle_map(move_point => 20) };
-    $chara->commit;
+    $chara->save;
+
+    $chara->lock;
     dies_ok{ $chara->soldier_battle_map(move_point => -20) };
     ok $@;
     lives_ok { $chara->abort };

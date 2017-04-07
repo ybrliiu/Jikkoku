@@ -56,7 +56,7 @@ ok(my $model = $CLASS->new);
     my $chara_model = Jikkoku::Model::Chara->new;
     ok my $num = $country->number_of_chara_participate_available($chara_model, $model);
     is $num, 5;
-    is scalar @{ $country->members($chara_model) }, 3;
+    is @{ $country->members($chara_model) }, 4;
     ok $country->can_participate($chara_model, $model);
   };
 

@@ -22,9 +22,11 @@ local $game_config->{update_end_hour}   = 24;
 
 require Jikkoku::Model::BattleMap;
 require Jikkoku::Model::MapLog;
+require Jikkoku::Model::Chara;
 require Jikkoku::Model::Chara::Protector;
 my $protector_model = Jikkoku::Model::Chara::Protector->new;
 ok $protect->action({
+  chara_model      => Jikkoku::Model::Chara->new,
   battle_map_model => Jikkoku::Model::BattleMap->new,
   map_log_model    => Jikkoku::Model::MapLog->new,
   protector_model  => $protector_model,

@@ -13,7 +13,7 @@ use_ok $CLASS;
   my $chara = $chara_model->get('ybrliiu');
   ok my $skill = $CLASS->new({ chara => $chara });
   $chara->intellect(100);
-  ok !$chara->states->get('Stuck')->is_in_the_state(time);
+  ok !$chara->states->get('Stuck')->is_available(time);
   dies_ok { $skill->acquire };
   is $@->message, '修得条件を満たしていません';
   diag $@->stack_trace;
