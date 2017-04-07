@@ -6,7 +6,7 @@ package Jikkoku::Class::BattleCommand::Move {
   use Carp qw( croak );
   use Jikkoku::Util qw( validate_values );
 
-  has 'poison_die_pc' => (is => 'rw', default => 0.05);
+  has 'poison_die_pc' => ( is => 'rw', isa => 'Num', default => 0.05 );
 
   with qw(
     Jikkoku::Class::BattleCommand::BattleCommand
@@ -19,7 +19,7 @@ package Jikkoku::Class::BattleCommand::Move {
 
     my $bm_id = $self->chara->soldier_battle_map('battle_map_id');
     my $bm    = $args->{battle_map_model}->get($bm_id);
-    my $next_node  = $bm->can_move({
+    my $next_node = $bm->can_move({
       chara       => $self->chara,
       direction   => $args->{direction},
       chara_model => $args->{chara_model},
@@ -35,7 +35,7 @@ package Jikkoku::Class::BattleCommand::Move {
 
     eval {
       my $move_point = $self->chara->soldier_battle_map('move_point');
-      $chara->soldier_battle_map( move_point => $move_point - $next_node->cost($chara) );
+      $chara->soldier_battle_map( move_point => $move_point - $next_node->cost_when_move($chara) );
       $chara->move_to( $next_node );
       $self->_move_to_poison( $next_node );
     };

@@ -33,6 +33,17 @@ package Jikkoku::Class::Role::BattleAction {
     $self->$origin( @ret );
   };
 
+  sub calc_success_pc { 1 }
+
+  # その行動が成功するかどうかを判定, action method 内で使用(移動, 関所出入りは除く)
+  sub determine_whether_succeed {
+    my ($self, @args) = @_;
+    my $origin_success_ratio = $self->calc_success_pc(@args);
+    my $success_ratio = $origin_success_ratio;
+    $success_ratio += $self->chara->states->adjust_battle_action_success_ratio($origin_success_ratio);
+    $success_ratio > rand(1);
+  }
+
 }
 
 package Jikkoku::Class::Role::BattleActionException {

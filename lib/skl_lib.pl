@@ -217,13 +217,14 @@ sub KINTOUN {
   }
 }
 
-# 足止め状態中
-our @skl_lib_stuck_state_changed;
-sub skl_lib_stuck_state {
-  my ($x, $y, $stuck, $time) = @_;
-  if ( !$skl_lib_stuck_state_changed[ $BM_TIKEI[$y][$x] ] && $stuck->is_in_the_state($time) ) {
-    $CAN_MOVE[ $BM_TIKEI[$y][$x] ] *= $stuck->effect_multiple;
-    $skl_lib_stuck_state_changed[ $BM_TIKEI[$y][$x] ] = 1;
+# 状態による消費移動ポイントの調整
+our @skl_lib_move_cost_adjusted_by_states;
+sub skl_lib_adjust_state_move_cost {
+  my ($x, $y, $chara, $time) = @_;
+  my $terrain = $BM_TIKEI[$y][$x];
+  if ( !$skl_lib_move_cost_adjusted_by_states[$terrain] ) {
+    $CAN_MOVE[$terrain] += $chara->states->adjust_move_cost( $CAN_MOVE[$terrain] );
+    $skl_lib_move_cost_adjusted_by_states[$terrain] = 1;
   }
 }
 

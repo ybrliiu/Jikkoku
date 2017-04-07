@@ -51,17 +51,13 @@ package Jikkoku::Class::Country {
 
   sub _generate_positions_method {
     for my $position (@POSITIONS) {
-      no strict 'refs';
-
-      *{$position} = sub {
-        use strict 'refs';
-        my ($self) = @_;
+      __PACKAGE__->meta->add_method($position => sub {
+        my $self = shift;
         return $self->{$position} if exists $self->{$position};
-        $self->{$position} = eval {
-          my $position_id = $position eq 'king' ? $self->{king_id} : $self->{position}{"${position}_id"};
-          Jikkoku::Model::Chara->get($position_id);
-        };
-      };
+        my $position_id = $position eq 'king' ? $self->king_id : $self->position->get("${position}_id");
+        my $chara_model = Jikkoku::Model::Chara->new;
+        $self->{$position} = $chara_model->get_with_option($position_id)->get_or_else(undef);
+      });
 
       for my $attribute (qw/id name icon/) {
         # redefine 回避
@@ -74,13 +70,11 @@ package Jikkoku::Class::Country {
   sub _generate_position_chara_attribute_method {
     my ($class, $position, $attribute) = @_;
     my $method_name = "${position}_${attribute}";
-    no strict 'refs';
-    *{$method_name} = sub {
-      use strict 'refs';
+    $class->meta->add_method($method_name => sub {
       my ($self) = @_;
       return $self->{$method_name} if exists $self->{$method_name};
       $self->{$method_name} = defined $self->$position ? $self->$position->$attribute : undef;
-    };
+    });
   }
 
   sub is_headquarters_exist {
@@ -157,14 +151,14 @@ package Jikkoku::Class::Country {
     my $config = Jikkoku::Model::Config->get;
 
     for my $method_name (qw/color background_color background_color_rgba/) {
-      no strict 'refs';
-      *{$method_name} = sub {
-        use strict 'refs';
+      __PACKAGE__->meta->add_method($method_name => sub {
         my $self = shift;
         $config->{"country_$method_name"}[ $self->{color_id} ];
-      };
+      });
     }
   }
+
+  __PACKAGE__->meta->make_immutable;
 
 }
 

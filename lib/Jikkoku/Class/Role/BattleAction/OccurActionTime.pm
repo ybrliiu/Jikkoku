@@ -8,7 +8,7 @@ package Jikkoku::Class::Role::BattleAction::OccurActionTime {
     $args->{time} //= time();
     if ( $self->chara->soldier_battle_map('action_time') > $args->{time} ) {
       my $wait_time = $self->chara->soldier_battle_map('action_time') - $args->{time};
-      throw("あと $wait_time 秒行動できません。\n");
+      Jikkoku::Class::Role::BattleActionException->throw("あと $wait_time 秒行動できません。\n");
     }
   };
 

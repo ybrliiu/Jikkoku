@@ -9,7 +9,6 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
   use Jikkoku::Util qw( validate_values );
   use Jikkoku::Model::Config;
   my $CONFIG = Jikkoku::Model::Config->get;
-  use Jikkoku::Class::State::Stuck;
 
   use constant ACQUIRE_SIGN => 2;
 
@@ -18,8 +17,6 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
   has 'success_coef'         => ( is => 'rw', default => 0.005 );
   has 'max_success_pc'       => ( is => 'rw', default => 0.8 );
   has 'consume_morale'       => ( is => 'rw', default => 12 );
-  has 'get_contribute_coef'  => ( is => 'rw', default => 0.01 );
-  has 'add_book_power'       => ( is => 'rw', default => 0.05 );
   has 'min_effect_time_coef' => ( is => 'rw', default => 2.5 );
   has 'max_effect_time_coef' => ( is => 'rw', default => 3.5 );
   has 'action_interval_time' => ( is => 'rw', default => $CONFIG->{game}{action_interval_time} * 0.5 );
@@ -29,6 +26,7 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
   with qw(
     Jikkoku::Class::Skill::Skill
     Jikkoku::Class::Skill::Role::UsedInBattleMap
+    Jikkoku::Class::Skill::Role::UsedInBattleMap::OccurActionTime
     Jikkoku::Class::Skill::Role::UsedInBattleMap::DependOnAbilities
     Jikkoku::Class::Skill::Role::UsedInBattleMap::Purchasable
     Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara::ToEnemy
@@ -58,7 +56,7 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
   sub explain_effect_simple {
     my $self = shift;
 << "EOS";
-相手が移動の際に消費する移Pを@{[ $self->chara->states->get('Stuck')->effect_multiple ]}倍にする。<br>
+相手が移動の際に消費する移Pを@{[ $self->chara->states->get('Stuck')->increase_move_cost_ratio ]}倍にする。<br>
 士気$self->{consume_morale}消費。<br>
 成功率、消費移P増加時間は知力に依存。(行動)<br>
 EOS
@@ -66,9 +64,10 @@ EOS
 
   sub explain_effect {
     my $self = shift;
-    my ($min_effect_time, $max_effect_time) = $self->effect_time;
+    my $ability_sum = $self->depend_abilities_sum;
+    my ($min_effect_time, $max_effect_time) = $self->effect_time($ability_sum);
 << "EOS";
-相手が移動の際に消費する移Pを@{[ $self->chara->states->get('Stuck')->effect_multiple ]}倍する。<br>
+相手が移動の際に消費する移Pを@{[ $self->chara->states->get('Stuck')->increase_move_cost_ratio ]}倍する。<br>
 効果持続時間は<strong>${min_effect_time}</strong>秒〜<strong>${max_effect_time}</strong>秒。<br>
 成功率、効果時間は知力に依存。(行動)<br>
 EOS
@@ -86,7 +85,6 @@ EOS
 
   sub ensure_can_action {
     my ($self, $args) = @_;
-    validate_values $args => [qw/ target_id chara_model you time /];
     $args->{you}, $args->{time};
   }
 
@@ -96,7 +94,7 @@ EOS
 
     $chara->lock;
     $you->lock;
-    my ($is_success, $effect_time, $get_contribute);
+    my ($is_success, $effect_time, $stuck);
     eval {
       $chara->morale_data(morale => $chara->morale_data('morale') - $self->consume_morale);
       $chara->soldier_battle_map(action_time => $time + $self->action_interval_time);
@@ -104,36 +102,38 @@ EOS
       $is_success = $self->calc_success_pc($ability_sum) > rand(1);
       if ($is_success) {
         $effect_time = $self->calc_effect_time($ability_sum);
-        $you->debuff(stuck => $time + $effect_time);
-        $get_contribute = int $effect_time * $self->get_contribute_coef;
-        $chara->contribute( $chara->contribute + $get_contribute );
-        $chara->book_power( $chara->book_power + $self->add_book_power );
+        $stuck = $you->states->get_state('Stuck');
+        $stuck->set_state_for_chara({
+          giver_id       => $chara->id,
+          available_time => $time + $ability_sum,
+        });
       }
     };
 
     if (my $e = $@) {
       $chara->abort;
       $you->abort;
-      $e->rethrow;
+      if ( Jikkoku::Class::Role::BattleActionException->caught($e) ) {
+        $e->rethrow;
+      } else {
+        die $e;
+      }
     } else {
       $chara->commit;
       $you->commit;
       my $name_tag = qq{<span style="color: yellowgreen">【@{[ $self->name ]}】</span>};
       if ($is_success) {
-        my $state     = Jikkoku::Class::State::Stuck->new({chara => $chara});
-        my $chara_log = qq{$name_tag@{[ $you->name ]}を足止めさせました。}
-          . qq{<span class="red">$effect_time</span>秒間、@{[ $you->name ]}の消費移Pが@{[ $state->effect_multiple ]}倍されます。}
-          . qq{ 貢献値+<span class="red">$get_contribute</span> 書物威力+<span class="red">@{[ $self->add_book_power ]}</span>};
+        my $description_log = qq{<span class="red">$effect_time</span>秒間、@{[ $you->name ]}の@{[ $stuck->description ]}};
+        my $chara_log = "${name_tag}@{[ $you->name ]}を@{[ $self->name ]}させました。${description_log}";
         $chara->save_battle_log($chara_log);
         $chara->save_command_log($chara_log);
-        my $you_log = qq{$name_tag@{[ $chara->name ]}に足止めさせられました。}
-          . qq{<span class="red">$effect_time</span>秒間、消費移Pが@{[ $state->effect_multiple ]}倍されます。};
+        my $you_log = "${name_tag}@{[ $chara->name ]}に@{[ $self->name ]}させられました。${description_log}";
         $you->save_battle_log($you_log);
         $you->save_command_log($you_log);
         my $bm = $self->battle_map_model->get( $chara->soldier_battle_map('battle_map_id') );
-        $self->map_log_model->add("$name_tag@{[ $you->name ]}は@{[ $chara->name ]}に$self->{name}させられました。(@{[ $bm->name ]})")->save;
+        $self->map_log_model->add("$name_tag@{[ $you->name ]}は@{[ $chara->name ]}に@{[ $self->name ]}させられました。(@{[ $bm->name ]})")->save;
       } else {
-        my $chara_log = "$name_tag@{[ $you->name ]}を足止めさせようとしましたが失敗しました。";
+        my $chara_log = "$name_tag@{[ $you->name ]}を@{[ $self->name ]}させようとしましたが失敗しました。";
         $chara->save_battle_log($chara_log);
         $chara->save_command_log($chara_log);
       }

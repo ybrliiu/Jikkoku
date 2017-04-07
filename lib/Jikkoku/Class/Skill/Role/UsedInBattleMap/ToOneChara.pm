@@ -23,11 +23,16 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara {
     $args->{you} = $args->{chara_model}->opt_get( $args->{target_id} )->match(
       Some => sub {
         my $you = shift;
-        throw($you->name . 'は出撃していません。') unless $you->is_sortie;
-        throw('相手と同じBM上にいません。')
-          if $you->soldier_battle_map('battle_map_id') ne $chara->soldier_battle_map('battle_map_id');
+        unless ($you->is_sortie) {
+          Jikkoku::Class::Role::BattleActionException->throw($you->name . 'は出撃していません。');
+        }
+        if ( $you->soldier_battle_map('battle_map_id') ne $chara->soldier_battle_map('battle_map_id') ) {
+          Jikkoku::Class::Role::BattleActionException->throw('相手と同じBM上にいません。');
+        }
         my $distance = $chara->distance_to_chara_soldier($you);
-        throw('相手が' . $self->name . 'を使える範囲にいません。') if $distance > $self->range;
+        if ($distance > $self->range) {
+          Jikkoku::Class::Role::BattleActionException->throw('相手が' . $self->name . 'を使える範囲にいません。');
+        }
         $you;
       },
       None => sub { throw('指定した武将は存在していません。') },

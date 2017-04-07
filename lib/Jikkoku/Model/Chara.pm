@@ -18,7 +18,9 @@ package Jikkoku::Model::Chara {
     Jikkoku::Class::Chara->new($id);
   }
 
-  sub opt_get {
+  sub opt_get { get_with_option(@_) }
+
+  sub get_with_option {
     my ($self, $id) = @_;
 
     # for class method ...

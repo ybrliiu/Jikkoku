@@ -3,7 +3,10 @@ package Jikkoku::Model::State {
   use Mouse;
   use Jikkoku;
   use Jikkoku::Util 'validate_values';
+  use List::Util 'sum';
   use Module::Load 'load';
+  use Carp;
+  use Jikkoku::Model::Chara;
 
   our @STATE_MODULES = _get_state_module_list();
 
@@ -38,7 +41,7 @@ package Jikkoku::Model::State {
     my $state = eval {
       $load_class->new(chara => $self->chara);
     };
-    Option->new( $loaded_class->{$key} );
+    Option->new($state);
   }
 
   sub get {
@@ -48,9 +51,11 @@ package Jikkoku::Model::State {
     $load_class->new(chara => $self->chara);
   }
 
-  sub get_all_state {
+  __PACKAGE__->meta->add_method(get_state => \&get);
+
+  sub get_all_states {
     my $self = shift;
-    [ map { $self->get($_) } @STATE_MODULES ];
+    [ map { $self->get_state($_) } @STATE_MODULES ];
   }
 
   sub get_available_states {
@@ -58,8 +63,49 @@ package Jikkoku::Model::State {
     $time //= time;
     [
       grep { $_->is_available($time) }
-      grep { $_->DOES('Jikkoku::Class::State::Role::Expires') } @{ $self->get_all_state }
+      grep { $_->DOES('Jikkoku::Class::State::Role::Expires') } @{ $self->get_all_states }
     ];
+  }
+
+  my $adjust_move_cost = sub {
+    my ($self, $origin_cost, $code, $time) = @_;
+    Carp::croak 'few argments' if @_ < 3;
+    $time //= time;
+    my @states = grep {
+      $_->DOES('Jikkoku::Class::State::Role::MoveCostAdjuster');
+    } @{ $self->get_available_states($time) };
+    $self->$code(\@states);
+    sum map { $_->adjust_move_cost($origin_cost) } @states;
+  };
+
+  __PACKAGE__->meta->add_method(adjust_move_cost => sub {
+    my ($self, $origin_cost, $time) = @_;
+    $self->$adjust_move_cost($origin_cost, sub {}, $time);
+  });
+
+  __PACKAGE__->meta->add_method(adjust_move_cost_and_take_bonus_for_giver => sub {
+    my ($self, $origin_cost, $time) = @_;
+    $self->$adjust_move_cost($origin_cost, sub {
+      my ($self, $states) = @_;
+      my $chara_model = Jikkoku::Model::Chara->new;
+      for my $state (@$states) {
+        $state->take_bonus_for_giver($chara_model);
+      }
+    }, $time);
+  });
+
+  sub adjust_battle_action_success_ratio {
+    my ($self, $origin_success_ratio, $time) = @_;
+    Carp::croak 'few arguments' if @_ < 2;
+    $time //= time;
+    my @states = grep {
+      $_->DOES('Jikkoku::Class::State::Role::BattleActionSuccessRatioAdjuster');
+    } @{ $self->get_available_states($time) };
+    my $chara_model = Jikkoku::Model::Chara->new;
+    sum map {
+      $_->take_bonus_for_giver($chara_model);
+      $_->adjust_battle_action_success_ratio($origin_success_ratio);
+    } @states;
   }
 
   sub available_list {

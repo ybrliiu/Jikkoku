@@ -14,6 +14,11 @@ package Jikkoku::Model::Chara::Profile {
     $self->{data}[0];
   }
 
+  sub edit {
+    my ($self, $profile) = @_;
+    $self->{data}[0] = $profile;
+  }
+
 }
 
 1;

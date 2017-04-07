@@ -6,60 +6,27 @@ package Jikkoku::Class::State::Stuck {
   use Carp qw( croak );
   use Jikkoku::Util qw( validate_values );
 
-  has 'name'            => ( is => 'ro', default => '足止め' );
-  has 'icon'            => ( is => 'ro', default => 'stuck.png' );
-  has 'effect_multiple' => ( is => 'rw', default => 1.7 );
-  has 'chara'           => ( is => 'ro', weak_ref => 1, required => 1 );
+  has 'name'                        => ( is => 'ro', isa => 'Str', default => '足止め' );
+  has 'increase_move_cost_ratio'      => ( is => 'rw', isa => 'Num', default => 0.7 );
+  has 'increase_giver_contribute_num' => ( is => 'rw', isa => 'Num', default => 0.2 );
+  has 'increase_giver_book_power_num' => ( is => 'rw', isa => 'Num', default => 0.003 );
 
-  sub is_in_the_state {
-    my ($self, $time) = @_;
-    croak "引数が足りません" if @_ < 2;
-    $self->chara->debuff('stuck') > $time;
+  with qw(
+    Jikkoku::Class::State::State
+    Jikkoku::Class::State::Role::Expires
+    Jikkoku::Class::State::Role::Given
+    Jikkoku::Class::State::Role::MoveCostAdjuster
+  );
+
+  sub description {
+    my $self = shift;
+    '消費移動Pが元の消費移動Pの' . $self->increase_move_cost_ratio . '倍増加します。';
   }
 
-  sub move_cost {
+  sub adjust_move_cost {
     my ($self, $origin_cost) = @_;
-    $self->effect_multiple * $origin_cost;
-  }
-
-  __PACKAGE__->meta->make_immutable;
-
-}
-
-package Jikkoku::Class::NewState::Stuck {
-
-  use Mouse;
-  use Jikkoku;
-
-  use Carp qw( croak );
-  use Jikkoku::Util qw( validate_values );
-
-  has 'name'            => ( is => 'ro', isa => 'Str', default => '足止め' );
-  has 'icon'            => ( is => 'ro', isa => 'Str', default => 'stuck.png' );
-  has 'effect_multiple' => ( is => 'rw', isa => 'Num', default => 1.7 );
-  has 'available_time'  => ( is => 'ro', isa => 'Int', required => 1 );
-  has 'giver_id'        => ( is => 'ro', isa => 'Str', required => 1 );
-
-  around BUILDARGS => sub {
-    my ($orig, $class) = (shift, shift);
-    my $args = ref $_[0] eq 'HASH' ? $_[0] : +{@_};
-    $args->{giver_id} = '' if $args->{no_giver};
-    $class->$orig($args);
-  };
-
-  # 付与した人にボーナスを与える
-  sub take_bonus_for_giver {
-    my ($self) = @_;
-  }
-
-  # 有効かどうか
-  sub is_available {
-    my ($self) = @_;
-  }
-
-  sub move_cost {
-    my ($self, $origin_cost) = @_;
-    $self->effect_multiple * $origin_cost;
+    Carp::croak 'few argments' if @_ < 2;
+    $origin_cost * $self->increase_move_cost_ratio;
   }
 
   __PACKAGE__->meta->make_immutable;
@@ -67,3 +34,11 @@ package Jikkoku::Class::NewState::Stuck {
 }
 
 1;
+
+__END__
+
+Role 
+
+  State::MoveCostAdjuster -> take_bonus_for_giver
+  State::SoldierStatusAdjuster -> take_bonus_for_giver
+

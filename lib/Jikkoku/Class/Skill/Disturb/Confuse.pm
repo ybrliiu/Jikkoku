@@ -9,7 +9,6 @@ package Jikkoku::Class::Skill::Disturb::Confuse {
   use Jikkoku::Util qw( validate_values );
   use Jikkoku::Model::Config;
   my $CONFIG = Jikkoku::Model::Config->get;
-  use Jikkoku::Class::State::Stuck;
 
   use constant ACQUIRE_SIGN => 1;
 
@@ -18,8 +17,6 @@ package Jikkoku::Class::Skill::Disturb::Confuse {
   has 'sucess_coef'          => ( is => 'rw', default => 0.005 );
   has 'max_sucess_pc'        => ( is => 'rw', default => 0.8 );
   has 'consume_morale'       => ( is => 'rw', default => 12 );
-  has 'get_contribute_coef'  => ( is => 'rw', default => 0.01 );
-  has 'add_book_power'       => ( is => 'rw', default => 0.05 );
   has 'min_effect_time_coef' => ( is => 'rw', default => 2.5 );
   has 'max_effect_time_coef' => ( is => 'rw', default => 3.5 );
   has 'action_interval_time' => ( is => 'rw', default => $CONFIG->{game}{action_interval_time} * 0.5 );
@@ -32,10 +29,10 @@ package Jikkoku::Class::Skill::Disturb::Confuse {
     Jikkoku::Class::Skill::Role::Purchasable
   );
 
-  # override
-  sub _build_next_skill {
-    my $self = shift;
-    [ 'Stuck' ];
+  around _build_next_skill => sub { ['Stuck'] };
+
+  sub _build_items_of_depend_on_abilities {
+    [];
   }
 
   sub is_acquired {
@@ -45,14 +42,9 @@ package Jikkoku::Class::Skill::Disturb::Confuse {
 
   sub acquire {
     my $self = shift;
-    my $chara = $self->chara;
-    # ここはメソッドとして切り出すか、混乱クラスのメソッドを呼び出すように変更すべき
-    throw("修得条件を満たしていません") if $chara->skill('disturb') < ACQUIRE_SIGN - 1;
-    $chara->skill(disturb => ACQUIRE_SIGN);
+    $self->chara->skill(disturb => ACQUIRE_SIGN);
   }
 
-  # 行動などのタイプは使用しているRoleで判断
-  # 依存能力はjapanese.coefで表示させる
   sub explain_effect_simple {
     my $self = shift;
 << "EOS";
@@ -72,65 +64,13 @@ EOS
 EOS
   }
 
-  sub explain_acquire {
-    my $self = shift;
-<< "EOS";
-混乱を修得していること。<br>
-スキル修得ページでSPを@{[ $self->consume_skill_point ]}消費して修得。<br>
-EOS
-  }
+  sub explain_acquire { '' }
 
-  sub explain_status {
-    my $self = shift;
-<< "EOS";
-待機時間 : @{[ $self->action_interval_time ]}秒<br>
-成功率 : <strong>@{[ $self->calc_success_pc * 100 ]}</strong>%<br>
-リーチ : @{[ $self->range ]}<br>
-消費士気 : @{[ $self->consume_morale ]}<br>
-EOS
-  }
+  sub explain_status { '' }
 
   sub ensure_can_action {
     my ($self, $args) = @_;
-    validate_values $args => [qw( target_id chara_model )];
-    my $chara = $self->chara;
-
-    # ERR('相手武将が選択されていません') unless $in{eid};
-    my $time = time;
-    my $sub = $chara->soldier_battle_map('action_time') - $time;
-    throw("あと $sub秒 行動できません。") if $sub > 0;
-
-    my $you = $args->{chara_model}->get( $args->{target_id} );
-    throw($you->name . 'は出撃していません。') unless $you->is_sortie;
-    throw('相手と同じBM上にいません。')
-      if $you->soldier_battle_map('battle_map_id') ne $chara->soldier_battle_map('battle_map_id');
-    throw('味方には使用できません。') if $you->country_id == $chara->country_id;
-
-    my $distance = $chara->distance_to_chara_soldier($you);
-    throw('相手が足止めを使える範囲にいません。') if $distance > $self->{range};
-
-    # 相手 = 自分の時
-    # $you = $chara;
-    $you, $time;
-  }
-
-  sub calc_success_pc {
-    my $self = shift;
-    my $ability_sum = sum map { $self->chara->$_ } @{ $self->depend_abilities };
-    my $probability = $ability_sum * $self->sucess_coef;
-    $probability > $self->max_sucess_pc ? $self->max_sucess_pc : $probability;
-  }
-
-  sub effect_time {
-    my $self = shift;
-    my $ability_sum = sum map { $self->chara->$_ } @{ $self->depend_abilities };
-    int($ability_sum * $self->min_effect_time_coef), int($ability_sum * $self->max_effect_time_coef);
-  }
-
-  sub calc_effect_time {
-    my $self = shift;
-    my ($min_effect_time, $max_effect_time) = $self->effect_time;
-    int rand($max_effect_time - $min_effect_time) + $min_effect_time;
+    $args->{you}, $args->{time};
   }
 
   sub action {

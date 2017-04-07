@@ -167,18 +167,19 @@ package Jikkoku::Class::BattleMap::Node {
 
   sub cost {
     my ($self, $chara) = @_;
-    my $cost = $self->origin_cost($chara);
+    my $origin_cost = $self->origin_cost($chara);
+    my $cost = $origin_cost;
+    $cost += $chara->states->adjust_move_cost($origin_cost);
+    $cost;
+  }
 
-    # 筋斗雲
-    if (0) {
-      $cost = $cost > KINTOUN_COST ? KINTOUN_COST : $cost;
-    }
-    # 足止め
-    my $stuck = $chara->states->get('Stuck');
-    if ( $stuck->is_in_the_state(time) ) {
-      $cost = $stuck->move_cost($cost);
-    }
-
+  # 移動するときのコスト
+  # cost との違って, take_bonus_for_giver が呼ばれる
+  sub cost_when_move {
+    my ($self, $chara) = @_;
+    my $origin_cost = $self->origin_cost($chara);
+    my $cost = $origin_cost;
+    $cost += $chara->states->adjust_move_cost_and_take_bonus_for_giver($origin_cost);
     $cost;
   }
 
@@ -210,6 +211,8 @@ package Jikkoku::Class::BattleMap::Node {
     defined $target_node ? $target_node->cost : TEMP_INF;
   }
 
+  __PACKAGE__->meta->make_immutable;
+
 }
 
 package Jikkoku::Class::BattleMap::Node::Castle {
@@ -224,6 +227,8 @@ package Jikkoku::Class::BattleMap::Node::Castle {
     my $self = shift;
     Carp::croak "城地形ではありません" if $self->terrain != $self->CASTLE;
   }
+
+  __PACKAGE__->meta->make_immutable;
 
 }
 
@@ -243,6 +248,8 @@ package Jikkoku::Class::BattleMap::Node::WaterCastle {
     Carp::croak( $self->name . 'ではありません' ) if $self->terrain != $self->WATER_CASTLE;
   }
 
+  __PACKAGE__->meta->make_immutable;
+
 }
 
 package Jikkoku::Class::BattleMap::Node::Water {
@@ -251,6 +258,8 @@ package Jikkoku::Class::BattleMap::Node::Water {
   use Jikkoku;
   extends 'Jikkoku::Class::BattleMap::Node';
   with 'Jikkoku::Class::BattleMap::Node::Role::Water';
+
+  __PACKAGE__->meta->make_immutable;
 
 }
 
@@ -272,6 +281,8 @@ package Jikkoku::Class::BattleMap::Node::CheckPoint {
     my ($orig, $self) = @_;
     $self->$orig() . "<br>@{[ $self->check_point->target_town_name ]}";
   };
+
+  __PACKAGE__->meta->make_immutable;
 
 }
 

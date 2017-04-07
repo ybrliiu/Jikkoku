@@ -27,12 +27,12 @@ EOS
     List::Util::sum map { $self->chara->$_ } @{ $self->depend_abilities };
   }
 
-  sub calc_success_pc {
-    my ($self, $ability_sum) = @_;
-    Carp::croak 'few arguments' if @_ < 2;
+  around calc_success_pc => sub {
+    my ($orig, $self, $ability_sum) = @_;
+    Carp::croak 'few arguments' if @_ < 3;
     my $probability = $ability_sum * $self->success_coef;
     $probability > $self->max_success_pc ? $self->max_success_pc : $probability;
-  }
+  };
 
   sub effect_time {
     my ($self, $ability_sum) = @_;
@@ -41,8 +41,8 @@ EOS
   }
 
   sub calc_effect_time {
-    my $self = shift;
-    my ($min_effect_time, $max_effect_time) = $self->effect_time;
+    my ($self, $ability_sum) = @_;
+    my ($min_effect_time, $max_effect_time) = $self->effect_time($ability_sum);
     int rand($max_effect_time - $min_effect_time) + $min_effect_time;
   }
 

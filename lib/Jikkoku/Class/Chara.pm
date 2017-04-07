@@ -6,6 +6,7 @@ package Jikkoku::Class::Chara {
   use Module::Load;
   use Jikkoku::Model::State;
   use Jikkoku::Model::Soldier;
+  use Jikkoku::Model::Chara::Profile;
   use Jikkoku::Class::Chara::Soldier;
   use Jikkoku::Class::Role::TextData;
 
@@ -31,13 +32,13 @@ package Jikkoku::Class::Chara {
   has 'country_id'       => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
   has 'money'            => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
   has 'rice'             => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
-  has 'contribute'       => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
-  has 'class'            => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 1 );
+  has 'contribute'       => ( metaclass => 'Column', is => 'rw', isa => 'Num', default  => 0 );
+  has 'class'            => ( metaclass => 'Column', is => 'rw', isa => 'Num', default  => 1 );
   has 'weapon_power'     => ( metaclass => 'Column', is => 'rw', isa => 'Num', default  => 0 );
   has 'book_power'       => ( metaclass => 'Column', is => 'rw', isa => 'Num', default  => 0 );
   has 'loyalty'          => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 80 );
   # hash_field の先頭には '_'　をつける (make_hash_fields で旧APIと同名のメソッドを作成するため)
-  has '_ability_exp'      => (
+  has '_ability_exp'     => (
     metaclass => 'HashField',
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
@@ -249,7 +250,7 @@ package Jikkoku::Class::Chara {
     my ($self, $chara) = @_;
     my $self_bm = $self->_soldier_battle_map;
     my $chara_bm = $chara->_soldier_battle_map;
-    abs( $self_bm->_get('x') - $chara_bm->get('x') ) + abs( $self_bm->get('y') - $chara_bm->get('y') );
+    abs( $self_bm->get('x') - $chara_bm->get('x') ) + abs( $self_bm->get('y') - $chara_bm->get('y') );
   }
 
   sub can_protect {

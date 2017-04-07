@@ -17,7 +17,6 @@ package Jikkoku::Class::Skill::Role::DependOnAbilities {
   
   around explain_effect_simple => sub {
     my ($orig, $self) = (shift, shift);
-    warn "explain_effect_simple";
     $self->$orig(@_)
       . join('', @{ $self->items_of_depend_on_abilities })
       . 'は' . join('', map { $JAPANESE->{$_} . '及び' } @{ $self->depend_abilities })

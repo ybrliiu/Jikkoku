@@ -9,7 +9,10 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::NotDependOnAbilities {
     effect_time
   );
 
-  sub calc_success_pc { shift->success_pc }
+  around calc_success_pc => sub {
+    my ($orig, $self) = @_;
+    $self->success_pc;
+  };
 
   sub calc_effect_time { shift->effect_time }
 
