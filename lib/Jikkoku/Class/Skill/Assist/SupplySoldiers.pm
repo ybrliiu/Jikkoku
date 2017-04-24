@@ -11,7 +11,7 @@ package Jikkoku::Class::Skill::Assist {
   has 'range' => ( is => 'ro', isa => 'Int', default => 1 );
 
   has 'sucess_coef'          => ( is => 'rw', default => 0.005 );
-  has 'max_sucess_pc'        => ( is => 'rw', default => 0.8 );
+  has 'max_sucess_ratio'        => ( is => 'rw', default => 0.8 );
   has 'consume_morale'       => ( is => 'rw', default => 12 );
   has 'get_contribute_coef'  => ( is => 'rw', default => 0.01 );
   has 'add_book_power'       => ( is => 'rw', default => 0.05 );

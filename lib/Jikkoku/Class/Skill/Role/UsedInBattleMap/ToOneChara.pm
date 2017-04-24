@@ -3,6 +3,8 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara {
   use Mouse::Role;
   use Jikkoku;
   use Jikkoku::Util;
+
+  with 'Jikkoku::Class::Skill::Role::ToOneChara';
   
   # attribute
   requires 'range';

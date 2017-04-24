@@ -6,8 +6,24 @@ package Jikkoku::Class::Skill::Role::Purchasable {
   # attribute
   requires qw( consume_skill_point );
 
-  # method
-  requires qw( explain_effect_simple );
+  {
+    my @methods = qw(
+      explain_effect_about_state
+      explain_effect_body
+      explain_effect_about_depend_abilities
+      explain_effect_about_consume_morale
+      explain_effect_is_action
+    );
+
+    sub explain_effect_is_action { '' }
+
+    sub explain_effect_about_consume_morale { '' }
+
+    sub explain_effect_simple {
+      my $self = shift;
+      join "<br>\n", grep { $_ ne '' } map { $self->$_ } @methods;
+    }
+  }
 
   around acquire => sub {
     my ($orig, $self) = @_;

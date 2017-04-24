@@ -8,6 +8,21 @@ package Jikkoku::Model::SkillCategory {
   use Option;
   use Module::Load;
 
+  sub get_skill_category {
+    my ($self, $args) = @_;
+    validate_values $args => [qw/ id skill_model /];
+
+    my $key = $args->{id};
+    my $load_class = "Jikkoku::Class::Skill::${key}";
+    state $loaded_class = {};
+    unless (exists $loaded_class->{$key}) {
+      Module::Load::load $load_class;
+      $loaded_class->{$key} = 1;
+    }
+
+    my $skill_category = $load_class->new({ skill_model => $args->{skill_model} });
+  }
+
   sub get_skill_category_with_option {
     my ($self, $args) = @_;
     validate_values $args => [qw/ id skill_model /];

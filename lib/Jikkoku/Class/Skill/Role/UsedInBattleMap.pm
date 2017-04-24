@@ -17,7 +17,7 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap {
 
   # method
   requires qw(
-    calc_success_pc
+    calc_success_ratio
     effect_time
     calc_effect_time
   );

@@ -6,7 +6,8 @@ package Jikkoku::Class::BattleCommand::ChargeMovePoint {
   use Jikkoku::Model::Config;
   my $CONFIG = Jikkoku::Model::Config->get;
 
-  has 'move_point_charge_time' => (is => 'rw', default => $CONFIG->{game}{action_interval_time});
+  has 'move_point_charge_time'
+    => ( is => 'rw', isa => 'Int', default => $CONFIG->{game}{action_interval_time} );
 
   with qw(
     Jikkoku::Class::BattleCommand::BattleCommand
@@ -26,12 +27,9 @@ package Jikkoku::Class::BattleCommand::ChargeMovePoint {
     my $chara = $self->chara;
     
     $chara->lock;
-
     eval {
-      $chara->soldier_battle_map( move_point => $self->chara->soldier->move_point );
-      $chara->soldier_battle_map( move_point_charge_time => $time + $self->move_point_charge_time );
+      $chara->soldier->charge_move_point( $time + $self->move_point_charge_time );
     };
-
     if (my $e = $@) {
       $chara->abort;
       throw($e);

@@ -71,6 +71,16 @@ package Jikkoku::Class::Town {
     }
   }
 
+  sub is_neutral {
+    my $self = shift;
+    $self->country_id == 0;
+  }
+
+  sub is_occur_stop_around_time {
+    my $self = shift;
+    !$self->is_neutral && $self->wall > 0;
+  }
+
   sub _salary {
     my ($self, $attr) = @_;
     int( $self->{$attr} * 12 * $self->{farmer} / 12000 );

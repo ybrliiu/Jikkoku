@@ -39,7 +39,6 @@ package Player {
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( force intellect leadership popular soldier_id what_is_this )],
-    validator => sub {},
   );
   has 'delete_turn' => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
   has 'town_id'     => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
@@ -54,14 +53,12 @@ package Player {
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( assist disturb cheer move battle_method command auto_gather attack assist_move not_used )],
-    validator => sub {},
   );
   has 'config' => (
     metaclass => 'HashField',
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( battle_map_hidden font_size config2 config3 config4 config5 config6 )],
-    validator => sub {},
   );
   has 'skill_point'     => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
   has 'equipment_skill' => (
@@ -69,7 +66,6 @@ package Player {
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( book guard )],
-    validator => sub {},
   );
   has 'last_login_host'    => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '' );
   has 'weapon_skill'       => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '' );
@@ -83,7 +79,6 @@ package Player {
       move_point_charge_time action_time move_point
       keisu_count plus_attack_power plus_defence_power change_formation_time not_used
     )],
-    validator => sub {},
   );
   has 'enter_to_maze'     => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
   has 'guard_name'        => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '紙の盾' );
@@ -104,7 +99,6 @@ package Player {
       conquer_town destroy_wall 
       maybe_not_used maybe_not_used2
     )],
-    validator => sub {},
   );
   has 'buffer_and_reward_and_command_skill' => (
     metaclass => 'HashField',
@@ -130,14 +124,12 @@ package Player {
       kintoun
       not_used not_used2
     )],
-    validator => sub {},
   );
   has 'weapon2_data' => (
     metaclass => 'HashField',
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( power name attr attr_power )],
-    validator => sub {},
   );
   has 'bought_skill_point' => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
   has 'interval_time'      => (
@@ -145,7 +137,6 @@ package Player {
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( protect singeki )],
-    validator => sub {},
   );
   has 'not_used'    => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '' );
   has 'morale_data' => (
@@ -153,21 +144,18 @@ package Player {
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( morale morale_max )],
-    validator => sub {},
   );
   has 'debuff' => (
     metaclass => 'HashField',
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( stuck )],
-    validator => sub {},
   );
   has 'buff' => (
     metaclass => 'HashField',
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( not_used )],
-    validator => sub {},
   );
 
   with 'Jikkoku::Class::Role::TextData::Division';

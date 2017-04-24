@@ -41,6 +41,10 @@ package Jikkoku::Model::State {
     my $state = eval {
       $load_class->new(chara => $self->chara);
     };
+    if (my $e = $@) {
+      return Option::None->new;
+    }
+
     Option->new($state);
   }
 

@@ -5,9 +5,9 @@ package Jikkoku::Class::Role::TextData::HashField {
   use Carp;
   use Jikkoku::Util 'validate_values';
 
-  has 'keys'      => ( is => 'ro', isa => 'ArrayRef', required => 1 );
-  has 'data'      => ( is => 'rw', isa => 'HashRef', required => 1 );
-  has 'validator' => ( is => 'ro', isa => 'CodeRef', required => 1 );
+  has 'keys'       => ( is => 'ro', isa => 'ArrayRef', required => 1 );
+  has 'data'       => ( is => 'rw', isa => 'HashRef', required => 1 );
+  has 'validators' => ( is => 'ro', isa => 'HashRef[CodeRef]', default => sub { +{} } );
 
   with 'Jikkoku::Class::Role::TextData::Generic';
 
@@ -20,10 +20,19 @@ package Jikkoku::Class::Role::TextData::HashField {
 
   sub set {
     my ($self, $key, $value) = @_;
-    $self->validator->(@_);
     my $data = $self->data;
     Carp::croak("$key というフィールドは存在しません。") unless exists $data->{$key};
+    if (exists $self->validators->{$key}) {
+      $self->validators->{$key}->($key, $value, $data);
+    }
     $data->{$key} = $value;
+  }
+
+  sub init {
+    my $self = shift;
+    for my $key (@{ $self->keys }) {
+      $self->data->{$key} = 0;
+    }
   }
 
   sub output {

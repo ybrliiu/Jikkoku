@@ -2,11 +2,15 @@ package Jikkoku::Class::Chara {
 
   use Mouse;
   use Jikkoku;
-  
   use Module::Load;
+
   use Jikkoku::Model::State;
+  use Jikkoku::Model::Skill;
   use Jikkoku::Model::Soldier;
+  use Jikkoku::Model::Chara::Formation;
   use Jikkoku::Model::Chara::Profile;
+  use Jikkoku::Model::Chara::Protector;
+
   use Jikkoku::Class::Chara::Soldier;
   use Jikkoku::Class::Role::TextData;
 
@@ -43,7 +47,6 @@ package Jikkoku::Class::Chara {
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( force intellect leadership popular soldier_id what_is_this )],
-    validator => sub {},
   );
   has 'delete_turn' => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
   has 'town_id'     => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
@@ -58,14 +61,12 @@ package Jikkoku::Class::Chara {
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( assist disturb cheer move battle_method command auto_gather attack assist_move not_used )],
-    validator => sub {},
   );
   has '_config' => (
     metaclass => 'HashField',
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( battle_map_hidden font_size config2 config3 config4 config5 config6 )],
-    validator => sub {},
   );
   has 'skill_point'     => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
   has '_equipment_skill' => (
@@ -73,29 +74,24 @@ package Jikkoku::Class::Chara {
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( book guard )],
-    validator => sub {},
   );
   has 'last_login_host'    => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '' );
   has 'weapon_skill'       => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '' );
   has '_soldier_battle_map' => (
-    metaclass => 'HashField',
-    is        => 'rw',
-    isa       => 'Jikkoku::Class::Role::TextData::HashField',
-    keys      => [qw(
-      formation is_sortie battle_map_id
+    metaclass  => 'HashField',
+    is         => 'rw',
+    isa        => 'Jikkoku::Class::Role::TextData::HashField',
+    keys       => [qw(
+      formation_id is_sortie battle_map_id
       x y
       move_point_charge_time action_time move_point
       keisu_count plus_attack_power plus_defence_power change_formation_time not_used
     )],
-    validator => sub {
-      my ($self, $key, $value) = @_;
-      state $switch = {
-        move_point => sub {
-          my $value = shift;
-          die "0以下にはできません" if $value < 0;
-        },
-      };
-      $switch->{$key}->($value) if exists $switch->{$key};
+    validators => +{
+      move_point => sub {
+        my ($key, $value) = @_;
+        die "0以下にはできません" if $value < 0;
+      },
     },
   );
   has 'enter_to_maze'     => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
@@ -117,7 +113,6 @@ package Jikkoku::Class::Chara {
       conquer_town destroy_wall 
       maybe_not_used maybe_not_used2
     )],
-    validator => sub {},
   );
   has '_buffer_and_reward_and_command_skill' => (
     metaclass => 'HashField',
@@ -143,14 +138,12 @@ package Jikkoku::Class::Chara {
       kintoun
       not_used not_used2
     )],
-    validator => sub {},
   );
   has '_weapon2_data' => (
     metaclass => 'HashField',
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( power name attr attr_power )],
-    validator => sub {},
   );
   has 'bought_skill_point' => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
   has '_interval_time'      => (
@@ -158,29 +151,32 @@ package Jikkoku::Class::Chara {
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( protect singeki )],
-    validator => sub {},
   );
   has 'not_used'    => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '' );
   has '_morale_data' => (
-    metaclass => 'HashField',
-    is        => 'rw',
-    isa       => 'Jikkoku::Class::Role::TextData::HashField',
-    keys      => [qw( morale morale_max )],
-    validator => sub {},
+    metaclass  => 'HashField',
+    is         => 'rw',
+    isa        => 'Jikkoku::Class::Role::TextData::HashField',
+    keys       => [qw( morale morale_max )],
+    validators => +{
+      morale => sub {
+        my ($key, $value, $data) = @_;
+        die "0以下にはできません" if $value < 0;
+        die "士気の上限($data->{morale_max})を超えています" if $value > $data->{morale_max};
+      },
+    },
   );
   has '_debuff' => (
     metaclass => 'HashField',
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( stuck )],
-    validator => sub {},
   );
   has '_buff' => (
     metaclass => 'HashField',
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( not_used )],
-    validator => sub {},
   );
   has 'states_data' => (
     metaclass => 'HashContainer',
@@ -189,13 +185,24 @@ package Jikkoku::Class::Chara {
     default   => sub { Jikkoku::Class::Role::TextData::HashContainer->new },
   );
 
-  has 'soldier' => ( is => 'ro', isa => 'Jikkoku::Class::Chara::Soldier', lazy => 1, builder => '_build_soldier' );
-  has 'states'  => ( is => 'rw', isa => 'Jikkoku::Model::State', lazy => 1, default => sub { Jikkoku::Model::State->new(chara => $_[0]) } );
+  has 'states'     => ( is => 'ro', isa => 'Jikkoku::Model::State', lazy => 1, default => sub { Jikkoku::Model::State->new(chara => $_[0]) } );
+  has 'skills'     => ( is => 'ro', isa => 'Jikkoku::Model::Skill', lazy => 1, default => sub { Jikkoku::Model::Skill->new(chara => $_[0]) } );
+  has 'formations' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Model::Chara::Formation',
+    lazy    => 1,
+    default => sub { Jikkoku::Model::Chara::Formation->new( chara => $_[0] ) },
+  );
 
-  sub _build_soldier {
+  sub soldier {
     my $self = shift;
     my $soldier_data = Jikkoku::Model::Soldier->new->get( $self->ability_exp('soldier_id') );
-    Jikkoku::Class::Chara::Soldier->new( $soldier_data );
+    Jikkoku::Class::Chara::Soldier->new( %$soldier_data, chara => $self );
+  }
+
+  sub formation {
+    my $self = shift;
+    $self->formations->get_formation( $self->soldier_battle_map('formation_id') );
   }
 
   with 'Jikkoku::Class::Role::TextData::Division';
@@ -270,6 +277,11 @@ package Jikkoku::Class::Chara {
     $_[0]->is_authed;
   }
 
+  sub is_neutral {
+    my $self = shift;
+    $self->country_id == 0;
+  }
+
   sub is_protect {
     my ($self) = @_;
     Jikkoku::Model::Chara::Protector->new->is_protect( $self->id );
@@ -277,7 +289,7 @@ package Jikkoku::Class::Chara {
 
   sub is_same_country {
     my ($self, $chara) = @_;
-    $self->country_id eq $chara->country_id;
+    $self->country_id == $chara->country_id;
   }
 
   sub is_soldier_same_position {
@@ -316,7 +328,7 @@ package Jikkoku::Class::Chara {
   sub _generate_save_log_method {
     my $class = shift;
     my $meta = $class->meta;
-    my @method_names = map { "save_${_}_log" } qw/command battle/;
+    my @method_names = map { "save_${_}_log" } qw/ command battle /;
     for my $method_name (@method_names) {
       my $pkg_name = "Jikkoku::Model::Chara::" . ucfirst $method_name =~ s/save_//r;
       $pkg_name =~ s/_log/Log/;

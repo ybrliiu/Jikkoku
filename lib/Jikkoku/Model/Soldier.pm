@@ -1,9 +1,10 @@
 package Jikkoku::Model::Soldier {
 
   use Jikkoku;
+  use Carp;
 
   use constant {
-    FILE_PATH => 'etc/soldier.conf',
+    FILE_PATH => './etc/soldier.conf',
   };
 
   sub new {
@@ -16,6 +17,7 @@ package Jikkoku::Model::Soldier {
 
   sub get {
     my ($self, $soldier_id) = @_;
+    Carp::croak 'few argments($soldier_id)' if @_ < 2;
     $self->[$soldier_id];
   }
 

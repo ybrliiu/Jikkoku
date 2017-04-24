@@ -11,7 +11,7 @@ package Jikkoku::Class::Skill::Protect::Protect {
   has 'effect_range'   => ( is => 'rw', default => 3 );
   has 'effect_time'    => ( is => 'rw', default => 250 );
   has 'interval_time'  => ( is => 'rw', default => 240 );
-  has 'success_pc'     => ( is => 'rw', default => 1 );
+  has 'success_ratio'  => ( is => 'rw', default => 1 );
 
   with qw(
     Jikkoku::Class::Skill::Skill
@@ -26,8 +26,8 @@ package Jikkoku::Class::Skill::Protect::Protect {
 
   sub acquire {}
 
-  sub explain_effect {
-    my ($self) = @_;
+  sub explain_effect_body {
+    my $self = shift;
 << "EOS";
 使用後@{[ $self->effect_time ]}秒間、
 自分の周囲@{[ $self->effect_range ]}マス以内にいる味方が敵の攻撃を受けた時、
@@ -66,11 +66,15 @@ EOS
 
     $chara->lock;
 
+    my $is_success;
     eval {
       $chara->morale_data( morale => $chara->morale_data('morale') - $self->consume_morale );
       $chara->contribute( $chara->contribute + $self->get_contribute );
       $chara->interval_time( protect => $time + $self->interval_time );
-      $protector_model->add( $chara->id );
+      $is_success = $self->determine_whether_succeed;
+      if ($is_success) {
+        $protector_model->add( $chara->id );
+      }
     };
 
     if (my $e = $@) {
@@ -79,14 +83,18 @@ EOS
     } else {
       $chara->commit;
       $protector_model->save;
-      my $log_base
-        = qq{<font color="#FF69B4">【@{[ $self->name ]}】</font>@{[ $chara->name ]}は@{[ $self->name ]}を行いました！敵の攻撃から味方を守ります。 };
-      my $chara_log
-        = qq{${log_base}士気-<span class="red">@{[ $self->consume_morale ]}</span> 貢献値+<span class="red">@{[ $self->get_contribute ]}</span>};
-      $chara->save_command_log( $chara_log );
-      $chara->save_battle_log( $chara_log );
-      my $bm = $self->battle_map_model->get( $chara->soldier_battle_map('battle_map_id') );
-      $self->map_log_model->add( $log_base . '(' . $bm->name . ')' )->save;
+      my $name_tag = qq{<span style="color: #FF69B4">【@{[ $self->name ]}】</font>};
+      if ($is_success) {
+        my $log_base = qq{$name_tag@{[ $chara->name ]}は@{[ $self->name ]}を行いました！敵の攻撃から味方を守ります。 };
+        my $chara_log
+          = qq{${log_base}士気-<span class="red">@{[ $self->consume_morale ]}</span> 貢献値+<span class="red">@{[ $self->get_contribute ]}</span>};
+        $chara->save_command_log( $chara_log );
+        $chara->save_battle_log( $chara_log );
+        my $bm = $self->battle_map_model->get( $chara->soldier_battle_map('battle_map_id') );
+        $self->map_log_model->add( $log_base . '(' . $bm->name . ')' )->save;
+      } else {
+        $chara->save_battle_log("$name_tagを行おうとしましたが失敗しました。");
+      }
     }
 
   }

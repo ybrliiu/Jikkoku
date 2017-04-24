@@ -4,7 +4,10 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara::ToAlly {
   use Jikkoku;
   use Jikkoku::Util;
 
-  with 'Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara';
+  with qw(
+    Jikkoku::Class::Skill::Role::ToAlly
+    Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara
+  );
 
   before ensure_can_action => sub {
     my ($self, $args) = @_;

@@ -15,8 +15,10 @@ use_ok $CLASS;
   $chara->intellect(100);
   ok !$chara->states->get('Stuck')->is_available(time);
   dies_ok { $skill->acquire };
-  is $@->message, '修得条件を満たしていません';
-  diag $@->stack_trace;
+  is $@->message, '修得条件を満たしていません(混乱を修得していないため)';
+
+  diag $skill->explain_effect;
+  diag $skill->explain_effect_simple;
 }
 
 done_testing;

@@ -2,9 +2,11 @@ package Jikkoku::Class::BattleCommand::Retreat {
 
   use Mouse;
   use Jikkoku;
+  use Jikkoku::Util 'validate_values';
 
-  use Jikkoku::Model::Town;
-  use Jikkoku::Model::BattleMap;
+  has 'town_model'   => ( is => 'rw', isa => 'Jikkoku::Model::Town' );
+  has 'battle_map'   => ( is => 'rw', isa => 'Jikkoku::Class::BattleMap' );
+  has 'current_node' => ( is => 'rw', isa => 'Jikkoku::Class::BattleMap::Node' );
 
   with qw(
     Jikkoku::Class::BattleCommand::BattleCommand
@@ -13,26 +15,25 @@ package Jikkoku::Class::BattleCommand::Retreat {
   );
 
   sub ensure_can_action {
-    my ($self) = @_;
+    my ($self, $args) = @_;
+    validate_values $args => [qw/ battle_map_model town_model /];
 
-    my $bm_id        = $self->chara->soldier_battle_map('battle_map_id');
-    my $battle_map   = Jikkoku::Model::BattleMap->new->get( $bm_id );
-    my $current_node = $battle_map->get_node_by_point(
-      $self->chara->soldier_battle_map('x'), 
-      $self->chara->soldier_battle_map('y'), 
-    );
+    $self->town_model( $args->{town_model} );
 
-    throw("退却できる地形の上にいません")
-      if $current_node->terrain != $current_node->ENTRY && $current_node->terrain != $current_node->CASTLE;
+    my $soldier = $self->chara->soldier;
+    $self->battle_map( $args->{battle_map_model}->get( $soldier->battle_map_id ) );
+    $self->current_node( $self->battle_map->get_node_by_point( $soldier->x, $soldier->y ) );
+    unless ( $self->current_node->can_retreat ) {
+      Jikkoku::Class::Role::BattleActionException->throw("退却できる地形の上にいません");
+    }
 
-    $battle_map, $current_node;
   }
 
   sub _try_retreat {
     my ($self, $town) = @_;
     if ( $town->country_id == $self->chara->country_id ) {
       $self->chara->town_id( $town->id );
-      $self->chara->soldier_retreat;
+      $self->chara->soldier->retreat;
     } else {
       throw("他国の都市です。");
     }
@@ -40,34 +41,37 @@ package Jikkoku::Class::BattleCommand::Retreat {
   }
 
   sub action {
-    my ($self, $battle_map, $current_node) = @_;
+    my $self = shift;
+    my ($chara, $current_node) = ($self->chara, $self->current_node);
+    $chara->lock;
 
     my $retreat_town_name = eval {
-
-      my $town_model = Jikkoku::Model::Town->new;
-
       if ( $current_node->terrain == $current_node->ENTRY ) {
-        my $check_point = $battle_map->get_check_point( $current_node );
-        my $town        = $town_model->get( $check_point->target_bm_id );
+        my $check_point = $self->battle_map->get_check_point( $current_node );
+        my $town        = $self->town_model->get( $check_point->target_bm_id );
         $self->_try_retreat( $town );
       }
       elsif ( $current_node->is_castle ) {
-        my $town = $town_model->get( $self->chara->soldier_battle_map('battle_map_id') );
+        my $town = $self->town_model->get( $self->chara->soldier_battle_map('battle_map_id') );
         $self->_try_retreat( $town );
       }
       else {
-        throw("その地形の上では退却できません。");
+        Jikkoku::Class::Role::BattleActionException->throw("その地形の上では退却できません。");
       }
-
     };
 
     if (my $e = $@) {
-      $self->chara->abort;
-      throw($e);
+      $chara->abort;
+      if ( Exception::Tiny->caught($e) ) {
+        $e->rethrow;
+      } else {
+        die $e;
+      }
     } else {
+      $chara->commit;
       my $log = "【退却】$retreat_town_name に退却しました。";
-      $self->chara->save_battle_log($log);
-      $self->chara->save_command_log($log);
+      $chara->save_battle_log($log);
+      $chara->save_command_log($log);
     }
 
   }

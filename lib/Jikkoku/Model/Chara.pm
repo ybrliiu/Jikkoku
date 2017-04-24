@@ -1,15 +1,15 @@
 package Jikkoku::Model::Chara {
 
   use Jikkoku;
-  use Jikkoku::Util qw/if_test TEST_DIR open_data create_data/;
+  use Jikkoku::Util qw/if_test TEST_DIR open_data create_data validate_values/;
   use Jikkoku::Class::Chara;
   use Option;
 
   sub new {
     my ($class) = @_;
     bless {
-      data  => {},
-      stock => [],
+      data   => {},
+      result => [],
     }, $class;
   }
 
@@ -18,7 +18,7 @@ package Jikkoku::Model::Chara {
     Jikkoku::Class::Chara->new($id);
   }
 
-  sub opt_get { get_with_option(@_) }
+  *opt_get = \&get_with_option;
 
   sub get_with_option {
     my ($self, $id) = @_;
@@ -78,6 +78,21 @@ package Jikkoku::Model::Chara {
       $chara->country_id != $_->country_id
         && $chara->soldier_battle_map('battle_map_id') eq $_->soldier_battle_map('battle_map_id')
     } @{ $self->get_all } ];
+  }
+
+  sub get_same_bm_id_and_same_point_and_enemy_charactors {
+    my ($self, $bm_id, $x, $y) = @_;
+    Carp::croak 'few argments($bm_id, $x, $y)' if @_ < 4;
+    [ grep { $_->is_same_position($bm_id, $x, $y) } @{ $self->get_all } ];
+  }
+
+  sub has_enemies_on_the_position {
+    my ($self, $args) = @_;
+    validate_values $args => [qw/ battle_map_id point country_id /];
+    $self->first(sub {
+      my $chara = shift;
+      $chara->soldier->is_same_position( $args->{battle_map_id}, $args->{point} ) && $chara->country_id != $args->{country_id};
+    });
   }
 
   sub first {

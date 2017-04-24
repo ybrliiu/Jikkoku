@@ -11,12 +11,12 @@ package Jikkoku::Class::Role::BattleAction {
     Jikkoku::Class::Role::BattleActionException->throw($mes);
   }
 
-  has 'chara' => (is => 'ro', weak_ref => 1, required => 1);
+  has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara', weak_ref => 1, required => 1 );
 
   requires qw( ensure_can_action action );
 
   before ensure_can_action => sub {
-    my ($self) = @_;
+    my $self = shift;
     throw("BM上で行動可能な時間帯ではありません。") unless is_game_update_hour;
     throw("出撃していません。") unless $self->chara->is_sortie;
     if ( $self->chara->soldier_num < 0 ) {
@@ -33,12 +33,12 @@ package Jikkoku::Class::Role::BattleAction {
     $self->$origin( @ret );
   };
 
-  sub calc_success_pc { 1 }
+  sub calc_success_ratio { 1 }
 
   # その行動が成功するかどうかを判定, action method 内で使用(移動, 関所出入りは除く)
   sub determine_whether_succeed {
-    my ($self, @args) = @_;
-    my $origin_success_ratio = $self->calc_success_pc(@args);
+    my $self = shift;
+    my $origin_success_ratio = $self->calc_success_ratio(@_);
     my $success_ratio = $origin_success_ratio;
     $success_ratio += $self->chara->states->adjust_battle_action_success_ratio($origin_success_ratio);
     $success_ratio > rand(1);

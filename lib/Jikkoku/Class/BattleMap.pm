@@ -5,6 +5,7 @@ package Jikkoku::Class::BattleMap {
 
   use Carp qw( croak );
   use Jikkoku::Util qw( validate_values );
+  use List::Util qw( first );
 
   use Jikkoku::Class::BattleMap::Node;
   use Jikkoku::Class::BattleMap::CheckPoint;
@@ -14,12 +15,12 @@ package Jikkoku::Class::BattleMap {
     Node => 'Jikkoku::Class::BattleMap::Node',
   };
 
-  has 'id'           => ( is => 'ro', required => 1 );
-  has 'name'         => ( is => 'ro', required => 1 );
-  has 'width'        => ( is => 'ro', required => 1 );
-  has 'height'       => ( is => 'ro', required => 1 );
-  has 'map_data'     => ( is => 'rw', required => 1 );
-  has 'check_points' => ( is => 'rw', required => 1 );
+  has 'id'           => ( is => 'ro', isa => 'Str',                required => 1 );
+  has 'name'         => ( is => 'ro', isa => 'Str',                required => 1 );
+  has 'width'        => ( is => 'ro', isa => 'Int',                required => 1 );
+  has 'height'       => ( is => 'ro', isa => 'Int',                required => 1 );
+  has 'map_data'     => ( is => 'rw', isa => 'ArrayRef[ArrayRef]', required => 1 );
+  has 'check_points' => ( is => 'rw', isa => 'HashRef',            required => 1 );
 
   sub BUILD {
     my $self = shift;
@@ -83,19 +84,19 @@ package Jikkoku::Class::BattleMap {
   sub set_charactors {
     my ($self, $chara_model, $chara) = @_;
     $self->set_current($chara);
-    my $charactors = $chara_model->get_all;
-    my @sortie_list = grep {
-      $_->is_sortie and $_->soldier_battle_map('battle_map_id') == $self->{id}
-    } @$charactors;
-    my @allies  = grep { $_->country_id == $chara->country_id } @sortie_list;
-    my @enemies = grep { $_->country_id != $chara->country_id } @sortie_list;
-    for (@allies) {
-      my $node = $self->map_data->[ $_->soldier_battle_map('y') ][ $_->soldier_battle_map('x') ];
-      $node->push_ally($_);
+    my $charactors  = $chara_model->get_all;
+    my @sortie_list = grep { $_->is_sortie and $_->soldier->battle_map_id == $self->id } @$charactors;
+    my @allies      = grep { $_->country_id == $chara->country_id } grep { $_->id != $chara->id } @sortie_list;
+    my @enemies     = grep { $_->country_id != $chara->country_id } @sortie_list;
+    for my $ally (@allies) {
+      my $soldier = $ally->soldier;
+      my $node    = $self->map_data->[ $soldier->y ][ $soldier->x ];
+      $node->push_ally($ally);
     }
-    for (@enemies) {
-      my $node = $self->map_data->[ $_->soldier_battle_map('y') ][ $_->soldier_battle_map('x') ];
-      $node->push_enemy($_);
+    for my $enemy (@enemies) {
+      my $soldier = $enemy->soldier;
+      my $node    = $self->map_data->[ $soldier->y ][ $soldier->x ];
+      $node->push_enemy($enemy);
     }
   }
 
@@ -130,6 +131,7 @@ package Jikkoku::Class::BattleMap {
     $next_node;
   }
 
+  # 範囲を計算すればいらない(キャッシュしてるので高速化の期待はできる)
   sub set_can_move {
     my ($self, $args) = @_;
     validate_values $args => [qw( chara chara_model town_model )];
@@ -188,6 +190,9 @@ package Jikkoku::Class::BattleMap {
 
   sub get_node_by_point {
     my ($self, $x, $y) = @_;
+    Carp::croak 'few arguments ($x, $y)' if @_ < 3;
+    Carp::croak '指定された座標はマップの範囲外です'
+      if $x < 0 || $y < 0 || $x >= $self->width || $y >= $self->height;
     $self->map_data->[$y][$x];
   }
 
@@ -202,6 +207,14 @@ package Jikkoku::Class::BattleMap {
         }
       }
     }
+  }
+
+  sub get_castle_node {
+    my $self = shift;
+    $self->get_node(sub {
+      my $node = shift;
+      $node->is_castle;
+    });
   }
 
   sub get_up_node {
@@ -241,6 +254,12 @@ package Jikkoku::Class::BattleMap {
     my ($self, $node) = @_;
     my $point = $node->y . ',' . $node->x;
     $self->check_points->{$point} // croak "関所が見つかりませんでした (y,x) = ($point)";
+  }
+
+  sub get_check_point_by_target_bm_id {
+    my ($self, $bm_id) = @_;
+    Carp::croak 'few argments($bm_id)' if @_ < 2;
+    first { $_->target_bm_id eq $bm_id } values %{ $self->check_points };
   }
 
   __PACKAGE__->meta->make_immutable;

@@ -3,6 +3,8 @@ package Jikkoku::Web::Controller::Chara {
   use Jikkoku;
   use parent 'Jikkoku::Web::Controller::Chara::Base';
 
+  use Jikkoku::Model::Formation;
+
   sub battle_map {
     my $self = shift;
 

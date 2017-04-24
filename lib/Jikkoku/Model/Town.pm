@@ -2,6 +2,7 @@ package Jikkoku::Model::Town {
 
   use Jikkoku;
   use parent 'Jikkoku::Model::Base::TextData::Integration';
+  use Carp;
 
   use Jikkoku::Util qw/open_data save_data/;
   use Jikkoku::Class::Town;
@@ -16,6 +17,28 @@ package Jikkoku::Model::Town {
     my ($self, $name) = @_;
     my ($town) = grep { $_->name eq $name } values %{ $self->{data} };
     $town;
+  }
+
+  sub set_to_map_data {
+    my $self = shift;
+    $self->{map_data} = [];
+    for my $town (@{ $self->get_all }) {
+      $self->{map_data}[ $town->y ][ $town->x ] = $town;
+    }
+  }
+
+  sub get_by_coordinate {
+    my ($self, $x, $y) = @_;
+    unless (defined $self->{map_data}) {
+      $self->set_to_map_data;
+    }
+    $self->{map_data}[$y][$x];
+  }
+
+  sub get_towns_by_country_id {
+    Carp::croak 'few arguments($country_id)' if @_ < 2;
+    my ($self, $country_id) = @_;
+    [ grep { $_->country_id == $country_id } @{ $self->get_all } ];
   }
   
   # override

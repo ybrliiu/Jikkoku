@@ -31,9 +31,9 @@ package Jikkoku::Class::Role::TextData {
     my @hash_fields = grep { $_->can('keys') } $class->get_column_attributes;
     for my $attr (@hash_fields) {
       $args->{$attr->name} = Jikkoku::Class::Role::TextData::HashField->new({
-        keys      => $attr->keys,
-        textdata  => $args->{$attr->name},
-        validator => $attr->validator,
+        keys       => $attr->keys,
+        textdata   => $args->{$attr->name},
+        validators => $attr->validators,
       });
     }
   }
@@ -79,9 +79,9 @@ package Jikkoku::Class::Role::TextData {
     } $class->get_column_attributes;
     for my $meta_attr (@hash_fields) {
       $hashed_textdata->{$meta_attr->name} = Jikkoku::Class::Role::TextData::HashField->new({
-        keys      => $meta_attr->keys,
-        textdata  => $hashed_textdata->{$meta_attr->name},
-        validator => $meta_attr->validator,
+        keys       => $meta_attr->keys,
+        textdata   => $hashed_textdata->{$meta_attr->name},
+        validators => $meta_attr->validators,
       });
     }
   }
@@ -193,8 +193,8 @@ package Jikkoku::Class::Role::TextData::Attribute::HashField {
   use Jikkoku;
   extends 'Jikkoku::Class::Role::TextData::Attribute::Column';
 
-  has 'keys'      => ( is => 'ro', isa => 'ArrayRef', required => 1 );
-  has 'validator' => ( is => 'ro', isa => 'CodeRef', required => 1 );
+  has 'keys'       => ( is => 'ro', isa => 'ArrayRef', required => 1 );
+  has 'validators' => ( is => 'ro', isa => 'HashRef[CodeRef]', default => sub { +{} } );
 
 }
 

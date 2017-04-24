@@ -6,7 +6,7 @@ package Jikkoku::Class::BattleCommand::Move {
   use Carp qw( croak );
   use Jikkoku::Util qw( validate_values );
 
-  has 'poison_die_pc' => ( is => 'rw', isa => 'Num', default => 0.05 );
+  has 'poison_die_ratio' => ( is => 'rw', isa => 'Num', default => 0.05 );
 
   with qw(
     Jikkoku::Class::BattleCommand::BattleCommand
@@ -52,7 +52,7 @@ package Jikkoku::Class::BattleCommand::Move {
   sub _move_to_poison {
     my ($self, $next_node) = @_;
     if ($next_node->terrain == $next_node->POISON) {
-      my $minus = $self->chara->soldier_num * $self->poison_die_pc;
+      my $minus = $self->chara->soldier_num * $self->poison_die_ratio;
       $self->chara->soldier_num( $self->chara->soldier_num - $minus );
       $self->chara->save_battle_log(
         "【<font color=purple>地形効果</font>】" . 

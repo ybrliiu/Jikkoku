@@ -6,9 +6,11 @@ package Jikkoku::Model::Config {
 
   my @CONFIG_FILES = qw/
     game
+    formation
     country_color
     country_background_color
     country_background_color_rgba
+    japanese
   /;
   my %Config;
 

@@ -13,6 +13,7 @@ ok my $protect = $CLASS->new({ chara => $chara });
 # 実行条件を満たすように
 $chara->morale_data( morale => $chara->morale_data('morale_max') );
 $chara->interval_time(protect => 0);
+$chara->save;
 
 # 設定ファイル通りの時間だといつでもテストできないので
 require Jikkoku::Model::Config;
@@ -25,13 +26,15 @@ require Jikkoku::Model::MapLog;
 require Jikkoku::Model::Chara;
 require Jikkoku::Model::Chara::Protector;
 my $protector_model = Jikkoku::Model::Chara::Protector->new;
+is @{ $protector_model->get_all }, 0;
 ok $protect->action({
   chara_model      => Jikkoku::Model::Chara->new,
   battle_map_model => Jikkoku::Model::BattleMap->new,
   map_log_model    => Jikkoku::Model::MapLog->new,
   protector_model  => $protector_model,
 });
-is @{ $protector_model->get_all }, 2;
+is @{ $protector_model->get_all }, 1;
+diag explain $protector_model->get_all;
 
 # 元に戻す
 $protector_model->delete('meemee');

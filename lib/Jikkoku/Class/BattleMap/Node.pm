@@ -55,6 +55,16 @@ package Jikkoku::Class::BattleMap::Node {
 
   sub BUILD {}
 
+  sub can_stay {
+    my $self = shift;
+    $self->terrain != $self->NOTHING;
+  }
+
+  sub can_retreat {
+    my $self = shift;
+    $self->terrain == $self->ENTRY || $self->terrain == $self->CASTLE;
+  }
+
   sub current {
     my $self = shift;
     $self->is_current(1);

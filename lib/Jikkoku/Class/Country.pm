@@ -26,7 +26,6 @@ package Jikkoku::Class::Country {
       great_general_id cavalry_general_id guard_general_id archery_general_id infantry_general_id
       premier_id
     )],
-    validator => sub {},
   );
   has 'not_use' => ( metaclass => 'Column', is => 'rw', isa => 'Str', default => '' );
 
@@ -117,6 +116,12 @@ package Jikkoku::Class::Country {
     my ($self, $chara_model) = @_;
     croak "引数が足りません" if @_ < 2;
     $chara_model->get_same_country($self->id);
+  }
+
+  sub dominating_towns {
+    my ($self, $town_model) = @_;
+    Carp::croak "few arguments(town_model)" if @_ < 2;
+    $town_model->get_towns_by_country_id($self->id);
   }
 
   sub can_participate {

@@ -19,11 +19,11 @@ package Jikkoku::Player {
     is            => 'rw',
     isa           => 'Jikkoku::Class::Role::TextData::HashField',
     keys          => [qw( stuck kintoun attack_up )],
-    validator     => sub {
-      my ($self, $key, $value) = @_;
-      if ( $key eq 'kintoun' ) {
+    validators    => +{
+      kintoun => sub {
+        my ($key, $value) = @_;
         die "$key が0以下になります" if $value < 0;
-      }
+      },
     },
   );
   has 'debuff' => (
@@ -31,7 +31,6 @@ package Jikkoku::Player {
     is            => 'rw',
     isa           => 'Jikkoku::Class::Role::TextData::HashField',
     keys          => [qw( stuck kintoun attack_up )],
-    validator     => sub {},
   );
   has 'power' => ( metaclass => 'Column', is => 'rw', isa => 'Int', default => 1 );
   has 'pass'  => ( metaclass => 'Column', is => 'rw', isa => 'Str', default => 'password' );

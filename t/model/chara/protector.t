@@ -21,6 +21,7 @@ subtest 'is_chara_protected' => sub {
   ok $model->delete( $chara->id );
   dies_ok { $model->get( $chara->id ) };
   ok !$model->delete( $chara->id );
+  $model->save;
 };
 
 done_testing;

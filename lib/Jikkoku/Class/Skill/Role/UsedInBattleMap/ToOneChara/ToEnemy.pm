@@ -4,7 +4,10 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara::ToEnemy {
   use Jikkoku;
   use Jikkoku::Util;
 
-  with 'Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara';
+  with qw(
+    Jikkoku::Class::Skill::Role::ToEnemy
+    Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara
+  );
 
   sub ensure_can_use_to_target_chara {
     my ($self, $args) = @_;

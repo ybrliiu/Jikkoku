@@ -5,13 +5,13 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::NotDependOnAbilities {
 
   # attribute
   requires qw(
-    success_pc
+    success_ratio
     effect_time
   );
 
-  around calc_success_pc => sub {
+  around calc_success_ratio => sub {
     my ($orig, $self) = @_;
-    $self->success_pc;
+    $self->success_ratio;
   };
 
   sub calc_effect_time { shift->effect_time }
@@ -20,7 +20,7 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::NotDependOnAbilities {
     my ($orig, $self) = (shift, shift);
     $self->$orig(@_) . <<"EOS";
 消費士気 : @{[ $self->consume_morale ]}<br>
-成功率 : <strong>@{[ $self->success_pc * 100 ]}</strong>%<br>
+成功率 : <strong>@{[ $self->success_ratio * 100 ]}</strong>%<br>
 EOS
   };
 
