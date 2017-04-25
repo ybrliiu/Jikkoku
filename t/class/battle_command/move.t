@@ -34,25 +34,25 @@ my $params = +{
 };
 
 subtest 'move up' => sub {
-  $move->action({ direction => 'up', %$params });
+  $move->exec({ direction => 'up', %$params });
   is $chara->soldier_battle_map('x'), $x;
   is $chara->soldier_battle_map('y'), $y - 1;
 };
 
 subtest 'move down' => sub {
-  lives_ok { $move->action({ direction => 'down', %$params }) };
+  lives_ok { $move->exec({ direction => 'down', %$params }) };
   is $chara->soldier_battle_map('x'), $x;
   is $chara->soldier_battle_map('y'), $y;
 };
 
 subtest 'move left' => sub {
-  lives_ok { $move->action({ direction => 'left', %$params }) };
+  lives_ok { $move->exec({ direction => 'left', %$params }) };
   is $chara->soldier_battle_map('x'), $x - 1;
   is $chara->soldier_battle_map('y'), $y;
 };
 
 subtest 'move right' => sub {
-  lives_ok { $move->action({ direction => 'right', %$params }) };
+  lives_ok { $move->exec({ direction => 'right', %$params }) };
   is $chara->soldier_battle_map('x'), $x;
   is $chara->soldier_battle_map('y'), $y;
 };

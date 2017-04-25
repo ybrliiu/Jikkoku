@@ -56,10 +56,10 @@ EOS
     # Skill.pm : @{[ 前スキル名 ]}を修得していること
   }
 
-  sub ensure_can_action {
+  sub ensure_can_exec {
   }
 
-  sub action {
+  sub exec {
     # ここはべたーっと書いていって、そのうちRole化する
   }
 

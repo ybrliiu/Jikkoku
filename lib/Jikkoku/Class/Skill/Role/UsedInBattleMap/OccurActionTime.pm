@@ -10,7 +10,7 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::OccurActionTime {
 
   around explain_status => sub {
     my ($orig, $self) = (shift, shift);
-    $self->$orig(@_) . "待機時間 : @{[ $self->action_interval_time ]}秒<br>";
+    $self->$orig(@_) . "待機時間 : @{[ $self->exec_interval_time ]}秒<br>";
   };
 
 }

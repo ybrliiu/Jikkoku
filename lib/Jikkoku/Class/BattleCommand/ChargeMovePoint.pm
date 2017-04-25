@@ -14,7 +14,7 @@ package Jikkoku::Class::BattleCommand::ChargeMovePoint {
     Jikkoku::Class::Role::BattleAction
   );
 
-  sub ensure_can_action {
+  sub ensure_can_exec {
     my $self = shift;
     my $time = time;
     my $sub  = $self->chara->soldier_battle_map('move_point_charge_time') - $time;
@@ -22,7 +22,7 @@ package Jikkoku::Class::BattleCommand::ChargeMovePoint {
     $time;
   }
 
-  sub action {
+  sub exec {
     my ($self, $time) = @_;
     my $chara = $self->chara;
     

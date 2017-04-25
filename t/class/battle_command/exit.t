@@ -30,6 +30,7 @@ my $map_log_model = Jikkoku::Model::MapLog->new;
 
 subtest '成功ケース' => sub {
   my $soldier   = $chara->soldier;
+  $soldier->retreat;
   my $bm        = $battle_map_model->get( $chara->town_id );
   my $exit_node = $bm->get_node(sub {
     my $node = shift;
@@ -43,7 +44,7 @@ subtest '成功ケース' => sub {
   $chara->save;
 
   lives_ok {
-    $exit->action({
+    $exit->exec({
       check_point_x    => $soldier->x,
       check_point_y    => $soldier->y,
       battle_map_model => $battle_map_model,

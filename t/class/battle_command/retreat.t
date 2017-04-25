@@ -29,7 +29,7 @@ subtest '城地形の上で自国都市に撤退' => sub {
   $soldier->sortie_to_staying_towns_castle($battle_map_model);
   $chara->save;
   lives_ok {
-    $retreat->action({
+    $retreat->exec({
       town_model       => $town_model,
       battle_map_model => $battle_map_model,
     });
@@ -46,7 +46,7 @@ subtest '関所(入)の上で撤退' => sub {
   $chara->save;
 
   lives_ok {
-    $retreat->action({
+    $retreat->exec({
       town_model       => $town_model,
       battle_map_model => $battle_map_model,
     });
@@ -61,7 +61,7 @@ subtest '城地形の上で他国都市に撤退' => sub {
   $chara->save;
 
   dies_ok {
-    $retreat->action({
+    $retreat->exec({
       town_model       => $town_model,
       battle_map_model => $battle_map_model,
     });
@@ -80,7 +80,7 @@ subtest '退却できない地形から撤退' => sub {
   $soldier->x( $soldier->x + 1 );
   $chara->save;
   dies_ok {
-    $retreat->action({
+    $retreat->exec({
       town_model       => $town_model,
       battle_map_model => $battle_map_model,
     });

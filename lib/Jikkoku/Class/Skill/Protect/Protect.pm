@@ -45,7 +45,7 @@ EOS
 EOS
   }
 
-  sub ensure_can_action {
+  sub ensure_can_exec {
     my ($self, $args) = @_;
     validate_values $args => [qw/ protector_model chara_model /];
 
@@ -60,7 +60,7 @@ EOS
     $args->{protector_model}, $time;
   }
 
-  sub action {
+  sub exec {
     my ($self, $protector_model, $time) = @_;
     my $chara = $self->chara;
 

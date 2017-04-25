@@ -54,12 +54,12 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
 
   sub explain_status { '' }
 
-  sub ensure_can_action {
+  sub ensure_can_exec {
     my ($self, $args) = @_;
     $args->{you}, $args->{time};
   }
 
-  sub action {
+  sub exec {
     my ($self, $you, $time) = @_;
     my $chara = $self->chara;
 
@@ -68,7 +68,7 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
     my ($is_success, $effect_time, $stuck);
     eval {
       $chara->morale_data(morale => $chara->morale_data('morale') - $self->consume_morale);
-      $chara->soldier_battle_map(action_time => $time + $self->action_interval_time);
+      $chara->soldier_battle_map(action_time => $time + $self->exec_interval_time);
       my $ability_sum = $self->depend_abilities_sum;
       $is_success = $self->determine_whether_succeed;
       if ($is_success) {

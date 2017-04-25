@@ -10,13 +10,13 @@ package Jikkoku::Class::BattleCommand::Entry {
 
   with 'Jikkoku::Class::BattleCommand::PassCheckPoint';
 
-  before ensure_can_action => sub {
+  before ensure_can_exec => sub {
     my ($self, $args) = @_;
     validate_values $args => [qw/ diplomacy_model /];
     $self->diplomacy_model( $args->{diplomacy_model} );
   };
 
-  sub ensure_can_action_about_target_town {
+  sub ensure_can_exec_about_target_town {
     my $self = shift;
     my ($chara, $target_town) = ($self->chara, $self->target_town);
     my $can_passage = $self->diplomacy_model->can_passage(
@@ -33,7 +33,7 @@ package Jikkoku::Class::BattleCommand::Entry {
     }
   }
 
-  around action_log => sub {
+  around exec_log => sub {
     my ($orig, $self) = (shift, shift);
     $self->$orig(@_) . 'に入城しました！';
   };

@@ -13,7 +13,7 @@ package Jikkoku::Class::BattleCommand::Move {
     Jikkoku::Class::Role::BattleAction
   );
 
-  sub ensure_can_action {
+  sub ensure_can_exec {
     my ($self, $args) = @_;
     validate_values $args => [qw/direction chara_model town_model battle_map_model/];
 
@@ -27,7 +27,7 @@ package Jikkoku::Class::BattleCommand::Move {
     });
   }
 
-  sub action {
+  sub exec {
     my ($self, $next_node) = @_;
     my $chara = $self->chara;
 

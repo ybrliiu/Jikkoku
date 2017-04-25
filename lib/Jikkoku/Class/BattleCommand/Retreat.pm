@@ -14,7 +14,7 @@ package Jikkoku::Class::BattleCommand::Retreat {
     Jikkoku::Class::Role::BattleAction::OccurActionTime
   );
 
-  sub ensure_can_action {
+  sub ensure_can_exec {
     my ($self, $args) = @_;
     validate_values $args => [qw/ battle_map_model town_model /];
 
@@ -40,7 +40,7 @@ package Jikkoku::Class::BattleCommand::Retreat {
     $town->name;
   }
 
-  sub action {
+  sub exec {
     my $self = shift;
     my ($chara, $current_node) = ($self->chara, $self->current_node);
     $chara->lock;

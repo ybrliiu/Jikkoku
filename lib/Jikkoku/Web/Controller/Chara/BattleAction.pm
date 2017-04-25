@@ -18,7 +18,7 @@ package Jikkoku::Web::Controller::Chara::BattleAction {
     my $move = $self->class('BattleCommand::Move')->new({ chara => $self->{chara} });
 
     eval {
-      $move->action({
+      $move->exec({
         direction        => $self->param('direction'),
         town_model       => $self->model('Town')->new,
         chara_model      => $self->model('Chara')->new,
@@ -38,7 +38,7 @@ package Jikkoku::Web::Controller::Chara::BattleAction {
 
     my $charger = $self->class('BattleCommand::ChargeMovePoint')->new({ chara => $self->{chara} });
 
-    eval { $charger->action };
+    eval { $charger->exec };
     if (my $e = $@) {
       $self->render_error($e->message);
     }
@@ -52,7 +52,7 @@ package Jikkoku::Web::Controller::Chara::BattleAction {
     my $stuck = $self->class('Skill::Disturb::Stuck')->new({ chara => $self->{chara} });
 
     eval {
-      $stuck->action({
+      $stuck->exec({
         target_id => $self->param('target_id') || undef,
         chara_model      => $self->{chara_model},
         map_log_model    => $self->model('MapLog')->new,

@@ -15,7 +15,7 @@ package Jikkoku::Class::BattleCommand::PassCheckPoint {
     Jikkoku::Class::Role::BattleAction
   );
 
-  requires qw( ensure_can_action_about_target_town );
+  requires qw( ensure_can_exec_about_target_town );
 
   has 'chara_soldier' => (
     is      => 'ro',
@@ -71,7 +71,7 @@ package Jikkoku::Class::BattleCommand::PassCheckPoint {
   has 'country_model'    => ( is => 'rw', isa => 'Jikkoku::Model::Country' );
   has 'map_log_model'    => ( is => 'rw', isa => 'Jikkoku::Model::MapLog' );
 
-  sub ensure_can_action {
+  sub ensure_can_exec {
     my ($self, $args) = @_;
     validate_values $args => [qw/
       check_point_x check_point_y
@@ -99,10 +99,10 @@ package Jikkoku::Class::BattleCommand::PassCheckPoint {
       Jikkoku::Class::Role::BattleActionException->throw('関所の上に敵がいます。');
     }
 
-    $self->ensure_can_action_about_target_town;
+    $self->ensure_can_exec_about_target_town;
   }
 
-  sub action_log {
+  sub exec_log {
     my $self = shift;
     my $country = $self->country_model->get( $self->chara->country_id );
     "@{[ $self->now_game_date->month ]}月 : @{[ $country->name ]}の@{[ $self->chara->name ]}は"
@@ -111,7 +111,7 @@ package Jikkoku::Class::BattleCommand::PassCheckPoint {
 
   sub occur_stop_around_time {}
 
-  sub action {
+  sub exec {
     my $self = shift;
 
     my $chara = $self->chara;
@@ -136,7 +136,7 @@ package Jikkoku::Class::BattleCommand::PassCheckPoint {
       }
     } else {
       $chara->commit;
-      my $log = $self->action_log;
+      my $log = $self->exec_log;
       $chara->save_battle_log($log);
       $chara->save_command_log($log);
       $self->map_log_model->add($log)->save;

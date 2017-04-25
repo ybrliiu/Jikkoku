@@ -32,6 +32,7 @@ my $diplomacy_model = Jikkoku::Model::Diplomacy->new;
 
 subtest '成功ケース' => sub {
   my $soldier   = $chara->soldier;
+  $soldier->retreat;
   my $town = $town_model->get_by_name('上京');
   $soldier->sortie_to_adjacent_town({
     battle_map_model => $battle_map_model,
@@ -40,7 +41,7 @@ subtest '成功ケース' => sub {
   $chara->save;
 
   lives_ok {
-    $entry->action({
+    $entry->exec({
       check_point_x    => $soldier->x,
       check_point_y    => $soldier->y,
       battle_map_model => $battle_map_model,

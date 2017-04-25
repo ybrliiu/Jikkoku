@@ -12,7 +12,7 @@ my $base_dir = dirname __FILE__;
 builder {
 
   enable 'Plack::Middleware::Static' => (
-    path => qr!^/(js|css|image|public|REKISI)!,
+    path => qr!^/(js|css|image|html|public|REKISI)!,
     root => $base_dir,
   );
 

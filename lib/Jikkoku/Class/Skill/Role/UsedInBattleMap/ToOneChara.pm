@@ -17,7 +17,7 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara {
     $self->$orig(@_) . "リーチ : @{[ $self->range ]}<br>";
   };
 
-  before ensure_can_action => sub {
+  before ensure_can_exec => sub {
     my ($self, $args) = @_;
     Jikkoku::Util::validate_values $args => [qw( target_id chara_model )];
     my $chara = $self->chara;

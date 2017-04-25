@@ -13,9 +13,9 @@ package Jikkoku::Class::Role::BattleAction {
 
   has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara', weak_ref => 1, required => 1 );
 
-  requires qw( ensure_can_action action );
+  requires qw( ensure_can_exec exec );
 
-  before ensure_can_action => sub {
+  before ensure_can_exec => sub {
     my $self = shift;
     throw("BM上で行動可能な時間帯ではありません。") unless is_game_update_hour;
     throw("出撃していません。") unless $self->chara->is_sortie;
@@ -26,9 +26,9 @@ package Jikkoku::Class::Role::BattleAction {
     }
   };
 
-  around action => sub {
+  around exec => sub {
     my ($origin, $self, $args) = @_;
-    my @ret = $self->ensure_can_action($args);
+    my @ret = $self->ensure_can_exec($args);
     # ensure_can_action で最後に返された値が引数として渡される
     $self->$origin( @ret );
   };

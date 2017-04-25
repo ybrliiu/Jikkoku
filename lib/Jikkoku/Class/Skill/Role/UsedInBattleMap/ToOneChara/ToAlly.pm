@@ -9,7 +9,7 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara::ToAlly {
     Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara
   );
 
-  before ensure_can_action => sub {
+  before ensure_can_exec => sub {
     my ($self, $args) = @_;
     if ($args->{you}->id == $self->chara->id) {
       $self->{you} = $self->chara;

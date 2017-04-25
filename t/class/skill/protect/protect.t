@@ -27,7 +27,7 @@ require Jikkoku::Model::Chara;
 require Jikkoku::Model::Chara::Protector;
 my $protector_model = Jikkoku::Model::Chara::Protector->new;
 is @{ $protector_model->get_all }, 0;
-ok $protect->action({
+ok $protect->exec({
   chara_model      => Jikkoku::Model::Chara->new,
   battle_map_model => Jikkoku::Model::BattleMap->new,
   map_log_model    => Jikkoku::Model::MapLog->new,

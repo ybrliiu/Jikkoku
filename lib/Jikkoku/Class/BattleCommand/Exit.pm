@@ -11,7 +11,7 @@ package Jikkoku::Class::BattleCommand::Exit {
 
   with 'Jikkoku::Class::BattleCommand::PassCheckPoint';
 
-  sub ensure_can_action_about_target_town {
+  sub ensure_can_exec_about_target_town {
     my ($self, $target_town, $args, $game_date) = @_;
     if ( $self->chara->is_neutral && !$target_town->is_neutral && !Jikkoku::Model::Unite->is_unite ) {
       Jikkoku::Class::Role::BattleActionException
@@ -19,7 +19,7 @@ package Jikkoku::Class::BattleCommand::Exit {
     }
   }
 
-  around action_log => sub {
+  around exec_log => sub {
     my ($orig, $self) = (shift, shift);
     $self->$orig(@_) . 'へ向けて出城しました！';
   };

@@ -22,7 +22,7 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap {
     calc_effect_time
   );
 
-  before ensure_can_action => sub {
+  before ensure_can_exec => sub {
     my ($self, $args) = @_;
     validate_values $args => [qw( map_log_model battle_map_model )];
     $self->map_log_model( $args->{map_log_model} );
