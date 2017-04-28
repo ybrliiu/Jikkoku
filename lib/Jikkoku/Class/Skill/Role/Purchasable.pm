@@ -31,9 +31,9 @@ package Jikkoku::Class::Skill::Role::Purchasable {
     $self->chara->skill_point( $self->chara->skill_point - $self->consume_skill_point );
   };
 
-  around explain_acquire => sub {
+  around description_of_acquire_of_purchase => sub {
     my ($orig, $self) = (shift, shift);
-    $self->$orig(@_) . 'スキル修得ページでSPを' . $self->consume_skill_point . '消費して修得。<br>';
+    'スキル修得ページでSPを' . $self->consume_skill_point . '消費して修得。';
   };
 
 }

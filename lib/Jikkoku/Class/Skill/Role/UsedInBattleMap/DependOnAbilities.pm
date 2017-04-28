@@ -13,13 +13,9 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::DependOnAbilities {
     max_effect_time_coef
   );
 
-  around explain_status => sub {
-    my ($orig, $self) = (shift, shift);
-    my $ability_sum = $self->depend_abilities_sum;
-    $self->$orig(@_) . <<"EOS";
-消費士気 : @{[ $self->consume_morale ]}<br>
-成功率 : <strong>@{[ $self->calc_success_ratio($ability_sum) * 100 ]}</strong>%<br>
-EOS
+  around description_of_success_ratio => sub {
+    my ($orig, $self) = @_;
+    "成功率 : <strong>@{[ $self->calc_success_ratio( $self->depend_abilities_sum ) * 100 ]}</strong>%";
   };
 
   around explain_effect_supplement => sub {

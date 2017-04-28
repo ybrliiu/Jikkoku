@@ -35,15 +35,15 @@ package Jikkoku::Class::Skill::Protect::Protect {
 EOS
   }
 
-  sub explain_acquire { "歩兵属性兵科を使用時。" }
+  around description_of_acquire_body => sub {
+    "歩兵属性兵科を使用時。";
+  };
 
-  sub explain_status {
-    my ($self) = @_;
-<< "EOS";
-消費士気 : @{[ $self->consume_morale ]}<br>
-再使用時間 : @{[ $self->interval_time ]}秒<br>
-EOS
-  }
+  # 後ほど再使用時間発生するスキルのロールを作成
+  around description_of_status_body => sub {
+    my ($orig, $self) = @_;
+    "再使用時間 : @{[ $self->interval_time ]}秒";
+  };
 
   sub ensure_can_exec {
     my ($self, $args) = @_;

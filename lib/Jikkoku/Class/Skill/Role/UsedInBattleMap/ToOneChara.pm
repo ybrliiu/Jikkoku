@@ -12,9 +12,9 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara {
   # method
   requires 'ensure_can_use_to_target_chara';
 
-  around explain_status => sub {
-    my ($orig, $self) = (shift, shift);
-    $self->$orig(@_) . "リーチ : @{[ $self->range ]}<br>";
+  around description_of_range => sub {
+    my ($orig, $self) = @_;
+    "リーチ : @{[ $self->range ]}";
   };
 
   before ensure_can_exec => sub {

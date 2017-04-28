@@ -16,12 +16,9 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::NotDependOnAbilities {
 
   sub calc_effect_time { shift->effect_time }
 
-  around explain_status => sub {
-    my ($orig, $self) = (shift, shift);
-    $self->$orig(@_) . <<"EOS";
-消費士気 : @{[ $self->consume_morale ]}<br>
-成功率 : <strong>@{[ $self->success_ratio * 100 ]}</strong>%<br>
-EOS
+  around description_of_success_ratio => sub {
+    my ($orig, $self) = @_;
+    "成功率 : @{[ $self->success_ratio * 100 ]}%";
   };
 
 }

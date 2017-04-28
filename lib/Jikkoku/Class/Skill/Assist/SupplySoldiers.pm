@@ -42,20 +42,6 @@ package Jikkoku::Class::Skill::Assist {
     $self->chara->(assist => ACQUIRE_SIGN);
   }
 
-  sub explain_effect_simple {
-    my $self = shift;
-<< 'EOS';
-自軍兵士が統率力の半分以上いるとき、自軍兵士を少し味方の部隊に引き渡す。<br>
-引き渡した人数×相手兵種の値段 相手の金は減少する。<br>
-また、引き渡した人数分引き渡された軍の訓練値は減少する。<br>
-ただし、引き渡す側と引き渡される側の兵種が同じ場合、金と訓練値は減少しない。<br>
-EOS
-  }
-
-  sub explain_acquire {
-    # Skill.pm : @{[ 前スキル名 ]}を修得していること
-  }
-
   sub ensure_can_exec {
   }
 

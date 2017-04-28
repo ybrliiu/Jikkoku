@@ -31,6 +31,11 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap {
     throw( $self->name . 'スキルを修得していません。' ) unless $self->is_acquired;
   };
 
+  around description_of_consume_morale => sub {
+    my ($orig, $self) = @_;
+    "消費士気 : @{[ $self->consume_morale ]}";
+  };
+
 }
 
 1;

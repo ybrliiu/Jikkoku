@@ -29,12 +29,7 @@ package Jikkoku::Class::Skill::Skill {
   sub _build_before_skills_id { [] }
 
   # method
-  requires qw(
-    acquire
-    is_acquired
-    explain_status
-    explain_acquire
-  );
+  requires qw( acquire is_acquired );
 
   {
     my @methods = qw(
@@ -50,6 +45,56 @@ package Jikkoku::Class::Skill::Skill {
       my $self = shift;
       join "<br>\n", grep { $_ ne '' } map { $self->$_ } @methods;
     }
+  }
+
+  {
+    my @methods = qw(
+      description_of_range
+      description_of_consume_morale
+      description_of_status_body
+      description_of_action_interval_time
+      description_of_success_ratio
+    );
+
+    __PACKAGE__->meta->add_method($_ => sub { '' }) for @methods;
+
+    sub explain_status {
+      my $self = shift;
+      join "<br>\n", grep { $_ ne '' } map { $self->$_ } @methods;
+    }
+  }
+
+  {
+    my @methods = qw(
+      description_of_acquire_body
+      description_of_acquire_of_before_skills
+      description_of_acquire_of_purchase
+    );
+
+    sub description_of_acquire_body()         { '' }
+
+    sub description_of_acquire_of_purchase() { '' }
+
+    sub description_of_acquire_of_before_skills {
+      my $self = shift;
+      join "<br>\n", map { $_->name . 'を修得していること。' } @{ $self->before_skills };
+    }
+
+    sub explain_acquire {
+      my $self = shift;
+      join "<br>\n", grep { $_ ne '' } map { $self->$_ } @methods;
+    }
+  }
+
+  sub before_skills {
+    my $self = shift;
+    my $skill_category_model = Jikkoku::Model::SkillCategory->new;
+    my $skill_category       = $skill_category_model->get_skill_category({
+      id          => $self->category,
+      skill_model => $self->chara->skills,
+    });
+    my $before_skills_id = $skill_category->get_before_skills_id($self);
+    [ map { $skill_category->get_chached_skill($_) } @$before_skills_id ];
   }
 
   before acquire => sub {

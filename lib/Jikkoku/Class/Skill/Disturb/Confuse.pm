@@ -48,12 +48,6 @@ package Jikkoku::Class::Skill::Disturb::Confuse {
     $self->chara->skill(disturb => ACQUIRE_SIGN);
   }
 
-  sub explain_acquire {
-    '混乱を修得していること。<br>';
-  }
-
-  sub explain_status { '' }
-
   sub ensure_can_exec {
     my ($self, $args) = @_;
     $args->{you}, $args->{time};
@@ -68,7 +62,7 @@ package Jikkoku::Class::Skill::Disturb::Confuse {
     my ($is_success, $effect_time, $stuck);
     eval {
       $chara->morale_data(morale => $chara->morale_data('morale') - $self->consume_morale);
-      $chara->soldier_battle_map(action_time => $time + $self->exec_interval_time);
+      $chara->soldier_battle_map(action_time => $time + $self->action_interval_time);
       my $ability_sum = $self->depend_abilities_sum;
       $is_success = $self->determine_whether_succeed;
       if ($is_success) {

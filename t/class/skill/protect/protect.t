@@ -10,6 +10,16 @@ my $chara_model = Jikkoku::Model::Chara->new;
 my $chara = $chara_model->opt_get('meemee')->get;
 ok my $protect = $CLASS->new({ chara => $chara });
 
+my $description_of_status = <<'EOS';
+消費士気 : 10<br>
+再使用時間 : 240秒<br>
+成功率 : 100%
+EOS
+chomp($description_of_status);
+is $protect->explain_status, $description_of_status;
+
+diag $protect->explain_acquire;
+
 # 実行条件を満たすように
 $chara->morale_data( morale => $chara->morale_data('morale_max') );
 $chara->interval_time(protect => 0);
