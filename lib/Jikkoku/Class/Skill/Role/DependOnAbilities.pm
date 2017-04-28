@@ -15,7 +15,7 @@ package Jikkoku::Class::Skill::Role::DependOnAbilities {
 
   my $JAPANESE = Jikkoku::Model::Config->get->{japanese};
 
-  around explain_effect_about_depend_abilities => sub {
+  around description_of_effect_about_depend_abilities => sub {
     my ($orig, $self) = @_;
     my @depend_abilities = @{ $self->depend_abilities };
     my $connect_word     = @depend_abilities == 1 ? '' : '及び';

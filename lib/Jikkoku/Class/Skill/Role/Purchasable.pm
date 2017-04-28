@@ -8,18 +8,18 @@ package Jikkoku::Class::Skill::Role::Purchasable {
 
   {
     my @methods = qw(
-      explain_effect_about_state
-      explain_effect_body
-      explain_effect_about_depend_abilities
-      explain_effect_about_consume_morale
-      explain_effect_is_action
+      description_of_effect_about_state
+      description_of_effect_body
+      description_of_effect_about_depend_abilities
+      description_of_effect_about_consume_morale
+      description_of_effect_about_is_action
     );
 
-    sub explain_effect_is_action { '' }
+    sub description_of_effect_about_is_action { '' }
 
-    sub explain_effect_about_consume_morale { '' }
+    sub description_of_effect_about_consume_morale { '' }
 
-    sub explain_effect_simple {
+    sub description_of_effect_simple {
       my $self = shift;
       join "<br>\n", grep { $_ ne '' } map { $self->$_ } @methods;
     }
@@ -31,7 +31,7 @@ package Jikkoku::Class::Skill::Role::Purchasable {
     $self->chara->skill_point( $self->chara->skill_point - $self->consume_skill_point );
   };
 
-  around description_of_acquire_of_purchase => sub {
+  around description_of_acquire_about_purchase => sub {
     my ($orig, $self) = (shift, shift);
     'スキル修得ページでSPを' . $self->consume_skill_point . '消費して修得。';
   };

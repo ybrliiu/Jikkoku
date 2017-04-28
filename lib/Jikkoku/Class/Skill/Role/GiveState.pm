@@ -3,7 +3,7 @@ package Jikkoku::Class::Skill::Role::GiveState {
   use Mouse::Role;
   use Jikkoku;
 
-  around explain_effect_about_state => sub {
+  around description_of_effect_about_state => sub {
     my ($orig, $self) = @_;
     my $state = $self->state;
     $self->TARGET_TYPE . $self->TARGET_NUM . "に@{[ $state->name ]}を付与する。(効果 : @{[ $state->description ]})";
@@ -40,7 +40,7 @@ sub target_num {
 
 GiveState.pm
 
-sub explain_effect {
+sub description_of_effect {
   my $self = shift;
   my $state = $self->state;
   $self->target_type . $self->target_num . "に" . $state->name . "を付与する。(効果 : " . $state->description . ")";

@@ -16,9 +16,9 @@ my $description_of_status = <<'EOS';
 成功率 : 100%
 EOS
 chomp($description_of_status);
-is $protect->explain_status, $description_of_status;
+is $protect->description_of_status, $description_of_status;
 
-diag $protect->explain_acquire;
+diag $protect->description_of_acquire;
 
 # 実行条件を満たすように
 $chara->morale_data( morale => $chara->morale_data('morale_max') );

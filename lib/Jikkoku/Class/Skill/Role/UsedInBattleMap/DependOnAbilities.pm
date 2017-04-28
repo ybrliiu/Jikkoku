@@ -18,7 +18,7 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::DependOnAbilities {
     "成功率 : <strong>@{[ $self->calc_success_ratio( $self->depend_abilities_sum ) * 100 ]}</strong>%";
   };
 
-  around explain_effect_supplement => sub {
+  around description_of_effect_supplement => sub {
     my ($orig, $self) = @_;
     my $ability_sum = $self->depend_abilities_sum;
     my ($min_effect_time, $max_effect_time) = $self->effect_time($ability_sum);

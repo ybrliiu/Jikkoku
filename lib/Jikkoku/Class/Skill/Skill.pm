@@ -33,15 +33,15 @@ package Jikkoku::Class::Skill::Skill {
 
   {
     my @methods = qw(
-      explain_effect_about_state
-      explain_effect_body
-      explain_effect_supplement
-      explain_effect_about_depend_abilities
+      description_of_effect_about_state
+      description_of_effect_body
+      description_of_effect_supplement
+      description_of_effect_about_depend_abilities
     );
 
     __PACKAGE__->meta->add_method($_ => sub { '' }) for @methods;
     
-    sub explain_effect {
+    sub description_of_effect {
       my $self = shift;
       join "<br>\n", grep { $_ ne '' } map { $self->$_ } @methods;
     }
@@ -58,7 +58,7 @@ package Jikkoku::Class::Skill::Skill {
 
     __PACKAGE__->meta->add_method($_ => sub { '' }) for @methods;
 
-    sub explain_status {
+    sub description_of_status {
       my $self = shift;
       join "<br>\n", grep { $_ ne '' } map { $self->$_ } @methods;
     }
@@ -67,20 +67,20 @@ package Jikkoku::Class::Skill::Skill {
   {
     my @methods = qw(
       description_of_acquire_body
-      description_of_acquire_of_before_skills
-      description_of_acquire_of_purchase
+      description_of_acquire_about_before_skills
+      description_of_acquire_about_purchase
     );
 
     sub description_of_acquire_body()         { '' }
 
-    sub description_of_acquire_of_purchase() { '' }
+    sub description_of_acquire_about_purchase() { '' }
 
-    sub description_of_acquire_of_before_skills {
+    sub description_of_acquire_about_before_skills {
       my $self = shift;
       join "<br>\n", map { $_->name . 'を修得していること。' } @{ $self->before_skills };
     }
 
-    sub explain_acquire {
+    sub description_of_acquire {
       my $self = shift;
       join "<br>\n", grep { $_ ne '' } map { $self->$_ } @methods;
     }

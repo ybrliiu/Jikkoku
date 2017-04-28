@@ -26,7 +26,7 @@ package Jikkoku::Class::Skill::Protect::Protect {
 
   sub acquire {}
 
-  sub explain_effect_body {
+  sub description_of_effect_body {
     my $self = shift;
 << "EOS";
 使用後@{[ $self->effect_time ]}秒間、
