@@ -13,7 +13,7 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::DependOnAbilities {
     max_effect_time_coef
   );
 
-  around description_of_success_ratio => sub {
+  around description_of_status_about_success_ratio => sub {
     my ($orig, $self) = @_;
     "成功率 : <strong>@{[ $self->calc_success_ratio( $self->depend_abilities_sum ) * 100 ]}</strong>%";
   };

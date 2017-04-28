@@ -12,7 +12,7 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara {
   # method
   requires 'ensure_can_use_to_target_chara';
 
-  around description_of_range => sub {
+  around description_of_status_about_range => sub {
     my ($orig, $self) = @_;
     "リーチ : @{[ $self->range ]}";
   };

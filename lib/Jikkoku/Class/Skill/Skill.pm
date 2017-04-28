@@ -49,11 +49,11 @@ package Jikkoku::Class::Skill::Skill {
 
   {
     my @methods = qw(
-      description_of_range
-      description_of_consume_morale
+      description_of_status_about_range
+      description_of_status_about_consume_morale
       description_of_status_body
-      description_of_action_interval_time
-      description_of_success_ratio
+      description_of_status_about_action_interval_time
+      description_of_status_about_success_ratio
     );
 
     __PACKAGE__->meta->add_method($_ => sub { '' }) for @methods;

@@ -16,7 +16,7 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::NotDependOnAbilities {
 
   sub calc_effect_time { shift->effect_time }
 
-  around description_of_success_ratio => sub {
+  around description_of_status_about_success_ratio => sub {
     my ($orig, $self) = @_;
     "成功率 : @{[ $self->success_ratio * 100 ]}%";
   };
