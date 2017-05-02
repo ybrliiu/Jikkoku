@@ -27,8 +27,9 @@ package Jikkoku::Model::Chara::Protector {
   sub get_id_list_same_bm {
     my ($self, $bm_id) = @_;
     $self->update;
+    my $chara_model = Jikkoku::Model::Chara->new;
     [ map {
-      my $protector = Jikkoku::Model::Chara->get( $_->id );
+      my $protector = $chara_model->get( $_->id );
       $protector->soldier_battle_map('battle_map_id') eq $bm_id ? $protector->id : ();
     } @{ $self->get_all } ];
   }
@@ -40,7 +41,8 @@ package Jikkoku::Model::Chara::Protector {
     my $decided_protector;
     for my $protector (@{ $self->get_all }) {
       if ($protector->time >= $time) {
-        my $protector_chara = Jikkoku::Model::Chara->get( $protector->id );
+        my $chara_model = Jikkoku::Model::Chara->new;
+        my $protector_chara = $chara_model->get( $protector->id );
         $decided_protector = $protector_chara if $protector_chara->can_protect( $chara );
         last;
       }

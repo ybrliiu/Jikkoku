@@ -14,7 +14,7 @@ package Jikkoku::Model::Chara {
   }
 
   sub get {
-    my ($class, $id) = @_;
+    my ($self, $id) = @_;
     Jikkoku::Class::Chara->new($id);
   }
 
@@ -23,11 +23,8 @@ package Jikkoku::Model::Chara {
   sub get_with_option {
     my ($self, $id) = @_;
 
-    # for class method ...
-    if (not ref $self) {
-      return Option->new( $self->get($id) );
-    }
-
+    use Carp;
+    Carp::confess("class method") unless ref $self;
     if (exists $self->{data}{$id}) {
       my $chara = $self->{data}{$id};
       return Option->new($chara);
@@ -47,7 +44,7 @@ package Jikkoku::Model::Chara {
   }
 
   sub get_all {
-    my ($self) = @_;
+    my $self = shift;
 
     my $dir_path = Jikkoku::Class::Chara->DIR_PATH;
     if_test { $dir_path = TEST_DIR . $dir_path };
@@ -55,14 +52,13 @@ package Jikkoku::Model::Chara {
     my @chara_list = map {
       if ( (my $file = $_) =~ /.+\.cgi$/i ) {
         my $id = ($file =~ s/\.cgi//r);
-        $self->opt_get($id)->get;
+        $self->get_with_option($id)->get;
       } else {
         ();
       }
     } readdir $dh;
 		closedir $dh;
 
-    return \@chara_list unless ref $self;
     $self->{data} = $self->to_hash(\@chara_list);
     return \@chara_list;
   }

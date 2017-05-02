@@ -39,7 +39,7 @@ sub {
 
   my $button_generator = take_in 'templates/chara/parts/button.pl';
   my $move_button = $button_generator->({
-    url   => url_for('/chara/battle-command/move'),
+    url   => url_for('/chara/battle-action/move'),
     name  => '移動',
     chara => $chara,
   });
@@ -101,7 +101,9 @@ sub {
     } . qq{
         </tbody>
       </table>
-
+    } . do {
+      my $soldier = $chara->soldier;
+    qq{
       <div class="grid-right width-40pc padding-top">
         <table class="width-100pc table-@{[ $args->{country}->color_id ]}">
           <tbody>
@@ -111,8 +113,8 @@ sub {
             <tr>
               <td>兵士</td>
               <td class="middle">
-                @{[ $chara->soldier->name ]}(@{[ $chara->soldier->attr ]})
-                @{[ $chara->soldier_num ]}人
+                @{[ $soldier->name ]}(@{[ $soldier->attr ]})
+                @{[ $soldier->num ]}人
               </td>
               <td>訓練</td>
               <td class="middle">@{[ $chara->soldier_training ]}</td>
@@ -128,11 +130,11 @@ sub {
             <tr>
               <td>移動P</td>
               <td class="middle">
-                @{[ $chara->soldier_battle_map('move_point') ]} / @{[ $chara->soldier->move_point ]}
+                @{[ $soldier->move_point ]} / @{[ $soldier->max_move_point ]}
               </td>
               <td colspan="2" class="middle">
                 @{[ $button_generator->({
-                  url   => url_for('/chara/battle-command/charge-move-point'),
+                  url   => url_for('/chara/battle-action/charge-move-point'),
                   name  => '移動ポイント補充',
                   chara => $chara,
                 })->() ]}
@@ -169,7 +171,7 @@ sub {
           </tbody>
         </table>
       </div>
-    };
+    } };
   };
 
   $layout->($this, $args);

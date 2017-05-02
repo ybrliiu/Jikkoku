@@ -142,8 +142,9 @@ sub NEW_ENGO_SYORI {
 
   return undef if $enemy_id eq "jyouhekisyugohei" || $enemy_id eq ""; 
 
-  my $my_self = Jikkoku::Model::Chara->get($my_id);
-  my $enemy   = Jikkoku::Model::Chara->get($enemy_id);
+  my $chara_model = Jikkoku::Model::Chara->new;
+  my $my_self = $chara_model->get($my_id);
+  my $enemy   = $chara_model->get($enemy_id);
 
   my $protector = Jikkoku::Model::Chara::Protector->new->is_chara_protected($enemy);
   return unless defined $protector;

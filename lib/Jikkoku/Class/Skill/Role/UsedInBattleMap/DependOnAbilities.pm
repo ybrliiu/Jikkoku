@@ -2,6 +2,7 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::DependOnAbilities {
 
   use Mouse::Role;
   use Jikkoku;
+  use Carp;
 
   with 'Jikkoku::Class::Skill::Role::DependOnAbilities';
 
@@ -32,14 +33,14 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::DependOnAbilities {
 
   around calc_success_ratio => sub {
     my ($orig, $self, $ability_sum) = @_;
-    Carp::croak 'few arguments' if @_ < 3;
+    Carp::confess 'few arguments ($ability_sum)' if @_ < 3;
     my $probability = $ability_sum * $self->success_coef;
     $probability > $self->max_success_ratio ? $self->max_success_ratio : $probability;
   };
 
   sub effect_time {
     my ($self, $ability_sum) = @_;
-    Carp::croak 'few arguments' if @_ < 2;
+    Carp::croak 'few arguments ($ability_sum)' if @_ < 2;
     int($ability_sum * $self->min_effect_time_coef), int($ability_sum * $self->max_effect_time_coef);
   }
 

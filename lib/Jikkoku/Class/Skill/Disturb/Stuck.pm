@@ -48,29 +48,26 @@ package Jikkoku::Class::Skill::Disturb::Stuck {
     $self->chara->skill(disturb => ACQUIRE_SIGN);
   }
 
-  sub ensure_can_exec {
-    my ($self, $args) = @_;
-    $args->{you}, $args->{time};
-  }
+  sub ensure_can_exec {}
 
   sub exec {
-    my ($self, $you, $time) = @_;
-    my $chara = $self->chara;
+    my $self = shift;
+    my ($chara, $you) = ($self->chara, $self->you);
 
     $chara->lock;
     $you->lock;
     my ($is_success, $effect_time, $stuck);
     eval {
       $chara->morale_data(morale => $chara->morale_data('morale') - $self->consume_morale);
-      $chara->soldier_battle_map(action_time => $time + $self->action_interval_time);
+      $chara->soldier_battle_map(action_time => $self->time + $self->action_interval_time);
       my $ability_sum = $self->depend_abilities_sum;
-      $is_success = $self->determine_whether_succeed;
+      $is_success = $self->determine_whether_succeed($ability_sum);
       if ($is_success) {
         $effect_time = $self->calc_effect_time($ability_sum);
         $stuck = $you->states->get_state($self->id);
         $stuck->set_state_for_chara({
           giver_id       => $chara->id,
-          available_time => $time + $ability_sum,
+          available_time => $self->time + $ability_sum,
         });
       }
     };

@@ -9,6 +9,8 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara {
   # attribute
   requires 'range';
 
+  has 'you' => ( is => 'rw', isa => 'Jikkoku::Class::Chara' );
+
   # method
   requires 'ensure_can_use_to_target_chara';
 
@@ -22,7 +24,7 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara {
     Jikkoku::Util::validate_values $args => [qw( target_id chara_model )];
     my $chara = $self->chara;
 
-    $args->{you} = $args->{chara_model}->opt_get( $args->{target_id} )->match(
+    $args->{chara_model}->opt_get( $args->{target_id} )->match(
       Some => sub {
         my $you = shift;
         unless ($you->is_sortie) {
@@ -35,12 +37,12 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara {
         if ($distance > $self->range) {
           Jikkoku::Class::Role::BattleActionException->throw('相手が' . $self->name . 'を使える範囲にいません。');
         }
-        $you;
+        $self->you( $you );
       },
       None => sub { throw('指定した武将は存在していません。') },
     );
 
-    $self->ensure_can_use_to_target_chara($args);
+    $self->ensure_can_use_to_target_chara;
   };
 
 }

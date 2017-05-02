@@ -47,6 +47,8 @@ package Jikkoku::Model::Base::TextData::Integration {
     Option->new( $self->{data}{$id} );
   }
 
+  *get_with_option = \&opt_get;
+
   sub get_all {
     my ($self) = @_;
     [ values %{ $self->{data} } ];

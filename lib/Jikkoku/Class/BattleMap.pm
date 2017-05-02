@@ -86,7 +86,7 @@ package Jikkoku::Class::BattleMap {
     $self->set_current($chara);
     my $charactors  = $chara_model->get_all;
     my @sortie_list = grep { $_->is_sortie and $_->soldier->battle_map_id == $self->id } @$charactors;
-    my @allies      = grep { $_->country_id == $chara->country_id } grep { $_->id != $chara->id } @sortie_list;
+    my @allies      = grep { $_->country_id == $chara->country_id } grep { $_->id ne $chara->id } @sortie_list;
     my @enemies     = grep { $_->country_id != $chara->country_id } @sortie_list;
     for my $ally (@allies) {
       my $soldier = $ally->soldier;

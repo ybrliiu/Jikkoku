@@ -83,7 +83,7 @@ EOS
     } else {
       $chara->commit;
       $protector_model->save;
-      my $name_tag = qq{<span style="color: #FF69B4">【@{[ $self->name ]}】</font>};
+      my $name_tag = qq{<span style="color: #FF69B4">【@{[ $self->name ]}】</span>};
       if ($is_success) {
         my $log_base = qq{$name_tag@{[ $chara->name ]}は@{[ $self->name ]}を行いました！敵の攻撃から味方を守ります。 };
         my $chara_log
