@@ -12,6 +12,13 @@ package Jikkoku::Role::Logger {
 
   requires qw( MAX );
 
+  sub init {
+    my $class = shift;
+    open my $fh, '>', $class->file_path;
+    $fh->print('');
+    $fh->close;
+  }
+
   around BUILDARGS => sub {
     my ($orig, $class) = @_;
     open(my $fh, '<', $class->file_path) or throw("file open failed", $!);
