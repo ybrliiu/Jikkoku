@@ -23,7 +23,7 @@ package Jikkoku::Web::Controller::Chara::Base {
     my $self = shift;
     $self->{chara_model} = $self->model('Chara')->new;
     $self->{chara_model}
-      ->opt_get( $self->param('id') )
+      ->get_with_option( $self->param('id') )
       ->match(
         Some => sub {
           my $chara = shift;

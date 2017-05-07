@@ -18,13 +18,9 @@ package Jikkoku::Model::Chara {
     Jikkoku::Class::Chara->new($id);
   }
 
-  *opt_get = \&get_with_option;
-
   sub get_with_option {
     my ($self, $id) = @_;
 
-    use Carp;
-    Carp::confess("class method") unless ref $self;
     if (exists $self->{data}{$id}) {
       my $chara = $self->{data}{$id};
       return Option->new($chara);

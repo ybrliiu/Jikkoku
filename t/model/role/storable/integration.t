@@ -2,7 +2,7 @@ use Jikkoku;
 use Test::More;
 use Test::Exception;
 
-use_ok 'Jikkoku::Model::Role::Storable';
+use_ok 'Jikkoku::Model::Role::Storable::Integration';
 
 package Jikkoku::Class::Country {
 
@@ -25,18 +25,12 @@ package Jikkoku::Model::Country {
   use Mouse;
 
   use constant {
-    CLASS     => 'Jikkoku::Class::Country',
-    FILE_PATH => 'country.dat',
+    INFLATE_TO        => 'Jikkoku::Class::Country',
+    FILE_PATH         => 'country.dat',
+    PRIMARY_ATTRIBUTE => 'id',
   };
 
-  has 'data' => ( is => 'rw', isa => 'HashRef[' . CLASS . ']', builder => '_default_data' );
-
-  with 'Jikkoku::Model::Role::Storable';
-
-  sub create {
-    my ($self, $args) = @_;
-    $self->data->{$args->{id}} = CLASS->new($args);
-  }
+  with 'Jikkoku::Model::Role::Storable::Integration';
 
   __PACKAGE__->meta->make_immutable;
 
@@ -44,12 +38,13 @@ package Jikkoku::Model::Country {
 
 ok my $country_model = Jikkoku::Model::Country->new;
 ok $country_model->lock;
-ok $country_model->create({
+my $country = Jikkoku::Class::Country->new({
   id => 5,
   name => '無所属',
   color_id => 0,
   king_id => 'ybrliiu',
 });
+ok $country_model->create($country);
 ok $country_model->commit;
 
 done_testing;

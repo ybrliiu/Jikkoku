@@ -12,7 +12,8 @@ ok $model->save;
 
 subtest 'is_chara_protected' => sub {
   my $chara_id = 'ybrliiu';
-  my $chara = Jikkoku::Model::Chara->get($chara_id);
+  my $chara_model = Jikkoku::Model::Chara->new;
+  my $chara = $chara_model->get($chara_id);
   my $result;
   lives_ok { $result = $model->is_chara_protected($chara) };
   ok !defined $result;

@@ -194,6 +194,10 @@ package Jikkoku::Class::Chara {
     default => sub { Jikkoku::Model::Chara::Formation->new( chara => $_[0] ) },
   );
 
+  with 'Jikkoku::Class::Role::TextData::Division';
+
+  __PACKAGE__->make_hash_fields;
+
   sub soldier {
     my $self = shift;
     my $soldier_data = Jikkoku::Model::Soldier->new->get( $self->ability_exp('soldier_id') );
@@ -204,10 +208,6 @@ package Jikkoku::Class::Chara {
     my $self = shift;
     $self->formations->get_formation( $self->soldier_battle_map('formation_id') );
   }
-
-  with 'Jikkoku::Class::Role::TextData::Division';
-
-  __PACKAGE__->make_hash_fields;
 
   before money => sub {
     my ($self, $value) = @_;

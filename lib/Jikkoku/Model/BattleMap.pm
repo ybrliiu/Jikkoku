@@ -29,8 +29,6 @@ package Jikkoku::Model::BattleMap {
     Option->new( $self->load( $map_id ) );
   }
 
-  *opt_get = \&get_with_option;
-
   sub get_between_town_battle_map {
     my ($self, $args) = @_;
     validate_values $args => [qw/ start_town_id target_town_id /];

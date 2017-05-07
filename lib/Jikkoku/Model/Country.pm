@@ -41,6 +41,18 @@ package Jikkoku::Model::Country {
     $self->{data}{$max_id + 1} = $country->output;
   }
 
+  # 新しい CLASS の output method は改行付きのため、取り除く
+  sub _objects_data_to_textdata_list {
+    my ($self) = @_;
+    [
+      map {
+        my $output = ${ $_->output };
+        chomp $output;
+        $output;
+      } values %{ $self->{data} }
+    ];
+  }
+
 }
 
 1;

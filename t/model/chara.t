@@ -9,7 +9,7 @@ use_ok $CLASS;
 
 ok my $model = $CLASS->new;
 
-my $chara_list = $CLASS->get_all;
+my $chara_list = $model->get_all;
 diag $_->name for @$chara_list;
 
 ok(my $chara_list_to_hash = $CLASS->to_hash($chara_list));
@@ -64,7 +64,7 @@ is ref $chara_list_to_hash, 'HASH';
   };
 
   subtest 'can_protect' => sub {
-    my $you = $model->opt_get('meemee')->get;
+    my $you = $model->get_with_option('meemee')->get;
     ok not $you->can_protect($chara);
   };
 

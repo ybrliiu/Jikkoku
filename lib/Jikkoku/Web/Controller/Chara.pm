@@ -13,7 +13,7 @@ package Jikkoku::Web::Controller::Chara {
     my $bm_id      = $self->{chara}->soldier_battle_map('battle_map_id');
     my $battle_map = $self->model('BattleMap')->new->get($bm_id);
     if ( $battle_map->is_castle_around_map ) {
-      $self->model('Town')->new->opt_get($bm_id)->foreach(sub {
+      $self->model('Town')->new->get_with_option($bm_id)->foreach(sub {
         $battle_map->set_town_info($_);
       });
     }

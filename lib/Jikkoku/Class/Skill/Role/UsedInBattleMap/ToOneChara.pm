@@ -24,7 +24,7 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara {
     Jikkoku::Util::validate_values $args => [qw( target_id chara_model )];
     my $chara = $self->chara;
 
-    $args->{chara_model}->opt_get( $args->{target_id} )->match(
+    $args->{chara_model}->get_with_option( $args->{target_id} )->match(
       Some => sub {
         my $you = shift;
         unless ($you->is_sortie) {

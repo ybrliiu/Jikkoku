@@ -14,8 +14,8 @@ package Jikkoku::Class::Role::TextData {
 
   around BUILDARGS => sub {
     my ($orig, $class) = (shift, shift);
-    if (ref $_[0] eq 'HASH') {
-      my $args = shift;
+    if (ref $_[0] eq 'HASH' || @_ >= 2) {
+      my $args = ref $_[0] || {@_};
       $class->_buildargs_hash($args);
       $class->$orig($args);
     }
@@ -112,7 +112,7 @@ package Jikkoku::Class::Role::TextData {
       } else {
         '';
       }
-    } @columns ) . '<>';
+    } @columns ) . "<>\n";
     \$textdata;
   }
 

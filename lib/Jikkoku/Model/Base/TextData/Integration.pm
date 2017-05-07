@@ -42,12 +42,10 @@ package Jikkoku::Model::Base::TextData::Integration {
     ref $object eq $self->CLASS ? $object : Carp::croak " データが見つかりませんでした ($id) ";
   }
 
-  sub opt_get {
+  sub get_with_option {
     my ($self, $id) = @_;
     Option->new( $self->{data}{$id} );
   }
-
-  *get_with_option = \&opt_get;
 
   sub get_all {
     my ($self) = @_;

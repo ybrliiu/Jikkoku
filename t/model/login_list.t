@@ -9,7 +9,8 @@ my $CLASS = 'Jikkoku::Model::LoginList';
 use_ok $CLASS;
 
 ok( my $model = $CLASS->new ); 
-my $chara = Jikkoku::Model::Chara->get('ybrliiu');
+my $chara_model = Jikkoku::Model::Chara->new;
+my $chara = $chara_model->get('ybrliiu');
 ok $model->add($chara);
 
 ok $model->update;

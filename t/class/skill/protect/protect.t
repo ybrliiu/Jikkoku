@@ -7,7 +7,7 @@ use_ok $CLASS;
 
 require Jikkoku::Model::Chara;
 my $chara_model = Jikkoku::Model::Chara->new;
-my $chara = $chara_model->opt_get('meemee')->get;
+my $chara = $chara_model->get_with_option('meemee')->get;
 ok my $protect = $CLASS->new({ chara => $chara });
 
 my $description_of_status = <<'EOS';

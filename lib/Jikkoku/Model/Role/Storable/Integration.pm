@@ -1,29 +1,20 @@
-package Jikkoku::Model::Role::Storable {
+package Jikkoku::Model::Role::Storable::Integration {
 
   use Mouse::Role;
   use Jikkoku;
+
+  use Carp;
   use Option;
   use Storable ();
 
-  requires qw( CLASS FILE_PATH );
-
-  # example
-  # has 'data' => ( is => 'rw', isa => 'HashRef[' . CLASS . ']', builder => _default_data );
-  requires 'data';
-
-  with 'Jikkoku::Role::FileHandler';
-
-  sub file_path { shift->FILE_PATH }
-
-  sub _default_data { +{} }
+  with 'Jikkoku::Model::Role::Integration';
   
-  sub BUILD {
-    my $self = shift;
-    open(my $fh, '<', $self->file_path) or throw("file open error", $!);
-    $self->fh($fh);
-    $self->read;
+  sub open_data {
+    my $class = shift;
+    open(my $fh, '<', $class->file_path) or throw("file open error", $!);
+    my $data = Storable::fd_retrieve($fh) or throw("fd_retrieve error", $!);
     $fh->close;
-    $self->{fh} = undef;
+    (data => $data);
   }
 
   sub abort {
@@ -34,26 +25,12 @@ package Jikkoku::Model::Role::Storable {
     $fh->close;
   }
 
-  sub delete {
-    my ($self, $key) = @_;
-    delete $self->data->{$key};
-  }
-
-  sub get {
-    my ($self, $key) = @_;
-    Option->new( $self->data->{$key} );
-  }
-
-  sub get_all {
-    my $self = shift;
-    [ values %{$self->data} ];
-  }
-
   sub init {
     my $self = shift;
     Storable::nstore($self->_default_data, $self->file_path);
   }
 
+  # init と統合
   sub make {
     my $class = shift;
     if ( -f $class->file_path ) {

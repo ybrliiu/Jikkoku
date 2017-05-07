@@ -1,80 +1,75 @@
 package Jikkoku::Model::Role::TextData::Integration {
 
+  use Mouse::Role;
   use Jikkoku;
+
+  use Carp;
   use Option;
-  use Carp qw( croak );
-  use List::Util qw( max );
-  use Jikkoku::Util;
+  use Module::Load;
 
-  requires qw( FILE_PATH CLASS );
+  has 'textdata_list' => ( is => 'rw', isa => 'ArrayRef', required => 1 );
 
-  has 'fh'            => ( is => 'rw', isa => 'FileHandle' );
-  has 'data'          => ( is => 'rw', isa => 'HashRef', default => sub { +{} } );
-  has 'textdata_list' => ( is => 'ro', isa => 'ArrayRef[ScalarRef]', default => sub { [] } );
+  with 'Jikkoku::Model::Role::Integration';
 
-  sub file_path {
+  sub open_data {
     my $class = shift;
-    $class->FILE_PATH;
+    open(my $fh, '<', $class->file_path) or throw("file open error" . $class->file_path, $!);
+    my @textdata_list = <$fh>;
+    $fh->close;
+    (
+      data          => $class->_textdata_list_to_objects_data( \@textdata_list ),
+      textdata_list => \@textdata_list,
+    );
   }
 
-  sub BUILD {
+  sub read {
     my $self = shift;
-    $self->textdata_list( Jikkoku::Util::open_data( $self->file_path ) );
-    $self->data( $self->_textdata_list_to_objects_data );
+    my $fh = $self->fh;
+    my @textdata_list = <$fh>;
+    $self->data( $self->_textdata_list_to_objects_data(\@textdata_list) );
   }
 
-  sub delete {
-    my ($self, $id) = @_;
-    my $data = $self->data;
-    delete $data->{$id};
+  sub _textdata_list_to_objects_data {
+    my ($class, $textdata_list) = @_;
+    my @objects = map { $class->INFLATE_TO->new($_) } @$textdata_list;
+    $class->to_hash(\@objects);
   }
 
-  sub get {
-    my ($self, $id) = @_;
-    Option->new( $self->data->{$id} );
+  sub to_hash {
+    my ($class, $objects) = @_;
+    my $primary_attribute = $class->PRIMARY_ATTRIBUTE;
+    +{ map { $_->$primary_attribute => $_ } @$objects };
   }
 
-  sub get_all {
-    my ($self) = @_;
-    [ values %{ $self->data } ];
+  sub write {
+    my $self = shift;
+    $_->update_textdata for values %{ $self->data };
+    $self->fh->print( @{ $self->_objects_data_to_textdata_list } );
   }
 
-  sub get_all_to_hash {
-    my ($self) = @_;
-    $self->data;
+  sub _objects_data_to_textdata_list {
+    my $self = shift;
+    [ map { ${ $_->textdata } } values %{ $self->data } ];
+  }
+
+  sub abort {
+    my $self = shift;
+    $self->data( $self->_textdata_list_to_objects_data( $self->textdata_list ) );
+  }
+
+  sub save {
+    my $self = shift;
+    $_->update_textdata for values %{ $self->data };
+    open(my $fh, '+<', $self->file_path);
+    $fh->print( @{ $self->_objects_data_to_textdata_list } );
+    $fh->close;
   }
 
   sub init {
     my $class = shift;
-    save_data( $class->FILE_PATH, [] );
-  }
-
-  sub refetch {
-    my ($self) = @_;
-    $self->BUILD;
-  }
-
-  sub save {
-    my ($self) = @_;
-    my $textdata_list = $self->_objects_data_to_textdata_list;
-    save_data( $self->FILE_PATH, $textdata_list );
-  }
-
-  sub _objects_data_to_textdata_list {
-    my ($self) = @_;
-    [ map { ${ $_->output } } values %{ $self->data } ];
-  }
-
-  sub _textdata_list_to_objects_data {
-    my ($self) = @_;
-    my $objects = [ map { $self->CLASS->new($_) } @{ $self->textdata_list } ];
-    $self->to_hash( $objects );
-  }
-
-  sub to_hash {
-    my ($class, $list) = @_;
-    my $primary_key = $class->CLASS->PRIMARY_KEY;
-    +{ map { $_->$primary_key => $_ } @$list };
+    open(my $fh, '+<', $class->file_path);
+    $fh->print('');
+    $fh->close;
   }
 
 }

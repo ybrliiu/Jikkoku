@@ -3,7 +3,6 @@ package Jikkoku::Class::Role::TextData::Division {
   use Mouse::Role;
   use Jikkoku;
   use Carp;
-  use Jikkoku::Util qw( is_test TEST_DIR _open_data );
 
   requires 'DIR_PATH';
 
@@ -42,7 +41,7 @@ package Jikkoku::Class::Role::TextData::Division {
   sub write {
     my $self = shift;
     $self->update_textdata;
-    $self->fh->print( ${ $self->textdata } . "\n" );
+    $self->fh->print( ${ $self->textdata } );
   }
 
   sub save {
@@ -50,7 +49,7 @@ package Jikkoku::Class::Role::TextData::Division {
     $self->textdata( $self->output );
     open(my $fh, '+<', $self->file_path);
     $self->update_textdata;
-    $fh->print( ${ $self->textdata } . "\n" );
+    $fh->print( ${ $self->textdata } );
     $fh->close;
   }
 
