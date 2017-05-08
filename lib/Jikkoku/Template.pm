@@ -3,7 +3,7 @@ package Jikkoku::Template {
   use Jikkoku;
   use Jikkoku::Web;
   use Exporter 'import';
-  our @EXPORT = qw/take_in url_for static_file/;
+  our @EXPORT = qw( take_in url_for static_file );
 
   use Carp ();
   use Cwd ();

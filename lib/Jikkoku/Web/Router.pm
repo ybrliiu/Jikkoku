@@ -1,19 +1,25 @@
 package Jikkoku::Web::Router {
 
+  use Mouse;
   use Jikkoku;
-  use parent 'Router::Boom::Method';
 
   use Carp;
+  use Jikkoku::Util qw( validate_values );
+  use Router::Boom::Method;
   use Jikkoku::Web::Router::Root;
 
-  use Jikkoku::Util qw/validate_values/;
+  has 'router_method' => (
+    is      => 'ro',
+    isa     => 'Router::Boom::Method',
+    default => sub { Router::Boom::Method->new },
+    handles => [qw/ add /],
+  );
 
-  # override
   sub match {
     my ($self, $http_method, $path_info) = @_;
     Carp::croak "引数が足りません" if @_ < 3;
 
-    my ($dest, $captured, $is_method_not_allowed) = $self->SUPER::match($http_method, $path_info);
+    my ($dest, $captured, $is_method_not_allowed) = $self->router_method->match($http_method, $path_info);
     my $is_method_allowed = not $is_method_not_allowed;
 
     my ($last_uri) = ($path_info =~ m!([^/]+$)!);
@@ -41,13 +47,15 @@ package Jikkoku::Web::Router {
 
   sub root {
     my ($self, %args) = @_;
-    validate_values \%args => [qw/path controller/];
+    validate_values \%args => [qw/ path controller /];
     Jikkoku::Web::Router::Root->new(
       router     => $self,
       path       => $args{path},
       controller => $args{controller},
     );
   }
+
+  __PACKAGE__->meta->make_immutable;
 
 }
 
