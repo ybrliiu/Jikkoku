@@ -1,14 +1,18 @@
 package Jikkoku::Web {
 
+  use Mouse;
   use Jikkoku;
+
   use Module::Load;
   use Jikkoku::Web::Router;
   use Jikkoku::Web::Controller;
 
   our $ABSOLUTERY_URL;
 
-  sub new {
-    my ($class, $script_name) = @_;
+  has 'router' => ( is => 'ro', isa => 'Jikkoku::Web::Router', default => sub { Jikkoku::Web::Router->new } );
+
+  sub BUILD {
+    my $self = shift;
 
     unless (defined $ABSOLUTERY_URL) {
       $ABSOLUTERY_URL = $ENV{HTTP_HOST} . $ENV{SCRIPT_NAME};
@@ -16,15 +20,12 @@ package Jikkoku::Web {
       $ABSOLUTERY_URL =~ s/$file_name//g;
     }
 
-    my $self = bless {router => Jikkoku::Web::Router->new}, $class;
     $self->dispatch;
-
-    $self;
   }
 
   sub dispatch {
     my $self = shift;
-    my $router = $self->{router};
+    my $router = $self->router;
 
     my $chara = $router->root(
       path       => '/chara',
@@ -84,12 +85,16 @@ package Jikkoku::Web {
   sub run {
     my $self = shift;
     my ($dest, $capture, $is_method_allowed)
-      = $self->{router}->match($ENV{REQUEST_METHOD}, $ENV{PATH_INFO});
+      = $self->router->match($ENV{REQUEST_METHOD}, $ENV{PATH_INFO});
 
     if (%$dest && $is_method_allowed) {
       my $controller = $dest->{controller};
       my $action     = $dest->{action};
-      load $controller;
+      state $is_loaded = {};
+      unless ($is_loaded->{$controller}) {
+        load $controller;
+        $is_loaded->{$controller} = 1;
+      }
       my $c = $controller->new;
       $c->$action;
     } else {
@@ -97,6 +102,8 @@ package Jikkoku::Web {
       $c->render_error('そのページは存在しません');
     }
   }
+
+  __PACKAGE__->meta->make_immutable;
 
 }
 
