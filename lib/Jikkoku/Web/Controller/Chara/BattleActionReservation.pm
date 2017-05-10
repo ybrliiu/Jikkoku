@@ -1,8 +1,13 @@
 package Jikkoku::Web::Controller::Chara::BattleActionReservation {
 
+  use Mouse;
   use Jikkoku;
-  use parent 'Jikkoku::Web::Controller::Chara::Base';
+
+  extends 'Jikkoku::Web::Controller::Chara::Base';
+
   use Jikkoku::Template;
+
+  __PACKAGE__->meta->make_immutable;
 
 }
 

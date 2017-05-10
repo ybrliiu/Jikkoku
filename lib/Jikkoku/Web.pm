@@ -5,7 +5,6 @@ package Jikkoku::Web {
 
   use Module::Load;
   use Jikkoku::Web::Router;
-  use Jikkoku::Web::Controller;
 
   our $ABSOLUTERY_URL;
 
@@ -29,7 +28,7 @@ package Jikkoku::Web {
 
     my $chara = $router->root(
       path       => '/chara',
-      controller => 'Jikkoku::Web::Controller::Chara'
+      controller => 'Jikkoku::Web::Controller::Chara',
     );
     $chara->any('/');
     $chara->any('/battle-map');
@@ -98,6 +97,8 @@ package Jikkoku::Web {
       my $c = $controller->new;
       $c->$action;
     } else {
+      # Jikkoku::Template が2度よみこまれる妙なエラーの抑止のためrequireを使用
+      require Jikkoku::Web::Controller;
       my $c = Jikkoku::Web::Controller->new;
       $c->render_error('そのページは存在しません');
     }
@@ -108,3 +109,4 @@ package Jikkoku::Web {
 }
 
 1;
+

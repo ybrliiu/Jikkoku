@@ -5,13 +5,10 @@ package Jikkoku::Class::Role::Diplomacy {
 
   use Carp;
 
-  sub DECLARE_WAR() { 0 }
-
-  sub CEASE_WAR() { 1 }
-
+  sub DECLARE_WAR()                 { 0 }
+  sub CEASE_WAR()                   { 1 }
   sub CESSION_OR_ACCEPT_TERRITORY() { 2 }
-
-  sub ALLOW_PASSAGE() { 3 }
+  sub ALLOW_PASSAGE()               { 3 }
 
   sub PRIMARY_KEY() { 'type_and_both_country_id' }
 

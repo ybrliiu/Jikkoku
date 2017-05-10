@@ -1,12 +1,16 @@
 package Jikkoku::Web::Controller::Chara::Country::Headquarters {
 
+  use Mouse;
   use Jikkoku;
-  use parent 'Jikkoku::Web::Controller';
+
+  extends 'Jikkoku::Web::Controller';
 
   sub root {
     my $self = shift;
     $self->render('error.pl' => {message => "ディプロマしー"});
   }
+
+  __PACKAGE__->meta->make_immutable;
 
 }
 

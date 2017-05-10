@@ -1,20 +1,34 @@
 package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Request {
 
+  use Mouse;
   use Jikkoku;
-  use parent 'Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Base';
 
-  use Scalar::Util qw/blessed/;
+  extends 'Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Base';
 
-  sub new {
-    my $class = shift;
-    my $self = $class->SUPER::new(@_);
+  has 'receive_country_id' => (
+    is      => 'ro',
+    isa     => 'Str',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->param('cou');
+    },
+  );
 
-    $self->{diplomacy_model}    = $self->model('Diplomacy')->new;
-    $self->{receive_country_id} = $self->param('cou');
-    $self->{receive_country}    = $self->{country_model}->get( $self->{receive_country_id} );
-
-    $self;
-  }
+  has 'receive_country' => (
+    is => 'ro',
+    isa => 'Jikkoku::Class::Country',
+    lazy => 1,
+    default => sub {
+      my $self = shift;
+      $self->country_model
+        ->get_with_option( $self->receive_country_id )
+        ->match(
+          Some => sub { $_ },
+          None => sub { $self->render_error('その国はもう存在していないようです。') },
+        );
+    },
+  );
 
   sub declare_war {
     my $self = shift;
@@ -31,14 +45,14 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Reque
     }
     
     my $param = {
-      type               => $self->{diplomacy_model}->CLASS->DECLARE_WAR,
-      request_country_id => $self->{country}->id,
-      receive_country_id => $self->{receive_country_id},
+      type               => $self->diplomacy_model->CLASS->DECLARE_WAR,
+      request_country_id => $self->country->id,
+      receive_country_id => $self->receive_country_id,
       now_game_date      => $now_game_date,
       start_game_date    => $start_game_date,
     };
   
-    eval { $self->{diplomacy_model}->add( $param ) };
+    eval { $self->diplomacy_model->add( $param ) };
   
     if (my $e = $@) {
       if ($e =~ '既に相手国から外交要請が届いています。') {
@@ -48,7 +62,7 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Reque
         $self->render_error($e);
       }
     } else {
-      $self->{diplomacy_model}->save;
+      $self->diplomacy_model->save;
       $self->_declare_war_send_letter_and_render( $start_game_date );
     }
 
@@ -57,15 +71,15 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Reque
   sub _reply_declare_war {
     my ($self, $param, $start_game_date) = @_;
     # もし元の宣戦布告データの start_game_date より早い時間が指定してあれば、それに変更する
-    my $already_diplomacy = $self->{diplomacy_model}->get({
-      type               => $self->{diplomacy_model}->CLASS->DECLARE_WAR,
-      request_country_id => $self->{receive_country_id},
-      receive_country_id => $self->{country}->id,
+    my $already_diplomacy = $self->diplomacy_model->get({
+      type               => $self->diplomacy_model->CLASS->DECLARE_WAR,
+      request_country_id => $self->receive_country_id,
+      receive_country_id => $self->country->id,
     });
     if ( $already_diplomacy->start_game_date->to_num > $start_game_date->to_num ) {
-      $self->{diplomacy_model}->delete( $already_diplomacy->type_and_both_country_id );
-      $self->{diplomacy_model}->add( $param );
-      $self->{diplomacy_model}->save;
+      $self->diplomacy_model->delete( $already_diplomacy->type_and_both_country_id );
+      $self->diplomacy_model->add( $param );
+      $self->diplomacy_model->save;
     } else {
       $start_game_date = $already_diplomacy->start_game_date;
     }
@@ -76,17 +90,17 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Reque
     my ($self, $start_game_date) = @_;
   
     my $log = qq{<span style="color: #ff6600"><strong>【宣戦布告】</strong></span>}
-      . qq{@{[ $self->{country}->name ]}は@{[ $self->{receive_country}->name ]}へ宣戦布告を行いました！「@{[ $self->param('sei') ]}」}
+      . qq{@{[ $self->country->name ]}は@{[ $self->receive_country->name ]}へ宣戦布告を行いました！「@{[ $self->param('sei') ]}」}
       . qq{開戦時間 : @{[ $start_game_date->date ]}}
-      . qq{( @{[ $self->{country}->name ]}$self->{position_name} : @{[ $self->{chara}->name ]}より ) };
+      . qq{( @{[ $self->country->name ]}@{[ $self->country->position_name_of_chara( $self->chara ) ]} : @{[ $self->chara->name ]}より ) };
     $self->model('MapLog')->new->add( $log )->save;
     $self->model('HistoryLog')->new->add( $log )->save;
-    $self->{letter_model}->add_country_letter({
-      sender          => $self->{chara},
-      receive_country => $self->{receive_country},
+    $self->letter_model->add_country_letter({
+      sender          => $self->chara,
+      receive_country => $self->receive_country,
       message         => "$log<br>司令部の外交操作からご確認ください。",
     });
-    $self->{letter_model}->save;
+    $self->letter_model->save;
   
     $self->render('chara/result.pl', {message => "宣戦布告を行いました。"});
   }
@@ -111,7 +125,7 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Reque
       start_game_date    => $start_game_date,
       message            => "「@{[ $self->param('sei') ]}」"
         . "開戦時間 : @{[ $start_game_date->date ]} "
-        . "( @{[ $self->{country}->name ]}君主 : @{[ $self->{chara}->name ]}より )",
+        . "( @{[ $self->country->name ]}君主 : @{[ $self->chara->name ]}より )",
     };
 
     $self->_request( $self->class('Diplomacy')->DECLARE_WAR, $additional_add_param );
@@ -120,8 +134,10 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Reque
 
   sub cease_war {
     my $self = shift;
-    $self->{diplomacy_model}->get_by_type_and_both_country_id(
-      $self->class('Diplomacy')->DECLARE_WAR, $self->{country}->id, $self->{receive_country_id}
+    $self->diplomacy_model->get_by_type_and_both_country_id(
+      $self->class('Diplomacy')->DECLARE_WAR,
+      $self->country->id,
+      $self->receive_country_id
     )->match(
       Some => sub {
         my $declare_war = shift;
@@ -148,20 +164,20 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Reque
 
     my %diplomacy_param = (
       type               => $type,
-      request_country_id => $self->{country}->id,
-      receive_country_id => $self->{receive_country_id},
+      request_country_id => $self->country->id,
+      receive_country_id => $self->receive_country_id,
     );
 
     my %letter_param = (
-      sender          => $self->{chara},
-      receive_country => $self->{receive_country},
+      sender          => $self->chara,
+      receive_country => $self->receive_country,
     );
   
     my $add_diplomacy = eval {
-      $self->{diplomacy_model}->add({
+      $self->diplomacy_model->add({
         %diplomacy_param,
         message => "「@{[ $self->param('sei') ]}」"
-          . "( @{[ $self->{country}->name ]}君主 : @{[ $self->{chara}->name ]}より )",
+          . "( @{[ $self->country->name ]}君主 : @{[ $self->chara->name ]}より )",
 
         # 短縮布告の追加parametor
         %$additional_add_param,
@@ -172,16 +188,16 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Reque
 
       if ($e =~ '既に外交要請を出しています。') {
 
-        my $delete_diplomacy = $self->{diplomacy_model}->delete( \%diplomacy_param );
+        my $delete_diplomacy = $self->diplomacy_model->delete( \%diplomacy_param );
         $self->render_error( $delete_diplomacy->show_already_accepted_error ) if $delete_diplomacy->is_accepted;
-        $self->{diplomacy_model}->save;
+        $self->diplomacy_model->save;
 
-        $self->{letter_model}->add_country_letter({
+        $self->letter_model->add_country_letter({
           %letter_param,
           message => qq{<span style="color: #ff6600"><strong>【@{[ $delete_diplomacy->name ]}要請】</strong></span>}
-            . qq{@{[ $self->{country}->name ]}は@{[ $self->{receive_country}->name ]}への@{[ $delete_diplomacy->name ]}要請を取り消しました。<br>}
+            . qq{@{[ $self->country->name ]}は@{[ $self->receive_country->name ]}への@{[ $delete_diplomacy->name ]}要請を取り消しました。<br>}
         });
-        $self->{letter_model}->save;
+        $self->letter_model->save;
 
         $self->render('chara/result.pl', {message => $delete_diplomacy->name . '要請を取り下げました。'});
       }
@@ -191,21 +207,23 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Reque
 
     } else {
 
-      $self->{diplomacy_model}->save;
-      $self->{letter_model}->add_country_letter({
+      $self->diplomacy_model->save;
+      $self->letter_model->add_country_letter({
         %letter_param,
         message => qq{<span style="color: #ff6600"><strong>【@{[ $add_diplomacy->name ]}要請】</strong></span>}
-          . qq{@{[ $self->{country}->name ]}は@{[ $self->{receive_country}->name ]}に@{[ $add_diplomacy->name ]}要請を行いました。<br>}
+          . qq{@{[ $self->country->name ]}は@{[ $self->receive_country->name ]}に@{[ $add_diplomacy->name ]}要請を行いました。<br>}
           . qq{「@{[ $self->param('sei') ]} 」<br>}
           . $add_diplomacy->show_hope_start_game_date . '<br>'
           . qq{司令部の外交関連操作からご確認ください。},
       });
-      $self->{letter_model}->save;
+      $self->letter_model->save;
 
       $self->render('chara/result.pl', {message => $add_diplomacy->name . "要請を行いました。"});
     }
 
   }
+  
+  __PACKAGE__->meta->make_immutable;
 
 }
 

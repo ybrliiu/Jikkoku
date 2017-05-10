@@ -1,8 +1,9 @@
 package Jikkoku::Web::Controller {
 
+  use Mouse;
   use Jikkoku;
-  use parent 'CGI';
 
+  use CGI;
   use Carp;
   use Module::Load;
   use Jikkoku::Template;
@@ -10,18 +11,16 @@ package Jikkoku::Web::Controller {
 
   my $CONFIG = Jikkoku::Model::Config->get;
 
-  sub new {
-    my $class = shift;
-    my $self  = $class->SUPER::new(@_);
-    # 全てをエスケープするなら
-    # for my $key (keys %{ $self->{param} }) {
-    #   $self->{param}{$key} = [ map { Jikkoku::Util::escape($_) } @{ $self->{param}{$_} } ];
-    # }
-  }
+  has 'cgi' => (
+    is      => 'ro',
+    isa     => 'CGI',
+    default => sub { CGI->new },
+    handles => [qw/ header param redirect /],
+  );
 
   sub render {
     my ($self, $template_file, $args) = @_;
-    Carp::croak(" テンプレートファイルを指定してください ") unless defined $template_file;
+    Carp::croak("テンプレートファイルを指定してください") unless defined $template_file;
     $args //= {};
 
     $args->{config}    = $CONFIG;
@@ -54,29 +53,36 @@ package Jikkoku::Web::Controller {
 
   sub render_error {
     my ($self, $message) = @_;
-    Carp::croak "引数が足りません" if @_ < 2;
+    Carp::croak 'few arguments($message)' if @_ < 2;
     $self->render('error.pl', {message => $message});
     exit;
   }
 
   sub redirect_to {
     my ($self, $path) = @_;
+    Carp::croak 'few arguments($path)' if @_ < 2;
     print $self->redirect( url_for $path );
     exit;
   }
 
-  sub class {
-    my ($self, $class_name) = @_;
-    my $pkg = "Jikkoku::Class::${class_name}";
-    load $pkg;
-    $pkg;
-  }
+  {
+    my $meta = __PACKAGE__->meta;
 
-  sub model {
-    my ($self, $class_name) = @_;
-    my $pkg = "Jikkoku::Model::${class_name}";
-    load $pkg;
-    $pkg;
+    for my $method_name (qw/ class model /) {
+      $meta->add_method($method_name => sub {
+        my ($class, $class_name) = @_;
+        Carp::croak 'few arguments($class_name)' if @_ < 2;
+        my $pkg = "Jikkoku::@{[ ucfirst $method_name ]}::${class_name}";
+        state $is_loaded = {};
+        unless ($is_loaded->{$pkg}) {
+          load $pkg;
+          $is_loaded->{$pkg} = 1;
+        }
+        $pkg;
+      });
+    }
+
+    $meta->make_immutable;
   }
 
 }

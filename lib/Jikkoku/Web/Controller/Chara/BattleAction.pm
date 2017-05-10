@@ -1,21 +1,32 @@
 package Jikkoku::Web::Controller::Chara::BattleAction {
 
+  use Mouse;
   use Jikkoku;
-  use parent 'Jikkoku::Web::Controller::Chara::Base';
+
+  extends 'Jikkoku::Web::Controller::Chara::Base';
+
   use Jikkoku::Template;
 
-  sub new {
-    my $class = shift;
-    my $self  = $class->SUPER::new(@_);
-    $self->{return_url_origin} = '/chara/battle-map';
-    $self->{return_url}        = url_for $self->{return_url_origin};
-    $self;
-  }
+  has 'return_url_origin' => (
+    is      => 'ro',
+    isa     => 'Str',
+    default => '/chara/battle-map',
+  );
+
+  has 'return_url' => (
+    is      => 'ro',
+    isa     => 'Str',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      url_for $self->return_url_origin;
+    },
+  );
 
   sub move {
     my $self = shift;
 
-    my $move = $self->class('BattleCommand::Move')->new({ chara => $self->{chara} });
+    my $move = $self->class('BattleCommand::Move')->new({ chara => $self->chara });
 
     eval {
       $move->exec({
@@ -30,31 +41,31 @@ package Jikkoku::Web::Controller::Chara::BattleAction {
       $self->render_error($e->message);
     }
 
-    $self->redirect_to($self->{return_url_origin});
+    $self->redirect_to($self->return_url_origin);
   }
 
   sub charge_move_point {
     my $self = shift;
 
-    my $charger = $self->class('BattleCommand::ChargeMovePoint')->new({ chara => $self->{chara} });
+    my $charger = $self->class('BattleCommand::ChargeMovePoint')->new({ chara => $self->chara });
 
     eval { $charger->exec };
     if (my $e = $@) {
       $self->render_error($e->message);
     }
 
-    $self->redirect_to($self->{return_url_origin});
+    $self->redirect_to($self->return_url_origin);
   }
 
   sub stuck {
     my $self = shift;
 
-    my $stuck = $self->class('Skill::Disturb::Stuck')->new({ chara => $self->{chara} });
+    my $stuck = $self->class('Skill::Disturb::Stuck')->new({ chara => $self->chara });
 
     eval {
       $stuck->exec({
         target_id => $self->param('target_id') || undef,
-        chara_model      => $self->{chara_model},
+        chara_model      => $self->chara_model,
         map_log_model    => $self->model('MapLog')->new,
         battle_map_model => $self->model('BattleMap')->new,
       });
@@ -66,6 +77,7 @@ package Jikkoku::Web::Controller::Chara::BattleAction {
     $self->render('chara/result.pl', {message => $stuck->name . "を行いました。"});
   }
 
+  __PACKAGE__->meta->make_immutable;
 
 }
 

@@ -100,6 +100,17 @@ package Jikkoku::Class::Country {
     defined $position_name ? $POSITIONS_NAME{$position_name} : undef;
   }
 
+  sub position_name_of_chara {
+    my ($self, $chara) = @_;
+    Carp::croak 'few arguments($chara)' if @_ < 2;
+    my $position_name = first {
+      if (defined $self->$_) {
+        $self->$_->id eq $chara->id;
+      }
+    } @POSITIONS;
+    defined $position_name ? $POSITIONS_NAME{$position_name} : '';
+  }
+
   sub total_salary {
     my ($self, $towns) = @_;
     my ($money, $rice);
@@ -155,7 +166,7 @@ package Jikkoku::Class::Country {
   {
     my $config = Jikkoku::Model::Config->get;
 
-    for my $method_name (qw/color background_color background_color_rgba/) {
+    for my $method_name (qw/ color background_color background_color_rgba /) {
       __PACKAGE__->meta->add_method($method_name => sub {
         my $self = shift;
         $config->{"country_$method_name"}[ $self->{color_id} ];

@@ -23,7 +23,7 @@ ok(my $model = $CLASS->new);
   ok $model->save;
 
   ok $country->king;
-  is $country->king_name, '宋江';
+  is $country->king_name, 'りーう＠管理人';
   ok $country->is_headquarters_exist;
 
   subtest 'commit and abort' => sub {
@@ -42,6 +42,7 @@ ok(my $model = $CLASS->new);
 
   subtest 'is_chara_has_position' => sub {
     is $country->is_chara_has_position( $country->king_id ), '君主';
+    is $country->position_name_of_chara( $country->king ), '君主';
   };
 
   subtest 'color' => sub {
