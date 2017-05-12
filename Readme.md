@@ -1,16 +1,17 @@
 
 # やること
 
-Skill クラス
-    explain* -> description_of_* 名前変更
-    acquire, is_acquired でも多態性を用いた方法にすることを検討
-    args->{} で使いまわしている変数を インスタンス変数に
-    モデルのクラスメソッド削除
-    opt_get -> get_with_option
-    Moo   -> Mouse化
-    Model::* の Mouse化, 設計再構築(特に Chara::*
-    Chara::Soldier の利用
-    複数対象の症状(掩護など)を記録するようのモデル, 記録ファイルの作成
+Model::* の Mouse化, 設計再構築(特に Chara::*
+  ->
+    Town model 新Modelへ移行
+    Class::TextData の PRIMARY_KEY 要らなくないか
+    Role::Diplomacy Role::Tiny -> Mouse
+    Model::Role::TextData::Integration::Expires
+
+複数対象の症状(掩護など)を記録するようのモデル, 記録ファイルの作成
+Skill class 処理実行部分を別クラスに切り離した方がよさ気、よってBattle Action Role の見直しが必要そう
+  BattleAction Class を CanExecOnBattleMap Role を実装しているクラスで使用
+Chara::Soldier の利用
 
 # テスト
 * 初期仕官制限

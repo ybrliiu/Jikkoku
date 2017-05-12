@@ -26,7 +26,9 @@ package Jikkoku::Web::Controller::Chara {
     });
 
     my $country_model = $self->model('Country')->new;
-    my $country       = $country_model->get( $self->chara->country_id );
+    my $country       = $country_model
+      ->get_with_option( $self->chara->country_id )
+      ->get_or_else( $country_model->neutral );
 
     $self->render('chara/battle_map.pl', {
       battle_map => $battle_map,

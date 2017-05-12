@@ -13,7 +13,8 @@ subtest 'add_country_letter' => sub {
   use Jikkoku::Model::Chara;
   use Jikkoku::Model::Country;
   my $sender          = Jikkoku::Model::Chara->new->get('ybrliiu');
-  my $receive_country = Jikkoku::Model::Country->new->get(0);
+  my $country_model   = Jikkoku::Model::Country->new;
+  my $receive_country = $country_model->get_with_option(0)->get_or_else( $country_model->neutral );
   my $message         = 'HELL WORLD!!';
   ok $model->add_country_letter({
     sender          => $sender,

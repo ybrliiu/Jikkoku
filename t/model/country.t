@@ -16,7 +16,6 @@ ok(my $model = $CLASS->new);
   ok( my $country = $model->get($country_id) );
   is $country->name, $before_country_name;
   $country->name( $change_country_name );
-  ok $model->save;
 
   is $country->name, $change_country_name;
   $country->name( $before_country_name );

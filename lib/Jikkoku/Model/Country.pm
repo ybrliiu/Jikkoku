@@ -1,57 +1,37 @@
 package Jikkoku::Model::Country {
 
   use Jikkoku;
-  use parent 'Jikkoku::Model::Base::TextData::Integration';
+  use Mouse;
 
-  use List::Util qw/max/;
-  use Jikkoku::Class::Country;
+  use List::Util qw( max );
 
   use constant {
-    CLASS     => 'Jikkoku::Class::Country',
-    FILE_PATH => 'log_file/country.cgi',
+    FILE_PATH         => 'log_file/country.cgi',
+    INFLATE_TO        => 'Jikkoku::Class::Country',
+    PRIMARY_ATTRIBUTE => 'id',
   };
 
-  # 無所属
-  our $NEUTRAL = CLASS->new({
-    id      => 0,
-    name    => '無所属',
-    king_id => '',
-    command => '無所属へようこそー！',
-  });
+  with 'Jikkoku::Model::Role::TextData::Integration';
 
-  sub neutral { $NEUTRAL; }
-
-  # override
-  sub get {
-    my ($self, $id) = @_;
-    my $country = eval {
-      $self->SUPER::get($id);
-    };
-    if (my $e = $@) {
-      $country = $NEUTRAL;
-    }
-    $country;
+  # 無所属国のデータ
+  sub neutral {
+    my $class = shift;
+    state $neutral = $class->INFLATE_TO->new({
+      id      => 0,
+      name    => '無所属',
+      king_id => '',
+      command => '無所属です',
+    });
   }
 
   sub create {
     my ($self, $args) = @_;
-
-    my $max_id = max map { $_->{id} } values %{ $self->{data} };
-    my $country = CLASS->new;
-    $self->{data}{$max_id + 1} = $country->output;
+    my $max_id = max map { $_->id } values %{ $self->data };
+    my $country = $self->INFLATE_TO->new($args);
+    $self->data->{$max_id + 1} = $country->output;
   }
 
-  # 新しい CLASS の output method は改行付きのため、取り除く
-  sub _objects_data_to_textdata_list {
-    my ($self) = @_;
-    [
-      map {
-        my $output = ${ $_->output };
-        chomp $output;
-        $output;
-      } values %{ $self->{data} }
-    ];
-  }
+  __PACKAGE__->meta->make_immutable;
 
 }
 

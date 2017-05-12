@@ -104,7 +104,7 @@ package Jikkoku::Class::BattleCommand::PassCheckPoint {
 
   sub exec_log {
     my $self = shift;
-    my $country = $self->country_model->get( $self->chara->country_id );
+    my $country = $self->country_model->get_with_option( $self->chara->country_id )->get;
     "@{[ $self->now_game_date->month ]}月 : @{[ $country->name ]}の@{[ $self->chara->name ]}は"
     . "@{[ $self->entry_check_point->target_town_name ]}に入城しました！";
   }

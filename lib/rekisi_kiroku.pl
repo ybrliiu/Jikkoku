@@ -31,7 +31,7 @@ sub REKISI_KIROKU {
   create_html 'map', $term_num;
 
   my $country_model = Jikkoku::Model::Country->new;
-  my $unite_country = $country_model->get( $unite_country_id ); 
+  my $unite_country = $country_model->get_with_option( $unite_country_id )->get;
 
   open(my $fh, '<', './REKISI/index.html') or die "歴代統一国記録ファイルが開けませんでした";
   my $history_html = join '', <$fh>;

@@ -15,7 +15,7 @@ use_ok $CLASS;
 
 ok( my $diplomacy_model = $CLASS->new );
 ok( my $diplomacy_list  = $diplomacy_model->get_by_country_id( $country_id ) );
-is @$diplomacy_list, 1;
+is @$diplomacy_list, 0;
 
 ok $diplomacy_model->add({
   type               => $CLASS->CLASS->CESSION_OR_ACCEPT_TERRITORY,
@@ -84,12 +84,12 @@ subtest 'declare_war already_sended_by_receiver' => sub {
 };
 
 ok( $diplomacy_list = $diplomacy_model->get_by_country_id( $country_id ) );
-is @$diplomacy_list, 4;
+is @$diplomacy_list, 3;
 ok grep $_->show_status($country_id, $country_model) =~ /\(本当は\)平和主義共和国/, @$diplomacy_list;
 
 ok $diplomacy_model->delete_by_country_id( $country_id2 );
 ok( $diplomacy_list = $diplomacy_model->get_by_country_id( $country_id ) );
-is @$diplomacy_list, 1;
+is @$diplomacy_list, 0;
 ok not grep $_->show_status($country_id, $country_model) =~ /\(本当は\)平和主義共和国/, @$diplomacy_list;
 
 # 攻撃できるかどうかのテスト

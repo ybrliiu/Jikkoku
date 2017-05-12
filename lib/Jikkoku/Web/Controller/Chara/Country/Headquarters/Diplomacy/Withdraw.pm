@@ -34,12 +34,12 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Withd
     
     $self->diplomacy_model->save;
 
-    my $target_country = $self->country_model->get( $target_country_id );
+    my $target_country = $self->country_model->get_with_option( $target_country_id )->get;
     $self->letter_model->add_country_letter({
       sender          => $self->chara,
       receive_country => $target_country,
       message         => qq{<span style="color: #ff6600"><strong>【${delete_diplomacy_name}</strong></span>}
-        . "@{[ $self->{country}->name ]}は@{[ $target_country->name ]}との${delete_diplomacy_name}を終了しました。<br>",
+        . "@{[ $self->country->name ]}は@{[ $target_country->name ]}との${delete_diplomacy_name}を終了しました。<br>",
     });
 
     $self->render('chara/result.pl', {message => $delete_diplomacy_name . 'を取り消しました。'});

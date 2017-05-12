@@ -84,12 +84,12 @@ package Jikkoku::Class::Role::Diplomacy {
   sub show_status {
     my ($self, $country_id, $country_model) = @_;
     if ( $self->{request_country_id} == $country_id ) {
-      my $country = $country_model->get( $self->{receive_country_id} );
+      my $country = $country_model->get_with_option( $self->{receive_country_id} )->get_or_else( $country_model->neutral );
       $self->{is_accepted}
         ? $country->name . 'と' . $self->name . '中'
         : $country->name . 'へ' . $self->name . 'を要請中';
     } else {
-      my $country = $country_model->get( $self->{request_country_id} );
+      my $country = $country_model->get_with_option( $self->{request_country_id} )->get_or_else( $country_model->neutral );
       $self->{is_accepted}
         ? $country->name . 'と' . $self->name . '中'
         : qq{<span style="color: red">【外交要請】</span>} . $country->name . 'から' . $self->name . '要請が来ています';
