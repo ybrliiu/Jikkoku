@@ -6,7 +6,7 @@ package Jikkoku::Model::Chara::Formation {
 
   use Jikkoku::Class::Chara::Formation;
 
-  has '+get_all_formations' => ( isa => 'ArrayRef[Jikkoku::Class::Chara::Formation]' );
+  has '+data' => ( isa => 'ArrayRef[Jikkoku::Class::Chara::Formation]' );
 
   has 'chara' => (
     is       => 'ro',

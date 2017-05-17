@@ -38,7 +38,7 @@ package Jikkoku::Class::Formation {
     my $self = shift;
     if ( @{ $self->advantageous_formations_id } ) {
       my @formation_names = map {
-        $self->formation_model->get_formation($_)->name;
+        $self->formation_model->get($_)->name;
       } @{ $self->advantageous_formations_id };
       join('、', @formation_names) . 'に強い。';
     } else {

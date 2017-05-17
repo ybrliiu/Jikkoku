@@ -5,7 +5,7 @@ package Jikkoku::Model::Formation {
   use Jikkoku::Class::Formation;
   use Jikkoku::Model::Config;
 
-  has 'get_all_formations' => (
+  has 'data' => (
     is      => 'ro',
     isa     => 'ArrayRef[Jikkoku::Class::Formation]',
     lazy    => 1,
@@ -30,6 +30,8 @@ package Jikkoku::Model::Formation {
     +{ map { $_->name => $_ } @{ $self->get_all_formations } };
   }
 
+  __PACKAGE__->meta->add_method(get_all_formations => \&data);
+
   sub generate_treat_class {
     my ($self, $args) = @_;
     Jikkoku::Class::Formation->new(
@@ -38,13 +40,13 @@ package Jikkoku::Model::Formation {
     );
   }
 
-  sub get_formation {
+  sub get {
     my ($self, $id) = @_;
     Carp::croak 'few arguments (id)' if @_ < 2;
     $self->get_all_formations->[$id] // Carp::confess "id : $id の陣形データは見つかりませんでした";
   }
 
-  sub get_formation_by_name {
+  sub get_by_name {
     my ($self, $name) = @_;
     Carp::croak 'few arguments (name)' if @_ < 2;
     $self->name_map->{$name} // Carp::confess "name : $name の陣形データは見つかりませんでした";

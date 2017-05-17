@@ -206,7 +206,7 @@ package Jikkoku::Class::Chara {
 
   sub formation {
     my $self = shift;
-    $self->formations->get_formation( $self->soldier_battle_map('formation_id') );
+    $self->formations->get( $self->soldier_battle_map('formation_id') );
   }
 
   before money => sub {
