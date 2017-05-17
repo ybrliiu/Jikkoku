@@ -21,8 +21,8 @@ package Jikkoku::Player {
     keys          => [qw( stuck kintoun attack_up )],
     validators    => +{
       kintoun => sub {
-        my ($key, $value) = @_;
-        die "$key が0以下になります" if $value < 0;
+        my ($value) = @_;
+        die "kintounが0以下になります" if $value < 0;
       },
     },
   );

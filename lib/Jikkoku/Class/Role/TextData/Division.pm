@@ -33,8 +33,8 @@ package Jikkoku::Class::Role::TextData::Division {
   sub read {
     my $self = shift;
     my $fh = $self->fh;
-    my $textdata = <$fh>;
-    my $hash = $self->textdata_to_hash($textdata);
+    my @textdata = <$fh>;
+    my $hash = $self->textdata_to_hash( $textdata[0] );
     $self->set_hash_value($hash);
   }
   

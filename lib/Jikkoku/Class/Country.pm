@@ -7,6 +7,7 @@ package Jikkoku::Class::Country {
   use List::Util qw( first );
   use Jikkoku::Model::Chara;
   use Jikkoku::Model::Config;
+  use Jikkoku::Class::Role::TextData;
 
   use constant PRIMARY_KEY => 'id';
 

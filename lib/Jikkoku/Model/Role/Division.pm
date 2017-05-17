@@ -81,6 +81,19 @@ package Jikkoku::Model::Role::Division {
     $self->result_class->new( data => $self->get_all );
   }
 
+  sub foreach {
+    my ($self, $code) = @_;
+    Carp::croak 'few arguments($code)' if @_ < 2;
+    opendir(my $dh, $self->dir_path);
+    for (readdir $dh) {
+      if ( (my $file = $_) =~ /.+\.cgi$/i ) {
+        my $primary_attribute_value = ($file =~ s/\.cgi//r);
+        $code->( $self->get($primary_attribute_value) );
+      }
+    }
+    closedir $dh;
+  }
+
   sub first {
     my ($self, $code) = @_;
     Carp::croak 'few arguments($code)' if @_ < 2;
@@ -88,7 +101,6 @@ package Jikkoku::Model::Role::Division {
     for my $chara (@$chara_list) {
       return $chara if $code->($chara);
     }
-    undef;
   }
 
   sub delete {

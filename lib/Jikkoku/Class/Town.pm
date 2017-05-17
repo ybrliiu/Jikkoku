@@ -1,51 +1,72 @@
 package Jikkoku::Class::Town {
 
+  use Mouse;
   use Jikkoku;
-  use Class::Accessor::Lite new => 0;
-  use parent 'Jikkoku::Class::Base::TextData';
 
-  use Carp qw/croak/;
-  use List::Util qw/first/;
+  use Carp;
+  use List::Util qw( first );
   use Data::List::CircularlyLinked;
+  use Jikkoku::Class::Role::TextData;
 
   use constant {
-    PRIMARY_KEY => 'id',
-    # id は配列の要素数, new するときに末尾に付け加え, save するときにデータ破棄する
-    COLUMNS     => [qw/
-      name country_id
-      farmer farm business wall farm_max business_max wall_max loyalty x y price
-      wall_power technology farmer_max
-      not_need0 not_need1 not_need2 not_need3 not_need4 not_need5 not_need6 not_need7 not_need8
-      id
-    /],
-    YEAR_COEF   => 5.833,
+    PRIMARY_KEY         => 'id',
+    YEAR_COEF           => 5.833,
     MAX_TECHNOLOGY      => 9999,
     MAX_WALL_POWER_MIN  => 1000,
     MAX_WALL_POWER_MAX  => 9999,
     MAX_WALL_POWER_COEF => 125,
   };
 
-  Class::Accessor::Lite->mk_accessors(@{ COLUMNS() });
+  has 'name'         => ( metaclass => 'Column', is => 'ro', isa => 'Str', required => 1 );
+  has 'country_id'   => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
+  has 'farmer'       => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
+  has 'farm'         => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
+  has 'business'     => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
+  has 'wall'         => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
+  has 'farm_max'     => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
+  has 'business_max' => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
+  has 'wall_max'     => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
+  has 'loyalty'      => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
+  has 'x'            => ( metaclass => 'Column', is => 'ro', isa => 'Int', required => 1 );
+  has 'y'            => ( metaclass => 'Column', is => 'ro', isa => 'Int', required => 1 );
+  has 'price'        => ( metaclass => 'Column', is => 'rw', isa => 'Num', required => 1 );
+  has 'wall_power'   => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
+  has 'technology'   => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
+  has 'farmer_max'   => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
 
-  # override
-  sub new {
-    my ($class, $textdata, $index) = @_;
-    my $self = $class->SUPER::new($textdata);
-    $self->{id} = $index;
-    $self;
+  # 旧APIで隣接都市を示すためのデータが格納されていたが, 新APIでは使用しない
+  for (0 .. 7) {
+    has "not_need$_" => ( metaclass => 'Column', is => 'ro', isa => 'Str', default => '' );
   }
 
-  # override
-  sub output {
-    my ($self) = @_;
-    no warnings 'uninitialized';
-    my $textdata = join '<>', map { $self->{COLUMNS->[$_]} } 0 .. @{ COLUMNS() } - 2;
+  # 都市データの順番で決められるデータで、元々のテキストデータ自身に含まれない
+  # Model::Town からオブジェクト生成時にテキストデータに付加して送られてくる
+  # 逆にoutputするときは id を削除した状態で出力する
+  has 'id' => ( metaclass => 'Column', is => 'ro', isa => 'Int', required => 1 );
+
+  with 'Jikkoku::Class::Role::TextData';
+
+  around output => sub {
+    my ($orig, $self) = @_;
+    my @columns = map { $_->name } $self->get_column_attributes;
+    # 一番最後の id は記録しないので削除
+    pop @columns;
+    my $textdata = join( '<>', map {
+      my $attr = $self->$_;
+      # 空文字列からは can が呼び出せないので...
+      if ($attr ne '') {
+        $attr->can('output') ? $attr->output : $attr
+      } else {
+        '';
+      }
+    } @columns ) . "<>\n";
     \$textdata;
-  }
+  };
 
   sub distance {
     my ($self, $town) = @_;
-    abs( $self->{x} - $town->{x} ) + abs( $self->{y} - $town->{y} );
+    Carp::croak 'few arguments($town)' if @_ < 2;
+    abs( $self->x - $town->x ) + abs( $self->y - $town->y );
   }
 
   {
@@ -59,6 +80,7 @@ package Jikkoku::Class::Town {
 
     sub can_move {
       my ($self, $town) = @_;
+      Carp::croak 'few arguments($town)' if @_ < 2;
       my $distance = $self->distance($town);
       # 斜めの時
       my $oblique = $distance == 2 && $self->x != $town->x && $self->y != $town->y;
@@ -83,16 +105,16 @@ package Jikkoku::Class::Town {
 
   sub _salary {
     my ($self, $attr) = @_;
-    int( $self->{$attr} * 12 * $self->{farmer} / 12000 );
+    int( $self->$attr * 12 * $self->farmer / 12000 );
   }
 
   sub salary_money {
-    my ($self) = @_;
+    my $self = shift;
     $self->_salary('business');
   }
 
   sub salary_rice {
-    my ($self) = @_;
+    my $self = shift;
     $self->_salary('farm');
   }
 
@@ -185,6 +207,7 @@ package Jikkoku::Class::Town {
 
   sub wall_power_max {
     my ($class, $elapsed_year) = @_;
+    Carp::croak 'few arguments($elapsed_year)' if @_ < 2;
     my $wall_power_max = $elapsed_year * MAX_WALL_POWER_COEF;
     if ($wall_power_max < MAX_WALL_POWER_MIN) {
       MAX_WALL_POWER_MIN;
@@ -194,6 +217,8 @@ package Jikkoku::Class::Town {
       $wall_power_max;
     }
   }
+
+  __PACKAGE__->meta->make_immutable;
 
 }
 

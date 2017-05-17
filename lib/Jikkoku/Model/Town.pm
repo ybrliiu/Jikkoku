@@ -1,65 +1,81 @@
 package Jikkoku::Model::Town {
 
+  use Mouse;
   use Jikkoku;
-  use parent 'Jikkoku::Model::Base::TextData::Integration';
-  use Carp;
 
-  use Jikkoku::Util qw/open_data save_data/;
-  use Jikkoku::Class::Town;
+  use Carp;
+  use Jikkoku::Util;
 
   use constant {
-    CLASS          => 'Jikkoku::Class::Town',
-    FILE_PATH      => 'log_file/town_data.cgi',
-    INIT_FILE_PATH => 'log_file/f_town_data.cgi',
+    INFLATE_TO        => 'Jikkoku::Class::Town',
+    FILE_PATH         => 'log_file/town_data.cgi',
+    INIT_FILE_PATH    => 'log_file/f_town_data.cgi',
+    PRIMARY_ATTRIBUTE => 'id',
+  };
+
+  has 'name_map' => (
+    is      => 'ro',
+    isa     => 'HashRef',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      +{ map { $_->name => $_ } values %{ $self->data } };
+    },
+  );
+
+  has 'map_data' => (
+    is      => 'ro',
+    isa     => 'ArrayRef[ArrayRef]',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      my $map_data = [];
+      for my $town (@{ $self->get_all }) {
+        $map_data->[ $town->y ][ $town->x ] = $town;
+      }
+      $map_data;
+    },
+  );
+
+  with 'Jikkoku::Model::Role::TextData::Integration';
+
+  around _objects_data_to_textdata_list => sub {
+    my ($orig, $self) = @_;
+    [ map { ${ $_->textdata } } sort { $a->id <=> $b->id } values %{ $self->data } ];
+  };
+
+  around _textdata_list_to_objects_data => sub {
+    my ($orig, $class, $textdata_list) = @_;
+    my $index = 0;
+    my @objects = map {
+      my $textdata = $_ . $index++ . '<>';
+      $class->INFLATE_TO->new($textdata);
+    } @$textdata_list;
+    $class->to_hash( \@objects );
+  };
+  
+  around init => sub {
+    my ($orig, $class) = @_;
+    my $init_data = Jikkoku::Util::open_data($class->INIT_FILE_PATH);
+    Jikkoku::Util::save_data($class->FILE_PATH, $init_data);
   };
 
   sub get_by_name {
     my ($self, $name) = @_;
-    my ($town) = grep { $_->name eq $name } values %{ $self->{data} };
-    $town;
-  }
-
-  sub set_to_map_data {
-    my $self = shift;
-    $self->{map_data} = [];
-    for my $town (@{ $self->get_all }) {
-      $self->{map_data}[ $town->y ][ $town->x ] = $town;
-    }
+    Carp::croak 'few arguments($name)' if @_ < 2;
+    $self->name_map->{$name};
   }
 
   sub get_by_coordinate {
     my ($self, $x, $y) = @_;
-    unless (defined $self->{map_data}) {
-      $self->set_to_map_data;
-    }
-    $self->{map_data}[$y][$x];
+    Carp::croak 'few arguments($x, $y)' if @_ < 3;
+    $self->map_data->[$y][$x];
   }
 
   sub get_towns_by_country_id {
-    Carp::croak 'few arguments($country_id)' if @_ < 2;
     my ($self, $country_id) = @_;
+    Carp::croak 'few arguments($country_id)' if @_ < 2;
     [ grep { $_->country_id == $country_id } @{ $self->get_all } ];
-  }
-  
-  # override
-  sub init {
-    my ($class) = @_;
-    my $init_data = open_data(INIT_FILE_PATH);
-    save_data( FILE_PATH, $init_data );
-  }
-
-  # override
-  sub _objects_data_to_textdata_list {
-    my ($self) = @_;
-    [ map { ${ $_->output } } sort { $a->id <=> $b->id } values %{ $self->{data} } ];
-  }
-
-  # override
-  sub _textdata_list_to_objects_data {
-    my ($self) = @_;
-    my $index = 0;
-    my $objects = [ map { $self->CLASS->new($_, $index++) } @{ $self->{_textdata_list} } ];
-    $self->to_hash( $objects );
   }
 
   sub set_all_stay_charactors {
@@ -72,6 +88,8 @@ package Jikkoku::Model::Town {
       }
     }
   }
+
+  __PACKAGE__->meta->make_immutable;
 
 }
 

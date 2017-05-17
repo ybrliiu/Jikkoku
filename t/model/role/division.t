@@ -59,4 +59,12 @@ subtest get_all_with_result => sub {
   is @$same_country, 2;
 };
 
+subtest foreach => sub {
+  lives_ok { $model->foreach(sub { my $chara = shift }) };
+  $model->foreach(sub {
+    my $chara = shift;
+    ok $chara->isa('Jikkoku::Class::Chara');
+  });
+};
+
 done_testing;

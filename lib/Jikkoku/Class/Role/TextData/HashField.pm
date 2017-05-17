@@ -23,7 +23,7 @@ package Jikkoku::Class::Role::TextData::HashField {
     my $data = $self->data;
     Carp::croak("$key というフィールドは存在しません。") unless exists $data->{$key};
     if (exists $self->validators->{$key}) {
-      $self->validators->{$key}->($key, $value, $data);
+      $self->validators->{$key}->($value, $data);
     }
     $data->{$key} = $value;
   }

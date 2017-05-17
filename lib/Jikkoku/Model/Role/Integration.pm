@@ -31,13 +31,13 @@ package Jikkoku::Model::Role::Integration {
   sub get {
     my ($self, $primary_attribute_value) = @_;
     Carp::croak 'few arguments($primary_attribute_value)' if @_ < 2;
-    $self->data->{$primary_attribute_value};
+    $self->data->{$primary_attribute_value} // Carp::croak "no such data($primary_attribute_value)";
   }
 
   sub get_with_option {
     my ($self, $primary_attribute_value) = @_;
     Carp::croak 'few arguments($primary_attribute_value)' if @_ < 2;
-    Option->new( $self->get($primary_attribute_value) );
+    Option->new( $self->data->{$primary_attribute_value} );
   }
 
   sub get_all {

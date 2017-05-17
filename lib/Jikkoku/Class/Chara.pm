@@ -89,7 +89,7 @@ package Jikkoku::Class::Chara {
     )],
     validators => +{
       move_point => sub {
-        my ($key, $value) = @_;
+        my $value = shift;
         die "0以下にはできません" if $value < 0;
       },
     },
@@ -160,7 +160,7 @@ package Jikkoku::Class::Chara {
     keys       => [qw( morale morale_max )],
     validators => +{
       morale => sub {
-        my ($key, $value, $data) = @_;
+        my ($value, $data) = @_;
         die "0以下にはできません" if $value < 0;
         die "士気の上限($data->{morale_max})を超えています" if $value > $data->{morale_max};
       },

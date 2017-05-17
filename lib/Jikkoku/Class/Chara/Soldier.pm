@@ -133,6 +133,12 @@ package Jikkoku::Class::Chara::Soldier {
     $self->x == $point->x && $self->y == $point->y;
   }
 
+  sub is_same_point_as_coordinate {
+    my ($self, $x, $y) = @_;
+    Carp::croak 'few arguments($x, $y)' if @_ < 3;
+    $self->x == $x && $self->y == $y;
+  }
+
   sub set_coordinate_by_point {
     my ($self, $node) = @_;
     Carp::croak 'few argments ($node)' if @_ < 2;

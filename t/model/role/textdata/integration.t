@@ -29,7 +29,7 @@ subtest get => sub {
   dies_ok { $country_model->get };
   ok my $country = $country_model->get(1);
   is $country->name, '(本当は)平和主義共和国';
-  ok not $country_model->get(10);
+  dies_ok { $country_model->get(10) };
 };
 
 subtest get_with_option => sub {
@@ -62,16 +62,16 @@ subtest save => sub {
 subtest 'lock -> commit | abort' => sub {
   ok $country_model->lock;
   $country_model->delete(1);
-  ok not $country_model->get(1);
+  dies_ok { $country_model->get(1) };
   ok $country_model->abort;
   ok $country_model->get(1);
 
   ok $country_model->lock;
   my $country = $country_model->get(2);
   ok $country_model->delete(2);
-  ok not $country_model->get(2);
+  dies_ok { $country_model->get(2) };
   ok $country_model->commit;
-  ok not $country_model->get(2);
+  dies_ok { $country_model->get(2) };
 
   $country_model->create($country);
   $country_model->save;

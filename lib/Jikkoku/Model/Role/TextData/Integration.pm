@@ -11,22 +11,27 @@ package Jikkoku::Model::Role::TextData::Integration {
 
   with 'Jikkoku::Model::Role::Integration';
 
+  sub extract_textdata {
+    my $fh = shift;
+    [ grep { $_ ne '' } map { $_ =~ s/(\n|\r|\r\n)//gr } <$fh> ];
+  }
+
   sub open_data {
     my $class = shift;
     open(my $fh, '<', $class->file_path) or throw("file open error" . $class->file_path, $!);
-    my @textdata_list = <$fh>;
+    my $textdata_list = extract_textdata($fh);
     $fh->close;
     (
-      data          => $class->_textdata_list_to_objects_data( \@textdata_list ),
-      textdata_list => \@textdata_list,
+      data          => $class->_textdata_list_to_objects_data( $textdata_list ),
+      textdata_list => $textdata_list,
     );
   }
 
   sub read {
     my $self = shift;
     my $fh = $self->fh;
-    my @textdata_list = <$fh>;
-    $self->data( $self->_textdata_list_to_objects_data(\@textdata_list) );
+    my $textdata_list = extract_textdata($fh);
+    $self->data( $self->_textdata_list_to_objects_data( $textdata_list) );
   }
 
   sub _textdata_list_to_objects_data {
