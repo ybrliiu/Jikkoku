@@ -6,6 +6,7 @@ package Jikkoku::Model::Config {
 
   my @CONFIG_FILES = qw/
     game
+    soldier
     formation
     country_color
     country_background_color

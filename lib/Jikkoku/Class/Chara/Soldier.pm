@@ -3,34 +3,14 @@ package Jikkoku::Class::Chara::Soldier {
   use Mouse;
   use Jikkoku;
 
+  extends 'Jikkoku::Class::Soldier';
+
   use Jikkoku::Model::Chara::Protector;
 
   use Carp;
   use Jikkoku::Util 'validate_values';
-
-  # by etc/soldier.conf
-  has 'id'             => ( is => 'ro', isa => 'Int',      required => 1 );
-  has 'name'           => ( is => 'ro', isa => 'Str',      required => 1 );
-  has 'type'           => ( is => 'ro', isa => 'Str',      required => 1 );
-  has 'attr'           => ( is => 'ro', isa => 'Str',      required => 1 );
-  has 'price'          => ( is => 'ro', isa => 'Int',      required => 1 );
-  has 'attack'         => ( is => 'ro', isa => 'CodeRef',  required => 1 );
-  has 'defence'        => ( is => 'ro', isa => 'CodeRef',  required => 1 );
-  has 'attack_show'    => ( is => 'ro', isa => 'Str',      required => 1 );
-  has 'defence_show'   => ( is => 'ro', isa => 'Str',      required => 1 );
-  has 'max_move_point' => ( is => 'ro', isa => 'Int',      required => 1 );
-  has 'reach'          => ( is => 'ro', isa => 'Int',      required => 1 );
-  has 'technology'     => ( is => 'ro', isa => 'Int',      required => 1 );
-  has 'class'          => ( is => 'ro', isa => 'Int',      required => 1 );
-  has 'skill'          => ( is => 'ro', isa => 'ArrayRef', required => 1 );
-  has 'description'    => ( is => 'ro', isa => 'Str',      required => 1 );
   
   has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara', weak_ref => 1 );
-
-  sub attack_power {
-    my $self = shift;
-    $self->attack->( @_ );
-  }
 
   sub add_action_time {
     my ($self, $value) = @_;
@@ -61,11 +41,6 @@ package Jikkoku::Class::Chara::Soldier {
     Carp::croak 'few argments($charge_time)' if @_ < 2;
     $self->chara->_soldier_battle_map->set(move_point             => $self->max_move_point);
     $self->chara->_soldier_battle_map->set(move_point_charge_time => $charge_time);
-  }
-
-  sub defence_power {
-    my $self = shift;
-    $self->defence->( @_ );
   }
 
   sub distance_from {
@@ -127,7 +102,7 @@ package Jikkoku::Class::Chara::Soldier {
     $self->y             == $soldier->y
   }
 
-  sub is_same_point_as {
+  sub is_same_point {
     my ($self, $point) = @_;
     Carp::croak 'few argments($point)' if @_ < 2;
     $self->x == $point->x && $self->y == $point->y;
@@ -160,7 +135,7 @@ package Jikkoku::Class::Chara::Soldier {
     Carp::croak 'few argments($battle_map_model)' if @_ < 2;
     my $battle_map  = $battle_map_model->get_battle_map( $self->chara->town_id );
     my $castle_node = $battle_map->get_castle_node;
-    $self->_sortie($battle_map, $castle_node);
+    $self->sortie($battle_map, $castle_node);
   }
 
   sub sortie_to_around_staying_town {
@@ -169,7 +144,7 @@ package Jikkoku::Class::Chara::Soldier {
     my $battle_map = $args->{battle_map_model}->get_battle_map( $self->chara->town_id );
     my $stay_node  = $battle_map->get_node_by_point( $args->{x}, $args->{y} );
     Carp::confess 'そのマスにはいけません' unless $stay_node->can_stay;
-    $self->_sortie($battle_map, $stay_node);
+    $self->sortie($battle_map, $stay_node);
   }
 
   sub sortie_to_adjacent_town {
@@ -185,10 +160,10 @@ package Jikkoku::Class::Chara::Soldier {
         return $node->check_point->target_bm_id == $self->chara->town_id;
       }
     });
-    $self->_sortie($battle_map, $entry_node);
+    $self->sortie($battle_map, $entry_node);
   }
 
-  sub _sortie {
+  sub sortie {
     my ($self, $battle_map, $node) = @_;
     Carp::confess '既に出撃しています' if $self->is_sortie;
     $self->is_sortie(1);

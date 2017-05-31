@@ -3,6 +3,12 @@ package Jikkoku::Model::Role::Result {
   use Mouse::Role;
   use Jikkoku;
 
+  use overload (
+    '@{}'      => sub { $_[0]->data },
+    'bool'     => sub () { 1 },
+    'fallback' => 1,
+  );
+
   has 'data' => ( is => 'ro', isa => 'ArrayRef', required => 1 );
 
   sub create_result {

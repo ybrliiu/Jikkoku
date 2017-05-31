@@ -7,7 +7,7 @@ package Jikkoku::Class::Chara {
   use Jikkoku::Model::State;
   use Jikkoku::Model::Skill;
   use Jikkoku::Model::Soldier;
-  use Jikkoku::Model::Chara::Formation;
+  use Jikkoku::Model::Formation;
   use Jikkoku::Model::Chara::Profile;
   use Jikkoku::Model::Chara::Protector;
 
@@ -185,14 +185,8 @@ package Jikkoku::Class::Chara {
     default   => sub { Jikkoku::Class::Role::TextData::HashContainer->new },
   );
 
-  has 'states'     => ( is => 'ro', isa => 'Jikkoku::Model::State', lazy => 1, default => sub { Jikkoku::Model::State->new(chara => $_[0]) } );
-  has 'skills'     => ( is => 'ro', isa => 'Jikkoku::Model::Skill', lazy => 1, default => sub { Jikkoku::Model::Skill->new(chara => $_[0]) } );
-  has 'formations' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Model::Chara::Formation',
-    lazy    => 1,
-    default => sub { Jikkoku::Model::Chara::Formation->new( chara => $_[0] ) },
-  );
+  has 'states' => ( is => 'ro', isa => 'Jikkoku::Model::State', lazy => 1, default => sub { Jikkoku::Model::State->new(chara => $_[0]) } );
+  has 'skills' => ( is => 'ro', isa => 'Jikkoku::Model::Skill', lazy => 1, default => sub { Jikkoku::Model::Skill->new(chara => $_[0]) } );
 
   with 'Jikkoku::Class::Role::TextData::Division';
 
@@ -200,13 +194,13 @@ package Jikkoku::Class::Chara {
 
   sub soldier {
     my $self = shift;
-    my $soldier_data = Jikkoku::Model::Soldier->new->get( $self->ability_exp('soldier_id') );
-    Jikkoku::Class::Chara::Soldier->new( %$soldier_data, chara => $self );
+    my $soldier_data = Jikkoku::Model::Soldier->instance->get( $self->ability_exp('soldier_id') );
+    Jikkoku::Class::Chara::Soldier->new({ %$soldier_data, chara => $self });
   }
 
   sub formation {
     my $self = shift;
-    $self->formations->get( $self->soldier_battle_map('formation_id') );
+    my $formation_model = Jikkoku::Model::Formation->instance->get( $self->soldier_battle_map('formation_id') );
   }
 
   before money => sub {

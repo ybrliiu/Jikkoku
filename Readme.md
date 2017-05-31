@@ -3,15 +3,18 @@
 
 Model::* の Mouse化, 設計再構築(特に Chara::*
   ->
-    Town model 新Modelへ移行
+    Model::Chara new modelへ
     Class::TextData の PRIMARY_KEY 要らなくないか
-    Role::Diplomacy Role::Tiny -> Mouse
-    Model::Role::TextData::Integration::Expires
+    Skill class 処理実行部分を別クラスに切り離した方がよさ気、よってBattle Action Role の見直しが必要そう
+      BattleAction Class を CanExecOnBattleMap Role を実装しているクラスで使用
 
 複数対象の症状(掩護など)を記録するようのモデル, 記録ファイルの作成
-Skill class 処理実行部分を別クラスに切り離した方がよさ気、よってBattle Action Role の見直しが必要そう
-  BattleAction Class を CanExecOnBattleMap Role を実装しているクラスで使用
 Chara::Soldier の利用
+
+Role::Diplomacy Role::Tiny -> Mouse
+Model::Role::TextData::Integration::Expires
+
+Skill Model はキャッシュ有りでいいような気がしてきた(もう少し考える)
 
 # テスト
 * 初期仕官制限
@@ -31,11 +34,6 @@ Chara::Soldier の利用
 * bm_id がおそらく自動モードの時に突如として消えることが, なぜ?
 
 # 予定
-
-* 一旦デザインパターンの勉強をしよう...
-(delegate, )
-
-* 陣形ファイルの変換、モデルの作成
 
 * NPCとの戦闘時のバグ
 -> 暫く放置, 作りなおす

@@ -37,7 +37,7 @@ package Jikkoku::Class::Skill::SkillCategory {
 
   sub get_skill {
     my ($self, $id) = @_;
-    $self->skill_model->get_skill({
+    $self->skill_model->get({
       id       => $id,
       category => $self->id,
     });

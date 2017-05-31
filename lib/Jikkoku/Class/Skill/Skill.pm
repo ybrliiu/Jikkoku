@@ -89,7 +89,7 @@ package Jikkoku::Class::Skill::Skill {
   sub before_skills {
     my $self = shift;
     my $skill_category_model = Jikkoku::Model::SkillCategory->new;
-    my $skill_category       = $skill_category_model->get_skill_category({
+    my $skill_category       = $skill_category_model->get({
       id          => $self->category,
       skill_model => $self->chara->skills,
     });
@@ -100,7 +100,7 @@ package Jikkoku::Class::Skill::Skill {
   before acquire => sub {
     my $self = shift;
     my $skill_category_model = Jikkoku::Model::SkillCategory->new;
-    my $skill_category       = $skill_category_model->get_skill_category({
+    my $skill_category       = $skill_category_model->get({
       id          => $self->category,
       skill_model => $self->chara->skills,
     });

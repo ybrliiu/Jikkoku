@@ -2,6 +2,7 @@ package Jikkoku::Class::Formation {
 
   use Mouse;
   use Jikkoku;
+  use Carp;
 
   # from etc/formation.conf
   has 'id'   => ( is => 'ro', isa => 'Str', required => 1 );
@@ -102,6 +103,12 @@ package Jikkoku::Class::Formation {
     my $self = shift;
     $self->increase_attack_power_ratio_when_advantageous != 0
       || $self->increase_defence_power_ratio_when_advantageous != 0;
+  }
+
+  sub is_available {
+    my ($self, $chara) = @_;
+    Carp::croak 'few arguments($chara)' if @_ < 2;
+    $chara->class >= $self->class && $self->acquire_condition->($chara);
   }
 
   __PACKAGE__->meta->make_immutable;

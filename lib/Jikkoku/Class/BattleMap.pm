@@ -6,6 +6,7 @@ package Jikkoku::Class::BattleMap {
   use Carp qw( croak );
   use Jikkoku::Util qw( validate_values );
   use List::Util qw( first );
+  use Option;
 
   use Jikkoku::Class::BattleMap::Node;
   use Jikkoku::Class::BattleMap::CheckPoint;
@@ -186,6 +187,13 @@ package Jikkoku::Class::BattleMap {
       }
       $self->map_data->[$y][$x++];
     };
+  }
+
+  sub get_adjacent_node {
+    my ($self, $node, $direction) = @_;
+    my $method = "get_${direction}_node";
+    return unless $self->can($method);
+    $self->$method($node);
   }
 
   sub get_node_by_point {

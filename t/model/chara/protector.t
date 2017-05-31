@@ -12,6 +12,7 @@ ok $model->save;
 
 subtest 'is_chara_protected' => sub {
   my $chara_id = 'ybrliiu';
+  require Jikkoku::Model::Chara;
   my $chara_model = Jikkoku::Model::Chara->new;
   my $chara = $chara_model->get($chara_id);
   my $result;

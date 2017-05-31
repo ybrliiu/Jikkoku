@@ -19,20 +19,22 @@ package Jikkoku::Model::Formation {
     builder => '_build_name_map',
   );
 
+  with 'Jikkoku::Role::Singleton';
+
   sub _build_data {
     my $self = shift;
     my $formations_data = Jikkoku::Model::Config->get->{formation};
-    [ map { $self->generate_treat_class($_) } @$formations_data ];
+    [ map { $self->create_treat_class($_) } @$formations_data ];
   }
 
   sub _build_name_map {
     my $self = shift;
-    +{ map { $_->name => $_ } @{ $self->get_all_formations } };
+    +{ map { $_->name => $_ } @{ $self->get_all } };
   }
 
-  __PACKAGE__->meta->add_method(get_all_formations => \&data);
+  __PACKAGE__->meta->add_method(get_all => \&data);
 
-  sub generate_treat_class {
+  sub create_treat_class {
     my ($self, $args) = @_;
     Jikkoku::Class::Formation->new(
       %$args,
@@ -43,13 +45,19 @@ package Jikkoku::Model::Formation {
   sub get {
     my ($self, $id) = @_;
     Carp::croak 'few arguments (id)' if @_ < 2;
-    $self->get_all_formations->[$id] // Carp::confess "id : $id の陣形データは見つかりませんでした";
+    $self->data->[$id] // Carp::confess "id : $id の陣形データは見つかりませんでした";
   }
 
   sub get_by_name {
     my ($self, $name) = @_;
     Carp::croak 'few arguments (name)' if @_ < 2;
     $self->name_map->{$name} // Carp::confess "name : $name の陣形データは見つかりませんでした";
+  }
+
+  sub get_available_formations {
+    my ($self, $chara) = @_;
+    Carp::croak 'few arguments($chara)' if @_ < 2;
+    [ grep { $_->is_available($chara) } @{ $self->get_all } ];
   }
 
   __PACKAGE__->meta->make_immutable;

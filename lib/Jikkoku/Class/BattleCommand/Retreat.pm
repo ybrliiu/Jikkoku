@@ -1,3 +1,13 @@
+package Jikkoku::Class::BattleCommand::_Retreat {
+
+  use Mouse;
+
+  has 'name' => ( is => 'ro', isa => 'Str', default => '退却' );
+
+  __PACKAGE__->meta->make_immutable;
+
+}
+
 package Jikkoku::Class::BattleCommand::Retreat {
 
   use Mouse;
