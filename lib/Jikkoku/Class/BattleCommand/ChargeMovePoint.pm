@@ -3,41 +3,9 @@ package Jikkoku::Class::BattleCommand::ChargeMovePoint {
   use Mouse;
   use Jikkoku;
 
-  use Jikkoku::Model::Config;
-  my $CONFIG = Jikkoku::Model::Config->get;
+  has 'name' => ( is => 'ro', isa => 'Str', default => '移動ポイント補充' );
 
-  has 'move_point_charge_time'
-    => ( is => 'rw', isa => 'Int', default => $CONFIG->{game}{action_interval_time} );
-
-  with qw(
-    Jikkoku::Class::BattleCommand::BattleCommand
-    Jikkoku::Class::Role::BattleAction
-  );
-
-  sub ensure_can_exec {
-    my $self = shift;
-    my $time = time;
-    my $sub  = $self->chara->soldier_battle_map('move_point_charge_time') - $time;
-    throw("あと $sub 秒移動Pは補充できません。") if $sub > 0;
-    $time;
-  }
-
-  sub exec {
-    my ($self, $time) = @_;
-    my $chara = $self->chara;
-    
-    $chara->lock;
-    eval {
-      $chara->soldier->charge_move_point( $time + $self->move_point_charge_time );
-    };
-    if (my $e = $@) {
-      $chara->abort;
-      throw($e);
-    } else {
-      $chara->commit;
-    }
-
-  }
+  with 'Jikkoku::Class::BattleCommand::BattleCommand';
 
   __PACKAGE__->meta->make_immutable;
 
