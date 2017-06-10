@@ -19,7 +19,7 @@ package Jikkoku::Service::Chara::Soldier::Sortie {
 
   sub sortie_to_staying_towns_castle {
     my $self = shift;
-    my $battle_map  = $battle_map_model->get_battle_map( $self->soldier->chara->town_id );
+    my $battle_map  = $self->battle_map_model->get_battle_map( $self->soldier->chara->town_id );
     my $castle_node = $battle_map->get_castle_node;
     $self->soldier->sortie($battle_map, $castle_node);
   }

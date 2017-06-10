@@ -3,12 +3,12 @@ package Jikkoku::Model::Role::Integration {
   use Mouse::Role;
   use Jikkoku;
 
+  use Option;
+  use Module::Load;
+
   has 'data' => ( is => 'rw', isa => 'HashRef', required => 1 );
 
-  with qw(
-    Jikkoku::Role::FileHandler
-    Jikkoku::Model::Role::Base
-  );
+  with 'Jikkoku::Model::Role::Base';
 
   requires qw( FILE_PATH open_data init );
 

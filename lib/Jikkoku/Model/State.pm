@@ -2,6 +2,7 @@ package Jikkoku::Model::State {
   
   use Mouse;
   use Jikkoku;
+
   use Jikkoku::Util 'validate_values';
   use List::Util 'sum';
   use Module::Load 'load';
@@ -20,6 +21,8 @@ package Jikkoku::Model::State {
 
   has 'chara'  => ( is => 'ro', isa => 'Jikkoku::Class::Chara', weak_ref => 1, required => 1 );
   has '_cache' => ( is => 'ro', isa => 'HashRef', default => sub { +{} } );
+
+  with 'Jikkoku::Role::Loader';
 
   sub get_state_with_option {
     my ($self, $args) = @_;
@@ -110,11 +113,6 @@ package Jikkoku::Model::State {
       $_->take_bonus_for_giver($chara_model);
       $_->adjust_battle_action_success_ratio($origin_success_ratio);
     } @states;
-  }
-
-  sub available_list {
-    my $self = shift;
-    [ grep { $_->is_in_the_state } values %{ $self->{states} } ];
   }
 
   __PACKAGE__->meta->make_immutable;

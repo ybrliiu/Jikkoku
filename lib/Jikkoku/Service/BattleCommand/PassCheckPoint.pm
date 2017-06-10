@@ -114,7 +114,7 @@ package Jikkoku::Service::BattleCommand::PassCheckPoint {
     }
     $self->entry_check_point( $entry_node->check_point );
 
-    unless ( $self->chara_soldier->distance_from($entry_node) < 1 ) {
+    unless ( $self->chara_soldier->distance_from_point($entry_node) < 1 ) {
       Jikkoku::Class::Role::BattleActionException
         ->throw('関所の上、または隣接するマスにいません。');
     }

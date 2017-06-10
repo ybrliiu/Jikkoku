@@ -18,6 +18,8 @@ package Jikkoku::Web::Controller {
     handles => [qw/ header param redirect /],
   );
 
+  with 'Jikkoku::Role::Loader';
+
   sub render {
     my ($self, $template_file, $args) = @_;
     Carp::croak("テンプレートファイルを指定してください") unless defined $template_file;
@@ -65,25 +67,7 @@ package Jikkoku::Web::Controller {
     exit;
   }
 
-  {
-    my $meta = __PACKAGE__->meta;
-
-    for my $method_name (qw/ class model /) {
-      $meta->add_method($method_name => sub {
-        my ($class, $class_name) = @_;
-        Carp::croak 'few arguments($class_name)' if @_ < 2;
-        my $pkg = "Jikkoku::@{[ ucfirst $method_name ]}::${class_name}";
-        state $is_loaded = {};
-        unless ($is_loaded->{$pkg}) {
-          load $pkg;
-          $is_loaded->{$pkg} = 1;
-        }
-        $pkg;
-      });
-    }
-
-    $meta->make_immutable;
-  }
+  __PACKAGE__->meta->make_immutable;
 
 }
 

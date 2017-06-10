@@ -53,7 +53,8 @@ package Jikkoku::Service::BattleCommand::Retreat {
   sub ensure_can_exec {
     my $self = shift;
     unless ( $self->current_node->can_retreat ) {
-      Jikkoku::Service::Role::BattleActionException->throw("退却できる地形の上にいません");
+      Jikkoku::Service::Role::BattleActionException
+        ->throw("@{[ $self->battle_command->name ]}できる地形の上にいません");
     }
   }
 
@@ -86,7 +87,8 @@ package Jikkoku::Service::BattleCommand::Retreat {
         $self->_try_retreat( $town );
       }
       else {
-        Jikkoku::Service::Role::BattleActionException->throw("その地形の上では退却できません。");
+        Jikkoku::Service::Role::BattleActionException
+          ->throw("その地形の上では@{[ $self->battle_command->name ]}できません。");
       }
     };
 
@@ -99,7 +101,8 @@ package Jikkoku::Service::BattleCommand::Retreat {
       }
     } else {
       $chara->commit;
-      my $log = "【退却】$retreat_town_name に退却しました。";
+      my $log = "【@{[ $self->battle_command->name ]}】$retreat_town_name "
+        . "に@{[ $self->battle_command->name ]}しました。";
       $chara->save_battle_log($log);
       $chara->save_command_log($log);
     }

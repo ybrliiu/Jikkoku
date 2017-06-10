@@ -7,12 +7,6 @@ package Jikkoku::Service::Role::BattleAction {
   use Jikkoku::Model::Config;
   use Jikkoku::Service::Role::BattleActionException;
 
-  has 'chara' => (
-    is       => 'ro',
-    isa      => 'Jikkoku::Class::Chara',
-    required => 1,
-  );
-
   has 'chara_soldier' => (
     is      => 'ro',
     isa     => 'Jikkoku::Class::Chara::Soldier',

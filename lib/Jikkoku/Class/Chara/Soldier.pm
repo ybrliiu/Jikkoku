@@ -43,13 +43,13 @@ package Jikkoku::Class::Chara::Soldier {
     $self->chara->_soldier_battle_map->set(move_point_charge_time => $charge_time);
   }
 
-  sub distance_from {
+  sub distance_from_point {
     my ($self, $point) = @_;
     Carp::croak 'few argments($point)' if @_ < 2;
     abs($self->x - $point->x) + abs($self->y - $point->y);
   }
 
-  sub distance_from_point {
+  sub distance_from_coordinate {
     my ($self, $x, $y) = @_;
     Carp::croak 'few argments($x, $y)' if @_ < 2;
     abs($self->x - $x) + abs($self->y - $y);

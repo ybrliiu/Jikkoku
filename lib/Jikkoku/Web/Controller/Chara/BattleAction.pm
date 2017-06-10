@@ -26,16 +26,12 @@ package Jikkoku::Web::Controller::Chara::BattleAction {
   sub move {
     my $self = shift;
 
-    my $move = $self->class('BattleCommand::Move')->new({ chara => $self->chara });
+    my $move = $self->service('BattleCommand::Move')->new({
+      chara     => $self->chara,
+      direction => $self->param('direction'),
+    });
 
-    eval {
-      $move->exec({
-        direction        => $self->param('direction'),
-        town_model       => $self->model('Town')->new,
-        chara_model      => $self->model('Chara')->new,
-        battle_map_model => $self->model('BattleMap')->new,
-      });
-    };
+    eval { $move->exec };
 
     if (my $e = $@) {
       $self->render_error($e->message);
@@ -47,7 +43,7 @@ package Jikkoku::Web::Controller::Chara::BattleAction {
   sub charge_move_point {
     my $self = shift;
 
-    my $charger = $self->class('BattleCommand::ChargeMovePoint')->new({ chara => $self->chara });
+    my $charger = $self->service('BattleCommand::ChargeMovePoint')->new({ chara => $self->chara });
 
     eval { $charger->exec };
     if (my $e = $@) {
