@@ -31,23 +31,10 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::DependOnAbilities {
     List::Util::sum map { $self->chara->$_ } @{ $self->depend_abilities };
   }
 
-  around calc_success_ratio => sub {
-    my ($orig, $self, $ability_sum) = @_;
-    Carp::confess 'few arguments ($ability_sum)' if @_ < 3;
-    my $probability = $ability_sum * $self->success_coef;
-    $probability > $self->max_success_ratio ? $self->max_success_ratio : $probability;
-  };
-
   sub effect_time {
     my ($self, $ability_sum) = @_;
     Carp::croak 'few arguments ($ability_sum)' if @_ < 2;
     int($ability_sum * $self->min_effect_time_coef), int($ability_sum * $self->max_effect_time_coef);
-  }
-
-  sub calc_effect_time {
-    my ($self, $ability_sum) = @_;
-    my ($min_effect_time, $max_effect_time) = $self->effect_time($ability_sum);
-    int rand($max_effect_time - $min_effect_time) + $min_effect_time;
   }
 
 }

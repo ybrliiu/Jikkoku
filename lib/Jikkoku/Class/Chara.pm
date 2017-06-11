@@ -10,6 +10,7 @@ package Jikkoku::Class::Chara {
   use Jikkoku::Model::Formation;
   use Jikkoku::Model::Chara::Profile;
   use Jikkoku::Model::Chara::Protector;
+  use Jikkoku::Model::ExtensiveState;
 
   use Jikkoku::Class::Chara::Soldier;
   use Jikkoku::Class::Role::TextData;
@@ -187,6 +188,16 @@ package Jikkoku::Class::Chara {
 
   has 'states' => ( is => 'ro', isa => 'Jikkoku::Model::State', lazy => 1, default => sub { Jikkoku::Model::State->new(chara => $_[0]) } );
   has 'skills' => ( is => 'ro', isa => 'Jikkoku::Model::Skill', lazy => 1, default => sub { Jikkoku::Model::Skill->new(chara => $_[0]) } );
+
+  has 'extensive_states' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Model::ExtensiveState',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      Jikkoku::Model::ExtensiveState->new( chara => $self );
+    },
+  );
 
   with 'Jikkoku::Class::Role::TextData::Division';
 

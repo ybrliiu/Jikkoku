@@ -15,7 +15,6 @@ package Jikkoku::Class::ExtensiveState::ExtensiveState {
   has 'record_model' => (
     is       => 'ro',
     isa      => 'Jikkoku::Model::ExtensiveStateRecord', 
-    lazy     => 1,
     weak_ref => 1,
     required => 1,
   );

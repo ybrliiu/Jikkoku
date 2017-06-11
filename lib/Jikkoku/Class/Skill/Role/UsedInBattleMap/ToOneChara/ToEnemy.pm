@@ -9,13 +9,6 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara::ToEnemy {
     Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara
   );
 
-  sub ensure_can_use_to_target_chara {
-    my $self = shift;
-    if ( $self->you->country_id == $self->chara->country_id ) {
-      Jikkoku::Class::Role::BattleActionException->throw('味方には使用できません。')
-    }
-  }
-
 }
 
 1;

@@ -2,6 +2,7 @@ package Jikkoku::Model::ExtensiveStateRecord {
 
   use Mouse;
   use Jikkoku;
+  use Jikkoku::Util qw( validate_values );
 
   use constant {
     FILE_PATH         => 'log_file/extensive_state_record.dat',
@@ -11,17 +12,63 @@ package Jikkoku::Model::ExtensiveStateRecord {
 
   with 'Jikkoku::Model::Role::Storable::Integration';
 
-  sub get {
-    my ($self, $giver_id, $state_id) = @_;
-    Carp::croak 'few arguments($giver_id, $state_id)' if @_ < 3;
-    $self->data->{"$giver_id.$state_id"} // Carp::croak "no such data($giver_id, $state_id)";
+  sub add {
+    my $self = shift;
+    if (ref $_[0] eq 'HASH') {
+      my $args = shift;
+      validate_values $args => [qw/ giver_id state_id available_time /];
+      $self->data->{"$args->{giver_id}.$args->{state_id}"} = $self->INFLATE_TO->new($args);
+    }
+    else {
+      my $primary_attribute_value = shift;
+      $self->create($primary_attribute_value);
+    }
   }
 
-  sub get_with_option {
-    my ($self, $giver_id, $state_id) = @_;
-    Carp::croak 'few arguments($giver_id, $state_id)' if @_ < 3;
-    Option->new( $self->data->{"$giver_id.$state_id"} );
-  }
+  around delete => sub {
+    my ($orig, $self) = (shift, shift);
+    if (@_ == 1) {
+      my $primary_attribute_value = shift;
+      $self->$orig($primary_attribute_value);
+    }
+    elsif (@_ == 2) {
+      my ($giver_id, $state_id) = @_;
+      delete $self->data->{"$giver_id.$state_id"};
+    }
+    else {
+      Carp::croak "invalid arguments (" . (join ', ', @_) .")";
+    }
+  };
+
+  around get => sub {
+    my ($orig, $self) = (shift, shift);
+    if (@_ == 1) {
+      my $primary_attribute_value = shift;
+      $self->$orig($primary_attribute_value);
+    }
+    elsif (@_ == 2) {
+      my ($giver_id, $state_id) = @_;
+      $self->data->{"$giver_id.$state_id"} // Carp::croak "no such data($giver_id, $state_id)";
+    }
+    else {
+      Carp::croak "invalid arguments (" . (join ', ', @_) .")";
+    }
+  };
+  
+  around get_with_option => sub {
+    my ($orig, $self) = (shift, shift);
+    if (@_ == 1) {
+      my $primary_attribute_value = shift;
+      $self->$orig($primary_attribute_value);
+    }
+    elsif (@_ == 2) {
+      my ($giver_id, $state_id) = @_;
+      Option->new( $self->data->{"$giver_id.$state_id"} );
+    }
+    else {
+      Carp::croak "invalid arguments (" . (join ', ', @_) .")";
+    }
+  };
 
   around write => sub {
     my ($orig, $self) = @_;
@@ -39,8 +86,6 @@ package Jikkoku::Model::ExtensiveStateRecord {
       }
     }
   }
-
-  __PACKAGE__->meta->add_method(add => \&create);
 
   __PACKAGE__->meta->make_immutable;
 

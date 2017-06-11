@@ -7,10 +7,11 @@ package Jikkoku::Class::Skill::Skill {
   # attribute
   requires qw( name );
 
-  has 'id'               => ( is => 'rw', isa => 'Str', lazy => 1, builder => '_build_id' );
-  has 'category'         => ( is => 'rw', isa => 'Str', lazy => 1, builder => '_build_category' );
-  has 'next_skills_id'   => ( is => 'rw', isa => 'ArrayRef[Str]', lazy => 1, builder => '_build_next_skills_id' );
-  has 'before_skills_id' => ( is => 'rw', isa => 'ArrayRef[Str]', lazy => 1, builder => '_build_before_skills_id' );
+  has 'chara'            => ( is => 'ro', isa => 'Jikkoku::Class::Chara', weak_ref => 1, required => 1 );
+  has 'id'               => ( is => 'ro', isa => 'Str', lazy => 1, builder => '_build_id' );
+  has 'category'         => ( is => 'ro', isa => 'Str', lazy => 1, builder => '_build_category' );
+  has 'next_skills_id'   => ( is => 'ro', isa => 'ArrayRef[Str]', lazy => 1, builder => '_build_next_skills_id' );
+  has 'before_skills_id' => ( is => 'ro', isa => 'ArrayRef[Str]', lazy => 1, builder => '_build_before_skills_id' );
 
   sub _build_id {
     my $self = shift;
@@ -108,11 +109,18 @@ package Jikkoku::Class::Skill::Skill {
     for my $skill_id (@$before_skills_id) {
       my $skill = $skill_category->get_chached_skill($skill_id);
       unless ($skill->is_acquired) {
-        Jikkoku::Class::Role::BattleActionException
+        Jikkoku::Class::Skill::AcquireSkillException
           ->throw("修得条件を満たしていません(@{[ $skill->name ]}を修得していないため)");
       }
     }
   };
+
+}
+
+package Jikkoku::Class::Skill::AcquireSkillException {
+
+  use Jikkoku;
+  use parent 'Jikkoku::Exception';
 
 }
 

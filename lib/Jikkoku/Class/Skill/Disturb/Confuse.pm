@@ -48,61 +48,6 @@ package Jikkoku::Class::Skill::Disturb::Confuse {
     $self->chara->skill(disturb => ACQUIRE_SIGN);
   }
 
-  sub ensure_can_exec {}
-
-  sub exec {
-    my $self = shift;
-    my ($chara, $you) = ($self->chara, $self->you);
-
-    $chara->lock;
-    $you->lock;
-    my ($is_success, $effect_time, $stuck);
-    eval {
-      $chara->morale_data(morale => $chara->morale_data('morale') - $self->consume_morale);
-      $chara->soldier_battle_map(action_time => $self->time + $self->action_interval_time);
-      my $ability_sum = $self->depend_abilities_sum;
-      $is_success = $self->determine_whether_succeed($ability_sum);
-      if ($is_success) {
-        $effect_time = $self->calc_effect_time($ability_sum);
-        $stuck = $you->states->get_state($self->id);
-        $stuck->set_state_for_chara({
-          giver_id       => $chara->id,
-          available_time => $self->time + $ability_sum,
-        });
-      }
-    };
-
-    if (my $e = $@) {
-      $chara->abort;
-      $you->abort;
-      if ( Jikkoku::Class::Role::BattleActionException->caught($e) ) {
-        $e->rethrow;
-      } else {
-        die $e;
-      }
-    } else {
-      $chara->commit;
-      $you->commit;
-      my $name_tag = qq{<span style="color: yellowgreen">【@{[ $self->name ]}】</span>};
-      if ($is_success) {
-        my $description_log = qq{<span class="red">$effect_time</span>秒間、@{[ $you->name ]}の@{[ $stuck->description ]}};
-        my $chara_log = "${name_tag}@{[ $you->name ]}を@{[ $self->name ]}させました。${description_log}";
-        $chara->save_battle_log($chara_log);
-        $chara->save_command_log($chara_log);
-        my $you_log = "${name_tag}@{[ $chara->name ]}に@{[ $self->name ]}させられました。${description_log}";
-        $you->save_battle_log($you_log);
-        $you->save_command_log($you_log);
-        my $bm = $self->battle_map_model->get( $chara->soldier_battle_map('battle_map_id') );
-        $self->map_log_model->add("$name_tag@{[ $you->name ]}は@{[ $chara->name ]}に@{[ $self->name ]}させられました。(@{[ $bm->name ]})")->save;
-      } else {
-        my $chara_log = "$name_tag@{[ $you->name ]}を@{[ $self->name ]}させようとしましたが失敗しました。";
-        $chara->save_battle_log($chara_log);
-        $chara->save_command_log($chara_log);
-      }
-    }
-
-  }
-
   __PACKAGE__->meta->make_immutable;
 
 }

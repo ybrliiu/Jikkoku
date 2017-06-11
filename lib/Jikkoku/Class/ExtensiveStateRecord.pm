@@ -13,7 +13,7 @@ package Jikkoku::Class::ExtensiveStateRecord {
   }
 
   sub is_available {
-    my ($Self, $time) = @_;
+    my ($self, $time) = @_;
     Carp::croak 'few arguments($time)' if @_ < 2;
     $self->available_time >= $time;
   }

@@ -24,6 +24,26 @@ package Jikkoku::Service::Role::BattleAction {
     default => sub { time },
   );
 
+  has 'map_log_model' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Model::MapLog',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->model('MapLog')->new;
+    },
+  );
+
+  has 'battle_map_model' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Model::BattleMap',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->model('BattleMap')->new;
+    },
+  );
+
   with 'Jikkoku::Role::Loader';
 
   # method

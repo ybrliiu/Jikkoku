@@ -117,10 +117,10 @@ package Jikkoku::Model::Chara::Result {
     $self->create_result([ grep { $bm_id eq $_->soldier->battle_map_id } @{ $self->data } ]);
   }
 
-  sub get_charactors_by_soldier_distance_less_than {
+  sub get_charactors_by_soldier_distance_less_than_with_result {
     my ($self, $point, $distance) = @_;
     Carp::croak 'few arguments($point, $distance)' if @_ < 3;
-    $self->create_result([ grep { $_->soldier->distance_from_point($point) <= $distance } ]);
+    $self->create_result([ grep { $_->soldier->distance_from_point($point) <= $distance } @{ $self->data } ]);
   }
 
   sub get_charactors_by_soldier_point_with_result {

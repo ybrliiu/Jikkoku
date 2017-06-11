@@ -3,6 +3,7 @@ package Jikkoku::Model::ExtensiveState {
   use Mouse;
   use Jikkoku;
   use Carp ();
+  use Module::Load ();
 
   our @EXTENSIVE_STATE_MODULES = _get_extensive_state_modules();
 
@@ -11,7 +12,7 @@ package Jikkoku::Model::ExtensiveState {
     opendir(my $dh, $dir);
     my @state_list = grep { $_ ne 'ExtensiveState' } map { $_ =~ /(\.pm$)/p ? ${^PREMATCH} : () } readdir $dh;
     close $dh;
-    __PACKAGE__->class("ExtensiveState::$_") for @state_list;
+    Module::Load::load("Jikkoku::Class::ExtensiveState::$_") for @state_list;
     @state_list;
   }
 
@@ -52,7 +53,7 @@ package Jikkoku::Model::ExtensiveState {
   sub get {
     my ($self, $id) = @_;
     Carp::croak 'few arguments($id)' if @_ < 2;
-    "Jikkoku::Class::ExtensiveStateRecord::${id}"->new(
+    "Jikkoku::Class::ExtensiveState::${id}"->new(
       chara        => $self->chara,
       charactors   => $self->charactors,
       record_model => $self->record_model,
@@ -63,7 +64,7 @@ package Jikkoku::Model::ExtensiveState {
     my $self = shift;
     my $data = [
       map {
-        "Jikkoku::Class::ExtensiveStateRecord::$_"->new(
+        "Jikkoku::Class::ExtensiveState::$_"->new(
           chara        => $self->chara,
           charactors   => $self->charactors,
           record_model => $self->record_model,
