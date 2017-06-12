@@ -30,10 +30,18 @@ package Jikkoku::Web::Controller::Chara {
       ->get_with_option( $self->chara->country_id )
       ->get_or_else( $country_model->neutral );
 
+    my $chara_soldier        = $self->chara->soldier;
+    my $formation_model      = $self->model('Formation')->new;
+    my $formation            = $formation_model->get( $chara_soldier->formation_id );
+    my $available_formations = $formation_model->get_available_formations( $self->chara );
+
     $self->render('chara/battle_map.pl', {
-      battle_map => $battle_map,
-      country    => $country,
+      battle_map           => $battle_map,
+      country              => $country,
+      formation            => $formation,
+      available_formations => $available_formations,
     });
+
   }
 
   __PACKAGE__->meta->make_immutable;

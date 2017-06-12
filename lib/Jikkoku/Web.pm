@@ -34,10 +34,11 @@ package Jikkoku::Web {
     $chara->any('/battle-map');
 
     {
-      my $battle_command = $chara->root(path => '/battle-action', controller => 'BattleAction');
-      $battle_command->any('/move');
-      $battle_command->any('/charge-move-point');
-      $battle_command->any('/stuck');
+      my $battle_action = $chara->root(path => '/battle-action', controller => 'BattleAction');
+      $battle_action->any('/change-formation');
+      $battle_action->any('/move');
+      $battle_action->any('/charge-move-point');
+      $battle_action->any('/stuck');
     }
 
     {

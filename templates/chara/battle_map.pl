@@ -5,7 +5,8 @@ my $layout = take_in 'templates/layouts/chara.pl';
 
 sub {
   my $args = shift;
-  my ($chara, $battle_map) = ($args->{chara}, $args->{battle_map});
+  my ($chara, $battle_map, $formation, $available_formations)
+    = ($args->{chara}, $args->{battle_map}, $args->{formation}, $args->{available_formations});
 
   my $show_allies = sub {
     my ($allies) = @_;
@@ -158,12 +159,43 @@ sub {
             </tr>
             <tr>
               <td>陣形</td>
-              <td class="middle"></td>
-              <td colspan="2"></td>
+              <td class="middle">@{[ $formation->name ]}</td>
+              <td colspan="2">@{[ $formation->description ]}</td>
             </tr>
             <tr>
-              <td colspan="2">BM行動予約</td>
-              <td colspan="2">BMを別窓で表示</td>
+              <td>陣形変更</td>
+              <form action="@{[ url_for '/chara/battle-action/change-formation' ]}" method="POST">
+              <td>
+                <select name="formation-id">
+                  @{[ map {
+                    qq{<option value="@{[ $_->id ]}">@{[ $_->name ]}</option>\n}
+                  } @$available_formations ]}
+                </select>
+              </td>
+              <td colspan="2" class="middle">
+                <input type="hidden" name="id" value="@{[ $chara->id ]}">
+                <input type="hidden" name="pass" value="@{[ $chara->pass ]}">
+                <input type="submit" value="変更">
+              </td>
+              </form>
+            </tr>
+            <tr>
+              <td>BM行動予約</td>
+              <td class="middle">
+                @{[ $button_generator->({
+                  url   => '',
+                  name  => '表示',
+                  chara => $chara,
+                })->() ]}
+              </td>
+              <td class="middle">BM自動モード : OFF</td>
+              <td class="middle">
+                @{[ $button_generator->({
+                  url   => '',
+                  name  => 'ONにする',
+                  chara => $chara,
+                })->() ]}
+              </td>
             </tr>
             <tr>
               <td colspan="4">[戦闘の説明]</td>

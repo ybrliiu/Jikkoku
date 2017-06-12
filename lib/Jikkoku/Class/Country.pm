@@ -59,7 +59,7 @@ package Jikkoku::Class::Country {
         $self->{$position} = $chara_model->get_with_option($position_id)->get_or_else(undef);
       });
 
-      for my $attribute (qw/id name icon/) {
+      for my $attribute (qw/ id name icon /) {
         # redefine 回避
         next if $position eq 'king' && $attribute eq 'id';
         __PACKAGE__->_generate_position_chara_attribute_method( $position, $attribute );

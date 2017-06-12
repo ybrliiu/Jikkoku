@@ -40,6 +40,24 @@ package Jikkoku::Web::Controller::Chara::BattleAction {
     $self->redirect_to($self->return_url_origin);
   }
 
+  sub change_formation {
+    my $self = shift;
+    my $formation_id = $self->param('formation-id');
+    my $service = $self->service('Chara::Soldier::ChangeFormation')->new({
+      chara               => $self->chara,
+      change_formation_id => $formation_id,
+    });
+    my $formation = eval { $service->exec };
+    if (my $e = $@) {
+      if ( Jikkoku::Exception->caught($e) ) {
+        $self->render_error($e->message);
+      } else {
+        $self->render_error($e);
+      }
+    }
+    $self->render('chara/result.pl', {message => $formation->name . 'に変更しました。'});
+  }
+
   sub charge_move_point {
     my $self = shift;
 

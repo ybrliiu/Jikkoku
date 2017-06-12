@@ -43,6 +43,21 @@ package Jikkoku::Class::Chara::Soldier {
     $self->chara->_soldier_battle_map->set(move_point_charge_time => $charge_time);
   }
 
+  sub change_formation {
+    my ($self, $formation) = @_;
+    Carp::croak 'few arguments($formation)' if @_ < 2;
+    my $time = time;
+    my $sub  = $self->change_formation_time - $time;
+    if ( $sub > 0 ) {
+      Jikkoku::Class::Chara::SoldierException
+        ->throw("あと $sub 秒陣形を変更できません");
+    }
+    $self->formation_id($formation->id);
+    if ( $self->is_sortie ) {
+      $self->change_formation_time(time + $formation->reforming_time);
+    }
+  }
+
   sub distance_from_point {
     my ($self, $point) = @_;
     Carp::croak 'few argments($point)' if @_ < 2;
@@ -203,8 +218,8 @@ package Jikkoku::Class::Chara::Soldier {
     my $class = shift;
 
     for my $method_name ( qw/
-      x y battle_map_id is_sortie
-      move_point move_point_charge_time action_time
+      x y formation_id battle_map_id is_sortie
+      move_point move_point_charge_time action_time change_formation_time
     / ) {
       $class->_add_alias_method($method_name, '_soldier_battle_map');
     }
@@ -226,6 +241,13 @@ package Jikkoku::Class::Chara::Soldier {
   __PACKAGE__->_add_meta_method;
 
   __PACKAGE__->meta->make_immutable;
+
+}
+
+package Jikkoku::Class::Chara::SoldierException {
+
+  use Jikkoku;
+  use parent 'Jikkoku::Exception';
 
 }
 
