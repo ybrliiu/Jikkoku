@@ -44,13 +44,11 @@ package Jikkoku::Class::ExtensiveState::Protect {
 
   sub give {
     my $self = shift;
-    $self->record_model->lock;
     $self->record_model->add({
       giver_id       => $self->chara->id,
       state_id       => $self->id,
       available_time => time,
     });
-    $self->record_model->commit;
   }
 
   sub description { '' }

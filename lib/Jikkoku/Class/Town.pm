@@ -9,7 +9,6 @@ package Jikkoku::Class::Town {
   use Jikkoku::Class::Role::TextData;
 
   use constant {
-    PRIMARY_KEY         => 'id',
     YEAR_COEF           => 5.833,
     MAX_TECHNOLOGY      => 9999,
     MAX_WALL_POWER_MIN  => 1000,

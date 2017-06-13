@@ -10,8 +10,6 @@ package Jikkoku::Class::Role::TextData {
 
   has 'textdata' => ( is => 'rw', isa => 'ScalarRef' );
 
-  requires qw( PRIMARY_KEY );
-
   around BUILDARGS => sub {
     my ($orig, $class) = (shift, shift);
     if (ref $_[0] eq 'HASH' || @_ >= 2) {

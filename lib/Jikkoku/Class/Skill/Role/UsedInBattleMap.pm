@@ -10,9 +10,6 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap {
   # attribute
   requires qw( consume_morale );
 
-  has 'map_log_model'    => ( is => 'rw' );
-  has 'battle_map_model' => ( is => 'rw' );
-
   # method
   requires qw( effect_time );
 

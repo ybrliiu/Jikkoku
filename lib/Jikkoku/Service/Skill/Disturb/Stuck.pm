@@ -8,7 +8,7 @@ package Jikkoku::Service::Skill::Disturb::Stuck {
   with qw(
     Jikkoku::Service::Skill::Skill
     Jikkoku::Service::Role::BattleAction::OccurActionTime
-    Jikkoku::Service::Skill::Role::UsedInBattleMap
+    Jikkoku::Service::Skill::Role::UsedInBattleMap::Disturb
     Jikkoku::Service::Skill::Role::UsedInBattleMap::ToOneChara::ToEnemy
     Jikkoku::Service::Skill::Role::UsedInBattleMap::DependOnAbilities
   );
@@ -48,7 +48,7 @@ package Jikkoku::Service::Skill::Disturb::Stuck {
     } else {
       $chara->commit;
       $target->commit;
-      my $name_tag = qq{<span style="color: yellowgreen">【@{[ $skill->name ]}】</span>};
+      my $name_tag = qq{<span style="color: @{[ $self->log_color ]}">【@{[ $skill->name ]}】</span>};
       if ($is_success) {
         my $description_log = qq{<span class="red">$effect_time</span>秒間、@{[ $target->name ]}の@{[ $stuck->description ]}};
         my $chara_log = "${name_tag}@{[ $target->name ]}を@{[ $skill->name ]}させました。${description_log}";

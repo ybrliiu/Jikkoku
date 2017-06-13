@@ -5,6 +5,8 @@ package Jikkoku::Service::Skill::Protect::Protect {
   use Mouse;
   use Jikkoku;
 
+  has 'log_color' => ( is => 'ro', isa => 'Str', default => '#FF69B4' );
+
   has 'chara_model' => (
     is      => 'ro',
     isa     => 'Jikkoku::Model::Chara',
@@ -12,6 +14,16 @@ package Jikkoku::Service::Skill::Protect::Protect {
     default => sub {
       my $self = shift;
       $self->model('Chara')->new;
+    },
+  );
+
+  has 'extensive_state_record_model' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Model::ExtensiveStateRecord',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->model('ExtensiveStateRecord')->new;
     },
   );
 
@@ -41,9 +53,11 @@ package Jikkoku::Service::Skill::Protect::Protect {
 
   sub exec {
     my $self = shift;
-    my ($chara, $skill) = ($self->chara, $self->skill);
+    my ($chara, $skill, $extensive_state_record_model)
+      = ($self->chara, $self->skill, $self->extensive_state_record_model);
 
     $chara->lock;
+    $extensive_state_record_model->lock;
     my $is_success;
     eval {
       $chara->morale_data( morale => $chara->morale_data('morale') - $skill->consume_morale );
@@ -51,13 +65,18 @@ package Jikkoku::Service::Skill::Protect::Protect {
       $chara->interval_time( protect => $self->time + $skill->interval_time );
       $is_success = $self->determine_whether_succeed;
       if ($is_success) {
-        my $state = $chara->extensive_states->get($skill->id);
+        my $extensive_state_model = $self->model('ExtensiveState')->new({
+          chara        => $chara,
+          record_model => $extensive_state_record_model,
+        });
+        my $state = $extensive_state_model->get($skill->id);
         $state->give;
       }
     };
 
     if (my $e = $@) {
       $chara->abort;
+      $extensive_state_record_model->abort;
       if ( Jikkoku::Exception->caught($e) ) {
         $e->rethrow;
       } else {
@@ -65,7 +84,8 @@ package Jikkoku::Service::Skill::Protect::Protect {
       }
     } else {
       $chara->commit;
-      my $name_tag = qq{<span style="color: #FF69B4">【@{[ $skill->name ]}】</span>};
+      $extensive_state_record_model->commit;
+      my $name_tag = qq{<span style="color: @{[ $self->log_color ]}">【@{[ $skill->name ]}】</span>};
       if ($is_success) {
         my $log_base = qq{$name_tag@{[ $chara->name ]}は@{[ $skill->name ]}を行いました！敵の攻撃から味方を守ります。 };
         my $chara_log

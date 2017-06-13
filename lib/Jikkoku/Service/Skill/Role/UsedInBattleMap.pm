@@ -5,6 +5,9 @@ package Jikkoku::Service::Skill::Role::UsedInBattleMap {
 
   with 'Jikkoku::Service::Role::BattleAction';
 
+  # attribute
+  requires qw( log_color );
+
   before ensure_can_exec => sub {
     my $self = shift;
     unless ( $self->skill->is_acquired ) {

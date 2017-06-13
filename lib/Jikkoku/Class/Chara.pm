@@ -17,7 +17,6 @@ package Jikkoku::Class::Chara {
 
   use constant {
     DIR_PATH    => 'charalog/main/',
-    PRIMARY_KEY => 'id',
 
     PROTECT_RANGE          => 3,
     MOVE_POINT_CHARGE_TIME => 60 * 2,

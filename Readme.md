@@ -1,20 +1,22 @@
 
 # やること
 
+battle map の作成
+ * timer (java script)
+
 Model::* の Mouse化, 設計再構築(特に Chara::*
-  ->
-    Model::Chara new modelへ
-    Class::TextData の PRIMARY_KEY 要らなくないか
-    Skill class 処理実行部分を別クラスに切り離した方がよさ気、よってBattle Action Role の見直しが必要そう
-      BattleAction Class を CanExecOnBattleMap Role を実装しているクラスで使用
-
-複数対象の症状(掩護など)を記録するようのモデル, 記録ファイルの作成
-Chara::Soldier の利用
-
 Role::Diplomacy Role::Tiny -> Mouse
 Model::Role::TextData::Integration::Expires
 
 Skill Model はキャッシュ有りでいいような気がしてきた(もう少し考える)
+chara_model 新仕様のメソッドに切り替えてく
+Chara::Soldier の利用
+
+# 最終目標
+スキルは全て書き換え
+戦闘行動を全て書き換え
+スキルの症状のボーナスを効果発揮時に変更
+バトルマップ部分を書き換え
 
 # テスト
 * 初期仕官制限
@@ -40,8 +42,6 @@ Skill Model はキャッシュ有りでいいような気がしてきた(もう�
 
 * 期中の仕様変更に関するガイドラインを作成
 * 期変更時のガイドラインを作成
-
-# commit / 
 
 # commit / abort / lock について
 * lock = トランザクション開始でだいたいあってる

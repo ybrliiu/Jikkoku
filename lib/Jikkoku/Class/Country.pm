@@ -9,8 +9,6 @@ package Jikkoku::Class::Country {
   use Jikkoku::Model::Config;
   use Jikkoku::Class::Role::TextData;
 
-  use constant PRIMARY_KEY => 'id';
-
   has 'id'       => ( metaclass => 'Column', is => 'ro', isa => 'Int', required => 1 );
   has 'name'     => ( metaclass => 'Column', is => 'rw', isa => 'Str', required => 1 );
   has 'color_id' => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
