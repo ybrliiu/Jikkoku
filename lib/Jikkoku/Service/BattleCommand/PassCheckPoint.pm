@@ -3,6 +3,7 @@ package Jikkoku::Service::BattleCommand::PassCheckPoint {
   use Mouse::Role;
   use Jikkoku;
 
+  use Jikkoku::Service::Role::BattleActionException;
   use Jikkoku::Model::Config;
   my $CONFIG = Jikkoku::Model::Config->get;
 
@@ -109,13 +110,13 @@ package Jikkoku::Service::BattleCommand::PassCheckPoint {
       $self->check_point_y,
     );
     unless ( $entry_node->is_check_point ) {
-      Jikkoku::Class::Role::BattleActionException
+      Jikkoku::Service::Role::BattleActionException
         ->throw('指定された座標からは関所の出入りはできません。');
     }
     $self->entry_check_point( $entry_node->check_point );
 
-    unless ( $self->chara_soldier->distance_from_point($entry_node) < 1 ) {
-      Jikkoku::Class::Role::BattleActionException
+    unless ( $self->chara_soldier->distance_from_point($entry_node) <= 1 ) {
+      Jikkoku::Service::Role::BattleActionException
         ->throw('関所の上、または隣接するマスにいません。');
     }
 
@@ -125,7 +126,7 @@ package Jikkoku::Service::BattleCommand::PassCheckPoint {
       ->get_charactors_by_soldier_bm_id_with_result( $self->chara_soldier->battle_map_id )
       ->get_charactors_by_soldier_point_with_result( $entry_node );
     if (@$has_enemies_on_the_position) {
-      Jikkoku::Class::Role::BattleActionException->throw('関所の上に敵がいます。');
+      Jikkoku::Service::Role::BattleActionException->throw('関所の上に敵がいます。');
     }
 
     $self->ensure_can_exec_about_target_town;

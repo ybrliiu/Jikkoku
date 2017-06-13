@@ -19,6 +19,7 @@ qq{
     <title>十国志NET</title>
 
     <script src="@{[ static_file 'public/js/jquery-3.1.0.min.js' ]}"></script>
+    <script src="@{[ static_file 'public/js/jikkoku.js' ]}"></script>
     @{[ map { qq{<script src="} . static_file "public/js/$_.js" . qq{"></script>\n} } @JS_FILES ]}
     <link rel="stylesheet" href="@{[ static_file 'public/css/base.css' ]}">
     @{[ map { qq{<link rel="stylesheet" href="} . static_file "public/css/$_.css" . qq{">\n} } @CSS_FILES ]}

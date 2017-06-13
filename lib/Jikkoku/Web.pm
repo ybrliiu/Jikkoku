@@ -35,10 +35,12 @@ package Jikkoku::Web {
 
     {
       my $battle_action = $chara->root(path => '/battle-action', controller => 'BattleAction');
-      $battle_action->any('/change-formation');
       $battle_action->any('/move');
-      $battle_action->any('/charge-move-point');
       $battle_action->any('/stuck');
+      $battle_action->any('/exit');
+      $battle_action->any('/entry');
+      $battle_action->any('/change-formation');
+      $battle_action->any('/charge-move-point');
     }
 
     {

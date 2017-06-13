@@ -5,8 +5,14 @@ my $layout = take_in 'templates/layouts/chara.pl';
 
 sub {
   my $args = shift;
-  my ($chara, $battle_map, $formation, $available_formations)
-    = ($args->{chara}, $args->{battle_map}, $args->{formation}, $args->{available_formations});
+  my ($chara, $battle_map, $formation, $time, $available_formations)
+    = map { $args->{$_} } qw( chara battle_map formation time available_formations );
+  my $soldier = $chara->soldier;
+
+  push @{ $args->{JS_FILES} }, (
+    'jikkoku/timer/timer',
+    'jikkoku/timer/timer-manager',
+  );
 
   my $show_allies = sub {
     my ($allies) = @_;
@@ -103,7 +109,6 @@ sub {
         </tbody>
       </table>
     } . do {
-      my $soldier = $chara->soldier;
     qq{
       <div class="grid-right width-40pc padding-top">
         <table class="width-100pc table-@{[ $args->{country}->color_id ]}">
@@ -133,11 +138,25 @@ sub {
               <td class="middle">
                 @{[ $soldier->move_point ]} / @{[ $soldier->max_move_point ]}
               </td>
-              <td colspan="2" class="middle">
+    } . do {
+      my $sub = $soldier->move_point_charge_time - $time;
+      qq{
+              <td colspan="2" class="middle @{[ $sub > 0 ? 'timer' : '' ]}">
+      } . do {
+        if ($sub > 0) {
+          qq{
+                <span class="show-time">
+                  後 <span class="time">$sub</span> 秒で補充可能です
+                </span>
+          };
+        }
+      };
+    } . qq{
                 @{[ $button_generator->({
                   url   => url_for('/chara/battle-action/charge-move-point'),
                   name  => '移動ポイント補充',
                   chara => $chara,
+                  class => ['hidden-contents'],
                 })->() ]}
               </td>
             </tr>
@@ -153,6 +172,23 @@ sub {
                 </select>
               </td>
             </tr>
+    } . ( join "\n", map {
+      qq{
+            <tr>
+              <td>@{[ $_->target_bm_name ]}へ</td>
+              <td colspan="3">
+                @{[ $button_generator->({
+                  url   => url_for('/chara/battle-action/' . ($battle_map->is_castle_around_map ? 'exit' : 'entry')),
+                  name  => $battle_map->is_castle_around_map ? '出城' : '入城',
+                  chara => $chara,
+                })->({
+                  check_point_x => $_->x,
+                  check_point_y => $_->y,
+                }) ]}
+              </td>
+            </tr>
+      };
+    } @{ $args->{adjacent_check_points } } ) . qq{
             <tr>
               <td>待機時間</td>
               <td colspan="3"></td>
@@ -172,10 +208,25 @@ sub {
                   } @$available_formations ]}
                 </select>
               </td>
-              <td colspan="2" class="middle">
+    } . do {
+      my $reforming_time = $soldier->change_formation_time - $time;
+      qq{
+              <td colspan="2" class="middle @{[ $reforming_time > 0 ? "timer" : "" ]}">
                 <input type="hidden" name="id" value="@{[ $chara->id ]}">
                 <input type="hidden" name="pass" value="@{[ $chara->pass ]}">
-                <input type="submit" value="変更">
+      } . do {
+        if ($reforming_time > 0) {
+          qq{
+                <span class="show-time">
+                  陣形変更が可能になるまで後
+                  <span class="time">@{[ $reforming_time ]}</span>
+                  秒
+                </span>
+          }
+        }
+      }
+    } . qq{
+                <input class="hidden-contents" type="submit" value="変更">
               </td>
               </form>
             </tr>
@@ -203,7 +254,17 @@ sub {
           </tbody>
         </table>
       </div>
-    } };
+    } } . q{
+      <script>
+        "use strict";
+        (function () {
+          var timerManager = new jikkoku.timer.TimerManager();
+          timerManager.registFunctions();
+          timerManager.init();
+          timerManager.loop();
+        }());
+      </script>
+    };
   };
 
   $layout->($this, $args);

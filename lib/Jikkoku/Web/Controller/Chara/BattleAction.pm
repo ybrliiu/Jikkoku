@@ -71,6 +71,36 @@ package Jikkoku::Web::Controller::Chara::BattleAction {
     $self->redirect_to($self->return_url_origin);
   }
 
+  sub exit {
+    my $self = shift;
+    my ($check_point_x, $check_point_y) = map { $self->param($_) } qw( check_point_x check_point_y );
+    my $service = $self->service('BattleCommand::Exit')->new({
+      chara         => $self->chara,
+      check_point_x => $check_point_x,
+      check_point_y => $check_point_y,
+    });
+    eval { $service->exec };
+    if (my $e = $@) {
+      $self->render_error( Jikkoku::Exception->caught($e) ? $e->message : $e );
+    }
+    $self->redirect_to( $self->return_url_origin );
+  }
+
+  sub entry {
+    my $self = shift;
+    my ($check_point_x, $check_point_y) = map { $self->param($_) } qw( check_point_x check_point_y );
+    my $service = $self->service('BattleCommand::Entry')->new({
+      chara         => $self->chara,
+      check_point_x => $check_point_x,
+      check_point_y => $check_point_y,
+    });
+    eval { $service->exec };
+    if (my $e = $@) {
+      $self->render_error( Jikkoku::Exception->caught($e) ? $e->message : $e );
+    }
+    $self->redirect_to( $self->return_url_origin );
+  }
+
   sub stuck {
     my $self = shift;
 

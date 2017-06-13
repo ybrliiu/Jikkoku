@@ -1,16 +1,18 @@
 use Jikkoku;
 use Jikkoku::Template;
+use Carp ();
 
 sub {
   my $args = shift;
 
   sub {
     my $params = shift // {};
+    $args->{class} //= [];
     qq{
-      <form action="$args->{url}" method="POST">
+      <form action="$args->{url}" method="POST" class="@{[ join ' ', @{ $args->{class} } ]}">
         <input type="hidden" name="mode" value="$args->{mode}">
     } . ( join '', map {
-      qq{<input type="hidden" name="$_" value="$params->{$_}">}
+      qq{<input type="hidden" name="$_" value="$params->{$_}">\n}
     } keys %$params ) . qq{
         <input type="hidden" name="id" value="@{[ $args->{chara}->id ]}">
         <input type="hidden" name="pass" value="@{[ $args->{chara}->pass ]}">

@@ -86,7 +86,7 @@ package Jikkoku::Class::BattleMap {
     my ($self, $chara_model, $chara) = @_;
     $self->set_current($chara);
     my $charactors  = $chara_model->get_all;
-    my @sortie_list = grep { $_->is_sortie and $_->soldier->battle_map_id == $self->id } @$charactors;
+    my @sortie_list = grep { $_->is_sortie && $_->soldier->battle_map_id eq $self->id } @$charactors;
     my @allies      = grep { $_->country_id == $chara->country_id } grep { $_->id ne $chara->id } @sortie_list;
     my @enemies     = grep { $_->country_id != $chara->country_id } @sortie_list;
     for my $ally (@allies) {
@@ -120,7 +120,7 @@ package Jikkoku::Class::BattleMap {
     }
 
     # set_charactors でマップ上に武将がセットされている時のみ
-    die "そのマスには敵がいるので移動できません" if @{ $next_node->allies };
+    die "そのマスには敵がいるので移動できません" if @{ $next_node->enemies };
 
     my $enemy = $args->{chara_model}->first(sub {
       my ($other) = @_;
@@ -268,6 +268,13 @@ package Jikkoku::Class::BattleMap {
     my ($self, $bm_id) = @_;
     Carp::croak 'few argments($bm_id)' if @_ < 2;
     first { $_->target_bm_id eq $bm_id } values %{ $self->check_points };
+  }
+
+  sub get_adjacent_check_points {
+    my ($self, $soldier) = @_;
+    Carp::croak 'few arguments($soldier)' if @_ < 2;
+    return [] if $self->id ne $soldier->battle_map_id;
+    [ grep { $soldier->distance_from_point($_) <= 1 } values %{ $self->check_points } ];
   }
 
   __PACKAGE__->meta->make_immutable;
