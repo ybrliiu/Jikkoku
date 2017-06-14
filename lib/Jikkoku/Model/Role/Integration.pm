@@ -54,7 +54,7 @@ package Jikkoku::Model::Role::Integration {
     $self->data->{ $obj->$primary_attribute } = $obj;
   }
 
-  sub delete {
+  sub delete : method {
     my ($self, $primary_attribute_value) = @_;
     Carp::croak 'few arguments($primary_attribute_value)' if @_ < 2;
     delete $self->data->{$primary_attribute_value};

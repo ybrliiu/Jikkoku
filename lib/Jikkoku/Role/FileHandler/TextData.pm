@@ -23,7 +23,7 @@ package Jikkoku::Role::FileHandler::TextData {
     );
   }
 
-  sub read {
+  sub read : method {
     my $self = shift;
     my $fh = $self->fh;
     my $textdata_list = extract_textdata($fh);
@@ -42,7 +42,7 @@ package Jikkoku::Role::FileHandler::TextData {
     +{ map { $_->$primary_attribute => $_ } @$objects };
   }
 
-  sub write {
+  sub write : method {
     my $self = shift;
     $_->update_textdata for values %{ $self->data };
     $self->fh->print( @{ $self->_objects_data_to_textdata_list } );
@@ -61,15 +61,16 @@ package Jikkoku::Role::FileHandler::TextData {
   sub save {
     my $self = shift;
     $_->update_textdata for values %{ $self->data };
-    open(my $fh, '+<', $self->file_path);
+    open(my $fh, '>', $self->file_path);
     $fh->print( @{ $self->_objects_data_to_textdata_list } );
     $fh->close;
   }
 
   sub init {
     my $class = shift;
-    open(my $fh, '+<', $class->file_path);
-    $fh->print('');
+    open(my $fh, '>', $class->file_path)
+      or Jikkoku::Role::FileHandlerException->throw("file open error", $!);
+    $fh->print();
     $fh->close;
   }
 
