@@ -121,6 +121,28 @@ package Jikkoku::Web::Controller::Chara::BattleAction {
     $self->render('chara/result.pl', {message => $stuck->name . "を行いました。"});
   }
 
+  sub switch_bm_auto_mode {
+    my $self = shift;
+
+    my $mode = $self->param('switch_mode');
+    unless ( grep { $mode eq $_ } qw/ ON OFF / ) {
+      return $self->render_error('不正な値が含まれています');
+    }
+
+    my $service = $self->service('Chara::SwitchBattleMapAutoMode')->new(chara => $self->chara);
+    eval {
+      if ($mode eq 'ON') {
+        $service->on;
+      } else {
+        $service->off;
+      }
+    };
+    if (my $e = $@) {
+      $self->render_error( Jikkoku::Exception->caught($e) ? $e->message : $e );
+    }
+    $self->render('chara/result.pl', {message => $mode . 'にしました。'});
+  }
+
   __PACKAGE__->meta->make_immutable;
 
 }

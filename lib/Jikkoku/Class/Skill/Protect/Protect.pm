@@ -45,60 +45,6 @@ EOS
     "再使用時間 : @{[ $self->interval_time ]}秒";
   };
 
-  sub ensure_can_exec {
-    my ($self, $args) = @_;
-    validate_values $args => [qw/ protector_model chara_model /];
-
-    my $time = time;
-    my $sub = $self->chara->interval_time('protect') - $time;
-    throw("あと $sub秒 使用できません。") if $sub > 0;
-
-    # 暫定制限
-    my $enemy_num = @{ $args->{chara_model}->get_same_bm_and_not_same_country( $self->chara ) };
-    throw($self->name . "は敵が同じBM上にいる時にしか使用できません！") unless $enemy_num;
-
-    $args->{protector_model}, $time;
-  }
-
-  sub exec {
-    my ($self, $protector_model, $time) = @_;
-    my $chara = $self->chara;
-
-    $chara->lock;
-
-    my $is_success;
-    eval {
-      $chara->morale_data( morale => $chara->morale_data('morale') - $self->consume_morale );
-      $chara->contribute( $chara->contribute + $self->get_contribute );
-      $chara->interval_time( protect => $time + $self->interval_time );
-      $is_success = $self->determine_whether_succeed;
-      if ($is_success) {
-        $protector_model->add( $chara->id );
-      }
-    };
-
-    if (my $e = $@) {
-      $chara->abort;
-      throw("$e \n");
-    } else {
-      $chara->commit;
-      $protector_model->save;
-      my $name_tag = qq{<span style="color: #FF69B4">【@{[ $self->name ]}】</span>};
-      if ($is_success) {
-        my $log_base = qq{$name_tag@{[ $chara->name ]}は@{[ $self->name ]}を行いました！敵の攻撃から味方を守ります。 };
-        my $chara_log
-          = qq{${log_base}士気-<span class="red">@{[ $self->consume_morale ]}</span> 貢献値+<span class="red">@{[ $self->get_contribute ]}</span>};
-        $chara->save_command_log( $chara_log );
-        $chara->save_battle_log( $chara_log );
-        my $bm = $self->battle_map_model->get( $chara->soldier_battle_map('battle_map_id') );
-        $self->map_log_model->add( $log_base . '(' . $bm->name . ')' )->save;
-      } else {
-        $chara->save_battle_log("$name_tagを行おうとしましたが失敗しました。");
-      }
-    }
-
-  }
-
   __PACKAGE__->meta->make_immutable;
 
 }

@@ -12,6 +12,14 @@ package Jikkoku::Class::Chara::Soldier {
   
   has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara', weak_ref => 1 );
 
+  override max_move_point => sub {
+    my $self = shift;
+    my $orig_cost = super();
+    my $cost = $orig_cost;
+    $cost += $self->chara->skills->adjust_soldier_max_move_point($orig_cost);
+    $cost;
+  };
+
   sub add_action_time {
     my ($self, $value) = @_;
     Carp::croak 'few argments($value)' if @_ < 2;
@@ -39,7 +47,8 @@ package Jikkoku::Class::Chara::Soldier {
   sub charge_move_point {
     my ($self, $charge_time) = @_;
     Carp::croak 'few argments($charge_time)' if @_ < 2;
-    $self->chara->_soldier_battle_map->set(move_point             => $self->max_move_point);
+    $self->chara->_soldier_battle_map->set(move_point => $self->max_move_point);
+    $charge_time += $self->chara->skills->adjust_soldier_charge_move_point_time($charge_time);
     $self->chara->_soldier_battle_map->set(move_point_charge_time => $charge_time);
   }
 

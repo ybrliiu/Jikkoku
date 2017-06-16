@@ -10,7 +10,11 @@ package Jikkoku::Class::Skill::Skill {
   has 'chara'            => ( is => 'ro', isa => 'Jikkoku::Class::Chara', weak_ref => 1, required => 1 );
   has 'id'               => ( is => 'ro', isa => 'Str', lazy => 1, builder => '_build_id' );
   has 'category'         => ( is => 'ro', isa => 'Str', lazy => 1, builder => '_build_category' );
+
+  # 使用先で定義
   has 'next_skills_id'   => ( is => 'ro', isa => 'ArrayRef[Str]', lazy => 1, builder => '_build_next_skills_id' );
+
+  # skillcategory で使う用
   has 'before_skills_id' => ( is => 'ro', isa => 'ArrayRef[Str]', lazy => 1, builder => '_build_before_skills_id' );
 
   sub _build_id {

@@ -39,6 +39,7 @@ package Jikkoku::Web {
       $battle_action->any('/stuck');
       $battle_action->any('/exit');
       $battle_action->any('/entry');
+      $battle_action->any('/switch-bm-auto-mode');
       $battle_action->any('/change-formation');
       $battle_action->any('/charge-move-point');
     }

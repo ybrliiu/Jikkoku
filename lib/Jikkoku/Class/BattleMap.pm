@@ -23,6 +23,9 @@ package Jikkoku::Class::BattleMap {
   has 'map_data'     => ( is => 'rw', isa => 'ArrayRef[ArrayRef]', required => 1 );
   has 'check_points' => ( is => 'rw', isa => 'HashRef',            required => 1 );
 
+  has 'allies'  => ( is => 'rw', isa => 'ArrayRef[Jikkoku::Class::Chara]' );
+  has 'enemies' => ( is => 'rw', isa => 'ArrayRef[Jikkoku::Class::Chara]' );
+
   sub BUILD {
     my $self = shift;
     $self->set_nodes;
@@ -89,6 +92,8 @@ package Jikkoku::Class::BattleMap {
     my @sortie_list = grep { $_->is_sortie && $_->soldier->battle_map_id eq $self->id } @$charactors;
     my @allies      = grep { $_->country_id == $chara->country_id } grep { $_->id ne $chara->id } @sortie_list;
     my @enemies     = grep { $_->country_id != $chara->country_id } @sortie_list;
+    $self->allies( \@allies );
+    $self->enemies( \@enemies );
     for my $ally (@allies) {
       my $soldier = $ally->soldier;
       my $node    = $self->map_data->[ $soldier->y ][ $soldier->x ];

@@ -1,8 +1,9 @@
 
 # やること
 
+calc_success_ratio Class::Skillの方にいる
+
 battle map の作成
- * timer (java script)
 
 Model::* の Mouse化, 設計再構築(特に Chara::*
 Role::Diplomacy Role::Tiny -> Mouse

@@ -41,6 +41,7 @@ package Jikkoku::Web::Controller::Chara {
       country               => $country,
       formation             => $formation,
       battle_map            => $battle_map,
+      auto_mode_list_model  => $self->model('Chara::AutoModeList')->new,
       available_formations  => $available_formations,
       adjacent_check_points => $adjacent_check_points,
     });
