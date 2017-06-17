@@ -4,7 +4,7 @@ package Jikkoku::Class::State::Role::BattleActionSuccessRatioAdjuster {
   use Jikkoku;
   use Scalar::Util;
 
-  with 'Jikkoku::Service::Role::BattleAction::BattleActionSuccessRatioAdjuster';
+  with 'Jikkoku::Service::Role::BattleAction::SuccessRatioAdjuster';
 
   # attributes
   requires qw( increase_giver_contribute_num increase_giver_book_power_num );

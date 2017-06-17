@@ -20,6 +20,10 @@ package Jikkoku::Service::BattleCommand::BattleCommand {
     },
   );
 
+  with qw( Jikkoku::Service::Role::BattleAction );
+
+  sub calc_success_ratio() { 1 }
+
 }
 
 1;

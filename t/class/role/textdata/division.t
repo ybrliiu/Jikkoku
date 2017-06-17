@@ -197,6 +197,7 @@ subtest 'lock' => sub {
 subtest 'commit' => sub {
   my $player = Player->new('ybrliiu');
   $player->lock;
+  $player->lock;
   ok $player->force(100);
   ok $player->commit;
   is $player->force, 100;

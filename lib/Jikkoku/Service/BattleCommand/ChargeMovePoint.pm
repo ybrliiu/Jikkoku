@@ -12,10 +12,7 @@ package Jikkoku::Service::BattleCommand::ChargeMovePoint {
     default => $CONFIG->{game}{action_interval_time},
   );
 
-  with qw(
-    Jikkoku::Service::BattleCommand::BattleCommand
-    Jikkoku::Service::Role::BattleAction
-  );
+  with qw( Jikkoku::Service::BattleCommand::BattleCommand );
 
   sub ensure_can_exec {
     my $self = shift;

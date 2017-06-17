@@ -1,6 +1,6 @@
-# 足止めスキル処理
+# 混乱スキル処理
 
-package Jikkoku::Service::Skill::Disturb::Stuck {
+package Jikkoku::Service::Skill::Disturb::Confuse {
 
   use Mouse;
   use Jikkoku;

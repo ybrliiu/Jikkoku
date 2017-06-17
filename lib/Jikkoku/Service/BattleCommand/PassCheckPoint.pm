@@ -7,10 +7,7 @@ package Jikkoku::Service::BattleCommand::PassCheckPoint {
   use Jikkoku::Model::Config;
   my $CONFIG = Jikkoku::Model::Config->get;
 
-  with qw(
-    Jikkoku::Service::Role::BattleAction
-    Jikkoku::Service::BattleCommand::BattleCommand
-  );
+  with qw( Jikkoku::Service::BattleCommand::BattleCommand );
 
   requires qw( ensure_can_exec_about_target_town );
 

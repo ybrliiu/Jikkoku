@@ -5,8 +5,8 @@ my $layout = take_in 'templates/layouts/chara.pl';
 
 sub {
   my $args = shift;
-  my ($chara, $battle_map, $formation, $time, $available_formations)
-    = map { $args->{$_} } qw( chara battle_map formation time available_formations );
+  my ($chara, $battle_map, $formation, $time, $auto_mode_list_model, $available_formations)
+    = map { $args->{$_} } qw( chara battle_map formation time auto_mode_list_model available_formations );
   my $soldier = $chara->soldier;
 
   push @{ $args->{JS_FILES} }, (
@@ -170,25 +170,45 @@ sub {
                   <optgroup label="== 支援、妨害系 ==">
                   </optgroup>
                 </select>
+                <select name="charactors" size="5">
+                  <optgroup label="== 敵 ==">
+    } . ( join '', map {
+      my $chara = $_;
+      qq{
+                    <option value="@{[ $chara->id ]}">@{[ $chara->name ]}</option>
+      };
+    } @{ $battle_map->enemies } ) . q{
+                  </optgroup>
+                  <optgroup label="== 味方 ==">
+    } . ( join '', map {
+      my $chara = $_;
+      qq{
+                    <option value="@{[ $chara->id ]}">@{[ $chara->name ]}</option>
+      };
+    } @{ $battle_map->allies } )
+    . q{
+                  </optgroup>
+                </select>
               </td>
             </tr>
-    } . ( join "\n", map {
+    } . ( join '', map {
+      my $check_point = $_;
       qq{
             <tr>
-              <td>@{[ $_->target_bm_name ]}へ</td>
+              <td>@{[ $check_point->target_bm_name ]}へ</td>
               <td colspan="3">
                 @{[ $button_generator->({
                   url   => url_for('/chara/battle-action/' . ($battle_map->is_castle_around_map ? 'exit' : 'entry')),
                   name  => $battle_map->is_castle_around_map ? '出城' : '入城',
                   chara => $chara,
                 })->({
-                  check_point_x => $_->x,
-                  check_point_y => $_->y,
+                  check_point_x => $check_point->x,
+                  check_point_y => $check_point->y,
                 }) ]}
               </td>
             </tr>
       };
-    } @{ $args->{adjacent_check_points } } ) . qq{
+    } @{ $args->{adjacent_check_points} } ) . qq{
             <tr>
               <td>待機時間</td>
               <td colspan="3"></td>
@@ -239,14 +259,22 @@ sub {
                   chara => $chara,
                 })->() ]}
               </td>
-              <td class="middle">BM自動モード : OFF</td>
+    } . do {
+      my ($mode, $button_mes) = $auto_mode_list_model->get_with_option( $chara->id )->match(
+        Some => sub { 'ON', 'OFF' },
+        None => sub { 'OFF', 'ON' },
+      );
+      qq{
+              <td class="middle">BM自動モード : $mode</td>
               <td class="middle">
                 @{[ $button_generator->({
-                  url   => '',
-                  name  => 'ONにする',
+                  url   => url_for('/chara/battle-action/switch-bm-auto-mode'),
+                  name  => "${button_mes}にする",
                   chara => $chara,
-                })->() ]}
+                })->({ switch_mode => $button_mes }) ]}
               </td>
+      };
+    } . qq{
             </tr>
             <tr>
               <td colspan="4">[戦闘の説明]</td>
@@ -269,4 +297,3 @@ sub {
 
   $layout->($this, $args);
 };
-

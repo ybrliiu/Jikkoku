@@ -31,6 +31,13 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::DependOnAbilities {
     List::Util::sum map { $self->chara->$_ } @{ $self->depend_abilities };
   }
 
+  sub calc_success_ratio {
+    my ($self, $ability_sum) = @_;
+    Carp::confess 'few arguments ($ability_sum)' if @_ < 2;
+    my $probability = $ability_sum * $self->success_coef;
+    $probability > $self->max_success_ratio ? $self->max_success_ratio : $probability;
+  }
+
   sub effect_time {
     my ($self, $ability_sum) = @_;
     Carp::croak 'few arguments ($ability_sum)' if @_ < 2;

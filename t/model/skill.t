@@ -10,7 +10,7 @@ use_ok $CLASS;
 my $chara_model = Jikkoku::Model::Chara->new;
 my $chara = $chara_model->get_with_option('ybrliiu')->get;
 ok(my $model = $CLASS->new( chara => $chara ));
-diag explain $model->get_all;
+diag $_->name for @{ $model->get_all };
 
 done_testing;
 

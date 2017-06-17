@@ -46,7 +46,6 @@ package Jikkoku::Service::BattleCommand::Retreat {
 
   with qw(
     Jikkoku::Service::BattleCommand::BattleCommand
-    Jikkoku::Service::Role::BattleAction
     Jikkoku::Service::Role::BattleAction::OccurActionTime
   );
 

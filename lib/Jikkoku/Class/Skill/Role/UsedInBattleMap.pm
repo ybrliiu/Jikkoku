@@ -7,6 +7,8 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap {
   use List::Util;
   use Jikkoku::Util qw( validate_values );
 
+  with qw( Jikkoku::Class::Skill::Role::InBattleMap );
+
   # attribute
   requires qw( consume_morale );
 

@@ -44,10 +44,7 @@ package Jikkoku::Service::BattleCommand::Move {
     },
   );
 
-  with qw(
-    Jikkoku::Service::Role::BattleAction
-    Jikkoku::Service::BattleCommand::BattleCommand
-  );
+  with qw( Jikkoku::Service::BattleCommand::BattleCommand );
 
   sub _build_destination_node {
     my $self = shift;

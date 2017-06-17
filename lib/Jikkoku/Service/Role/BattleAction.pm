@@ -47,7 +47,7 @@ package Jikkoku::Service::Role::BattleAction {
   with 'Jikkoku::Role::Loader';
 
   # method
-  requires qw( ensure_can_exec exec );
+  requires qw( ensure_can_exec exec calc_success_ratio );
 
   before ensure_can_exec => sub {
     my $self = shift;
@@ -71,7 +71,13 @@ package Jikkoku::Service::Role::BattleAction {
     $self->$origin($args);
   };
 
-  sub calc_success_ratio { 1 }
+  around calc_success_ratio => sub {
+    my ($orig, $self) = (shift, shift);
+    my $orig_ratio = $self->$orig(@_);
+    my $ratio = $orig_ratio;
+    $ratio += $self->chara->states->adjust_battle_action_success_ratio($orig_ratio);
+    $ratio;
+  };
 
   # その行動が成功するかどうかを判定, action method 内で使用(移動, 関所出入りは除く)
   sub determine_whether_succeed {
