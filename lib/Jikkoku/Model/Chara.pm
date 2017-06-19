@@ -4,10 +4,7 @@ package Jikkoku::Model::Chara {
   use Jikkoku;
   use Jikkoku::Util qw( validate_values );
 
-  use constant {
-    INFLATE_TO        => 'Jikkoku::Class::Chara',
-    PRIMARY_ATTRIBUTE => 'id',
-  };
+  use constant INFLATE_TO => 'Jikkoku::Class::Chara';
 
   with 'Jikkoku::Model::Role::Division';
 

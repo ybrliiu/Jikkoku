@@ -10,7 +10,6 @@ sub {
     $args->{class} //= [];
     qq{
       <form action="$args->{url}" method="POST" class="@{[ join ' ', @{ $args->{class} } ]}">
-        <input type="hidden" name="mode" value="$args->{mode}">
     } . ( join '', map {
       qq{<input type="hidden" name="$_" value="$params->{$_}">\n}
     } keys %$params ) . qq{

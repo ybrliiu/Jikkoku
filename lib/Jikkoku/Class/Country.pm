@@ -9,6 +9,8 @@ package Jikkoku::Class::Country {
   use Jikkoku::Model::Config;
   use Jikkoku::Class::Role::TextData;
 
+  my $CONFIG = Jikkoku::Model::Config->get;
+
   has 'id'       => ( metaclass => 'Column', is => 'ro', isa => 'Int', required => 1 );
   has 'name'     => ( metaclass => 'Column', is => 'rw', isa => 'Str', required => 1 );
   has 'color_id' => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
@@ -75,6 +77,16 @@ package Jikkoku::Class::Country {
     });
   }
 
+  sub can_invasion {
+    my $self = shift;
+    $CONFIG->{game}{nowar_month} <= $self->months_after_establish;
+  }
+
+  sub remaining_month_until_can_invasion {
+    my $self = shift;
+    $CONFIG->{game}{nowar_month} - $self->months_after_establish;
+  }
+
   sub is_headquarters_exist {
     my ($self) = @_;
     grep { defined $self->$_ } @HEADQUARTERS;
@@ -97,6 +109,11 @@ package Jikkoku::Class::Country {
       }
     } @POSITIONS;
     defined $position_name ? $POSITIONS_NAME{$position_name} : undef;
+  }
+
+  sub is_neutral {
+    my $self = shift;
+    $self->id == 0;
   }
 
   sub position_name_of_chara {
@@ -144,31 +161,28 @@ package Jikkoku::Class::Country {
 
   sub number_of_chara_participate_available {
     my ($class, $chara_model, $country_model) = @_;
-    state $config   = Jikkoku::Model::Config->get;
     my $chara_sum   = @{ $chara_model->get_all };
     my $country_sum = @{ $country_model->get_all };
     # 0除算を考慮
     my $result = eval {
-      if ($chara_sum <= $config->{game}{participation_restriction_num}) {
+      if ($chara_sum <= $CONFIG->{game}{participation_restriction_num}) {
         my $available_num = int($chara_sum / $country_sum + 0.9);
         my $amplitude     = int($chara_sum / 10 + 0.5);
         $available_num + $amplitude;
       } else {
-        $config->{game}{max_player};
+        $CONFIG->{game}{max_player};
       }
     };
-    ($@ || $result < $config->{game}{participation_restriction_min})
-      ? $config->{game}{participation_restriction_min}
+    ($@ || $result < $CONFIG->{game}{participation_restriction_min})
+      ? $CONFIG->{game}{participation_restriction_min}
       : $result;
   }
 
   {
-    my $config = Jikkoku::Model::Config->get;
-
     for my $method_name (qw/ color background_color background_color_rgba /) {
       __PACKAGE__->meta->add_method($method_name => sub {
         my $self = shift;
-        $config->{"country_$method_name"}[ $self->{color_id} ];
+        $CONFIG->{"country_$method_name"}[ $self->{color_id} ];
       });
     }
   }

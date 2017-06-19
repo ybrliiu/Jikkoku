@@ -8,7 +8,7 @@ package Jikkoku::Role::Logger {
 
   has 'data' => ( is => 'rw', isa => 'ArrayRef', required => 1 );
 
-  with 'Jikkoku::Role::FileHandler';
+  with qw( Jikkoku::Role::FileHandler );
 
   requires qw( MAX );
 
@@ -20,12 +20,17 @@ package Jikkoku::Role::Logger {
   }
 
   around BUILDARGS => sub {
-    my ($orig, $class) = @_;
-    open(my $fh, '<', $class->file_path) or throw("file open failed", $!);
+    my ($orig, $class) = (shift, shift);
+    open(my $fh, '<', $class->file_path(@_)) or throw("file open failed", $!);
     my @log = <$fh>;
     $fh->close or throw("file close failed", $!);
-    $class->$orig( data => \@log );
+    $class->$orig( data => \@log, $class->hook_logger_build_args(@_) );
   };
+
+  sub hook_logger_build_args {
+    my $class = shift;
+    ();
+  }
 
   sub abort {
     my $self = shift;

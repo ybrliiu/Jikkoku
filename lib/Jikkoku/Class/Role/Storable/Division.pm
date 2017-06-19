@@ -6,20 +6,10 @@ package Jikkoku::Class::Role::Storable::Division {
   use Carp;
   use Storable ();
 
-  requires qw( PRIMARY_KEY DIR_PATH );
-
-  with 'Jikkoku::Role::FileHandler';
-
-  sub file_path {
-    my $self = shift;
-    if (ref $self) {
-      my $primary_key = $self->PRIMARY_KEY;
-      $self->DIR_PATH . $self->$primary_key . '.cgi';
-    } else {
-      my ($class, $id) = ($self, shift);
-      $class->DIR_PATH . "$id.cgi";
-    }
-  }
+  with qw(
+    Jikkoku::Role::FileHandler
+    Jikkoku::Class::Role::Division
+  );
   
   around BUILDARGS => sub {
     my ($orig, $class) = (shift, shift);

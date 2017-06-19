@@ -10,8 +10,8 @@ package Chara {
   use Jikkoku;
 
   use constant {
-    DIR_PATH    => '',
-    PRIMARY_KEY => 'id',
+    DIR_PATH          => '',
+    PRIMARY_ATTRIBUTE => 'id',
   };
 
   has 'id'   => ( is => 'ro', isa => 'Str' );

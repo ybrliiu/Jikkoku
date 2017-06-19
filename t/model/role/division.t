@@ -10,10 +10,7 @@ package Jikkoku::Model::Player {
   use Mouse;
   use Jikkoku;
 
-  use constant {
-    INFLATE_TO        => 'Jikkoku::Class::Chara',
-    PRIMARY_ATTRIBUTE => 'id',
-  };
+  use constant INFLATE_TO => 'Jikkoku::Class::Chara';
 
   with 'Jikkoku::Model::Role::Division';
 

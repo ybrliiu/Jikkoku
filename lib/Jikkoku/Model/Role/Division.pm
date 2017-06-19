@@ -10,6 +10,11 @@ package Jikkoku::Model::Role::Division {
 
   with 'Jikkoku::Model::Role::Base';
 
+  sub PRIMARY_ATTRIBUTE {
+    my $class = shift;
+    $class->INFLATE_TO->PRIMARY_ATTRIBUTE;
+  }
+
   sub dir_path {
     my $class = shift;
     ( Jikkoku::Util::is_test ? Jikkoku::Util::TEST_DIR : '' ) . $class->INFLATE_TO->DIR_PATH;

@@ -4,22 +4,11 @@ package Jikkoku::Class::Role::TextData::Division {
   use Jikkoku;
   use Carp;
 
-  requires 'DIR_PATH';
-
   with (
     'Jikkoku::Class::Role::TextData' => {-excludes => 'commit'},
+    'Jikkoku::Class::Role::Division' => {},
     'Jikkoku::Role::FileHandler'     => {},
   );
-
-  sub file_path {
-    my ($self, $id) = @_;
-    if (ref $self) {
-      $self->DIR_PATH . $self->id . '.cgi';
-    } else {
-      my $class = $self;
-      $class->DIR_PATH . "$id.cgi";
-    }
-  }
 
   # $textdata -> $id
   around _buildargs_textdata => sub {

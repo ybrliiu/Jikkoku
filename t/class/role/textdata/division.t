@@ -12,8 +12,8 @@ package Player {
   use Jikkoku;
 
   use constant {
-    DIR_PATH    => 'charalog/main/',
-    PRIMARY_KEY => 'id',
+    DIR_PATH          => 'charalog/main/',
+    PRIMARY_ATTRIBUTE => 'id',
   };
 
   has 'id'               => ( metaclass => 'Column', is => 'ro', isa => 'Str', required => 1 );
