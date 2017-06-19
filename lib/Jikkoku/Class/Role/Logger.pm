@@ -3,6 +3,8 @@ package Jikkoku::Class::Role::Logger {
   use Mouse::Role;
   use Jikkoku;
 
+  sub PRIMARY_ATTRIBUTE() { 'id' }
+
   has 'id' => ( is => 'ro', isa => 'Str', required => 1 );
 
   with qw(
