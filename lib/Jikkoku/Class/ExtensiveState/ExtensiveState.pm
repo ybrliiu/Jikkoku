@@ -7,15 +7,15 @@ package Jikkoku::Class::ExtensiveState::ExtensiveState {
   # attribute
   requires qw( name );
 
-  has 'id'         => ( is => 'ro', isa => 'Str', lazy => 1, builder => '_build_id' );
-  has 'icon'       => ( is => 'ro', isa => 'Str', lazy => 1, builder => '_build_icon' );
-  has 'chara'      => ( is => 'ro', isa => 'Jikkoku::Class::Chara',         weak_ref => 1, required => 1 );
-  has 'charactors' => ( is => 'ro', isa => 'Jikkoku::Model::Chara::Result', weak_ref => 1, required => 1 );
+  has 'id'            => ( is => 'ro', isa => 'Str', lazy => 1, builder => '_build_id' );
+  has 'icon'          => ( is => 'ro', isa => 'Str', lazy => 1, builder => '_build_icon' );
+  has 'chara'         => ( is => 'ro', isa => 'Jikkoku::Class::Chara',          required => 1 );
+  has 'charactors'    => ( is => 'ro', isa => 'Jikkoku::Model::Chara::Result',  required => 1 );
+  has 'chara_soldier' => ( is => 'ro', isa => 'Jikkoku::Class::Chara::Soldier', required => 1 );
 
   has 'record_model' => (
     is       => 'ro',
     isa      => 'Jikkoku::Model::ExtensiveStateRecord', 
-    weak_ref => 1,
     required => 1,
   );
 

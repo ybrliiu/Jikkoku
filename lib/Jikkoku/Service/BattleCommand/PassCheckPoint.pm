@@ -150,7 +150,7 @@ package Jikkoku::Service::BattleCommand::PassCheckPoint {
       my $destination_check_point = $target_bm->get_check_point_by_target_bm_id( $soldier->battle_map_id );
       $soldier->move_battle_map( $target_bm->id, $destination_check_point );
       my $before_town = $self->town_model->get_by_name( $destination_check_point->target_town_name );
-      $soldier->add_action_time( $self->time + $CONFIG->{game}{action_interval_time} );
+      $soldier->occur_action_time( $self->time + $CONFIG->{game}{action_interval_time} );
       $self->occur_stop_around_time;
     };
 

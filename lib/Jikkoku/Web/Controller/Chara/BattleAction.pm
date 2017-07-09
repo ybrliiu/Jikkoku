@@ -34,7 +34,7 @@ package Jikkoku::Web::Controller::Chara::BattleAction {
     eval { $move->exec };
 
     if (my $e = $@) {
-      $self->render_error($e->message);
+      $self->render_error( Jikkoku::Exception->caught($e) ? $e->message : $e );
     }
 
     $self->redirect_to($self->return_url_origin);
@@ -49,11 +49,7 @@ package Jikkoku::Web::Controller::Chara::BattleAction {
     });
     my $formation = eval { $service->exec };
     if (my $e = $@) {
-      if ( Jikkoku::Exception->caught($e) ) {
-        $self->render_error($e->message);
-      } else {
-        $self->render_error($e);
-      }
+      $self->render_error( Jikkoku::Exception->caught($e) ? $e->message : $e );
     }
     $self->render('chara/result.pl', {message => $formation->name . 'に変更しました。'});
   }
@@ -65,7 +61,7 @@ package Jikkoku::Web::Controller::Chara::BattleAction {
 
     eval { $charger->exec };
     if (my $e = $@) {
-      $self->render_error($e->message);
+      $self->render_error( Jikkoku::Exception->caught($e) ? $e->message : $e );
     }
 
     $self->redirect_to($self->return_url_origin);
@@ -115,7 +111,7 @@ package Jikkoku::Web::Controller::Chara::BattleAction {
       });
     };
     if (my $e = $@) {
-      $self->render_error($e->message);
+      $self->render_error( Jikkoku::Exception->caught($e) ? $e->message : $e );
     }
 
     $self->render('chara/result.pl', {message => $stuck->name . "を行いました。"});

@@ -2,6 +2,14 @@ package Jikkoku::Service::BattleCommand::Battle {
 
   use Mouse;
   use Jikkoku;
+  use Option;
+  use Jikkoku::Model::Config;
+
+  use constant {
+    CONFUSED_BATTLE_RANGE => 1,
+  };
+
+  my $CONFIG = Jikkoku::Model::Config->get;
 
   has 'traget_id' => ( is => 'ro', isa => 'Str', required => 1 );
 
@@ -49,6 +57,16 @@ package Jikkoku::Service::BattleCommand::Battle {
     },
   );
 
+  has 'target_battle_logger' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Class::Chara::BattleLog',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->chara_battle_log_model->get( $self->target->id );
+    },
+  );
+
   has 'chara_country' => (
     is      => 'ro',
     isa     => 'Jikkoku::Class::Country',
@@ -76,6 +94,16 @@ package Jikkoku::Service::BattleCommand::Battle {
     },
   );
 
+  has 'chara_battle_logger' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Class::Chara::BattleLog',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->chara_battle_log_model->get( $self->chara->id );
+    },
+  );
+
   has 'chara_model' => (
     is      => 'ro',
     isa     => 'Jikkoku::Model::Chara',
@@ -93,6 +121,16 @@ package Jikkoku::Service::BattleCommand::Battle {
     default => sub {
       my $self = shift;
       $self->chara_model->get_all_with_result;
+    },
+  );
+
+  has 'chara_battle_log_model' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Model::Chara::BattleLog',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->model('Chara::BattleLog')->new;
     },
   );
 
@@ -136,17 +174,53 @@ package Jikkoku::Service::BattleCommand::Battle {
     },
   );
 
-  has 'battle_turn' => ( is => 'rw', isa => 'Int', default => 1 );
+  has 'distance' => (
+    is      => 'ro',
+    isa     => 'Int',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->chara_soldier->distance_from_point($self->target_soldier);
+    },
+  );
 
-  with qw( Jikkoku::Service::Role::BattleAction );
+  has 'is_target_can_counter_attack' => ( is => 'rw', isa => 'Bool', default => 0 );
+
+  has 'turn' => ( is => 'rw', isa => 'Int', default => 1 );
+
+  with qw( Jikkoku::Service::BattleCommand::BattleCommand );
 
   sub throw { Jikkoku::Service::Role::BattleActionException->throw(@_) }
+
+  sub get_target_overrider_result {
+    my $self = shift;
+    my $model = $self->model('ExtensiveState')->new(chara => $self->chara);
+    my $result = $model->get_all_with_result->override_battle_target($self->time);
+    Option->new($result);
+  }
 
   sub _build_target {
     my $self = shift;
     $self->charactors->get_with_option( $self->target_id )->match(
       # 掩護で身代わりを入れる処理
-      Some => sub { $_ },
+      Some => sub {
+        my $enemy = shift;
+        $self->get_target_overrider_result->match(
+          Some => sub {
+            my $result = shift;
+# after_override_battle_target_service_class role作成
+# test
+            $result->after_override_battle_target_service_class_name->new({
+              chara          => $self->chara,
+              original_enemy => $enemy,
+              result         => $result,
+              map_log_model  => $self->map_log_model,
+            });
+            $result->giver;
+          },
+          None => sub { $enemy },
+        );
+      },
       None => sub { throw("その武将は存在していないようです。") },
     );
   }
@@ -204,7 +278,7 @@ package Jikkoku::Service::BattleCommand::Battle {
 
     $self->ensure_target_can_battle();
 
-    if ( $chara_soldier->range < $chara_soldier->distance_from_point($target_soldier) ) {
+    if ( $self->chara_soldier->range < $self->distance ) {
       throw("攻撃が相手に届きません。");
     }
 
@@ -212,8 +286,55 @@ package Jikkoku::Service::BattleCommand::Battle {
 
   }
 
+  sub prepare_exec {
+    my $self = shift;
+
+    if ( $self->target_soldier->range < $self->distance ) {
+      $self->is_target_can_counter_attack(1);
+      my $log = sub {
+        my $color = shift;
+        qq{<span class="$color">【反撃不可】</span>@{[ $self->chara->name ]}の部隊が}
+        . qq{射程圏内に入っていないので@{[ $self->target->name ]}は反撃できない！};
+      };
+      $self->chara_battle_logger->add( $log->('red') );
+      $self->target_battle_logger->add( $log->('blue') );
+    }
+
+    if ( $self->distance <= CONFUSED_BATTLE_RANGE ) {
+      $self->turn( $self->turn + 1 );
+      my $log = qq{<span class="$color">【乱戦】</span>@{[ $self->chara->name ]}の部隊と}
+                . qq{@{[ $self->target->name ]}の部隊の距離が近かったため乱戦となりました。}
+                . qq{ターン数+1};
+      $self->chara_battle_logger->add($log);
+      $self->target_battle_logger->add($log);
+    }
+
+  }
+
   sub exec {
     my $self = shift;
+
+    my @file_handlers = qw( chara target chara_battle_logger target_battle_logger );
+    $self->$_->lock for @file_handlers;
+
+    eval {
+
+      $self->prepare_exec();
+
+      my $chara_soldier = $self->chara_soldier;
+      $chara_soldier->move_point(0);
+      $chara_soldier->occur_move_point_charge_time( $CONFIG->{game}{action_interval_time} );
+      $chara_soldier->occur_action_time( $CONFIG->{game}{action_interval_time} );
+
+    };
+
+    if (my $e = $@) {
+      $self->$_->abort for @file_handlers;
+    }
+    else {
+      $self->$_->commit for @file_handlers;
+    }
+
   }
 
   __PACKAGE__->meta->make_immutable;

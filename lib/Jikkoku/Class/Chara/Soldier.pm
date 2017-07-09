@@ -20,7 +20,7 @@ package Jikkoku::Class::Chara::Soldier {
     $cost;
   };
 
-  sub add_action_time {
+  sub occur_action_time {
     my ($self, $value) = @_;
     Carp::croak 'few argments($value)' if @_ < 2;
     my $soldier_bm = $self->chara->_soldier_battle_map;
@@ -29,9 +29,10 @@ package Jikkoku::Class::Chara::Soldier {
     }
   }
 
-  sub add_move_point_charge_time {
+  sub occur_move_point_charge_time {
     my ($self, $value) = @_;
     Carp::croak 'few argments($value)' if @_ < 2;
+    $value += $self->chara->skills->adjust_soldier_charge_move_point_time($value);
     my $soldier_bm = $self->chara->_soldier_battle_map;
     if ( $soldier_bm->get('move_point_charge_time') < $value ) {
       $soldier_bm->set( move_point_charge_time => $value );
@@ -48,8 +49,7 @@ package Jikkoku::Class::Chara::Soldier {
     my ($self, $charge_time) = @_;
     Carp::croak 'few argments($charge_time)' if @_ < 2;
     $self->chara->_soldier_battle_map->set(move_point => $self->max_move_point);
-    $charge_time += $self->chara->skills->adjust_soldier_charge_move_point_time($charge_time);
-    $self->chara->_soldier_battle_map->set(move_point_charge_time => $charge_time);
+    $self->occur_move_point_charge_time($charge_time);
   }
 
   sub change_formation {
@@ -223,12 +223,14 @@ package Jikkoku::Class::Chara::Soldier {
     $protector_model->save;
   }
 
+  # ailias methods
+
   sub _add_meta_method {
     my $class = shift;
 
     for my $method_name ( qw/
       x y formation_id battle_map_id is_sortie
-      move_point move_point_charge_time action_time change_formation_time
+      move_point_charge_time move_point action_time change_formation_time
     / ) {
       $class->_add_alias_method($method_name, '_soldier_battle_map');
     }

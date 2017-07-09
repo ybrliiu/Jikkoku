@@ -2,7 +2,6 @@ package Jikkoku::Class::Chara {
 
   use Mouse;
   use Jikkoku;
-  use Module::Load;
 
   use Jikkoku::Model::State;
   use Jikkoku::Model::Skill;
@@ -194,11 +193,17 @@ package Jikkoku::Class::Chara {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      Jikkoku::Model::ExtensiveState->new( chara => $self );
+      Jikkoku::Model::ExtensiveState->new(
+        chara         => $self,
+        chara_soldier => $self->soldier,
+      );
     },
   );
 
-  with 'Jikkoku::Class::Role::TextData::Division';
+  with qw(
+    Jikkoku::Class::Role::TextData::Division
+    Jikkoku::Role::Loader
+  );
 
   __PACKAGE__->make_hash_fields;
 
@@ -308,12 +313,12 @@ package Jikkoku::Class::Chara {
 
   sub command_log {
     my ($self, $limit) = @_;
-    Jikkoku::Model::Chara::CommandLog->new($self->id)->get($limit);
+    $self->model('Chara::CommandLog')->new->get( $self->id )->get($limit);
   }
 
   sub battle_log {
     my ($self, $limit) = @_;
-    Jikkoku::Model::Chara::BattleLog->new($self->id)->get($limit);
+    $self->model('Chara::BattleLog')->new->get( $self->id )->get($limit);
   }
 
   sub move_to {
@@ -334,12 +339,12 @@ package Jikkoku::Class::Chara {
     my $meta = $class->meta;
     my @method_names = map { "save_${_}_log" } qw/ command battle /;
     for my $method_name (@method_names) {
-      my $pkg_name = "Jikkoku::Model::Chara::" . ucfirst $method_name =~ s/save_//r;
+      my $pkg_name = "Chara::" . ucfirst $method_name =~ s/save_//r;
       $pkg_name =~ s/_log/Log/;
-      Module::Load::load($pkg_name);
+      my $log_model = $class->model($pkg_name)->new;
       $meta->add_method($method_name => sub {
         my ($self, $str) = @_;
-        $pkg_name->new( $self->id )->add( $str )->save;
+        $log_model->get( $self->id )->add( $str )->save;
       });
     }
   }

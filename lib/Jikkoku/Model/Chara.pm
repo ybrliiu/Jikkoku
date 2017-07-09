@@ -96,6 +96,15 @@ package Jikkoku::Model::Chara::Result {
     Option->new( $self->name_map->{$name} );
   }
 
+  sub get_charactors_by_id_list_with_result {
+    my ($self, $id_list) = @_;
+    Carp::croak 'few arguments($id_list)' if @_ < 2;
+    $self->create_result([ map {
+      my $chara = $self->id_map->{$_};
+      defined $chara ? $chara : ()
+    } @$id_list ]);
+  }
+
   sub get_charactors_by_country_id_with_result {
     my ($self, $country_id) = @_;
     Carp::croak 'few arguments($country_id)' if @_ < 2;
@@ -106,6 +115,12 @@ package Jikkoku::Model::Chara::Result {
     my ($self, $country_id) = @_;
     Carp::croak 'few arguments($country_id)' if @_ < 2;
     $self->create_result([ grep { $country_id != $_->country_id } @{ $self->data } ]);
+  }
+
+  sub get_charactors_by_else_id_with_result {
+    my ($self, $id) = @_;
+    Carp::croak 'few arguments($country_id)' if @_ < 2;
+    $self->create_result([ grep { $_->id != $id } @{ $self->data } ]);
   }
 
   sub get_charactors_by_soldier_bm_id_with_result {

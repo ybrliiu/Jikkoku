@@ -6,7 +6,7 @@ package Jikkoku::Class::State::Stuck {
   use Carp qw( croak );
   use Jikkoku::Util qw( validate_values );
 
-  has 'name'                        => ( is => 'ro', isa => 'Str', default => '足止め' );
+  has 'name'                          => ( is => 'ro', isa => 'Str', default => '足止め' );
   has 'increase_move_cost_ratio'      => ( is => 'rw', isa => 'Num', default => 0.7 );
   has 'increase_giver_contribute_num' => ( is => 'rw', isa => 'Num', default => 0.2 );
   has 'increase_giver_book_power_num' => ( is => 'rw', isa => 'Num', default => 0.003 );

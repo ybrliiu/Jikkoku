@@ -54,6 +54,12 @@ package Jikkoku::Model::ExtensiveStateRecord {
       Carp::croak "invalid arguments (" . (join ', ', @_) .")";
     }
   };
+
+  sub get_extensive_state_records_by_extensive_state_id {
+    my ($self, $state_id) = @_;
+    Carp::croak 'few arguments($state_id)' if @_ < 2;
+    [ grep { $_->state_id eq $state_id } values %{ $self->data } ];
+  }
   
   around get_with_option => sub {
     my ($orig, $self) = (shift, shift);

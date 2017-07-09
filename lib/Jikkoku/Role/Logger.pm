@@ -21,10 +21,15 @@ package Jikkoku::Role::Logger {
 
   around BUILDARGS => sub {
     my ($orig, $class) = (shift, shift);
-    open(my $fh, '<', $class->file_path(@_)) or throw("file open failed", $!);
-    my @log = <$fh>;
-    $fh->close or throw("file close failed", $!);
-    $class->$orig( data => \@log, $class->hook_logger_build_args(@_) );
+    if (ref $_[0] eq 'HASH' || @_ >= 2) {
+      $class->$orig(@_);
+    }
+    else {
+      open(my $fh, '<', $class->file_path(@_)) or throw("file open failed", $!);
+      my @log = <$fh>;
+      $fh->close or throw("file close failed", $!);
+      $class->$orig( data => \@log, $class->hook_logger_build_args(@_) );
+    }
   };
 
   sub hook_logger_build_args {
@@ -70,6 +75,7 @@ package Jikkoku::Role::Logger {
     open(my $fh, '+<', $self->file_path) or throw("file open failed", $!);
     $self->fh( $fh );
     $self->write;
+    $self->fh(undef);
     $fh->close or throw("file close failed", $!);
   }
 

@@ -10,13 +10,24 @@ package Jikkoku::Model::ExtensiveState {
   sub _get_extensive_state_modules {
     my $dir = './lib/Jikkoku/Class/ExtensiveState';
     opendir(my $dh, $dir);
-    my @state_list = grep { $_ ne 'ExtensiveState' } map { $_ =~ /(\.pm$)/p ? ${^PREMATCH} : () } readdir $dh;
+    my @state_list = grep { $_ ne 'ExtensiveState' && $_ ne 'BattleTargetOverriderResult' }
+                     map { $_ =~ /(\.pm$)/p ? ${^PREMATCH} : () } readdir $dh;
     close $dh;
     Module::Load::load("Jikkoku::Class::ExtensiveState::$_") for @state_list;
     @state_list;
   }
 
-  has 'chara'  => ( is => 'ro', isa => 'Jikkoku::Class::Chara', weak_ref => 1, required => 1 );
+  has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara', weak_ref => 1, required => 1 );
+
+  has 'chara_soldier' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Class::Chara::Soldier',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->chara->soldier;
+    },
+  );
 
   has 'record_model' => (
     is      => 'ro',
@@ -54,9 +65,10 @@ package Jikkoku::Model::ExtensiveState {
     my ($self, $id) = @_;
     Carp::croak 'few arguments($id)' if @_ < 2;
     "Jikkoku::Class::ExtensiveState::${id}"->new(
-      chara        => $self->chara,
-      charactors   => $self->charactors,
-      record_model => $self->record_model,
+      chara         => $self->chara,
+      chara_soldier => $self->chara_soldier,
+      charactors    => $self->charactors,
+      record_model  => $self->record_model,
     );
   }
 
@@ -65,9 +77,10 @@ package Jikkoku::Model::ExtensiveState {
     my $data = [
       map {
         "Jikkoku::Class::ExtensiveState::$_"->new(
-          chara        => $self->chara,
-          charactors   => $self->charactors,
-          record_model => $self->record_model,
+          chara         => $self->chara,
+          chara_soldier => $self->chara_soldier,
+          charactors    => $self->charactors,
+          record_model  => $self->record_model,
         );
       } @EXTENSIVE_STATE_MODULES
     ];
@@ -102,16 +115,25 @@ package Jikkoku::Model::ExtensiveState::Result {
     Option->new( $self->id_map->{$id} );
   }
 
-  sub get_receive_effect_states {
+  sub get_receive_effect_states_with_result {
     my ($self, $time) = @_;
     $time //= time;
-    [ grep { $_->is_receive_effect($time) } @{ $self->data } ];
+    $self->create_result([ grep { $_->is_receive_effect($time) } @{ $self->data } ]);
   }
 
-  sub get_give_effect_states {
+  sub get_give_effect_states_with_result {
     my ($self, $time) = @_;
     $time //= time;
-    [ grep { $_->is_give_effect($time) } @{ $self->data } ];
+    $self->create_result([ grep { $_->is_give_effect($time) } @{ $self->data } ]);
+  }
+
+  sub override_battle_target {
+    my ($self, $time) = @_;
+    $time //= time;
+    my @overrider = map  { $_->override_battle_target }
+                    grep { $_->DOES('Jikkoku::Service::BattleCommand::Battle::TargetOverrider') }
+                    @{ $self->data };
+    $overrider[0] // ();
   }
 
   __PACKAGE__->meta->make_immutable;

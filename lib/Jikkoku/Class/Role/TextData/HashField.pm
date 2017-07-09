@@ -54,4 +54,11 @@ package Jikkoku::Class::Role::TextData::HashField {
 
 }
 
+package Jikkoku::Class::Role::TextData::SetHashFieldException {
+
+  use Jikkoku;
+  use parent 'Jikkoku::Exception';
+
+}
+
 1;
