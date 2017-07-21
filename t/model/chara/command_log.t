@@ -6,14 +6,21 @@ use Test::Exception;
 my $CLASS = 'Jikkoku::Model::Chara::CommandLog';
 use_ok $CLASS;
 
-ok( my $model = $CLASS->new('ybrliiu') );
-ok( my $log = $model->get(100) );
+ok( my $model = $CLASS->new );
+ok( my $logger = $model->get('ybrliiu') );
+ok( my $log = $logger->get(100) );
 is @$log, 100;
-ok $model->add("[テストログ]");
-ok $model->save;
+ok $logger->add("[テストログ]");
+ok $logger->save;
 
-ok $model->refetch;
-ok ( $log = $model->get(10) );
+ok $logger = $model->get('ybrliiu');
+ok ( $log = $logger->get(10) );
 like $log->[0], qr/テストログ/;
+
+subtest 'create - delete' => sub {
+  ok $model->create('test_user');
+  ok(my $logger = $model->get('test_user'));
+  ok $model->delete('test_user');
+};
 
 done_testing;

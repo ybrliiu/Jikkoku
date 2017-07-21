@@ -8,7 +8,7 @@ package Jikkoku::Class::Weapon::Attr::Cavalry {
   with qw( Jikkoku::Class::Weapon::Attr::Attr );
 
   sub _build_advantageous_attrs {
-    [qw/ 歩 /];
+    ['歩'];
   }
 
   __PACKAGE__->meta->make_immutable;
