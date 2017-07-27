@@ -18,14 +18,15 @@ package Jikkoku::Class::Weapon::Attr::Attr {
   has 'is_attr_power_increase_when_soldier_has_same_attr'
     => ( is => 'ro', isa => 'Bool', default => 0 );
 
+  has 'advantageous_attrs' => (
+    is      => 'ro',
+    isa     => 'ArrayRef',
+    lazy    => 1,
+    builder => '_build_advantageous_attrs',
+  );
+
   # attributes
   requires qw( name );
-
-  sub is_attr_power_increase {
-    my $self = shift;
-    $self->is_attr_power_increase_when_advantageous
-      || $self->is_attr_power_increase_when_soldier_has_same_attr;
-  }
 
   # methods
   requires qw( _build_advantageous_attrs );

@@ -3,45 +3,58 @@ package Jikkoku::Class::Chara::Weapon {
   use Mouse;
   use Jikkoku;
 
-# service で使う専用のクラスにしても良いかも
-
   has 'chara' => (
     is       => 'ro',
     isa      => 'Jikkoku::Class::Chara',
+    weak_ref => 1,
     required => 1,
-    handles => +{
-      name       => 'weapon_name',
-      power      => 'weapon_power',
-      attr       => 'weapon_attr',
-      attr_power => 'weapon_attr_power',
+  );
+
+  has 'attr' => (
+    is      => 'ro',
+    does    => 'Jikkoku::Class::Weapon::Attr::Attr',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->model('Weapon::Attr')->new->get( $self->chara->weapon_attr );
     },
   );
 
-  has 'chara_soldier' => ( is => 'ro', isa => 'Jikkoku::Class::Chara::Soldier', required => 1 );
+  with qw( Jikkoku::Role::Loader );
 
-  has 'target_soldier' => ( is => 'ro', isa => 'Jikkoku::Class::Chara::Soldier', required => 1 );
-
-  {
-
-   # key => arrayref で有利属性を並べ連ねる
-
-    my %advantage_attrs = (
-      '歩'   => '弓',
-      '弓'   => '騎',
-      '騎'   => '歩',
-      '水'   => '機',
-      '機'   => '',
-      '弓騎' => [],
-    );
-
-    sub advantage_attr {
-      my $self = shift;
-      $self->target_soldier->attr =~ $advantage_attrs{ $self->chara_soldier->attr };
+  sub _add_alias_method {
+    my $class = shift;
+    for my $method_name (qw/ name power attr_power /) {
+      my $to = "weapon_$method_name";
+      $class->meta->add_method($method_name => sub {
+        my $self = shift;
+        if (@_) {
+          my $value = shift;
+          $self->chara->$to($value);
+        }
+        $self->chara->$to;
+      });
     }
   }
+
+  sub _add_add_method {
+    my $class = shift;
+    for my $orig_name (qw/ power attr_power /) {
+      my $method_name = "add_$orig_name";
+      my $attr_name   = "weapon_$method_name";
+      $class->meta->add_method($method_name => sub {
+        my ($self, $value) = @_;
+        Carp::croak 'few arguments($value)' if @_ < 2;
+        $self->chara->$attr_name( $self->chara->$attr_name + $value );
+      });
+    }
+  }
+
+  __PACKAGE__->_add_alias_method;
 
   __PACKAGE__->meta->make_immutable;
 
 }
 
 1;
+
