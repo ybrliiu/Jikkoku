@@ -38,7 +38,7 @@ package Jikkoku::Class::Role::TextData::HashField {
   sub output {
     my $self = shift;
     no warnings 'uninitialized';
-    join( ',', map { $self->data->{$_} } @{ $self->keys } ) . ',';
+    join ',', map { $self->data->{$_} } @{ $self->keys };
   }
 
   sub inflate_textdata {

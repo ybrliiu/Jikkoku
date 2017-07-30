@@ -47,8 +47,8 @@ is $player->buff->get('stuck'), 100;
 is $player->field_buff('stuck'), 100;
 dies_ok { $player->buff->set(kintoun => -100) };
 ok $player->debuff->set(attack_up => 'トラウマ');
-is ${ $player->output }, "ybrliiu<>100,200,,<>,,トラウマ,<>1<>password_string<>\n";
+is ${ $player->output }, "ybrliiu<>100,200,<>,,トラウマ<>1<>password_string<>\n";
 ok $player->abort;
-is ${ $player->output }, "ybrliiu<>100,200,,<>,,,<>1<>password_string<>\n";
+is ${ $player->output }, "ybrliiu<>100,200,<>,,<>1<>password_string<>\n";
 
 done_testing;

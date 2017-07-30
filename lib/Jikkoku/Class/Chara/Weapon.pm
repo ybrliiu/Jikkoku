@@ -51,7 +51,7 @@ package Jikkoku::Class::Chara::Weapon {
   }
 
   __PACKAGE__->_add_alias_method;
-
+  __PACKAGE__->_add_add_method;
   __PACKAGE__->meta->make_immutable;
 
 }

@@ -6,7 +6,10 @@ package Jikkoku::Class::Chara::ExtChara {
   use Jikkoku::Class::Chara;
 
   {
-    my @delegations = map { $_->name } Jikkoku::Class::Chara->get_column_attributes;
+    my @delegations = (
+      ( map { $_->name } Jikkoku::Class::Chara->get_column_attributes ),
+      qw/ commit lock save /,
+    );
 
     has 'chara' => (
       is       => 'ro',
@@ -130,7 +133,40 @@ package Jikkoku::Class::Chara::ExtChara {
         chara         => $self->chara,
         chara_soldier => $self->soldier,
         town_model    => $self->town_model,
-      })->judge();
+      })->is_invasion();
+    },
+  );
+
+  has 'states' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Model::State',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->load_model('State')->new( chara => $self->chara )
+    },
+  );
+
+  has 'skills' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Model::Skill',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->load_model('Skill')->new( chara => $self->chara )
+    },
+  );
+
+  has 'extensive_states' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Model::ExtensiveState',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->load_model('ExtensiveState')->new(
+        chara         => $self->chara,
+        chara_soldier => $self->soldier,
+      );
     },
   );
 

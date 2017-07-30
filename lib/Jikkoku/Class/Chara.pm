@@ -282,10 +282,6 @@ package Jikkoku::Class::Chara {
     $self->pass eq $pass;
   }
 
-  sub is_authed {
-    $_[0]->is_authed;
-  }
-
   sub is_neutral {
     my $self = shift;
     $self->country_id == 0;
