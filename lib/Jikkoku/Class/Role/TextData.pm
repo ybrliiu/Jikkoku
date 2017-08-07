@@ -26,7 +26,8 @@ package Jikkoku::Class::Role::TextData {
 
   sub _buildargs_hash {
     my ($class, $args) = @_;
-    my @hash_fields = grep { $_->can('keys') } $class->get_column_attributes;
+    my @hash_fields = grep { $_->isa('Jikkoku::Class::Role::TextData::Attribute::HashField') }
+      $class->get_column_attributes;
     for my $attr (@hash_fields) {
       $args->{$attr->name} = Jikkoku::Class::Role::TextData::HashField->new({
         keys       => $attr->keys,
@@ -144,7 +145,8 @@ package Jikkoku::Class::Role::TextData {
 
   sub make_hash_fields {
     my $class = shift;
-    my @hash_fields = grep { $_->can('keys') } $class->get_column_attributes;
+    my @hash_fields = grep { $_->isa('Jikkoku::Class::Role::TextData::Attribute::HashField') }
+      $class->get_column_attributes;
     for my $attr (@hash_fields) {
       my $attr_name = $attr->name;
       $class->meta->add_method("field_${attr_name}" => sub {

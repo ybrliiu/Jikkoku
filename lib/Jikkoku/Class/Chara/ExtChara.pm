@@ -6,8 +6,15 @@ package Jikkoku::Class::Chara::ExtChara {
   use Jikkoku::Class::Chara;
 
   {
+    my @chara_attributes = Jikkoku::Class::Chara->get_column_attributes;
+
     my @delegations = (
-      ( map { $_->name } Jikkoku::Class::Chara->get_column_attributes ),
+      ( map { $_->name } @chara_attributes ),
+      # alias methods
+      (
+        map  { substr($_->name, 1) }
+        grep { $_->isa('Jikkoku::Class::Role::TextData::Attribute::HashField') } @chara_attributes
+      ),
       qw/ commit lock save /,
     );
 

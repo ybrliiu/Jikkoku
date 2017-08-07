@@ -15,6 +15,7 @@ is $ext_chara->soldier->name, '雑兵';
 is $ext_chara->formation->name, '陣形なし';
 is $ext_chara->weapon->name, '針金';
 ok !$ext_chara->is_invasion;
+lives_ok { $ext_chara->morale_data('morale') };
 
 subtest 'file handler' => sub {
   my $orig = $ext_chara->soldier->num;

@@ -235,6 +235,10 @@ package Jikkoku::Class::Chara::Soldier {
       $class->_add_alias_method($method_name, '_soldier_battle_map');
     }
 
+    for my $method_name (qw/ morale morale_max /) {
+      $class->_add_alias_method($method_name, '_morale_data');
+    }
+
   }
 
   sub _add_alias_method {
