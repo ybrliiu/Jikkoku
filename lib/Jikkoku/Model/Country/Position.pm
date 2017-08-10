@@ -29,6 +29,16 @@ package Jikkoku::Model::Country::Position {
     $self->data->{$id} // Carp::confess "no such id data ($id)";
   }
 
+  sub get_all {
+    my $self = shift;
+    [ values %{ $self->data } ];
+  }
+
+  sub get_headquarters {
+    my $self = shift;
+    [ grep { $_->is_headquarters } values %{ $self->data } ];
+  }
+
   __PACKAGE__->meta->make_immutable;
 
 }

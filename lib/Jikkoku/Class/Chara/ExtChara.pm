@@ -189,6 +189,14 @@ package Jikkoku::Class::Chara::ExtChara {
     -excludes => [qw/ class model service /],
   };
 
+  sub attack_power_orig {
+    my $self = shift;
+  }
+
+  sub defence_power_orig {
+    my $self = shift;
+  }
+
   __PACKAGE__->_generate_save_log_method;
 
   sub _generate_save_log_method {

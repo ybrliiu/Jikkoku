@@ -40,7 +40,7 @@ ok(my $model = $CLASS->new);
   };
 
   subtest 'is_chara_has_position' => sub {
-    is $country->is_chara_has_position( $country->king_id ), '君主';
+    ok $country->is_chara_has_position( $country->king_id );
     is $country->position_name_of_chara( $country->king ), '君主';
   };
 

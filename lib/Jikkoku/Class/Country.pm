@@ -7,6 +7,7 @@ package Jikkoku::Class::Country {
   use List::Util qw( first );
   use Jikkoku::Model::Chara;
   use Jikkoku::Model::Config;
+  use Jikkoku::Model::Country::Position;
   use Jikkoku::Class::Role::TextData;
 
   my $CONFIG = Jikkoku::Model::Config->get;
@@ -32,25 +33,17 @@ package Jikkoku::Class::Country {
 
   with 'Jikkoku::Class::Role::TextData';
 
-  my @HEADQUARTERS   = qw( king strategist premier );
-  my @POSITIONS_ID   = ('king_id', @{ __PACKAGE__->meta->get_attribute('position')->keys });
-  my @POSITIONS      = map { $_ =~ s/_id//; $_; } @POSITIONS_ID;
-  my @POSITIONS_NAME = qw(
-    君主
-    宰相
-    軍師
-    大将軍
-    騎馬将軍
-    護衛将軍
-    弓将軍
-    将軍
-  );
-  my %POSITIONS_NAME = map { $POSITIONS[$_] => $POSITIONS_NAME[$_] } 0 .. $#POSITIONS;
+  my $POSITION_MODEL  = Jikkoku::Model::Country::Position->new;
+  my @HEADQUARTERS_ID = map { $_->id } @{ $POSITION_MODEL->get_headquarters };
+  my @POSITIONS       = @{ $POSITION_MODEL->get_all };
+  my @POSITIONS_ID    = map { $_->id } @POSITIONS;
+  my @POSITIONS_NAME  = map { $_->name } @POSITIONS;
+  my %POSITIONS_NAME  = map { $_->id => $_->name } @POSITIONS;
 
   __PACKAGE__->_generate_positions_method();
 
   sub _generate_positions_method {
-    for my $position (@POSITIONS) {
+    for my $position (@POSITIONS_ID) {
       __PACKAGE__->meta->add_method($position => sub {
         my $self = shift;
         return $self->{$position} if exists $self->{$position};
@@ -71,9 +64,9 @@ package Jikkoku::Class::Country {
     my ($class, $position, $attribute) = @_;
     my $method_name = "${position}_${attribute}";
     $class->meta->add_method($method_name => sub {
-      my ($self) = @_;
+      my $self = shift;
       return $self->{$method_name} if exists $self->{$method_name};
-      $self->{$method_name} = defined $self->$position ? $self->$position->$attribute : undef;
+      $self->{$method_name} = defined $self->$position ? $self->$position->$attribute : '';
     });
   }
 
@@ -87,28 +80,25 @@ package Jikkoku::Class::Country {
     $CONFIG->{game}{nowar_month} - $self->months_after_establish;
   }
 
+  # will remove
   sub is_headquarters_exist {
-    my ($self) = @_;
-    grep { defined $self->$_ } @HEADQUARTERS;
+    my $self = shift;
+    grep { defined $self->$_ } @HEADQUARTERS_ID;
   }
 
   sub is_chara_headquarters {
     my ($self, $chara_id) = @_;
-    grep {
-      if (defined $self->$_) {
-        $self->$_->id eq $chara_id;
-      }
-    } @HEADQUARTERS;
+    Carp::croak 'few arguments($chara_id)' if @_ < 2;
+    grep { $self->$_ eq $chara_id } @HEADQUARTERS_ID;
   }
 
   sub is_chara_has_position {
     my ($self, $chara_id) = @_;
-    my $position_name = first {
-      if (defined $self->$_) {
-        $self->$_->id eq $chara_id;
-      }
+    Carp::croak 'few arguments($chara_id)' if @_ < 2;
+    grep {
+      my $attr = $_->id . '_id';
+      $self->$attr eq $chara_id
     } @POSITIONS;
-    defined $position_name ? $POSITIONS_NAME{$position_name} : undef;
   }
 
   sub is_neutral {
@@ -119,12 +109,11 @@ package Jikkoku::Class::Country {
   sub position_name_of_chara {
     my ($self, $chara) = @_;
     Carp::croak 'few arguments($chara)' if @_ < 2;
-    my $position_name = first {
-      if (defined $self->$_) {
-        $self->$_->id eq $chara->id;
-      }
+    my @positions = grep {
+      my $attr = $_->id . '_id';
+      $self->$attr eq $chara->id;
     } @POSITIONS;
-    defined $position_name ? $POSITIONS_NAME{$position_name} : '';
+    @positions == 0 ? '' : $positions[0]->name;
   }
 
   sub total_salary {

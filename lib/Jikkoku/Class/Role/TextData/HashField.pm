@@ -47,7 +47,7 @@ package Jikkoku::Class::Role::TextData::HashField {
     # 空データがあった時の警告が鬱陶しいので消す
     no warnings 'uninitialized';
     my @subdata = split /,/, $args->{textdata};
-    +{ map { $args->{keys}->[$_] => $subdata[$_] } 0 .. @{ $args->{keys} } };
+    +{ map { $args->{keys}->[$_] => $subdata[$_] // '' } 0 .. @{ $args->{keys} } };
   }
 
   __PACKAGE__->meta->make_immutable;
