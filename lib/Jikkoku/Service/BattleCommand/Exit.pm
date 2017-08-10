@@ -38,8 +38,8 @@ package Jikkoku::Service::BattleCommand::Exit {
       my ($elapsed_year, $interval_time) = ($self->now_game_date->elapsed_year, $CONFIG->{game}{action_interval_time});
       my $set_move_time = $before_town->stop_around_move_time( $elapsed_year, $interval_time );
       my $set_action_time = $before_town->stop_around_action_time( $elapsed_year, $interval_time );
-      $self->chara_soldier->occur_action_time( $self->time + $set_action_time );
-      $self->chara_soldier->occur_move_point_charge_time( $self->time + $set_move_time );
+      $self->chara->soldier->occur_action_time( $self->time + $set_action_time );
+      $self->chara->soldier->occur_move_point_charge_time( $self->time + $set_move_time );
     }
   };
 

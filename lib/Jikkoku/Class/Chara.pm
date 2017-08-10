@@ -248,11 +248,6 @@ package Jikkoku::Class::Chara {
     $protector_model->save;
   }
 
-  sub soldier_can_move {
-    my ($self, $move_node) = @_;
-    $self->soldier_battle_map('move_point') - $move_node->cost($self) >= 0;
-  }
-
   sub recover_morale {
     my ($self) = @_;
     $self->morale_data(morale => $self->morale_data('morale') + RECOVER_MORALE);

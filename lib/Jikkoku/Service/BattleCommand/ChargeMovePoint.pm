@@ -16,7 +16,7 @@ package Jikkoku::Service::BattleCommand::ChargeMovePoint {
 
   sub ensure_can_exec {
     my $self = shift;
-    my $sub  = $self->chara->soldier_battle_map('move_point_charge_time') - $self->time;
+    my $sub  = $self->chara->soldier->move_point_charge_time - $self->time;
     if ($sub > 0) {
       Jikkoku::Service::Role::BattleActionException->throw("あと $sub 秒移動Pは補充できません。");
     }
@@ -28,7 +28,7 @@ package Jikkoku::Service::BattleCommand::ChargeMovePoint {
     
     $chara->lock;
     eval {
-      $self->chara_soldier->charge_move_point( $self->time + $self->move_point_charge_time );
+      $self->chara->soldier->charge_move_point( $self->time + $self->move_point_charge_time );
     };
     if (my $e = $@) {
       $chara->abort;

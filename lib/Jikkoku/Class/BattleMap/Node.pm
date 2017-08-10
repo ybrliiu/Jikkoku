@@ -102,7 +102,7 @@ package Jikkoku::Class::BattleMap::Node {
       WOODS        ,=> '林',
       ROCKY_FIELD  ,=> '岩場',
       DESERT       ,=> '砂漠',
-      SNOWY_FIELD  ,=> '雪原',
+      SNOWY_FIELD  ,=> '<span class="black">雪原</span>',
       ICE_FIELD    ,=> '氷原',
       ENTRY        ,=> '関所(入)',
       EXIT         ,=> '関所(出)',

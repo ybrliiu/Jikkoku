@@ -30,7 +30,7 @@ package Jikkoku::Service::BattleCommand::PassCheckPoint {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->battle_map_model->get( $self->chara_soldier->battle_map_id );
+      $self->battle_map_model->get( $self->chara->soldier->battle_map_id );
     },
   );
 
@@ -112,7 +112,7 @@ package Jikkoku::Service::BattleCommand::PassCheckPoint {
     }
     $self->entry_check_point( $entry_node->check_point );
 
-    unless ( $self->chara_soldier->distance_from_point($entry_node) <= 1 ) {
+    unless ( $self->chara->soldier->distance_from_point($entry_node) <= 1 ) {
       Jikkoku::Service::Role::BattleActionException
         ->throw('関所の上、または隣接するマスにいません。');
     }
@@ -120,7 +120,7 @@ package Jikkoku::Service::BattleCommand::PassCheckPoint {
     my $has_enemies_on_the_position = $self->chara_model
       ->get_all_with_result
       ->get_not_applicable_charactors_by_country_id_with_result( $self->chara->country_id )
-      ->get_charactors_by_soldier_bm_id_with_result( $self->chara_soldier->battle_map_id )
+      ->get_charactors_by_soldier_bm_id_with_result( $self->chara->soldier->battle_map_id )
       ->get_charactors_by_soldier_point_with_result( $entry_node );
     if (@$has_enemies_on_the_position) {
       Jikkoku::Service::Role::BattleActionException->throw('関所の上に敵がいます。');
@@ -145,7 +145,7 @@ package Jikkoku::Service::BattleCommand::PassCheckPoint {
     $chara->lock;
 
     eval {
-      my $soldier                 = $self->chara_soldier;
+      my $soldier                 = $self->chara->soldier;
       my $target_bm               = $self->battle_map_model->get( $self->entry_check_point->target_bm_id );
       my $destination_check_point = $target_bm->get_check_point_by_target_bm_id( $soldier->battle_map_id );
       $soldier->move_battle_map( $target_bm->id, $destination_check_point );

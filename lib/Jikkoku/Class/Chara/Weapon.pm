@@ -37,21 +37,7 @@ package Jikkoku::Class::Chara::Weapon {
     }
   }
 
-  sub _add_add_method {
-    my $class = shift;
-    for my $orig_name (qw/ power attr_power /) {
-      my $method_name = "add_$orig_name";
-      my $attr_name   = "weapon_$method_name";
-      $class->meta->add_method($method_name => sub {
-        my ($self, $value) = @_;
-        Carp::croak 'few arguments($value)' if @_ < 2;
-        $self->chara->$attr_name( $self->chara->$attr_name + $value );
-      });
-    }
-  }
-
   __PACKAGE__->_add_alias_method;
-  __PACKAGE__->_add_add_method;
   __PACKAGE__->meta->make_immutable;
 
 }

@@ -24,16 +24,6 @@ package Jikkoku::Service::BattleCommand::Move {
     },
   );
 
-  has 'town_model' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Model::Town',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->model('Town')->new;
-    },
-  );
-
   has 'battle_map_model' => (
     is      => 'ro',
     isa     => 'Jikkoku::Model::BattleMap',
@@ -48,11 +38,11 @@ package Jikkoku::Service::BattleCommand::Move {
 
   sub _build_destination_node {
     my $self = shift;
-    my $bm_id     = $self->chara_soldier->battle_map_id;
+    my $bm_id     = $self->chara->soldier->battle_map_id;
     my $bm        = $self->battle_map_model->get($bm_id);
     my $getter    = $self->service('BattleMap::DestinationNodeGetter')->new({
       direction  => $self->direction,
-      chara      => $self->chara,
+      chara      => $self->chara->chara,
       battle_map => $bm,
       charactors => $self->chara_model->get_all_with_result,
     });
@@ -67,7 +57,7 @@ package Jikkoku::Service::BattleCommand::Move {
 
   sub exec {
     my $self = shift;
-    my ($chara, $soldier) = ($self->chara, $self->chara_soldier);
+    my ($chara, $soldier) = ($self->chara, $self->chara->soldier);
 
     $chara->lock;
 
@@ -92,7 +82,7 @@ package Jikkoku::Service::BattleCommand::Move {
 
   sub _move_to_poison {
     my $self = shift;
-    my $soldier = $self->chara_soldier;
+    my $soldier = $self->chara->soldier;
     if ( $self->destination_node->terrain == $self->destination_node->POISON ) {
       my $minus = int( $soldier->num * $self->poison_die_ratio );
       $soldier->num( $soldier->num - $minus );

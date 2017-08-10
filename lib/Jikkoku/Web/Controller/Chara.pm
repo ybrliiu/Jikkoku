@@ -20,7 +20,7 @@ package Jikkoku::Web::Controller::Chara {
     }
     $battle_map->set_charactors($self->chara_model, $self->chara);
     $battle_map->set_can_move({
-      chara       => $self->chara,
+      chara       => $self->chara->chara,
       chara_model => $self->chara_model,
       town_model  => $town_model,
     });
@@ -30,11 +30,10 @@ package Jikkoku::Web::Controller::Chara {
       ->get_with_option( $self->chara->country_id )
       ->get_or_else( $country_model->neutral );
 
-    my $chara_soldier         = $self->chara->soldier;
     my $formation_model       = $self->model('Formation')->new;
-    my $formation             = $formation_model->get( $chara_soldier->formation_id );
+    my $formation             = $formation_model->get( $soldier->formation_id );
     my $available_formations  = $formation_model->get_available_formations( $self->chara );
-    my $adjacent_check_points = $battle_map->get_adjacent_check_points($chara_soldier);
+    my $adjacent_check_points = $battle_map->get_adjacent_check_points( $soldier );
 
     $self->render('chara/battle_map.pl', {
       time                  => time,

@@ -3,11 +3,8 @@ package Jikkoku::Service::Skill::Skill {
   use Mouse::Role;
   use Jikkoku;
 
-  has 'chara' => (
-    is       => 'ro',
-    isa      => 'Jikkoku::Class::Chara',
-    required => 1,
-  );
+  # attr
+  requires 'chara';
 
   has 'skill' => (
     is      => 'ro',

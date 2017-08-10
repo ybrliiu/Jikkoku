@@ -21,8 +21,8 @@ package Jikkoku::Service::Skill::Role::UsedInBattleMap::GiveState {
     $target->lock;
     my ($is_success, $effect_time, $stuck);
     eval {
-      $chara->morale_data(morale => $chara->morale_data('morale') - $skill->consume_morale);
-      $self->chara_soldier->action_time( $self->time + $skill->action_interval_time );
+      $chara->soldier->morale( $chara->soldier->morale - $skill->consume_morale );
+      $chara->soldier->action_time( $self->time + $skill->action_interval_time );
       my $ability_sum = $skill->depend_abilities_sum;
       $is_success = $self->determine_whether_succeed($ability_sum);
       if ($is_success) {
@@ -55,7 +55,7 @@ package Jikkoku::Service::Skill::Role::UsedInBattleMap::GiveState {
         my $target_log = "${name_tag}@{[ $chara->name ]}に@{[ $skill->name ]}させられました。${description_log}";
         $target->save_battle_log($target_log);
         $target->save_command_log($target_log);
-        my $bm = $self->battle_map_model->get( $chara->soldier_battle_map('battle_map_id') );
+        my $bm = $self->battle_map_model->get( $chara->soldier->battle_map_id );
         $self->map_log_model->add("$name_tag@{[ $target->name ]}は@{[ $chara->name ]}に@{[ $skill->name ]}させられました。(@{[ $bm->name ]})")->save;
       } else {
         my $chara_log = "$name_tag@{[ $target->name ]}を@{[ $skill->name ]}させようとしましたが失敗しました。";

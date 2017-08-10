@@ -6,6 +6,7 @@ use Test::Name::FromLine;
 use Jikkoku::Model::Config;
 use Jikkoku::Model::Chara;
 use Jikkoku::Model::BattleMap;
+use Jikkoku::Class::Chara::ExtChara;
 
 my $CLASS = 'Jikkoku::Service::BattleCommand::Exit';
 use_ok $CLASS;
@@ -16,7 +17,7 @@ local $game_config->{update_start_hour} = 0;
 local $game_config->{update_end_hour}   = 24;
 
 my $chara_model = Jikkoku::Model::Chara->new;
-my $chara       = $chara_model->get_with_option('ybrliiu')->get;
+my $chara       = Jikkoku::Class::Chara::ExtChara->new(chara => $chara_model->get_with_option('ybrliiu')->get);
 
 my $battle_map_model = Jikkoku::Model::BattleMap->new;
 

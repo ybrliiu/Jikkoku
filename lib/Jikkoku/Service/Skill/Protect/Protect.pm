@@ -44,7 +44,7 @@ package Jikkoku::Service::Skill::Protect::Protect {
     # 暫定制限
     my $enemies = $self->chara_model->get_all_with_result
       ->get_not_applicable_charactors_by_country_id_with_result( $self->chara->country_id )
-      ->get_charactors_by_soldier_bm_id_with_result( $self->chara_soldier->battle_map_id );
+      ->get_charactors_by_soldier_bm_id_with_result( $self->chara->soldier->battle_map_id );
     unless (@$enemies) {
       Jikkoku::Service::Role::BattleActionException
         ->throw($self->skill->name . "は敵が同じBM上にいる時にしか使用できません！");
@@ -60,14 +60,14 @@ package Jikkoku::Service::Skill::Protect::Protect {
     $extensive_state_record_model->lock;
     my $is_success;
     eval {
-      $chara->morale_data( morale => $chara->morale_data('morale') - $skill->consume_morale );
+      $chara->soldier->morale( $chara->soldier->morale - $skill->consume_morale );
       $chara->contribute( $chara->contribute + $skill->get_contribute );
       $chara->interval_time( protect => $self->time + $skill->interval_time );
       $is_success = $self->determine_whether_succeed;
       if ($is_success) {
         my $extensive_state_model = $self->model('ExtensiveState')->new({
-          chara         => $chara,
-          chara_soldier => $self->chara_soldier,
+          chara         => $chara->chara,
+          chara_soldier => $chara->soldier,
           record_model  => $extensive_state_record_model,
         });
         my $state = $extensive_state_model->get($skill->id);
@@ -78,11 +78,7 @@ package Jikkoku::Service::Skill::Protect::Protect {
     if (my $e = $@) {
       $chara->abort;
       $extensive_state_record_model->abort;
-      if ( Jikkoku::Exception->caught($e) ) {
-        $e->rethrow;
-      } else {
-        die $e;
-      }
+      Jikkoku::Exception->caught($e) ? $e->rethrow : die($e);
     } else {
       $chara->commit;
       $extensive_state_record_model->commit;
@@ -93,7 +89,7 @@ package Jikkoku::Service::Skill::Protect::Protect {
           = qq{${log_base}士気-<span class="red">@{[ $skill->consume_morale ]}</span> 貢献値+<span class="red">@{[ $skill->get_contribute ]}</span>};
         $chara->save_command_log( $chara_log );
         $chara->save_battle_log( $chara_log );
-        my $bm = $self->battle_map_model->get( $chara->soldier_battle_map('battle_map_id') );
+        my $bm = $self->battle_map_model->get( $chara->soldier->battle_map_id );
         $self->map_log_model->add( $log_base . '(' . $bm->name . ')' )->save;
       } else {
         $chara->save_battle_log("$name_tagを行おうとしましたが失敗しました。");

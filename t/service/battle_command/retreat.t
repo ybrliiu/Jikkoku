@@ -6,6 +6,7 @@ use Test::Name::FromLine;
 use Jikkoku::Model::Chara;
 use Jikkoku::Model::Town;
 use Jikkoku::Model::BattleMap;
+use Jikkoku::Class::Chara::ExtChara;
 
 my $CLASS = 'Jikkoku::Service::BattleCommand::Retreat';
 use_ok $CLASS;
@@ -19,7 +20,7 @@ my $c_m = Jikkoku::Model::Chara->new;
 my $battle_map_model = Jikkoku::Model::BattleMap->new;
 my $town_model = Jikkoku::Model::Town->new;
 
-my $chara = $c_m->get('ybrliiu');
+my $chara = Jikkoku::Class::Chara::ExtChara->new(chara => $c_m->get('ybrliiu'));
 
 subtest '城地形の上で自国都市に撤退' => sub {
   ok( my $retreat = $CLASS->new({chara => $chara}) );

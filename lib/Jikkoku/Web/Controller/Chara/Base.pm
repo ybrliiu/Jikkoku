@@ -9,9 +9,10 @@ package Jikkoku::Web::Controller::Chara::Base {
   use Jikkoku::Util qw( validate_values );
   use Jikkoku::Template;
 
-  has 'chara'       => ( is => 'rw', isa => 'Jikkoku::Class::Chara', predicate => 'has_chara' );
+  has 'chara'       => ( is => 'rw', isa => 'Jikkoku::Class::Chara::ExtChara', lazy_build => 1 );
   has 'return_url'  => ( is => 'ro', isa => 'Str', default => sub { static_file 'status.cgi' } );
   has 'return_mode' => ( is => 'ro', isa => 'Str', default => 'STATUS' );
+
   has 'chara_model' => (
     is      => 'ro',
     isa     => 'Jikkoku::Model::Chara',
@@ -22,26 +23,28 @@ package Jikkoku::Web::Controller::Chara::Base {
     },
   );
 
-  sub BUILD {
+  sub _build_chara {
     my $self = shift;
-    $self->auth;
-  }
-
-  sub auth {
-    my $self = shift;
+    my $id = $self->param('id');
+    $self->SUPER::render_error("IDを入力してください。") unless defined $id;
     $self->chara_model
-      ->get_with_option( $self->param('id') )
+      ->get_with_option($id)
       ->match(
         Some => sub {
           my $chara = shift;
           $self->SUPER::render_error("ID, もしくはパスワードが間違っています。")
             unless $chara->check_pass( $self->param('pass') );
-          $self->chara( $chara );
+          $self->class('Chara::ExtChara')->new(chara => $chara);
         },
         None => sub {
           $self->SUPER::render_error("ID, もしくはパスワードが間違っています。");
         },
       );
+  }
+
+  sub BUILD {
+    my $self = shift;
+    $self->chara;
   }
 
   override hook_before_render => sub {

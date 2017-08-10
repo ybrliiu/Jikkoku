@@ -15,93 +15,9 @@ package Jikkoku::Service::BattleCommand::Battle {
 
   has 'target' => (
     is      => 'ro',
-    isa     => 'Jikkoku::Class::Chara',
+    isa     => 'Jikkoku::Class::Chara::ExtChara',
     lazy    => 1,
     builder => '_build_target',
-  );
-
-  has 'target_soldier' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Class::Chara::Soldier',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->target->soldier;
-    },
-  );
-
-  has 'is_target_invasion' => (
-    is      => 'ro',
-    isa     => 'Bool',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->service('Chara::Soldier::JudgeInvasionOrDefence')->new({
-        chara         => $self->target,
-        chara_soldier => $self->target_soldier,
-        town_model    => $self->town_model,
-      })->judge();
-    },
-  );
-
-  has 'target_country' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Class::Country',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->country_model->get_with_option( $self->target->country_id )->match(
-        Some => sub { $_ },
-        None => sub { $self->country_model->neutral },
-      );
-    },
-  );
-
-  has 'target_battle_logger' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Class::Chara::BattleLog',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->chara_battle_log_model->get( $self->target->id );
-    },
-  );
-
-  has 'chara_country' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Class::Country',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->country_model->get_with_option( $self->chara->country_id )->match(
-        Some => sub { $_ },
-        None => sub { $self->country_model->neutral },
-      );
-    },
-  );
-
-  has 'is_chara_invasion' => (
-    is      => 'ro',
-    isa     => 'Bool',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->service('Chara::Soldier::JudgeInvasionOrDefence')->new({
-        chara         => $self->chara,
-        chara_soldier => $self->chara_soldier,
-        town_model    => $self->town_model,
-      })->judge();
-    },
-  );
-
-  has 'chara_battle_logger' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Class::Chara::BattleLog',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->chara_battle_log_model->get( $self->chara->id );
-    },
   );
 
   has 'chara_model' => (
@@ -180,7 +96,7 @@ package Jikkoku::Service::BattleCommand::Battle {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->chara_soldier->distance_from_point($self->target_soldier);
+      $self->chara->soldier->distance_from_point($self->target->soldier);
     },
   );
 
@@ -205,13 +121,13 @@ package Jikkoku::Service::BattleCommand::Battle {
       # 掩護で身代わりを入れる処理
       Some => sub {
         my $enemy = shift;
-        $self->get_target_overrider_result->match(
+        my $orig = $self->get_target_overrider_result->match(
           Some => sub {
             my $result = shift;
 # after_override_battle_target_service_class role作成
 # test
             $result->after_override_battle_target_service_class_name->new({
-              chara          => $self->chara,
+              chara          => $self->chara->chara,
               original_enemy => $enemy,
               result         => $result,
               map_log_model  => $self->map_log_model,
@@ -220,6 +136,11 @@ package Jikkoku::Service::BattleCommand::Battle {
           },
           None => sub { $enemy },
         );
+        $self->class('Chara::ExtChara')->new({
+          chara         => $orig,
+          town_model    => $self->town_model,
+          country_model => $self->country_model,
+        });
       },
       None => sub { throw("その武将は存在していないようです。") },
     );
@@ -227,13 +148,13 @@ package Jikkoku::Service::BattleCommand::Battle {
 
   sub ensure_target_can_battle {
     my $self = shift;
-    if ( $self->target_soldier->num <= 0 ) {
+    if ( $self->target->soldier->num <= 0 ) {
       throw("兵士0人では戦闘できません。");
     }
-    if ( !$self->target_soldier->is_sortie ) {
+    if ( !$self->target->soldier->is_sortie ) {
       throw("指定した相手武将は出撃していません。");
     }
-    if ( $self->target_soldier->battle_map_id ne $self->chara_soldier->battle_map_id ) {
+    if ( $self->target->soldier->battle_map_id ne $self->chara->soldier->battle_map_id ) {
       throw("相手と同じマップ上にいません。");
     }
     if ( $self->target->country_id eq $self->chara->country_id ) {
@@ -249,7 +170,7 @@ package Jikkoku::Service::BattleCommand::Battle {
       $self->target->country_id,
       $self->now_game_date
     );
-    if ( $self->is_target_invasion || $self->chara_country->is_neutral || $self->target_country->is_neutral ) {
+    if ( $self->target->is_invasion || $self->chara->country->is_neutral || $self->target->country->is_neutral ) {
       $can_attack = 1;
     }
     unless ( $can_attack ) {
@@ -257,17 +178,17 @@ package Jikkoku::Service::BattleCommand::Battle {
           . '(他国と戦争するには、自国の幹部が司令部から宣戦布告を行う必要があります。)');
     }
 
-    unless ( $self->target_country->can_invasion ) {
-      throw($self->target_country->name
+    unless ( $self->target->country->can_invasion ) {
+      throw($self->target->country->name
           . 'にはまだ侵攻できません。(戦闘解除まで後 '
-          . $self->target_country->remaining_month_until_can_invasion
+          . $self->target->country->remaining_month_until_can_invasion
           . ' ターン)');
     }
 
-    unless ( $self->chara_country->can_invasion ) {
-      throw($self->chara_country->name
+    unless ( $self->chara->country->can_invasion ) {
+      throw($self->chara->country->name
           . 'の武将はまだ他国に侵攻できません。(戦闘解除まで後 '
-          . $self->target_country->name
+          . $self->target->country->name
           . ' ターン)' );
     }
 
@@ -278,7 +199,7 @@ package Jikkoku::Service::BattleCommand::Battle {
 
     $self->ensure_target_can_battle();
 
-    if ( $self->chara_soldier->range < $self->distance ) {
+    if ( $self->chara->soldier->range < $self->distance ) {
       throw("攻撃が相手に届きません。");
     }
 
@@ -289,15 +210,17 @@ package Jikkoku::Service::BattleCommand::Battle {
   sub prepare_exec {
     my $self = shift;
 
-    if ( $self->target_soldier->range < $self->distance ) {
+    $self->chara->is_attack(1);
+
+    if ( $self->target->soldier->range < $self->distance ) {
       $self->is_target_can_counter_attack(1);
       my $log = sub {
         my $color = shift;
         qq{<span class="$color">【反撃不可】</span>@{[ $self->chara->name ]}の部隊が}
         . qq{射程圏内に入っていないので@{[ $self->target->name ]}は反撃できない！};
       };
-      $self->chara_battle_logger->add( $log->('red') );
-      $self->target_battle_logger->add( $log->('blue') );
+      $self->chara->battle_logger->add( $log->('red') );
+      $self->target->battle_logger->add( $log->('blue') );
     }
 
     if ( $self->distance <= CONFUSED_BATTLE_RANGE ) {
@@ -305,8 +228,8 @@ package Jikkoku::Service::BattleCommand::Battle {
       my $log = qq{<span class="$color">【乱戦】</span>@{[ $self->chara->name ]}の部隊と}
                 . qq{@{[ $self->target->name ]}の部隊の距離が近かったため乱戦となりました。}
                 . qq{ターン数+1};
-      $self->chara_battle_logger->add($log);
-      $self->target_battle_logger->add($log);
+      $self->chara->battle_logger->add($log);
+      $self->target->battle_logger->add($log);
     }
 
   }
@@ -321,10 +244,10 @@ package Jikkoku::Service::BattleCommand::Battle {
 
       $self->prepare_exec();
 
-      my $chara_soldier = $self->chara_soldier;
-      $chara_soldier->move_point(0);
-      $chara_soldier->occur_move_point_charge_time( $CONFIG->{game}{action_interval_time} );
-      $chara_soldier->occur_action_time( $CONFIG->{game}{action_interval_time} );
+      my $chara->soldier = $self->chara->soldier;
+      $chara->soldier->move_point(0);
+      $chara->soldier->occur_move_point_charge_time( $CONFIG->{game}{action_interval_time} );
+      $chara->soldier->occur_action_time( $CONFIG->{game}{action_interval_time} );
 
     };
 

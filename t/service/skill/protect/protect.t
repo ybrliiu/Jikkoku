@@ -8,6 +8,7 @@ use Jikkoku::Model::BattleMap;
 use Jikkoku::Model::MapLog;
 use Jikkoku::Model::Chara;
 use Jikkoku::Model::ExtensiveStateRecord;
+use Jikkoku::Class::Chara::ExtChara;
 
 my $CLASS = 'Jikkoku::Service::Skill::Protect::Protect';
 use_ok $CLASS;
@@ -16,7 +17,7 @@ my $chara_model = Jikkoku::Model::Chara->new;
 my $chara = $chara_model->get_with_option('meemee')->get;
 my $extensive_state_record_model = Jikkoku::Model::ExtensiveStateRecord->new;
 ok my $protect = $CLASS->new({
-  chara                        => $chara,
+  chara                        => Jikkoku::Class::Chara::ExtChara->new(chara => $chara),
   extensive_state_record_model => $extensive_state_record_model,
 });
 

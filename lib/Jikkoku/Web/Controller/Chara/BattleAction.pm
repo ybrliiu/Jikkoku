@@ -125,7 +125,7 @@ package Jikkoku::Web::Controller::Chara::BattleAction {
       return $self->render_error('不正な値が含まれています');
     }
 
-    my $service = $self->service('Chara::SwitchBattleMapAutoMode')->new(chara => $self->chara);
+    my $service = $self->service('Chara::SwitchBattleMapAutoMode')->new(chara => $self->chara->chara);
     eval {
       if ($mode eq 'ON') {
         $service->on;

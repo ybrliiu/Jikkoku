@@ -17,7 +17,7 @@ package Jikkoku::Service::Skill::Role::UsedInBattleMap::ToOneChara {
 
   has 'target' => (
     is      => 'ro',
-    isa     => 'Jikkoku::Class::Chara',
+    isa     => 'Jikkoku::Class::Chara::ExtChara',
     lazy    => 1,
     builder => '_build_target',
   );
@@ -30,19 +30,19 @@ package Jikkoku::Service::Skill::Role::UsedInBattleMap::ToOneChara {
 
     $self->chara_model->get_with_option( $self->target_id )->match(
       Some => sub {
-        my $target = shift;
-        my $target_soldier = $target->soldier;
+        my $target_orig = shift;
+        my $target = $self->class('Chara::ExtChara')->new(chara => $target_orig);
 
-        unless ( $target_soldier->is_sortie ) {
+        unless ( $target->soldier->is_sortie ) {
           Jikkoku::Service::Role::BattleActionException
             ->throw($target->name . 'は出撃していません。');
         }
 
-        if ( $target_soldier->battle_map_id ne $self->chara_soldier->battle_map_id ) {
+        if ( $target->soldier->battle_map_id ne $self->chara->soldier->battle_map_id ) {
           Jikkoku::Service::Role::BattleActionException->throw('相手と同じBM上にいません。');
         }
 
-        my $distance = $self->chara_soldier->distance_from_point( $target_soldier );
+        my $distance = $self->chara->soldier->distance_from_point( $target->soldier );
         if ( $distance > $self->skill->range ) {
           Jikkoku::Service::Role::BattleActionException
             ->throw('相手が' . $self->name . 'を使える範囲にいません。');

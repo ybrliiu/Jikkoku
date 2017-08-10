@@ -15,7 +15,8 @@ package Jikkoku::Class::Chara::ExtChara {
         map  { substr($_->name, 1) }
         grep { $_->isa('Jikkoku::Class::Role::TextData::Attribute::HashField') } @chara_attributes
       ),
-      qw/ commit lock save /,
+      qw/ is_neutral check_pass /,
+      qw/ commit lock save abort /,
     );
 
     has 'chara' => (
@@ -177,6 +178,8 @@ package Jikkoku::Class::Chara::ExtChara {
     },
   );
 
+  has 'is_attack' => ( is => 'rw', isa => 'Bool', default => 0 );
+
   with 'Jikkoku::Role::Loader' => {
     -alias    => {
       class   => 'load_class',
@@ -185,6 +188,21 @@ package Jikkoku::Class::Chara::ExtChara {
     },
     -excludes => [qw/ class model service /],
   };
+
+  __PACKAGE__->_generate_save_log_method;
+
+  sub _generate_save_log_method {
+    my $class = shift;
+    my $meta = $class->meta;
+    for (qw/ command battle /) {
+      my $method_name = "save_${_}_log";
+      my $logger_name = "${_}_logger";
+      $meta->add_method($method_name => sub {
+        my ($self, $str) = @_;
+        $self->$logger_name->add($str)->save;
+      });
+    }
+  }
 
   __PACKAGE__->meta->make_immutable;
 

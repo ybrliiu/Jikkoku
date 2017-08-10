@@ -111,7 +111,7 @@ package Jikkoku::Class::BattleMap {
     validate_values $args => [qw( chara direction chara_model town_model )];
     my $chara = $args->{chara};
 
-    my $current_node = $self->get_node_by_point( $chara->soldier_battle_map('x'), $chara->soldier_battle_map('y') );
+    my $current_node = $self->get_node_by_point( $chara->soldier->x, $chara->soldier->y );
     my $next_node = do {
       my $method = "get_$args->{direction}_node";
       return unless $self->can($method);
@@ -146,7 +146,7 @@ package Jikkoku::Class::BattleMap {
       if (my $e = $@) {
         next;
       } else {
-        $move_node->can_move_direction($direction) if $args->{chara}->soldier_can_move($move_node);
+        $move_node->can_move_direction($direction) if $args->{chara}->soldier->can_move($move_node);
       }
     }
   }

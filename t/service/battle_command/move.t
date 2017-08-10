@@ -9,6 +9,7 @@ use_ok $CLASS;
 use Jikkoku::Model::Chara;
 use Jikkoku::Model::Town;
 use Jikkoku::Model::BattleMap;
+use Jikkoku::Class::Chara::ExtChara;
 
 # 設定ファイル通りの時間だといつでもテストできないので
 my $game_config = Jikkoku::Model::Config->get->{game};
@@ -17,7 +18,7 @@ local $game_config->{update_end_hour}   = 24;
 
 my $battle_map_model = Jikkoku::Model::BattleMap->new;
 my $c_m = Jikkoku::Model::Chara->new;
-my $chara   = $c_m->get('ybrliiu');
+my $chara   = Jikkoku::Class::Chara::ExtChara->new(chara => $c_m->get('ybrliiu'));
 my $soldier = $chara->soldier;
 
 # 準備
@@ -27,7 +28,6 @@ $chara->save;
 
 my ($x, $y) = ($soldier->x, $soldier->y);
 my $params = +{
-  town_model       => Jikkoku::Model::Town->new,
   chara_model      => $c_m,
   battle_map_model => $battle_map_model,
 };

@@ -7,21 +7,8 @@ package Jikkoku::Service::Role::BattleAction {
   use Jikkoku::Model::Config;
   use Jikkoku::Service::Role::BattleActionException;
 
-=head1
-  
+  sub chara;
   has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara::ExtChara', required => 1 );
-
-=cut
-
-  has 'chara_soldier' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Class::Chara::Soldier',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->chara->soldier;
-    },
-  );
 
   has 'time' => (
     is      => 'ro',
@@ -61,11 +48,11 @@ package Jikkoku::Service::Role::BattleAction {
       Jikkoku::Service::Role::BattleActionException
         ->throw("BM上で行動可能な時間帯ではありません。");
     }
-    unless ( $self->chara_soldier->is_sortie) {
+    unless ( $self->chara->soldier->is_sortie) {
       Jikkoku::Service::Role::BattleActionException->throw("出撃していません。");
     }
-    if ( $self->chara_soldier->num < 0 ) {
-      $self->chara_soldier->retreat;
+    if ( $self->chara->soldier->num < 0 ) {
+      $self->chara->soldier->retreat;
       $self->chara->save;
       Jikkoku::Service::Role::BattleActionException->throw("兵士がいません。");
     }

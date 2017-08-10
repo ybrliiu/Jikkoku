@@ -11,6 +11,7 @@ package Jikkoku::Model::Config {
     country_color
     country_background_color
     country_background_color_rgba
+    country_position
     japanese
   /;
   my %Config;

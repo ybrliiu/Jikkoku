@@ -29,7 +29,7 @@ package Jikkoku::Service::BattleCommand::Retreat {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->battle_map_model->get( $self->chara_soldier->battle_map_id );
+      $self->battle_map_model->get( $self->chara->soldier->battle_map_id );
     },
   );
 
@@ -39,7 +39,7 @@ package Jikkoku::Service::BattleCommand::Retreat {
     lazy    => 1,
     default => sub {
       my $self    = shift;
-      my $soldier = $self->chara_soldier;
+      my $soldier = $self->chara->soldier;
       $self->battle_map->get_node_by_point( $soldier->x, $soldier->y );
     },
   );
@@ -82,7 +82,7 @@ package Jikkoku::Service::BattleCommand::Retreat {
       }
       elsif ( $current_node->is_castle ) {
         $self->battle_map->name;
-        my $town = $self->town_model->get( $self->chara_soldier->battle_map_id );
+        my $town = $self->town_model->get( $self->chara->soldier->battle_map_id );
         $self->_try_retreat( $town );
       }
       else {
