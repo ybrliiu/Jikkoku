@@ -42,6 +42,8 @@ ok(my $model = $CLASS->new);
   subtest 'is_chara_has_position' => sub {
     ok $country->is_chara_has_position( $country->king_id );
     is $country->position_name_of_chara( $country->king ), '君主';
+    my $position = $country->position_of_chara_with_option( $country->king )->get;
+    is $position->id, 'king';
   };
 
   subtest 'color' => sub {

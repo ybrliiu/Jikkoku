@@ -9,6 +9,11 @@ use_ok $CLASS;
 
 ok my $model = $CLASS->new;
 
+subtest anonymous => sub {
+  ok my $dummy = $model->dummy;
+  is $dummy->id, $model->INFLATE_TO->DUMMY_ID;
+};
+
 my $chara_list = $model->get_all;
 diag $_->name for @$chara_list;
 

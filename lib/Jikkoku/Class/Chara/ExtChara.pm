@@ -15,7 +15,7 @@ package Jikkoku::Class::Chara::ExtChara {
         map  { substr($_->name, 1) }
         grep { $_->isa('Jikkoku::Class::Role::TextData::Attribute::HashField') } @chara_attributes
       ),
-      qw/ is_neutral check_pass /,
+      qw/ is_neutral is_dummy check_pass /,
       qw/ commit lock save abort /,
     );
 
@@ -98,16 +98,6 @@ package Jikkoku::Class::Chara::ExtChara {
     },
   );
 
-  has 'country_model' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Model::Country',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->load_model('Country')->new;
-    },
-  );
-
   has 'country' => (
     is      => 'ro',
     isa     => 'Jikkoku::Class::Country',
@@ -118,16 +108,6 @@ package Jikkoku::Class::Chara::ExtChara {
         Some => sub { $_ },
         None => sub { $self->country_model->neutral },
       );
-    },
-  );
-
-  has 'town_model' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Model::Town',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->load_model('Town')->new;
     },
   );
 
@@ -145,25 +125,25 @@ package Jikkoku::Class::Chara::ExtChara {
     },
   );
 
-  has 'states' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Model::State',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->load_model('State')->new( chara => $self->chara )
-    },
-  );
+  for my $name (qw/ chara town country /) {
+    my $class_name = ucfirst $name;
+    has "${name}_model" => (
+      is      => 'ro',
+      isa     => "Jikkoku::Model::$class_name",
+      lazy    => 1,
+      default => sub { $_[0]->load_model($class_name)->new },
+    );
+  }
 
-  has 'skills' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Model::Skill',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->load_model('Skill')->new( chara => $self->chara )
-    },
-  );
+  for my $name (qw/ states skills /) {
+    my $class_name = substr(ucfirst $name, 0, -1);
+    has $name => (
+      is      => 'ro',
+      isa     => "Jikkoku::Model::$class_name",
+      lazy    => 1,
+      default => sub { $_[0]->load_model($class_name)->new( chara => $_[0]->chara ) },
+    );
+  }
 
   has 'extensive_states' => (
     is      => 'ro',

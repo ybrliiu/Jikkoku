@@ -1,9 +1,10 @@
 package Jikkoku::Class::Country {
 
-  use Jikkoku;
   use Mouse;
+  use Jikkoku;
 
   use Carp qw( croak );
+  use Option;
   use List::Util qw( first );
   use Jikkoku::Model::Chara;
   use Jikkoku::Model::Config;
@@ -33,7 +34,7 @@ package Jikkoku::Class::Country {
 
   with 'Jikkoku::Class::Role::TextData';
 
-  my $POSITION_MODEL  = Jikkoku::Model::Country::Position->new;
+  my $POSITION_MODEL  = Jikkoku::Model::Country::Position->instance;
   my @HEADQUARTERS_ID = map { $_->id } @{ $POSITION_MODEL->get_headquarters };
   my @POSITIONS       = @{ $POSITION_MODEL->get_all };
   my @POSITIONS_ID    = map { $_->id } @POSITIONS;
@@ -114,6 +115,16 @@ package Jikkoku::Class::Country {
       $self->$attr eq $chara->id;
     } @POSITIONS;
     @positions == 0 ? '' : $positions[0]->name;
+  }
+
+  sub position_of_chara_with_option {
+    my ($self, $chara) = @_;
+    Carp::croak 'few arguments($chara)' if @_ < 2;
+    my @positions = grep {
+      my $attr = $_->id . '_id';
+      $self->$attr eq $chara->id;
+    } @POSITIONS;
+    Option->new( $positions[0] );
   }
 
   sub total_salary {

@@ -16,10 +16,7 @@ package Jikkoku::Model::Role::Result {
     (ref $self)->new(data => $data);
   }
 
-  sub get_all {
-    my $self = shift;
-    $self->data;
-  }
+  sub get_all { $_[0]->data }
 
   sub first {
     my ($self, $code) = @_;

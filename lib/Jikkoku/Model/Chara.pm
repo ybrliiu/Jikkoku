@@ -8,6 +8,26 @@ package Jikkoku::Model::Chara {
 
   with 'Jikkoku::Model::Role::Division';
 
+  # ダミーキャラデータ
+  sub dummy {
+    my $self = shift;
+    state $dummy = $self->INFLATE_TO->new(
+      id          => $self->INFLATE_TO->DUMMY_ID,
+      pass        => '',
+      name        => '',
+      icon        => 9999,
+      force       => 0,
+      intellect   => 0,
+      leadership  => 0,
+      popular     => 0,
+      soldier_num => 0,
+      town_id     => 0,
+      country_id  => 0,
+      host        => '',
+      update_time => 0,
+    );
+  }
+
   sub get_same_country {
     my ($self, $country_id) = @_;
     [ grep { $country_id == $_->country_id } @{ $self->get_all } ];

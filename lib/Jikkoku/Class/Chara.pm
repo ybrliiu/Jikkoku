@@ -18,6 +18,8 @@ package Jikkoku::Class::Chara {
     DIR_PATH          => 'charalog/main/',
     PRIMARY_ATTRIBUTE => 'id',
 
+    DUMMY_ID => '__dummy_charactor',
+
     PROTECT_RANGE  => 3,
     RECOVER_MORALE => 30,
   };
@@ -206,6 +208,11 @@ package Jikkoku::Class::Chara {
   );
 
   __PACKAGE__->make_hash_fields;
+
+  sub is_dummy {
+    my $self = shift;
+    $self->id eq $self->DUMMY_ID;
+  }
 
   sub soldier {
     my $self = shift;
