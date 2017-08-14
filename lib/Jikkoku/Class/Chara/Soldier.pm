@@ -10,7 +10,12 @@ package Jikkoku::Class::Chara::Soldier {
   use Carp;
   use Jikkoku::Util 'validate_values';
   
-  has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara', weak_ref => 1 );
+  has 'chara' => (
+    is       => 'ro',
+    isa      => 'Jikkoku::Class::Chara',
+    handles  => { training => 'soldier_training' },
+    weak_ref => 1,
+  );
 
   override max_move_point => sub {
     my $self = shift;

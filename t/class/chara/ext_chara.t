@@ -30,6 +30,7 @@ subtest 'file handler' => sub {
 };
 
 is $ext_chara->country->name, '梁山泊';
-diag $ext_chara->country->position_of_chara_with_option( $ext_chara )->get->name;
+diag $ext_chara->attack_power_orig;
+diag $ext_chara->defence_power_orig;
 
 done_testing;

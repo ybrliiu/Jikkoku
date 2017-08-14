@@ -58,6 +58,16 @@ package Jikkoku::Class::Chara::ExtChara {
     },
   );
 
+  has 'guard' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Class::Chara::Guard',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->load_class('Chara::Guard')->new( chara => $self->chara );
+    },
+  );
+
   has 'chara_battle_log_model' => (
     is      => 'ro',
     isa     => 'Jikkoku::Model::Chara::BattleLog',
@@ -164,6 +174,16 @@ package Jikkoku::Class::Chara::ExtChara {
     },
   );
 
+  has 'position' => (
+    is      => 'ro',
+    isa     => 'Option',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->country->position_of_chara_with_option($self);
+    },
+  );
+
   has 'is_attack' => ( is => 'rw', isa => 'Bool', default => 0 );
 
   with 'Jikkoku::Role::Loader' => {
@@ -175,12 +195,25 @@ package Jikkoku::Class::Chara::ExtChara {
     -excludes => [qw/ class model service /],
   };
 
+  sub attack_power_orig_without_weapon_attr {}
+
+  # 武器相性による上昇値を追加する(拡張したクラスで?)
   sub attack_power_orig {
     my $self = shift;
+    $self->soldier->attack_power + $self->force + $self->weapon->power + 
+    $self->position->match(
+      Some => sub { $_->increase_attack_power },
+      None => sub { 0 },
+    );
   }
 
   sub defence_power_orig {
     my $self = shift;
+    $self->soldier->defence_power + ($self->soldier->training / 2) + $self->guard->power +
+    $self->position->match(
+      Some => sub { $_->increase_defence_power },
+      None => sub { 0 },
+    );
   }
 
   __PACKAGE__->_generate_save_log_method;
