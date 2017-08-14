@@ -70,6 +70,7 @@ package Jikkoku::Model::Chara {
     +{ map { $_->id => $_ } @$list };
   }
 
+  __PACKAGE__->prepare;
   __PACKAGE__->meta->make_immutable;
 
 }

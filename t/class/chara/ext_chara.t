@@ -29,4 +29,7 @@ subtest 'file handler' => sub {
   is $ext_chara->soldier->num, $orig;
 };
 
+is $ext_chara->country->name, '梁山泊';
+diag $ext_chara->country->position_of_chara_with_option( $ext_chara )->get->name;
+
 done_testing;

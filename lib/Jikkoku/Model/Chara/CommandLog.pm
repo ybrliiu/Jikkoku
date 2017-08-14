@@ -7,6 +7,7 @@ package Jikkoku::Model::Chara::CommandLog {
 
   with qw( Jikkoku::Model::Role::Logger::Division );
 
+  __PACKAGE__->prepare;
   __PACKAGE__->meta->make_immutable;
 
 }

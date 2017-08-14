@@ -14,6 +14,7 @@ package Jikkoku::Model::Player {
 
   with 'Jikkoku::Model::Role::Division';
 
+  __PACKAGE__->prepare;
   __PACKAGE__->meta->make_immutable;
 
 }

@@ -8,35 +8,29 @@ package Jikkoku::Model::Country::Position {
     CONFIG_FILE_NAME => 'country_position',
   };
 
-  has 'data' => (
+  has 'id_map' => (
     is      => 'ro',
     isa     => 'HashRef[Jikkoku::Class::Country::Position]',
     lazy    => 1,
-    builder => '_build_data',
+    builder => '_build_id_map',
   );
 
   with 'Jikkoku::Model::Role::ConfigToObject';
 
-  sub _build_data {
+  sub _build_id_map {
     my $self = shift;
-    my $data = Jikkoku::Model::Config->get->{ $self->CONFIG_FILE_NAME };
-    +{ map { $_->{id} => $self->create_treat_class($_) } values %$data };
+    +{ map { $_->id => $_ } @{ $self->data } };
   }
 
   sub get {
     my ($self, $id) = @_;
     Carp::croak 'few arguments (id)' if @_ < 2;
-    $self->data->{$id} // Carp::confess "no such id data ($id)";
-  }
-
-  sub get_all {
-    my $self = shift;
-    [ values %{ $self->data } ];
+    $self->id_map->{$id} // Carp::confess "no such id data ($id)";
   }
 
   sub get_headquarters {
     my $self = shift;
-    [ grep { $_->is_headquarters } values %{ $self->data } ];
+    [ grep { $_->is_headquarters } @{ $self->data } ];
   }
 
   __PACKAGE__->meta->make_immutable;

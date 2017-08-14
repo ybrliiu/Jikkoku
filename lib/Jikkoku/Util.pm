@@ -3,6 +3,7 @@ package Jikkoku::Util {
   use Jikkoku;
   use Exporter 'import';
   our @EXPORT_OK = qw(
+    is_module_loaded
     is_test
     if_test
     TEST_DIR
@@ -39,6 +40,12 @@ package Jikkoku::Util {
     } else {
       *if_test = sub (&) {}
     }
+  }
+
+  sub is_module_loaded {
+    my $module_name = shift;
+    no strict 'refs';
+    grep { $_ !~ /::$/ } keys %{$module_name . '::'};
   }
 
   sub is_test {

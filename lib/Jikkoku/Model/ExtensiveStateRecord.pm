@@ -93,6 +93,7 @@ package Jikkoku::Model::ExtensiveStateRecord {
     }
   }
 
+  __PACKAGE__->prepare;
   __PACKAGE__->meta->make_immutable;
 
 }

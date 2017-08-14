@@ -89,6 +89,7 @@ package Jikkoku::Model::Town {
     }
   }
 
+  __PACKAGE__->prepare;
   __PACKAGE__->meta->make_immutable;
 
 }

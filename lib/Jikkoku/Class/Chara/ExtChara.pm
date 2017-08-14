@@ -100,14 +100,20 @@ package Jikkoku::Class::Chara::ExtChara {
 
   has 'country' => (
     is      => 'ro',
-    isa     => 'Jikkoku::Class::Country',
+    isa     => 'Jikkoku::Class::Country::ExtCountry',
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->country_model->get_with_option( $self->chara->country_id )->match(
+      my $country = $self->country_model->get_with_option( $self->chara->country_id )->match(
         Some => sub { $_ },
         None => sub { $self->country_model->neutral },
       );
+      $self->load_class('Country::ExtCountry')->new({
+        country       => $country,
+        town_model    => $self->town_model,
+        chara_model   => $self->chara_model,
+        country_model => $self->country_model,
+      });
     },
   );
 

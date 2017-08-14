@@ -11,6 +11,7 @@ package Jikkoku::Class::Country::ExtCountry {
       qw/ position_name_of_chara position_of_chara_with_option /,
       qw/ is_chara_has_position /,
       qw/ remaining_month_until_can_invasion can_invasion /,
+      qw/ commit abort /,
     );
 
     has 'country' => (
@@ -39,17 +40,17 @@ package Jikkoku::Class::Country::ExtCountry {
 
   with 'Jikkoku::Role::Loader';
 
-  my $POSITION_MODEL  = Jikkoku::Model::Country::Position->instance;
+  my $POSITION_MODEL = Jikkoku::Model::Country::Position->instance;
 
   sub is_headquarters_exist {
     my $self = shift;
-    grep { !$self->$_->is_dummy } map { $_->id } $POSITION_MODEL->get_headquarters;
+    grep { !$self->$_->is_dummy } map { $_->id } @{ $POSITION_MODEL->get_headquarters };
   }
 
   sub is_chara_headquarters {
     my ($self, $chara) = @_;
     Carp::croak 'few arguments($chara)' if @_ < 2;
-    grep { $self->$_ eq $chara->id } map { $_->id . '_id' } $POSITION_MODEL->get_headquarters;
+    grep { $self->$_ eq $chara->id } map { $_->id . '_id' } @{ $POSITION_MODEL->get_headquarters };
   }
 
   sub total_salary {
@@ -83,6 +84,7 @@ package Jikkoku::Class::Country::ExtCountry {
   {
     my $config = Jikkoku::Model::Config->get;
 
+    # 別クラスに持って行くべき
     sub number_of_chara_participate_available {
       my $self = shift;
       my $chara_sum   = @{ $self->charactors->get_all };
@@ -107,7 +109,7 @@ package Jikkoku::Class::Country::ExtCountry {
     my $meta = __PACKAGE__->meta;
 
     {
-      my @method_names = map { $_ . '_id' } grep { $_->id ne 'king' } @{ $POSITION_MODEL->get_all };
+      my @method_names = map { $_->id . '_id' } grep { $_->id ne 'king' } @{ $POSITION_MODEL->get_all };
       for my $method_name (@method_names) {
         $meta->add_method($method_name => sub {
           my $self = shift;

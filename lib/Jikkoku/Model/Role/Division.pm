@@ -20,22 +20,15 @@ package Jikkoku::Model::Role::Division {
     ( Jikkoku::Util::is_test ? Jikkoku::Util::TEST_DIR : '' ) . $class->INFLATE_TO->DIR_PATH;
   }
 
-  around BUILDARGS => sub {
+  around prepare => sub {
     my ($orig, $class) = @_;
+    $class->$orig();
     state $load_flag = {};
     if (!$load_flag->{$class}) {
-      Module::Load::load $class->INFLATE_TO   unless is_module_loaded($class->INFLATE_TO);
-      Module::Load::load $class->result_class unless is_module_loaded($class->result_class);
+      Module::Load::load $class->result_class unless Jikkoku::Util::is_module_loaded($class->result_class);
       $load_flag->{$class} = 1;
     }
-    $class->$orig();
   };
-
-  sub is_module_loaded {
-    my $module_name = shift;
-    no strict 'refs';
-    grep { $_ !~ /::$/ } keys %{$module_name . '::'};
-  }
 
   sub result_class {
     my $self = shift;

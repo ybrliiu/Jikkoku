@@ -31,6 +31,7 @@ package Jikkoku::Model::Country {
     $self->data->{$max_id + 1} = $country->output;
   }
 
+  __PACKAGE__->prepare;
   __PACKAGE__->meta->make_immutable;
 
 }
