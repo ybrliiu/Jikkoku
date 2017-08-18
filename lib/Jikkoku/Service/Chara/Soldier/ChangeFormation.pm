@@ -2,9 +2,25 @@ package Jikkoku::Service::Chara::Soldier::ChangeFormation {
 
   use Mouse;
   use Jikkoku;
+  use Jikkoku::Exception;
 
-  has 'chara'               => ( is => 'ro', isa => 'Jikkoku::Class::Chara', required => 1 );
-  has 'change_formation_id' => ( is => 'ro', isa => 'Int', required => 1 );
+  has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara::ExtChara', required => 1 );
+
+  has 'time' => ( is => 'ro', isa => 'Int', lazy => 1, default => sub { time } );
+
+  has 'remaining_time' => (
+    is      => 'ro',
+    isa     => 'Int',
+    lazy    => 1,
+    builder => '_build_remaining_time',
+  );
+
+  has 'is_arranging' => (
+    is      => 'ro',
+    isa     => 'Bool',
+    lazy    => 1,
+    builder => '_build_is_arranging',
+  );
 
   has 'formation_model' => (
     is      => 'ro',
@@ -18,14 +34,32 @@ package Jikkoku::Service::Chara::Soldier::ChangeFormation {
 
   with 'Jikkoku::Role::Loader';
 
-  sub exec {
+  sub _build_remaining_time {
     my $self = shift;
-    my $formation = $self->formation_model->get( $self->change_formation_id );
+    $self->chara->soldier->change_formation_time - $self->time;
+  }
+
+  sub _build_is_advantage {
+    my $self = shift;
+    $self->remaining_time > 0;
+  }
+
+  sub exec {
+    my ($self, $change_formation_id) = @_;
+    Carp::croak 'few arguments($formation_id)' if @_ < 2;
     my $chara = $self->chara;
+    my $soldier = $chara->soldier;
+    my $formation = $self->formation_model->get($change_formation_id);
     $chara->lock;
-    $chara->soldier->change_formation( $formation );
+    if ( $self->is_arranging_for_formation ) {
+      Jikkoku::Exception->throw("あと @{[ $self->remaining_time ]} 秒陣形を変更できません");
+    }
+    $soldier->formation_id($formation->id);
+    if ( $soldier->is_sortie ) {
+      $soldier->change_formation_time($self->time + $formation->reforming_time);
+    }
     $chara->commit;
-    $formation;
+    $chara->formation;
   }
 
   __PACKAGE__->meta->make_immutable;

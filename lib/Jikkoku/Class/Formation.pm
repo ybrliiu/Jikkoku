@@ -27,6 +27,18 @@ package Jikkoku::Class::Formation {
     required => 1,
   );
 
+  has 'advantageous_formations_id_map' => (
+    is      => 'ro',
+    isa     => 'HashRef[Int]',
+    lazy    => 1,
+    builder => '_build_advantageous_formations_id_map',
+  );
+
+  sub _build_advantageous_formations_id_map {
+    my $self = shift;
+    +{ map { $_ => 1 } @{ $self->advantageous_formations_id } };
+  }
+
   around description => sub {
     my ($orig, $self) = @_;
     $self->description_about_increase_power
@@ -109,6 +121,12 @@ package Jikkoku::Class::Formation {
     my ($self, $chara) = @_;
     Carp::croak 'few arguments($chara)' if @_ < 2;
     $chara->class >= $self->class && $self->acquire_condition->($chara);
+  }
+
+  sub is_advantageous {
+    my ($self, $formation) = @_;
+    Carp::croak 'few arguments($formation)' if @_ < 2;
+    exists $self->advantageous_formations_id_map->{ $formation->id };
   }
 
   __PACKAGE__->meta->make_immutable;

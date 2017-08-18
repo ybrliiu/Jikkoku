@@ -43,11 +43,8 @@ package Jikkoku::Web::Controller::Chara::BattleAction {
   sub change_formation {
     my $self = shift;
     my $formation_id = $self->param('formation-id');
-    my $service = $self->service('Chara::Soldier::ChangeFormation')->new({
-      chara               => $self->chara,
-      change_formation_id => $formation_id,
-    });
-    my $formation = eval { $service->exec };
+    my $service = $self->service('Chara::Soldier::ChangeFormation')->new(chara => $self->chara);
+    my $formation = eval { $service->exec($formation_id) };
     if (my $e = $@) {
       $self->render_error( Jikkoku::Exception->caught($e) ? $e->message : $e );
     }

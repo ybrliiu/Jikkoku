@@ -187,7 +187,7 @@ package Jikkoku::Class::Chara::ExtChara {
   has 'is_attack' => ( is => 'rw', isa => 'Bool', default => 0 );
 
   with 'Jikkoku::Role::Loader' => {
-    -alias    => {
+    -alias => {
       class   => 'load_class',
       model   => 'load_model',
       service => 'load_service',
@@ -195,10 +195,8 @@ package Jikkoku::Class::Chara::ExtChara {
     -excludes => [qw/ class model service /],
   };
 
-  sub attack_power_orig_without_weapon_attr {}
-
   # 武器相性による上昇値を追加する(拡張したクラスで?)
-  sub attack_power_orig {
+  sub attack_power {
     my $self = shift;
     $self->soldier->attack_power + $self->force + $self->weapon->power + 
     $self->position->match(
@@ -207,7 +205,7 @@ package Jikkoku::Class::Chara::ExtChara {
     );
   }
 
-  sub defence_power_orig {
+  sub defence_power {
     my $self = shift;
     $self->soldier->defence_power + ($self->soldier->training / 2) + $self->guard->power +
     $self->position->match(

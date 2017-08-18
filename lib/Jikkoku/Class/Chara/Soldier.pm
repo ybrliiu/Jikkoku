@@ -57,21 +57,6 @@ package Jikkoku::Class::Chara::Soldier {
     $self->occur_move_point_charge_time($charge_time);
   }
 
-  sub change_formation {
-    my ($self, $formation) = @_;
-    Carp::croak 'few arguments($formation)' if @_ < 2;
-    my $time = time;
-    my $sub  = $self->change_formation_time - $time;
-    if ( $sub > 0 ) {
-      Jikkoku::Class::Chara::SoldierException
-        ->throw("あと $sub 秒陣形を変更できません");
-    }
-    $self->formation_id($formation->id);
-    if ( $self->is_sortie ) {
-      $self->change_formation_time(time + $formation->reforming_time);
-    }
-  }
-
   sub distance_from_point {
     my ($self, $point) = @_;
     Carp::croak 'few argments($point)' if @_ < 2;

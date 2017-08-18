@@ -9,6 +9,14 @@ package Jikkoku::Service::BattleCommand::Battle {
     CONFUSED_BATTLE_RANGE => 1,
   };
 
+  # battle result
+  use constant {
+    NONE => 0,
+    WIN  => 1,
+    LOSE => 2,
+    DRAW => 3,
+  };
+
   my $CONFIG = Jikkoku::Model::Config->get;
 
   has 'traget_id' => ( is => 'ro', isa => 'Str', required => 1 );
@@ -18,16 +26,6 @@ package Jikkoku::Service::BattleCommand::Battle {
     isa     => 'Jikkoku::Class::Chara::ExtChara',
     lazy    => 1,
     builder => '_build_target',
-  );
-
-  has 'chara_model' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Model::Chara',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->model('Chara')->new;
-    },
   );
 
   has 'charactors' => (
@@ -40,6 +38,16 @@ package Jikkoku::Service::BattleCommand::Battle {
     },
   );
 
+  for my $name (qw/ chara town country diplomacy /) {
+    my $class_name = ucfirst $name;
+    has "${name}_model" => (
+      is      => 'ro',
+      isa     => "Jikkoku::Model::$class_name",
+      lazy    => 1,
+      default => sub { $_[0]->model($class_name)->new },
+    );
+  }
+
   has 'chara_battle_log_model' => (
     is      => 'ro',
     isa     => 'Jikkoku::Model::Chara::BattleLog',
@@ -47,26 +55,6 @@ package Jikkoku::Service::BattleCommand::Battle {
     default => sub {
       my $self = shift;
       $self->model('Chara::BattleLog')->new;
-    },
-  );
-
-  has 'country_model' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Model::Country',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->model('Country')->new;
-    },
-  );
-
-  has 'town_model' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Model::Town',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->model('Town')->new;
     },
   );
 
@@ -80,16 +68,6 @@ package Jikkoku::Service::BattleCommand::Battle {
     },
   );
 
-  has 'diplomacy_model' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Model::Diplomacy',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->model('Diplomacy')->new;
-    },
-  );
-
   has 'distance' => (
     is      => 'ro',
     isa     => 'Int',
@@ -100,9 +78,63 @@ package Jikkoku::Service::BattleCommand::Battle {
     },
   );
 
+  has 'chara_power' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Service::BattleCommand::Battle::Chara',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->service('BattleCommand::Battle::Chara')->new({
+        chara  => $self->chara,
+        target => $self->target,
+      });
+    };
+  );
+
+  has 'target_power' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Service::BattleCommand::Battle::Chara',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->service('BattleCommand::Battle::Chara')->new({
+        chara  => $self->target,
+        target => $self->chara,
+      });
+    };
+  );
+
+  has 'chara_increase_weapon_attr_power' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Service::BattleCommand::Battle::IncreaseWeaponAttrPower',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->service('BattleCommand::Battle::IncreaseWeaponAttrPower')->new({
+        is_win               => ($self->battle_result == $self->WIN ? 1 : 0),
+        weapon_attr_affinity => $self->$attr_name->weapon_attr_affinity;
+      });
+    },
+  );
+
+  has 'target_increase_weapon_attr_power' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Service::BattleCommand::Battle::IncreaseWeaponAttrPower',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->service('BattleCommand::Battle::IncreaseWeaponAttrPower')->new({
+        is_win               => ($self->battle_result == $self->LOSE ? 1 : 0),
+        weapon_attr_affinity => $self->$attr_name->weapon_attr_affinity;
+      });
+    },
+  );
+
   has 'is_target_can_counter_attack' => ( is => 'rw', isa => 'Bool', default => 0 );
 
   has 'turn' => ( is => 'rw', isa => 'Int', default => 1 );
+
+  has 'battle_result' => ( is => 'rw', isa => 'Int', default => NONE );
 
   with qw( Jikkoku::Service::BattleCommand::BattleCommand );
 
@@ -225,7 +257,7 @@ package Jikkoku::Service::BattleCommand::Battle {
 
     if ( $self->distance <= CONFUSED_BATTLE_RANGE ) {
       $self->turn( $self->turn + 1 );
-      my $log = qq{<span class="$color">【乱戦】</span>@{[ $self->chara->name ]}の部隊と}
+      my $log = qq{<span class="red">【乱戦】</span>@{[ $self->chara->name ]}の部隊と}
                 . qq{@{[ $self->target->name ]}の部隊の距離が近かったため乱戦となりました。}
                 . qq{ターン数+1};
       $self->chara->battle_logger->add($log);
