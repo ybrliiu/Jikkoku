@@ -24,7 +24,7 @@ package Jikkoku::Service::BattleMap::DestinationNodeGetter {
     my $self = shift;
 
     my $soldier      = $self->chara->soldier;
-    my $current_node = $self->battle_map->get_node_by_point( $soldier->x, $soldier->y );
+    my $current_node = $self->battle_map->get_node_by_coordinate( $soldier->x, $soldier->y );
     my $next_node    = $self->battle_map->get_adjacent_node( $current_node, $self->direction );
     die "その座標は存在しません" unless defined $next_node;
 

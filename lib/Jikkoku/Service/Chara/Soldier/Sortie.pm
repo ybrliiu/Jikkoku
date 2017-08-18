@@ -28,7 +28,7 @@ package Jikkoku::Service::Chara::Soldier::Sortie {
     my ($self, $x, $y) = @_;
     Carp::croak 'few arguments($x, $y)' if @_ < 3;
     my $battle_map = $self->battle_map_model->get_battle_map( $self->soldier->chara->town_id );
-    my $stay_node  = $battle_map->get_node_by_point($x, $y);
+    my $stay_node  = $battle_map->get_node_by_coordinate($x, $y);
     Carp::confess 'そのマスにはいけません' unless $stay_node->can_stay;
     $self->soldier->sortie($battle_map, $stay_node);
   }

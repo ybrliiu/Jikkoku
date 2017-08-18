@@ -43,15 +43,27 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower {
     },
   );
 
-  has 'change_formation_service' => (
+  has 'formation_power' => (
     is      => 'ro',
-    isa     => 'Jikkoku::Service::Chara::Soldier::ChangeFormation',
+    isa     => 'Jikkoku::Service::BattleCommand::Battle::FormationPower',
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->service('Chara::Soldier::ChangeFormation')->new( chara => $self->chara );
+      $self->service('BattleCommand::Battle::FormationPower')->new(chara_power => $self);
     },
   );
+
+  has 'navy_power' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Service::BattleCommand::Battle::NavyPower',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->service('BattleCommand::Battle::NavyPower')->new(chara_power => $self);
+    },
+  );
+
+  with 'Jikkoku::Role::Loader';
 
   sub defence_power_orig {
     my $self = shift;
@@ -60,10 +72,22 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower {
 
   sub attack_power {
     my $self = shift;
+    $self->attack_power_orig
+      + $self->formation_power->attack_power
+      + $self->navy_power->attack_power;
   }
 
-
   sub defence_power {
+    my $self = shift;
+    $self->defence_power_orig
+      + $self->formation_power->defence_power
+      + $self->navy_power->defence_power;
+  }
+
+  sub exec {
+    my $self = shift;
+    $self->formation_power->exec;
+    $self->navy_power->exec;
   }
 
   __PACKAGE__->meta->make_immutable;

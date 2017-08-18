@@ -13,8 +13,8 @@ package Jikkoku::Class::State::Confuse {
 
   with qw(
     Jikkoku::Class::State::State
-    Jikkoku::Class::State::Role::Expires
     Jikkoku::Class::State::Role::Given
+    Jikkoku::Class::State::Role::Expires
     Jikkoku::Class::State::Role::BattleActionSuccessRatioAdjuster
   );
 

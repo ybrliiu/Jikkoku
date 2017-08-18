@@ -9,6 +9,7 @@ package Jikkoku::Service::BattleCommand::Battle::FormationPower {
     is       => 'ro',
     isa      => 'Jikkoku::Service::BattleCommand::Battle::CharaPower',
     handles  => [qw/ chara target attack_power_orig defence_power_orig /],
+    weak_ref => 1,
     required => 1,
   );
 
@@ -35,6 +36,8 @@ package Jikkoku::Service::BattleCommand::Battle::FormationPower {
     lazy    => 1,
     builder => '_build_defence_power',
   );
+
+  with 'Jikkoku::Role::Loader';
 
   sub _build_attack_power {
     my $self = shift;

@@ -111,7 +111,7 @@ package Jikkoku::Class::BattleMap {
     validate_values $args => [qw( chara direction chara_model town_model )];
     my $chara = $args->{chara};
 
-    my $current_node = $self->get_node_by_point( $chara->soldier->x, $chara->soldier->y );
+    my $current_node = $self->get_node_by_coordinate( $chara->soldier->x, $chara->soldier->y );
     my $next_node = do {
       my $method = "get_$args->{direction}_node";
       return unless $self->can($method);
@@ -202,6 +202,14 @@ package Jikkoku::Class::BattleMap {
   }
 
   sub get_node_by_point {
+    my ($self, $point) = @_;
+    Carp::croak 'few arguments ($point)' if @_ < 2;
+    Carp::croak '指定された座標はマップの範囲外です'
+      if $point->x < 0 || $point->y < 0 || $point->x >= $self->width || $point->y >= $self->height;
+    $self->map_data->[ $point->y ][ $point->x ];
+  }
+
+  sub get_node_by_coordinate {
     my ($self, $x, $y) = @_;
     Carp::croak 'few arguments ($x, $y)' if @_ < 3;
     Carp::croak '指定された座標はマップの範囲外です'

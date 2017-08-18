@@ -40,7 +40,7 @@ package Jikkoku::Service::BattleCommand::Retreat {
     default => sub {
       my $self    = shift;
       my $soldier = $self->chara->soldier;
-      $self->battle_map->get_node_by_point( $soldier->x, $soldier->y );
+      $self->battle_map->get_node_by_coordinate( $soldier->x, $soldier->y );
     },
   );
 

@@ -102,7 +102,7 @@ package Jikkoku::Service::BattleCommand::PassCheckPoint {
   sub ensure_can_exec {
     my $self = shift;
 
-    my $entry_node = $self->battle_map->get_node_by_point(
+    my $entry_node = $self->battle_map->get_node_by_coordinate(
       $self->check_point_x,
       $self->check_point_y,
     );

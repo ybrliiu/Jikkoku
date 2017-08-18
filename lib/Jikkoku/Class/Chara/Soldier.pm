@@ -156,7 +156,7 @@ package Jikkoku::Class::Chara::Soldier {
     my ($self, $args) = @_;
     validate_values $args => [qw/ battle_map_model x y /];
     my $battle_map = $args->{battle_map_model}->get_battle_map( $self->chara->town_id );
-    my $stay_node  = $battle_map->get_node_by_point( $args->{x}, $args->{y} );
+    my $stay_node  = $battle_map->get_node_by_coordinate( $args->{x}, $args->{y} );
     Carp::confess 'そのマスにはいけません' unless $stay_node->can_stay;
     $self->sortie($battle_map, $stay_node);
   }
