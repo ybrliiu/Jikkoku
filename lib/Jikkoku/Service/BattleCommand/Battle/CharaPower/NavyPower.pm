@@ -7,7 +7,7 @@ package Jikkoku::Service::BattleCommand::Battle::NavyPower {
   
   has 'chara_power' => (
     is       => 'ro',
-    isa      => 'Jikkoku::Service::BattleCommand::Battle::CharaPower',
+    isa      => 'Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower',
     handles  => [qw/ chara target attack_power_orig defence_power_orig /],
     weak_ref => 1,
     required => 1,

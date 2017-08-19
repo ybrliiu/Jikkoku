@@ -10,11 +10,11 @@ package Jikkoku::Service::BattleCommand::Battle::WeaponAttrIncreaseAttackPower {
     required => 1,
   );
 
-  has 'coef' => (
+  has 'ratio' => (
     is      => 'ro',
     isa     => 'Num',
     lazy    => 1,
-    builder => '_build_coef',
+    builder => '_build_ratio',
   );
 
   has 'increase_attack_power' => (
@@ -24,15 +24,15 @@ package Jikkoku::Service::BattleCommand::Battle::WeaponAttrIncreaseAttackPower {
     builder => '_build_increase_attack_power',
   );
   
-  sub _build_coef {
+  sub _build_ratio {
     my $self = shift;
     my $attr = $self->chara->weapon->attr;
     if ( $self->is_advantage && $self->is_weapon_and_soldier_same_attr ) {
-      $attr->increase_attack_powercoef_when_advantageous_and_soldier_has_same_attr;
+      $attr->increase_attack_power_coef_when_advantageous_and_soldier_has_same_attr;
     } elsif ( $self->is_advantage ) {
-      $attr->increase_attack_powercoef_when_advantageous;
+      $attr->increase_attack_power_coef_when_advantageous;
     } elsif ( $self->is_weapon_and_soldier_same_attr ) {
-      $attr->increase_attack_powercoef_when_soldier_has_same_attr;
+      $attr->increase_attack_power_coef_when_soldier_has_same_attr;
     } else {
       0;
     }
@@ -40,7 +40,7 @@ package Jikkoku::Service::BattleCommand::Battle::WeaponAttrIncreaseAttackPower {
 
   sub _build_increase_attack_power {
     my $self = shift;
-    int $self->chara->weapon->attr_power * $self->coef;
+    int $self->chara->weapon->attr_power * $self->ratio;
   }
 
   sub exec {

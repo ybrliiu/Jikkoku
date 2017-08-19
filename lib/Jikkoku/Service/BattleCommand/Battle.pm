@@ -80,28 +80,28 @@ package Jikkoku::Service::BattleCommand::Battle {
 
   has 'chara_power' => (
     is      => 'ro',
-    isa     => 'Jikkoku::Service::BattleCommand::Battle::Chara',
+    isa     => 'Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower',
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->service('BattleCommand::Battle::Chara')->new({
+      $self->service('BattleCommand::Battle::CharaPower::CharaPower')->new({
         chara  => $self->chara,
         target => $self->target,
       });
-    };
+    },
   );
 
   has 'target_power' => (
     is      => 'ro',
-    isa     => 'Jikkoku::Service::BattleCommand::Battle::Chara',
+    isa     => 'Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower',
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->service('BattleCommand::Battle::Chara')->new({
+      $self->service('BattleCommand::Battle::CharaPower::CharaPower')->new({
         chara  => $self->target,
         target => $self->chara,
       });
-    };
+    },
   );
 
   has 'chara_increase_weapon_attr_power' => (
@@ -112,7 +112,7 @@ package Jikkoku::Service::BattleCommand::Battle {
       my $self = shift;
       $self->service('BattleCommand::Battle::IncreaseWeaponAttrPower')->new({
         is_win               => ($self->battle_result == $self->WIN ? 1 : 0),
-        weapon_attr_affinity => $self->$attr_name->weapon_attr_affinity;
+        weapon_attr_affinity => $self->chara_power->weapon_attr_affinity,
       });
     },
   );
@@ -125,7 +125,7 @@ package Jikkoku::Service::BattleCommand::Battle {
       my $self = shift;
       $self->service('BattleCommand::Battle::IncreaseWeaponAttrPower')->new({
         is_win               => ($self->battle_result == $self->LOSE ? 1 : 0),
-        weapon_attr_affinity => $self->$attr_name->weapon_attr_affinity;
+        weapon_attr_affinity => $self->target_power->weapon_attr_affinity,
       });
     },
   );

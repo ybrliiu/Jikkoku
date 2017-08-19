@@ -1,4 +1,4 @@
-package Jikkoku::Service::BattleCommand::Battle::CharaPower {
+package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
   
   use Mouse;
   use Jikkoku;
@@ -24,7 +24,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower {
 
   has 'weapon_attr_increase_attack_power' => (
     is      => 'ro',
-    isa     => 'Jikkoku::Service::BattleCommand::Battle::WeaponAttrIncreaseAttackPower',
+    isa     => 'Jikkoku::Service::BattleCommand::Battle::CharaPower::WeaponAttrIncreaseAttackPower',
     lazy    => 1,
     default => sub {
       my $self = shift;
@@ -45,7 +45,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower {
 
   has 'formation_power' => (
     is      => 'ro',
-    isa     => 'Jikkoku::Service::BattleCommand::Battle::FormationPower',
+    isa     => 'Jikkoku::Service::BattleCommand::Battle::CharaPower::FormationPower',
     lazy    => 1,
     default => sub {
       my $self = shift;
@@ -55,7 +55,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower {
 
   has 'navy_power' => (
     is      => 'ro',
-    isa     => 'Jikkoku::Service::BattleCommand::Battle::NavyPower',
+    isa     => 'Jikkoku::Service::BattleCommand::Battle::CharaPower::NavyPower',
     lazy    => 1,
     default => sub {
       my $self = shift;
