@@ -28,11 +28,11 @@ package Jikkoku::Service::BattleCommand::Battle::WeaponAttrIncreaseAttackPower {
     my $self = shift;
     my $attr = $self->chara->weapon->attr;
     if ( $self->is_advantage && $self->is_weapon_and_soldier_same_attr ) {
-      $attr->increase_attack_power_coef_when_advantageous_and_soldier_has_same_attr;
+      $attr->increase_attack_power_ratio_when_advantageous_and_soldier_has_same_attr;
     } elsif ( $self->is_advantage ) {
-      $attr->increase_attack_power_coef_when_advantageous;
+      $attr->increase_attack_power_ratio_when_advantageous;
     } elsif ( $self->is_weapon_and_soldier_same_attr ) {
-      $attr->increase_attack_power_coef_when_soldier_has_same_attr;
+      $attr->increase_attack_power_ratio_when_soldier_has_same_attr;
     } else {
       0;
     }
@@ -45,7 +45,7 @@ package Jikkoku::Service::BattleCommand::Battle::WeaponAttrIncreaseAttackPower {
 
   sub exec {
     my $self = shift;
-    if ( $self->coef != 0 ) {
+    if ( $self->ratio != 0 ) {
       my $log = sub {
         my $chara = shift;
         my $color = $chara->is_attack ? 'red' : 'blue';

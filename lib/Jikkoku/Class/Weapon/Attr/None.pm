@@ -5,10 +5,10 @@ package Jikkoku::Class::Weapon::Attr::None {
 
   has 'name' => ( is => 'ro', isa => 'Str', default => '無' );
 
-  has 'increase_attack_power_coef_when_advantageous'
+  has 'increase_attack_power_ratio_when_advantageous'
     => ( is => 'ro', isa => 'Num', default => 0 );
 
-  has 'increase_attack_power_coef_when_advantageous_and_soldier_has_same_attr'
+  has 'increase_attack_power_ratio_when_advantageous_and_soldier_has_same_attr'
     => ( is => 'ro', isa => 'Num', default => 0 );
 
   has 'is_attr_power_increase_when_advantageous'

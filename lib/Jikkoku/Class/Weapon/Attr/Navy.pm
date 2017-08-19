@@ -5,13 +5,13 @@ package Jikkoku::Class::Weapon::Attr::Navy {
 
   has 'name' => ( is => 'ro', isa => 'Str', default => '水' );
 
-  has 'increase_attack_power_coef_when_advantageous'
+  has 'increase_attack_power_ratio_when_advantageous'
     => ( is => 'ro', isa => 'Num', default => 1 );
 
-  has 'increase_attack_power_coef_when_soldier_has_same_attr'
+  has 'increase_attack_power_ratio_when_soldier_has_same_attr'
     => ( is => 'ro', isa => 'Num', default => 1 );
 
-  has 'increase_attack_power_coef_when_advantageous_and_soldier_has_same_attr'
+  has 'increase_attack_power_ratio_when_advantageous_and_soldier_has_same_attr'
     => ( is => 'ro', isa => 'Num', default => 2 );
 
   has 'is_attr_power_increase_when_soldier_has_same_attr'
