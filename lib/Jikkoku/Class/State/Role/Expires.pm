@@ -3,8 +3,6 @@ package Jikkoku::Class::State::Role::Expires {
   use Mouse::Role;
   use Jikkoku;
 
-  use Jikkoku::Util;
-
   around state_data_keys => sub {
     my ($orig, $self) = @_;
     [ @{ $self->$orig() }, 'available_time' ];

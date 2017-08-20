@@ -8,10 +8,10 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::DependOnAbilities {
 
   # attribute
   requires qw(
-    success_coef
+    success_ratio
     max_success_ratio
-    min_effect_time_coef
-    max_effect_time_coef
+    min_effect_time_ratio
+    max_effect_time_ratio
   );
 
   around description_of_status_about_success_ratio => sub {
@@ -34,14 +34,14 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::DependOnAbilities {
   sub calc_success_ratio {
     my ($self, $ability_sum) = @_;
     Carp::confess 'few arguments ($ability_sum)' if @_ < 2;
-    my $probability = $ability_sum * $self->success_coef;
+    my $probability = $ability_sum * $self->success_ratio;
     $probability > $self->max_success_ratio ? $self->max_success_ratio : $probability;
   }
 
   sub effect_time {
     my ($self, $ability_sum) = @_;
     Carp::croak 'few arguments ($ability_sum)' if @_ < 2;
-    int($ability_sum * $self->min_effect_time_coef), int($ability_sum * $self->max_effect_time_coef);
+    int($ability_sum * $self->min_effect_time_ratio), int($ability_sum * $self->max_effect_time_ratio);
   }
 
 }

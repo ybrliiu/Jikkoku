@@ -4,14 +4,6 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::FormationPower {
   use Jikkoku;
 
   use constant ARRANGING_DECREASE_RATIO => 0.1;
-  
-  has 'chara_power' => (
-    is       => 'ro',
-    isa      => 'Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower',
-    handles  => [qw/ chara target attack_power_orig defence_power_orig /],
-    weak_ref => 1,
-    required => 1,
-  );
 
   has 'change_formation' => (
     is      => 'ro',
@@ -23,21 +15,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::FormationPower {
     },
   );
 
-  has 'attack_power' => (
-    is      => 'ro',
-    isa     => 'Int',
-    lazy    => 1,
-    builder => '_build_attack_power',
-  );
-
-  has 'defence_power' => (
-    is      => 'ro',
-    isa     => 'Int',
-    lazy    => 1,
-    builder => '_build_defence_power',
-  );
-
-  with 'Jikkoku::Role::Loader';
+  with qw( Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPowerCalculator );
 
   sub _build_attack_power {
     my $self = shift;
@@ -75,7 +53,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::FormationPower {
     }
   }
 
-  sub exec {
+  sub write_to_log {
     my $self = shift;
     if ( $self->change_formation_service->is_arranging ) {
       my $log = sub {

@@ -39,7 +39,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->$chara->attack_power + $self->weapon_attr_increase_attack_power->increase_attack_power;
+      $self->chara->attack_power + $self->weapon_attr_increase_attack_power->increase_attack_power;
     },
   );
 
@@ -84,10 +84,11 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
       + $self->navy_power->defence_power;
   }
 
-  sub exec {
+  sub write_to_log {
     my $self = shift;
-    $self->formation_power->exec;
-    $self->navy_power->exec;
+    $self->weapon_attr_increase_attack_power->write_to_log;
+    $self->formation_power->write_to_log;
+    $self->navy_power->write_to_log;
   }
 
   __PACKAGE__->meta->make_immutable;

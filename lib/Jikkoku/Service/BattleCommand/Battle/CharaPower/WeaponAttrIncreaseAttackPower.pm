@@ -43,7 +43,7 @@ package Jikkoku::Service::BattleCommand::Battle::WeaponAttrIncreaseAttackPower {
     int $self->chara->weapon->attr_power * $self->ratio;
   }
 
-  sub exec {
+  sub write_to_log {
     my $self = shift;
     if ( $self->ratio != 0 ) {
       my $log = sub {

@@ -4,14 +4,6 @@ package Jikkoku::Service::BattleCommand::Battle::NavyPower {
   use Jikkoku;
 
   use constant NOT_SUITABLE_DECREASE_RATIO => 0.25;
-  
-  has 'chara_power' => (
-    is       => 'ro',
-    isa      => 'Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower',
-    handles  => [qw/ chara target attack_power_orig defence_power_orig /],
-    weak_ref => 1,
-    required => 1,
-  );
 
   has 'battle_map_model' => (
     is      => 'ro',
@@ -29,22 +21,8 @@ package Jikkoku::Service::BattleCommand::Battle::NavyPower {
     lazy    => 1,
     builder => '_build_current_node',
   );
-
-  has 'attack_power' => (
-    is      => 'ro',
-    isa     => 'Int',
-    lazy    => 1,
-    builder => '_build_attack_power',
-  );
-
-  has 'defence_power' => (
-    is      => 'ro',
-    isa     => 'Int',
-    lazy    => 1,
-    builder => '_build_defence_power',
-  );
   
-  with 'Jikkoku::Role::Loader';
+  with qw( Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPowerCalculator );
 
   sub _build_current_node {
     my $self = shift;
@@ -63,7 +41,7 @@ package Jikkoku::Service::BattleCommand::Battle::NavyPower {
     $self->current_node->is_water ? 0 : $self->defence_power_orig * NOT_SUITABLE_DECREASE_RATIO;
   }
 
-  sub exec {
+  sub write_to_log {
     my $self = shift;
     unless ( $self->current_node->is_water ) {
       my $log = qq{<span class="lightblue">【水軍不適応地形】</span>@{[ $self->chara->name ]}の}
