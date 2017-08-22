@@ -42,4 +42,6 @@ subtest 'adjust_battle_action_success_ratio' => sub {
   ok !$chara->states->adjust_battle_action_success_ratio(1);
 };
 
+diag explain $chara->states->get_all_states;
+
 done_testing;
