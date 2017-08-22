@@ -83,10 +83,19 @@ package Jikkoku::Class::Chara {
     is         => 'rw',
     isa        => 'Jikkoku::Class::Role::TextData::HashField',
     keys       => [qw(
-      formation_id is_sortie battle_map_id
-      x y
-      move_point_charge_time action_time move_point
-      keisu_count plus_attack_power plus_defence_power change_formation_time not_used
+      formation_id
+      is_sortie
+      battle_map_id
+      x
+      y
+      move_point_charge_time
+      action_time
+      move_point
+      keisu_count
+      plus_attack_power
+      plus_defence_power
+      change_formation_time
+      not_used
     )],
     validators => +{
       move_point => sub {
@@ -106,12 +115,21 @@ package Jikkoku::Class::Chara {
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw(
-      kill_soldier die_soldier
-      defence_win attack_win attack_lose defence_lose
-      training_soldier domestic_administration 
-      conscription draw attack_town
-      trick training_self
-      conquer_town destroy_wall 
+      kill_soldier
+      die_soldier
+      defence_win
+      attack_win
+      attack_lose
+      defence_lose
+      training_soldier
+      domestic_administration 
+      conscription
+      draw
+      attack_town
+      trick
+      training_self
+      conquer_town
+      destroy_wall 
       maybe_not_used maybe_not_used2
     )],
   );
@@ -125,14 +143,14 @@ package Jikkoku::Class::Chara {
       win_reward
       lose_reward
       attack_town_skill
-      kago
-      kago_strong
-      youdou
-      youdou_strong
-      kobu
-      kobu_strong
-      sendou
-      sendou_strong
+      small_divine_protection
+      great_divine_protection
+      small_feint
+      great_feint
+      small_inspire
+      great_inspire
+      small_agitation
+      great_agitation
       domestic_administration_skill
       trick_skill
       training_self_skill
