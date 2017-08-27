@@ -9,6 +9,7 @@ package Jikkoku::Class::State::Role::MoveCostAdjuster {
   # attributes
   requires qw( increase_giver_contribute_num increase_giver_book_power_num );
 
+  # 削除予定
   sub take_bonus_for_giver {
     my ($self, $chara_model) = @_;
     $chara_model->get_with_option($self->giver_id)->match(

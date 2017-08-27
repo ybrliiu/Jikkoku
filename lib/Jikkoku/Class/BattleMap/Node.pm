@@ -53,6 +53,8 @@ package Jikkoku::Class::BattleMap::Node {
   has 'from'       => ( is => 'rw' );
   has 'next'       => ( is => 'rw' );
 
+  with 'Jikkoku::Role::Loader';
+
   sub BUILD {}
 
   sub can_stay {
@@ -179,7 +181,10 @@ package Jikkoku::Class::BattleMap::Node {
     my ($self, $chara) = @_;
     my $origin_cost = $self->origin_cost($chara);
     my $cost = $origin_cost;
-    $cost += $chara->states->adjust_move_cost($origin_cost);
+    $cost += $self->service('States::AdjustMoveCost::AdjustMoveCost')->new({
+      chara       => $chara,
+      origin_cost => $origin_cost,
+    })->adjust_move_cost;
     $cost;
   }
 
@@ -189,7 +194,14 @@ package Jikkoku::Class::BattleMap::Node {
     my ($self, $chara) = @_;
     my $origin_cost = $self->origin_cost($chara);
     my $cost = $origin_cost;
-    $cost += $chara->states->adjust_move_cost_and_take_bonus_for_giver($origin_cost);
+    my $adjust_move_cost_service = $self->service('States::AdjustMoveCost::AdjustMoveCost')->new({
+      chara       => $chara,
+      origin_cost => $origin_cost,
+    });
+    $self->service('States::AdjustMoveCost::TakeBonusForGiver')
+      ->new(adjust_move_cost_service => $adjust_move_cost_service)
+      ->exec;
+    $cost += $adjust_move_cost_service->adjust_move_cost;
     $cost;
   }
 

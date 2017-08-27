@@ -19,7 +19,7 @@ package Jikkoku::Service::Skill::Role::UsedInBattleMap::GiveState {
 
     $chara->lock;
     $target->lock;
-    my ($is_success, $effect_time, $stuck);
+    my ($is_success, $effect_time, $state);
     eval {
       $chara->soldier->morale( $chara->soldier->morale - $skill->consume_morale );
       $chara->soldier->action_time( $self->time + $skill->action_interval_time );
@@ -27,8 +27,8 @@ package Jikkoku::Service::Skill::Role::UsedInBattleMap::GiveState {
       $is_success = $self->determine_whether_succeed($ability_sum);
       if ($is_success) {
         $effect_time = $self->calc_effect_time($ability_sum);
-        $stuck = $target->states->get_state($self->id);
-        $stuck->set_state_for_chara({
+        $state = $target->states->get($self->id);
+        $state->set_state_for_chara({
           giver_id       => $chara->id,
           available_time => $self->time + $effect_time,
         });
@@ -48,7 +48,7 @@ package Jikkoku::Service::Skill::Role::UsedInBattleMap::GiveState {
       $target->commit;
       my $name_tag = qq{<span style="color: @{[ $self->log_color ]}">【@{[ $skill->name ]}】</span>};
       if ($is_success) {
-        my $description_log = qq{<span class="red">$effect_time</span>秒間、@{[ $target->name ]}の@{[ $stuck->description ]}};
+        my $description_log = qq{<span class="red">$effect_time</span>秒間、@{[ $target->name ]}の@{[ $state->description ]}};
         my $chara_log = "${name_tag}@{[ $target->name ]}を@{[ $skill->name ]}させました。${description_log}";
         $chara->save_battle_log($chara_log);
         $chara->save_command_log($chara_log);

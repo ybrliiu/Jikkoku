@@ -111,7 +111,7 @@ package Jikkoku::Class::BattleMap {
     validate_values $args => [qw( chara direction chara_model town_model )];
     my $chara = $args->{chara};
 
-    my $current_node = $self->get_node_by_coordinate( $chara->soldier->x, $chara->soldier->y );
+    my $current_node = $self->get_node_by_point( $chara->soldier );
     my $next_node = do {
       my $method = "get_$args->{direction}_node";
       return unless $self->can($method);

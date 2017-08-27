@@ -68,17 +68,17 @@ package Jikkoku::Service::Role::BattleAction {
     my ($orig, $self) = (shift, shift);
     my $orig_ratio = $self->$orig(@_);
     my $ratio = $orig_ratio;
-    $ratio += $self->chara->states->adjust_battle_action_success_ratio($orig_ratio);
+    $ratio += $self->service('States::AdjustBattleActionSuccessRatio::AdjustSuccessRatio')->new({
+      chara                => $self->chara,
+      origin_success_ratio => $orig_ratio,
+    })->adjust_success_ratio;
     $ratio;
   };
 
   # その行動が成功するかどうかを判定, action method 内で使用(移動, 関所出入りは除く)
   sub determine_whether_succeed {
     my $self = shift;
-    my $origin_success_ratio = $self->calc_success_ratio(@_);
-    my $success_ratio = $origin_success_ratio;
-    $success_ratio += $self->chara->states->adjust_battle_action_success_ratio($origin_success_ratio);
-    $success_ratio > rand(1);
+    $self->calc_success_ratio(@_) > rand(1);
   }
 
 }

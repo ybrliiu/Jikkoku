@@ -151,15 +151,25 @@ package Jikkoku::Class::Chara::ExtChara {
     );
   }
 
-  for my $name (qw/ states skills /) {
-    my $class_name = substr(ucfirst $name, 0, -1);
-    has $name => (
-      is      => 'ro',
-      isa     => "Jikkoku::Model::$class_name",
-      lazy    => 1,
-      default => sub { $_[0]->load_model($class_name)->new( chara => $_[0]->chara ) },
-    );
-  }
+  has 'skills' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Model::Skill',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->load_model('Skill')->new( chara => $self->chara );
+    },
+  );
+
+  has 'states' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Model::State::Result',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->load_model('State')->new( chara => $self->chara )->get_all_with_result;
+    },
+  );
 
   has 'extensive_states' => (
     is      => 'ro',
@@ -195,7 +205,6 @@ package Jikkoku::Class::Chara::ExtChara {
     -excludes => [qw/ class model service /],
   };
 
-  # 武器相性による上昇値を追加する(拡張したクラスで?)
   sub attack_power {
     my $self = shift;
     $self->soldier->attack_power + $self->force + $self->weapon->power + 

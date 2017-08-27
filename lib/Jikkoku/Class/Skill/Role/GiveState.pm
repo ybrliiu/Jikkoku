@@ -11,7 +11,7 @@ package Jikkoku::Class::Skill::Role::GiveState {
 
   sub state {
     my $self = shift;
-    $self->chara->states->get_state($self->id);
+    $self->chara->states->get($self->id);
   }
 
 }
