@@ -17,16 +17,6 @@ package Jikkoku::Model::State {
     "@{[ $self->NAMESPACE ]}::${id}"->new(chara => $self->chara);
   }
 
-  sub get_all {
-    my $self = shift;
-    [ map { $self->get($_) } @{ $self->MODULES } ];
-  }
-
-  sub get_all_with_result {
-    my $self = shift;
-    $self->result_class->new(data => $self->get_all);
-  }
-
   __PACKAGE__->prepare;
   __PACKAGE__->meta->make_immutable;
 

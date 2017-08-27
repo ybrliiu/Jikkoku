@@ -2,32 +2,13 @@ package Jikkoku::Model::ExtensiveState {
 
   use Mouse;
   use Jikkoku;
-  use Carp ();
-  use Module::Load ();
 
-  our @EXTENSIVE_STATE_MODULES = _get_extensive_state_modules();
+  use constant {
+    NAMESPACE => 'Jikkoku::Class::ExtensiveState',
+    ROLE      => 'Jikkoku::Class::ExtensiveState::ExtensiveState',
+  };
 
-  sub _get_extensive_state_modules {
-    my $dir = './lib/Jikkoku/Class/ExtensiveState';
-    opendir(my $dh, $dir);
-    my @state_list = grep { $_ ne 'ExtensiveState' && $_ ne 'BattleTargetOverriderResult' }
-                     map { $_ =~ /(\.pm$)/p ? ${^PREMATCH} : () } readdir $dh;
-    close $dh;
-    Module::Load::load("Jikkoku::Class::ExtensiveState::$_") for @state_list;
-    @state_list;
-  }
-
-  has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara', weak_ref => 1, required => 1 );
-
-  has 'chara_soldier' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Class::Chara::Soldier',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->chara->soldier;
-    },
-  );
+  has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara::ExtChara', weak_ref => 1, required => 1 );
 
   has 'record_model' => (
     is      => 'ro',
@@ -59,34 +40,23 @@ package Jikkoku::Model::ExtensiveState {
     },
   );
 
-  with 'Jikkoku::Role::Loader';
+  with qw(
+    Jikkoku::Model::Role::Class
+    Jikkoku::Role::Loader
+  );
 
   sub get {
     my ($self, $id) = @_;
     Carp::croak 'few arguments($id)' if @_ < 2;
-    "Jikkoku::Class::ExtensiveState::${id}"->new(
-      chara         => $self->chara,
-      chara_soldier => $self->chara_soldier,
+    "@{[ $self->NAMESPACE ]}::${id}"->new({
+      chara         => $self->chara->chara,
+      chara_soldier => $self->chara->soldier,
       charactors    => $self->charactors,
       record_model  => $self->record_model,
-    );
+    });
   }
 
-  sub get_all_with_result {
-    my $self = shift;
-    my $data = [
-      map {
-        "Jikkoku::Class::ExtensiveState::$_"->new(
-          chara         => $self->chara,
-          chara_soldier => $self->chara_soldier,
-          charactors    => $self->charactors,
-          record_model  => $self->record_model,
-        );
-      } @EXTENSIVE_STATE_MODULES
-    ];
-    Jikkoku::Model::ExtensiveState::Result->new( data => $data );
-  }
-  
+  __PACKAGE__->prepare;
   __PACKAGE__->meta->make_immutable;
 
 }
@@ -97,17 +67,23 @@ package Jikkoku::Model::ExtensiveState::Result {
   use Jikkoku;
   use Option;
 
+  with 'Jikkoku::Model::Role::Result';
+
   has 'id_map' => (
-    is => 'ro',
-    isa => 'HashRef',
-    lazy => 1,
+    is      => 'ro',
+    isa     => 'HashRef[Jikkoku::Class::ExtensiveState::ExtensiveState]',
+    lazy    => 1,
     default => sub {
       my $self = shift;
       +{ map { $_->id => $_ } @{ $self->data } };
     },
   );
 
-  with 'Jikkoku::Model::Role::Result';
+  sub get {
+    my ($self, $id) = @_;
+    Carp::croak 'few arguments($id)' if @_ < 2;
+    $self->id_map->{$id} // Carp::croak "no such state($id)";
+  }
 
   sub get_with_option {
     my ($self, $id) = @_;
@@ -138,7 +114,7 @@ package Jikkoku::Model::ExtensiveState::Result {
 
   __PACKAGE__->meta->make_immutable;
 
-}
+};
 
 1;
 

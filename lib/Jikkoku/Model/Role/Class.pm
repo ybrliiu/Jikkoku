@@ -15,9 +15,6 @@ package Jikkoku::Model::Role::Class {
 
   with 'Jikkoku::Model::Role::Base';
 
-  # methods
-  requires qw( get_all_with_result );
-
   around prepare => sub {
     my ($orig, $class) = @_;
     my $dir_name = $class->NAMESPACE =~ s!::!/!gr;
@@ -51,6 +48,16 @@ package Jikkoku::Model::Role::Class {
   sub delete { q{Can't delete.} }
 
   sub get_with_option { q{Can't call get_with_option} }
+
+  sub get_all {
+    my $self = shift;
+    [ map { $self->get($_) } @{ $self->MODULES } ];
+  }
+
+  sub get_all_with_result {
+    my $self = shift;
+    $self->result_class->new(data => $self->get_all);
+  }
 
   sub result_class {
     my $class = ref $_[0] || $_[0];

@@ -44,12 +44,6 @@ package Jikkoku::Class::Chara::Soldier {
     }
   }
 
-  sub can_move {
-    my ($self, $move_node) = @_;
-    Carp::croak 'few argments($move_node)' if @_ < 2;
-    $self->move_point - $move_node->cost($self->chara) >= 0;
-  }
-
   sub charge_move_point {
     my ($self, $charge_time) = @_;
     Carp::croak 'few argments($charge_time)' if @_ < 2;

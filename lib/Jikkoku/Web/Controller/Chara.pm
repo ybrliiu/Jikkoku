@@ -20,7 +20,7 @@ package Jikkoku::Web::Controller::Chara {
     }
     $battle_map->set_charactors($self->chara_model, $self->chara);
     $battle_map->set_can_move({
-      chara       => $self->chara->chara,
+      chara       => $self->chara,
       chara_model => $self->chara_model,
       town_model  => $town_model,
     });

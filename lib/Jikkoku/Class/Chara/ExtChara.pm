@@ -173,14 +173,14 @@ package Jikkoku::Class::Chara::ExtChara {
 
   has 'extensive_states' => (
     is      => 'ro',
-    isa     => 'Jikkoku::Model::ExtensiveState',
+    isa     => 'Jikkoku::Model::ExtensiveState::Result',
     lazy    => 1,
     default => sub {
       my $self = shift;
       $self->load_model('ExtensiveState')->new(
         chara         => $self->chara,
         chara_soldier => $self->soldier,
-      );
+      )->get_all_with_result;
     },
   );
 

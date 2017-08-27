@@ -204,19 +204,15 @@ package Jikkoku::Class::Chara {
     default   => sub { Jikkoku::Class::Role::TextData::HashContainer->new },
   );
 
-  has 'states' => ( is => 'ro', isa => 'Jikkoku::Model::State::Result', lazy => 1, default => sub { Jikkoku::Model::State->new(chara => $_[0])->get_all_with_result } );
   has 'skills' => ( is => 'ro', isa => 'Jikkoku::Model::Skill', lazy => 1, default => sub { Jikkoku::Model::Skill->new(chara => $_[0]) } );
 
-  has 'extensive_states' => (
+  has 'states' => (
     is      => 'ro',
-    isa     => 'Jikkoku::Model::ExtensiveState',
+    isa     => 'Jikkoku::Model::State::Result',
     lazy    => 1,
     default => sub {
       my $self = shift;
-      Jikkoku::Model::ExtensiveState->new(
-        chara         => $self,
-        chara_soldier => $self->soldier,
-      );
+      Jikkoku::Model::State->new( chara => $self )->get_all_with_result;
     },
   );
 

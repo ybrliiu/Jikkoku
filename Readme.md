@@ -1,16 +1,50 @@
 
 # やること
 
-calc_success_ratio Class::Skillの方にいる
+CharaPower
+- 状態によるステータスの変化
+
+  * 非Mouse Class 書き換え
+  * Role::Tiny 使用クラスを書き換え
+
+  * Model::Skill, SkillCategory Result, Role::Classの使用, adjust_* の別クラスへの分離
+
+  * Confuse take_bonus_for_giver を別クラスとして切り出し
+  * 残りの状態(計数攻撃, 筋斗雲, 攻撃力上昇, 守備力上昇, 進撃)の実装
+
+- スキルによるステータスの変化
+  (
+    純粋なスキル
+    陣形所有の
+    武器所有の
+    書物所有の
+    防具所有の
+  )
+- 戦闘モードによるステータスの変化
+
+
+Battle 攻城戦は拡張した別クラスで？
+
+stuck skill つかえるようになっていない
+
+c::BattleMap
+
+C::Chara set value exception & use trigger
+
+戦闘の相手プレイヤー選択部分に掩護を適用, hook_battle_build_target Roleを作成
+
+Chara::Profile 作り直し-
+
+Role::Loader util に関数として作成したほうが良い?. (load_class, ...)
+
+戦闘コマンドの作成
+
+BattleMap can_move service利用
 
 battle map の作成
 
-Model::* の Mouse化, 設計再構築(特に Chara::*
-Role::Diplomacy Role::Tiny -> Mouse
 Model::Role::TextData::Integration::Expires
 
-Skill Model はキャッシュ有りでいいような気がしてきた(もう少し考える)
-chara_model 新仕様のメソッドに切り替えてく
 Chara::Soldier の利用
 
 # 最終目標
@@ -55,7 +89,6 @@ class 単位で分割されている場合
 object に対して lock -> commit or abort
 
 # 設置方法
-
 * Mouse は鯖上でコンパイル
 * perl Build.PL
 * ./Build
@@ -68,7 +101,6 @@ object に対して lock -> commit or abort
 * qw// -> qw( ) (関数、メソッド)
 * Mouse化!! (Class::TextData HashField も書き換えつつ)
   & ファイルを取り扱うロールのようなもの -> Base::TextData::Divison 相当, Modelにも使用可能
-* Model::Player をちゃんとインスタンス化させる(全部)
 * Diplomacy の year を elapsed_year に変更する(誤解をさけるため)
 * scssの整理
 * Jikkoku::Rooter Nodeオブジェクトに直接デフォルトルートを書き込む

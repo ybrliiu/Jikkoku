@@ -146,7 +146,10 @@ package Jikkoku::Class::BattleMap {
       if (my $e = $@) {
         next;
       } else {
-        $move_node->can_move_direction($direction) if $args->{chara}->soldier->can_move($move_node);
+        # soldier can_move
+        if ( $args->{chara}->soldier->move_point - $move_node->cost($args->{chara}) >= 0 ) {
+          $move_node->can_move_direction($direction);
+        }
       }
     }
   }

@@ -66,7 +66,7 @@ package Jikkoku::Service::Skill::Protect::Protect {
       $is_success = $self->determine_whether_succeed;
       if ($is_success) {
         my $extensive_state_model = $self->model('ExtensiveState')->new({
-          chara         => $chara->chara,
+          chara         => $chara,
           chara_soldier => $chara->soldier,
           record_model  => $extensive_state_record_model,
         });
