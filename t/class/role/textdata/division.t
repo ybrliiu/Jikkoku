@@ -29,7 +29,7 @@ package Player {
   has 'country_id'       => ( metaclass => 'Column', is => 'rw', isa => 'Int', required => 1 );
   has 'money'            => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
   has 'rice'             => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
-  has 'contribute'       => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
+  has 'contribute'       => ( metaclass => 'Column', is => 'rw', isa => 'Num', default  => 0 );
   has 'class'            => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 1 );
   has 'weapon_power'     => ( metaclass => 'Column', is => 'rw', isa => 'Num', default  => 0 );
   has 'book_power'       => ( metaclass => 'Column', is => 'rw', isa => 'Num', default  => 0 );
