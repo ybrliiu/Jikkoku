@@ -1,34 +1,40 @@
 package Jikkoku::Model::LoginList {
 
+  use Mouse;
   use Jikkoku;
-  use parent 'Jikkoku::Model::Base::TextData::Integration::Expires';
-
-  use Jikkoku::Class::LoginList;
 
   use constant {
-    CLASS       => 'Jikkoku::Class::LoginList',
-    FILE_PATH   => 'log_file/guest.cgi',
-    EXPIRE_TIME => 180,
+    FILE_PATH         => 'log_file/guest.cgi',
+    INFLATE_TO        => 'Jikkoku::Class::LoginList',
+    EXPIRE_TIME       => 180,
+    PRIMARY_ATTRIBUTE => 'name',
   };
 
-  sub new {
-    my ($class, @args) = @_;
-    my $self = $class->SUPER::new(@_);
-    $self->update;
-    $self;
-  };
+  with qw(
+    Jikkoku::Model::Role::TextData::Integration
+    Jikkoku::Model::Role::Integration::Expires
+  );
 
   sub add {
     my ($self, $chara) = @_;
-    my $obj = CLASS->new("@{[ time + EXPIRE_TIME ]}<>@{[ $chara->name ]}<>@{[ $chara->country_id ]}<>@{[ $chara->town_id ]}");
-    my $primary_key = CLASS->PRIMARY_KEY;
-    $self->{data}{ $chara->$primary_key } = $obj;
+    Carp::croak 'few arguments($chara)' if @_ < 2;
+    my $obj = $self->INFLATE_TO->new({
+      time         => time + $self->EXPIRE_TIME,
+      name         => $chara->name,
+      country_id   => $chara->country_id,
+      town_id      => $chara->town_id,
+    });
+    $self->data->{ $chara->name } = $obj;
   }
 
   sub get_by_country_id {
     my ($self, $country_id) = @_;
-    [ grep { $_->country_id eq $country_id } values %{ $self->{data} } ];
+    Carp::croak 'few arguments($country_id)' if @_ < 2;
+    [ grep { $_->country_id eq $country_id } values %{ $self->data } ];
   }
+
+  __PACKAGE__->prepare;
+  __PACKAGE__->meta->make_immutable;
 
 }
 
