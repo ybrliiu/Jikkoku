@@ -33,7 +33,7 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Reque
   sub declare_war {
     my $self = shift;
   
-    my $now_game_date = $self->model('GameDate')->new->get;
+    my $now_game_date = $self->class('GameDate')->new;
     my ($select_year, $select_month) = split /,/, $self->param('sel');
     my $start_game_date = $self->class('GameDate')->new({
       elapsed_year => $select_year,

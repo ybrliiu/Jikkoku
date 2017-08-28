@@ -1,31 +1,28 @@
-use v5.14;
-use warnings;
+use Jikkoku;
 use Test::More;
 use Test::Exception;
 
-my $CLASS = 'Jikkoku::Model::GameDate';
-use_ok $CLASS;
-ok(my $model = $CLASS->new );
+use_ok 'Jikkoku::Class::GameDate';
+ok(my $game_date = Jikkoku::Class::GameDate->new);
 
-my $game_date = $model->get;
 my $month = $game_date->month;
 ok $game_date->month( $month + 1 );
-ok $model->save;
-
+ok $game_date->save;
 is $game_date->month, $month + 1;
+
 ok $game_date->month( $month );
 ok $game_date->date;
 is $game_date->map_bg_color, '#60AF60';
-ok $model->save;
+ok $game_date->save;
 
 subtest 'init' => sub {
-  ok $model->init("2017年1月11日19時");
+  ok $game_date->init("2017年1月11日19時");
   is $game_date->month, 0;
   is $game_date->elapsed_year, 0;
   is $game_date->time, 1484127600;
 };
 
-ok $game_date->month( 1 );
+ok $game_date->month(1);
 
 subtest 'set month' => sub {
   my ($origin_year, $origin_month) = ($game_date->year, $game_date->month);

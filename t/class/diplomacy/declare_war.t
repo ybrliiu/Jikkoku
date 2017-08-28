@@ -1,19 +1,17 @@
-use v5.14;
-use warnings;
+use Jikkoku;
 use Test::More;
 use Test::Exception;
-use Test::Name::FromLine;
+
+use Jikkoku::Model::Country;
+use Jikkoku::Model::GameDate;
 
 my $CLASS = 'Jikkoku::Class::Diplomacy::DeclareWar';
 use_ok $CLASS;
 
-require Jikkoku::Model::Country;
 my $country_model = Jikkoku::Model::Country->new;
-require Jikkoku::Model::GameDate;
 my $now_game_date = Jikkoku::Model::GameDate->new->get;
 
 subtest not_accpted => sub {
-  require Jikkoku::Model::GameDate;
   my $start_game_date = Jikkoku::Class::GameDate->new({
     elapsed_year => 10,
     month        => 3,

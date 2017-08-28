@@ -219,12 +219,18 @@ sub KINTOUN {
 }
 
 # 状態による消費移動ポイントの調整
+use Jikkoku::Service::States::AdjustMoveCost::AdjustMoveCost;
+use Jikkoku::Class::Chara::ExtChara;
 our @skl_lib_move_cost_adjusted_by_states;
+
 sub skl_lib_adjust_state_move_cost {
   my ($x, $y, $chara, $time) = @_;
   my $terrain = $BM_TIKEI[$y][$x];
   if ( !$skl_lib_move_cost_adjusted_by_states[$terrain] ) {
-    $CAN_MOVE[$terrain] += $chara->states->adjust_move_cost( $CAN_MOVE[$terrain] );
+    $CAN_MOVE[$terrain] += Jikkoku::Service::States::AdjustMoveCost::AdjustMoveCost->new({
+      origin_cost => $CAN_MOVE[$terrain],
+      chara       => Jikkoku::Class::Chara::ExtChara->new(chara => $chara),
+    })->adjust_move_cost;
     $skl_lib_move_cost_adjusted_by_states[$terrain] = 1;
   }
 }
