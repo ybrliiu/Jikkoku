@@ -1,25 +1,31 @@
 package Jikkoku::Class::Unit {
 
+  use Mouse;
   use Jikkoku;
-  use Class::Accessor::Lite new => 0;
-  use parent 'Jikkoku::Class::Base::TextData';
 
-  use constant {
-    PRIMARY_KEY => 'member_id',
-    COLUMNS     => [qw/
-      id name country_id
-      member_is_leader member_id member_name member_icon
-      message join_permit base_town auto_gather
-    /],
-  };
+  with 'Jikkoku::Class::Role::TextData';
+
+  has 'id'               => ( metaclass => 'Column', is => 'ro', isa => 'Str',  required => 1 );
+  has 'name'             => ( metaclass => 'Column', is => 'rw', isa => 'Str',  required => 1 );
+  has 'country_id'       => ( metaclass => 'Column', is => 'rw', isa => 'Int',  required => 1 );
+  has 'is_member_leader' => ( metaclass => 'Column', is => 'rw', isa => 'Bool', required => 1 );
+  has 'member_id'        => ( metaclass => 'Column', is => 'ro', isa => 'Str',  required => 1 );
+  has 'member_name'      => ( metaclass => 'Column', is => 'rw', isa => 'Str',  required => 1 );
+  has 'member_icon'      => ( metaclass => 'Column', is => 'rw', isa => 'Int',  required => 1 );
+  has 'message'          => ( metaclass => 'Column', is => 'rw', isa => 'Str',  default  => '' );
+  has 'can_join'         => ( metaclass => 'Column', is => 'rw', isa => 'Bool', default  => 0 );
+  has 'base_town_id'     => ( metaclass => 'Column', is => 'rw', isa => 'Int',  required => 1 );
+  has 'is_auto_gather_available' =>
+    ( metaclass => 'Column', is => 'rw', isa => 'Bool', default => 0 );
 
   sub is_leader {
-    my ($self) = @_;
-    $self->{member_is_leader};
+    my $self = shift;
+    $self->is_member_leader;
   }
 
-  Class::Accessor::Lite->mk_accessors(@{ COLUMNS() });
+  __PACKAGE__->meta->make_immutable;
 
 }
 
 1;
+

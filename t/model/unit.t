@@ -1,5 +1,4 @@
-use v5.14;
-use warnings;
+use Jikkoku;
 use Test::More;
 use Test::Exception;
 
@@ -8,19 +7,15 @@ use_ok $CLASS;
 
 ok(my $model = $CLASS->new);
 
-{
-  my $member_id = 'ybrliiu';
+my $member_id = 'ybrliiu';
 
-  ok( my $unit = $model->get($member_id) );
-  $unit->join_permit(1);
-  ok $model->save;
+ok( my $unit = $model->get($member_id) );
+$unit->can_join(1);
+ok $model->save;
 
-  ok $model->refetch;
-  ok( $unit = $model->get($member_id) );
-  is $unit->join_permit, 1;
-  $unit->join_permit(0);
-  ok $model->save;
-
-}
+ok( $unit = $model->get($member_id) );
+is $unit->can_join, 1;
+$unit->can_join(0);
+ok $model->save;
 
 done_testing;
