@@ -16,12 +16,6 @@ package Jikkoku::Model::Letter {
 
   with 'Jikkoku::Model::Role::TextData::List';
 
-  sub add {
-    my ($self, $args) = @_;
-    my $letter = $self->INFLATE_TO->new($args);
-    unshift @{ $self->data }, $letter;
-  }
-
   sub add_country_letter {
     my ($self, $args) = @_;
     validate_values $args => [qw/ sender receive_country message /];

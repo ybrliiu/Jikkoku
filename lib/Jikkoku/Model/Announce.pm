@@ -1,30 +1,26 @@
 package Jikkoku::Model::Announce {
 
+  use Mouse;
   use Jikkoku;
-  use parent 'Jikkoku::Model::Base::TextData::List';
-
-  use Jikkoku::Util qw( year_month_day validate_values );
+  use Jikkoku::Util qw( validate_values );
 
   use constant {
-    FILE_PATH => 'log_file/announce_log.txt',
-    COLUMNS   => [qw( message time )],
-    MAX       => 1000,
+    MAX        => 1000,
+    FILE_PATH  => 'log_file/announce_log.txt',
+    INFLATE_TO => 'Jikkoku::Class::Announce',
   };
 
-  sub add {
-    my ($self, $message) = @_;
-    unshift @{ $self->{data} }, +{
-      message => $message,
-      time    => year_month_day(),
-    };
-    $self;
-  }
+  with 'Jikkoku::Model::Role::TextData::List';
 
-  sub add_by_hash {
-    my ($self, $args) = @_;
-    validate_values $args => $self->COLUMNS;
-    unshift @{ $self->{data} }, $args;
+  sub add_by_message {
+    my ($self, $message) = @_;
+    Carp::croak 'few arguments($message)' if @_ < 2;
+    $self->add({message => $message});
   }
+  
+  __PACKAGE__->prepare;
+
+  __PACKAGE__->meta->make_immutable;
 
 }
 

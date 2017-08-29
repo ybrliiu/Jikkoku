@@ -12,6 +12,13 @@ package Jikkoku::Model::Role::List {
 
   with 'Jikkoku::Model::Role::Base';
 
+  sub add {
+    my ($self, $args) = @_;
+    my $letter = $self->INFLATE_TO->new($args);
+    unshift @{ $self->data }, $letter;
+    $self;
+  }
+
   sub get {
     my ($self, $limit) = @_;
     Carp::croak 'few arguments($limit)' if @_ < 2;
