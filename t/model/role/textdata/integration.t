@@ -18,6 +18,10 @@ package Jikkoku::Model::Country {
 
   with 'Jikkoku::Model::Role::TextData::Integration';
 
+  __PACKAGE__->prepare;
+
+  __PACKAGE__->meta->make_immutable
+
 }
 
 my $country_model;

@@ -24,13 +24,14 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Base 
 
   has 'country' => (
     is => 'ro',
-    isa => 'Jikkoku::Class::Country',
+    isa => 'Jikkoku::Class::Country::ExtCountry',
     lazy => 1,
     default => sub {
       my $self = shift;
-      $self->country_model
+      my $country = $self->country_model
         ->get_with_option( $self->chara->country_id )
         ->get_or_else( $self->country_model->neutral );
+      $self->class('Country::ExtCountry')->new(country => $country);
     },
   );
 
@@ -62,7 +63,7 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Base 
       if length $self->param('sei') > MESSAGE_MAX_LEN;
 
     $self->render_error("君主、軍師、宰相でなければ実行できません。")
-      unless $self->country->is_chara_headquarters( $self->chara->id );
+      unless $self->country->is_chara_headquarters( $self->chara );
 
   }
 

@@ -4,7 +4,7 @@ package Jikkoku::Model::Role::Storable::Integration {
   use Jikkoku;
 
   with qw(
-    Jikkoku::Role::FileHandler::Storable
+    Jikkoku::Model::Role::Storable::FileHandler
     Jikkoku::Model::Role::Integration
   );
 

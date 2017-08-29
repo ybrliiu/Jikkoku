@@ -1,9 +1,9 @@
-package Jikkoku::Role::FileHandler::TextData {
+package Jikkoku::Model::Role::TextData::FileHandler {
 
   use Mouse::Role;
   use Jikkoku;
 
-  with 'Jikkoku::Role::FileHandler';
+  with 'Jikkoku::Model::Role::FileHandler';
 
   has 'textdata_list' => ( is => 'rw', isa => 'ArrayRef', required => 1 );
 
@@ -30,28 +30,9 @@ package Jikkoku::Role::FileHandler::TextData {
     $self->data( $self->_textdata_list_to_objects_data( $textdata_list) );
   }
 
-  sub write : method {
-    my $self = shift;
-    $_->update_textdata for values %{ $self->data };
-    $self->fh->print( @{ $self->_objects_data_to_textdata_list } );
-  }
-
-  sub _objects_data_to_textdata_list {
-    my $self = shift;
-    [ map { ${ $_->textdata } } values %{ $self->data } ];
-  }
-
   sub abort {
     my $self = shift;
     $self->data( $self->_textdata_list_to_objects_data( $self->textdata_list ) );
-  }
-
-  sub save {
-    my $self = shift;
-    $_->update_textdata for values %{ $self->data };
-    open(my $fh, '>', $self->file_path);
-    $fh->print( @{ $self->_objects_data_to_textdata_list } );
-    $fh->close;
   }
 
   sub init {

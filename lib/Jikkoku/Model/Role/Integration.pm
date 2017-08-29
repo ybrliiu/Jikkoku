@@ -2,31 +2,11 @@ package Jikkoku::Model::Role::Integration {
 
   use Mouse::Role;
   use Jikkoku;
-
   use Option;
-  use Module::Load;
 
   has 'data' => ( is => 'rw', isa => 'HashRef', required => 1 );
 
   with 'Jikkoku::Model::Role::Base';
-
-  requires qw( FILE_PATH open_data init );
-
-  sub file_path { shift->FILE_PATH }
-
-  around BUILDARGS => sub {
-    my ($orig, $class) = @_;
-    state $load_flag = {};
-    if (!$load_flag->{$class}) {
-      no strict 'refs';
-      unless ( %{$class->INFLATE_TO . '::'} ) {
-        use strict 'refs';
-        Module::Load::load $class->INFLATE_TO;
-        $load_flag->{$class} = 1;
-      }
-    }
-    $class->$orig( $class->open_data );
-  };
 
   sub get {
     my ($self, $primary_attribute_value) = @_;

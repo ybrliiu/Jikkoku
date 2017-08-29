@@ -22,7 +22,7 @@ subtest 'add_country_letter' => sub {
     message         => $message,
   });
   ok( my $letter = $model->get(1)->[0] );
-  is $letter->{message}, $message;
+  is $letter->message, $message;
 };
 
 done_testing;

@@ -41,6 +41,7 @@ package Jikkoku::Web::Controller::Chara::Country::Headquarters::Diplomacy::Withd
       message         => qq{<span style="color: #ff6600"><strong>【${delete_diplomacy_name}</strong></span>}
         . "@{[ $self->country->name ]}は@{[ $target_country->name ]}との${delete_diplomacy_name}を終了しました。<br>",
     });
+    $self->letter_model->save;
 
     $self->render('chara/result.pl', {message => $delete_diplomacy_name . 'を取り消しました。'});
   }

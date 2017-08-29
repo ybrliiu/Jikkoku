@@ -90,7 +90,7 @@ package Jikkoku::Class::Country {
   sub is_chara_headquarters {
     my ($self, $chara_id) = @_;
     Carp::croak 'few arguments($chara_id)' if @_ < 2;
-    grep { $self->$_ eq $chara_id } @HEADQUARTERS_ID;
+    grep { warn $self->$_; $self->$_ eq $chara_id } @HEADQUARTERS_ID;
   }
 
   sub is_chara_has_position {

@@ -1,11 +1,11 @@
-package Jikkoku::Role::FileHandler::Storable {
+package Jikkoku::Model::Role::Storable::FileHandler {
 
   use Mouse::Role;
   use Jikkoku;
 
   use Storable ();
 
-  with 'Jikkoku::Role::FileHandler';
+  with 'Jikkoku::Model::Role::FileHandler';
 
   sub _default_data { +{} }
   
