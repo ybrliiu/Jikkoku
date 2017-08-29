@@ -8,7 +8,7 @@ package Jikkoku::Class::Chara::BattleLog {
     DIR_PATH => 'charalog/blog/',
   };
 
-  with 'Jikkoku::Class::Role::Logger';
+  with 'Jikkoku::Class::Role::Logger::Division';
 
   __PACKAGE__->meta->make_immutable;
 

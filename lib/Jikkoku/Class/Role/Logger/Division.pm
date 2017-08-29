@@ -1,4 +1,4 @@
-package Jikkoku::Class::Role::Logger {
+package Jikkoku::Class::Role::Logger::Division {
 
   use Mouse::Role;
   use Jikkoku;

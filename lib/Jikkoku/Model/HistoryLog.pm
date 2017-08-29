@@ -1,12 +1,16 @@
 package Jikkoku::Model::HistoryLog {
 
+  use Mouse;
   use Jikkoku;
-  use parent 'Jikkoku::Model::Base::TextData::Log::Integration';
+
+  with 'Jikkoku::Model::Role::Logger::Single';
 
   use constant {
     MAX       => 200,
     FILE_PATH => 'log_file/map_log2.cgi',
   };
+
+  __PACKAGE__->meta->make_immutable;
 
 }
 

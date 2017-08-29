@@ -8,7 +8,7 @@ package Jikkoku::Class::Chara::CommandLog {
     DIR_PATH => 'charalog/log/',
   };
 
-  with 'Jikkoku::Class::Role::Logger';
+  with 'Jikkoku::Class::Role::Logger::Division';
 
   __PACKAGE__->meta->make_immutable;
 
