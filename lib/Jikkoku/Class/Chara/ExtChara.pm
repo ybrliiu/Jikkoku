@@ -108,6 +108,26 @@ package Jikkoku::Class::Chara::ExtChara {
     },
   );
 
+  has 'profile_model' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Model::Chara::Profile',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->load_model('Chara::Profile')->new;
+    },
+  );
+
+  has 'profile' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Class::Chara::Profile',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->profile_model->get( $self->id );
+    },
+  );
+
   has 'country' => (
     is      => 'ro',
     isa     => 'Jikkoku::Class::Country::ExtCountry',

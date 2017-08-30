@@ -340,8 +340,8 @@ package Jikkoku::Class::Chara {
   }
 
   sub profile {
-    my ($self) = @_;
-    Jikkoku::Model::Chara::Profile->new($self->id)->get;
+    my $self = shift;
+    Jikkoku::Model::Chara::Profile->new->get($self->id);
   }
 
   __PACKAGE__->_generate_save_log_method;
