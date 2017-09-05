@@ -7,9 +7,10 @@ CharaPower
   * 非Mouse Class 書き換え
   * Role::Tiny 使用クラスを書き換え
 
+  * やっぱLoggerは全部Modelに
+
   * Model::Skill, SkillCategory Result, Role::Classの使用, adjust_* の別クラスへの分離
 
-  * Confuse take_bonus_for_giver を別クラスとして切り出し
   * 残りの状態(計数攻撃, 筋斗雲, 攻撃力上昇, 守備力上昇, 進撃)の実装
 
 - スキルによるステータスの変化
@@ -21,7 +22,6 @@ CharaPower
     防具所有の
   )
 - 戦闘モードによるステータスの変化
-
 
 Battle 攻城戦は拡張した別クラスで？
 
