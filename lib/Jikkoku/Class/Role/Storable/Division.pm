@@ -8,7 +8,7 @@ package Jikkoku::Class::Role::Storable::Division {
 
   with qw(
     Jikkoku::Role::FileHandler
-    Jikkoku::Class::Role::Division
+    Jikkoku::Role::FileHandler::Division
   );
   
   around BUILDARGS => sub {

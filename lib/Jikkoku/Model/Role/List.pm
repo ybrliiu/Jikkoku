@@ -6,8 +6,6 @@ package Jikkoku::Model::Role::List {
   # constants
   requires qw( MAX );
 
-  sub PRIMARY_ATTRIBUTE() {}
-
   has 'data' => ( is => 'rw', isa => 'ArrayRef', required => 1 );
 
   with 'Jikkoku::Model::Role::Base';
@@ -32,7 +30,7 @@ package Jikkoku::Model::Role::List {
   sub delete {
     my ($self, $index) = @_;
     Carp::croak 'few arguments($index)' if @_ < 2;
-    splice (@{ $self->data}, $index, 1);
+    splice (@{ $self->data }, $index, 1);
   }
 
 }

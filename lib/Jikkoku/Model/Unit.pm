@@ -9,7 +9,7 @@ package Jikkoku::Model::Unit {
     PRIMARY_ATTRIBUTE => 'member_id',
   };
 
-  with 'Jikkoku::Model::Role::TextData::Integration';
+  with 'Jikkoku::Model::Role::TextData::General::Integration';
 
   # 無所属
   sub neutral {

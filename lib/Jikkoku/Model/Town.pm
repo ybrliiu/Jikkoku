@@ -37,7 +37,7 @@ package Jikkoku::Model::Town {
     },
   );
 
-  with 'Jikkoku::Model::Role::TextData::Integration';
+  with 'Jikkoku::Model::Role::TextData::General::Integration';
 
   around _objects_data_to_textdata_list => sub {
     my ($orig, $self) = @_;

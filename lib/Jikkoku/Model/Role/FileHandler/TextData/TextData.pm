@@ -1,9 +1,7 @@
-package Jikkoku::Model::Role::TextData::FileHandler {
+package Jikkoku::Model::Role::FileHandler::TextData::TextData {
 
   use Mouse::Role;
   use Jikkoku;
-
-  with 'Jikkoku::Model::Role::FileHandler';
 
   has 'textdata_list' => ( is => 'rw', isa => 'ArrayRef', required => 1 );
 
@@ -14,7 +12,8 @@ package Jikkoku::Model::Role::TextData::FileHandler {
 
   sub open_data {
     my $class = shift;
-    open(my $fh, '<', $class->file_path) or throw("file open error" . $class->file_path, $!);
+    open(my $fh, '<', $class->file_path(@_))
+      or Jikkoku::Role::FileHandlerException->throw("file open error" . $class->file_path(@_), $!);
     my $textdata_list = extract_textdata($fh);
     $fh->close;
     (
@@ -37,7 +36,7 @@ package Jikkoku::Model::Role::TextData::FileHandler {
 
   sub init {
     my $class = shift;
-    open(my $fh, '>', $class->file_path)
+    open(my $fh, '>', $class->file_path(@_))
       or Jikkoku::Role::FileHandlerException->throw("file open error", $!);
     $fh->print();
     $fh->close;

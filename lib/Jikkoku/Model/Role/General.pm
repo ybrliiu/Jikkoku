@@ -1,4 +1,4 @@
-package Jikkoku::Model::Role::Integration {
+package Jikkoku::Model::Role::General {
 
   use Mouse::Role;
   use Jikkoku;

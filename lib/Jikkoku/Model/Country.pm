@@ -11,7 +11,7 @@ package Jikkoku::Model::Country {
     PRIMARY_ATTRIBUTE => 'id',
   };
 
-  with 'Jikkoku::Model::Role::TextData::Integration';
+  with 'Jikkoku::Model::Role::TextData::General::Integration';
 
   # 無所属国のデータ
   sub neutral {

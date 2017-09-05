@@ -9,7 +9,7 @@ package Jikkoku::Model::Chara::AutoModeList {
     PRIMARY_ATTRIBUTE => '',
   };
 
-  with 'Jikkoku::Model::Role::TextData::Integration';
+  with 'Jikkoku::Model::Role::TextData::General::Integration';
 
   sub add {
     my ($self, $id) = @_;

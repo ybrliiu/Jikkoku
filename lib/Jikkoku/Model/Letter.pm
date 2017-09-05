@@ -14,7 +14,7 @@ package Jikkoku::Model::Letter {
     UNIT => 333,
   };
 
-  with 'Jikkoku::Model::Role::TextData::List';
+  with 'Jikkoku::Model::Role::TextData::List::Integration';
 
   sub add_country_letter {
     my ($self, $args) = @_;

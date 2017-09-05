@@ -6,7 +6,7 @@ package Jikkoku::Class::Role::TextData::Division {
 
   with qw(
     Jikkoku::Class::Role::TextData::FileHandler
-    Jikkoku::Class::Role::Division
+    Jikkoku::Role::FileHandler::Division
   );
 
   # $textdata -> $id

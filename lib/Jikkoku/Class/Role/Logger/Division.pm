@@ -9,7 +9,7 @@ package Jikkoku::Class::Role::Logger::Division {
 
   with qw(
     Jikkoku::Role::Logger
-    Jikkoku::Class::Role::Division
+    Jikkoku::Role::FileHandler::Division
   );
 
   sub hook_logger_build_args {

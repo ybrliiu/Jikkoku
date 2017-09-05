@@ -2,7 +2,7 @@ use Jikkoku;
 use Test::More;
 use Test::Exception;
 
-my $CLASS = 'Jikkoku::Model::Role::TextData::Integration';
+my $CLASS = 'Jikkoku::Model::Role::TextData::General::Integration';
 use_ok $CLASS;
 
 package Jikkoku::Model::Country {
@@ -16,7 +16,7 @@ package Jikkoku::Model::Country {
     PRIMARY_ATTRIBUTE => 'id',
   };
 
-  with 'Jikkoku::Model::Role::TextData::Integration';
+  with 'Jikkoku::Model::Role::TextData::General::Integration';
 
   __PACKAGE__->prepare;
 

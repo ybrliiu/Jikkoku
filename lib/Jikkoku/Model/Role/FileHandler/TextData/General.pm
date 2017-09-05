@@ -1,12 +1,9 @@
-package Jikkoku::Model::Role::TextData::Integration {
+package Jikkoku::Model::Role::FileHandler::TextData::General {
 
   use Mouse::Role;
   use Jikkoku;
 
-  with qw(
-    Jikkoku::Model::Role::TextData::FileHandler
-    Jikkoku::Model::Role::Integration
-  );
+  with 'Jikkoku::Model::Role::FileHandler::TextData::TextData';
 
   sub _textdata_list_to_objects_data {
     my ($class, $textdata_list) = @_;

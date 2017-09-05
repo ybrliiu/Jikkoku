@@ -23,11 +23,7 @@ package Jikkoku::Model::Role::Division {
   around prepare => sub {
     my ($orig, $class) = @_;
     $class->$orig();
-    state $load_flag = {};
-    if (!$load_flag->{$class}) {
-      Module::Load::load $class->result_class unless Jikkoku::Util::is_module_loaded($class->result_class);
-      $load_flag->{$class} = 1;
-    }
+    Module::Load::load($class->result_class) unless Jikkoku::Util::is_module_loaded($class->result_class);
   };
 
   sub result_class {
@@ -109,8 +105,9 @@ package Jikkoku::Model::Role::Division {
 
   sub create {
     my $self = shift;
-    my %args = ref $_[0] eq 'HASH' ? $_[0] : @_;
-    $self->INFLATE_TO->new(\%args);
+    my %args = ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
+    my $obj = $self->INFLATE_TO->new(\%args);
+    $obj->save;
   }
 
 }

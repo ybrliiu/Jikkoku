@@ -10,7 +10,7 @@ package Jikkoku::Model::ExtensiveStateRecord {
     PRIMARY_ATTRIBUTE => 'key',
   };
 
-  with 'Jikkoku::Model::Role::Storable::Integration';
+  with 'Jikkoku::Model::Role::Storable::General::Integration';
 
   sub add {
     my $self = shift;

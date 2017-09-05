@@ -1,12 +1,9 @@
-package Jikkoku::Model::Role::TextData::List {
+package Jikkoku::Model::Role::FileHandler::TextData::List {
 
   use Mouse::Role;
   use Jikkoku;
 
-  with qw(
-    Jikkoku::Model::Role::TextData::FileHandler
-    Jikkoku::Model::Role::List
-  );
+  with 'Jikkoku::Model::Role::FileHandler::TextData::TextData';
 
   sub _textdata_list_to_objects_data {
     my ($class, $textdata_list) = @_;
@@ -16,15 +13,19 @@ package Jikkoku::Model::Role::TextData::List {
   sub write : method {
     my $self = shift;
     $_->update_textdata for @{ $self->data };
-    $self->fh->print( @{ $self->_objects_data_to_textdata_list } );
+    my @data = @{ $self->_objects_data_to_textdata_list };
+    splice @data, $self->MAX;
+    $self->fh->print(@data);
   }
 
   sub save {
     my $self = shift;
-    $_->update_textdata for @{ $self->data };
     open(my $fh, '>', $self->file_path);
-    $fh->print( @{ $self->_objects_data_to_textdata_list } );
+    $self->fh($fh);
+    $self->write;
     $fh->close;
+    $self->fh(undef);
+    1;
   }
 
   sub _objects_data_to_textdata_list {

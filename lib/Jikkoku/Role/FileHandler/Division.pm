@@ -1,4 +1,4 @@
-package Jikkoku::Class::Role::Division {
+package Jikkoku::Role::FileHandler::Division {
 
   use Mouse::Role;
   use Jikkoku;

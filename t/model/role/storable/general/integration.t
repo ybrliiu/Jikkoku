@@ -2,7 +2,7 @@ use Jikkoku;
 use Test::More;
 use Test::Exception;
 
-use_ok 'Jikkoku::Model::Role::Storable::Integration';
+use_ok 'Jikkoku::Model::Role::Storable::General::Integration';
 
 package Jikkoku::Class::Country {
 
@@ -30,7 +30,7 @@ package Jikkoku::Model::Country {
     PRIMARY_ATTRIBUTE => 'id',
   };
 
-  with 'Jikkoku::Model::Role::Storable::Integration';
+  with 'Jikkoku::Model::Role::Storable::General::Integration';
 
   __PACKAGE__->meta->make_immutable;
 

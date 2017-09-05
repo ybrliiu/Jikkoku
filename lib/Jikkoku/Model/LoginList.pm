@@ -11,7 +11,7 @@ package Jikkoku::Model::LoginList {
   };
 
   with qw(
-    Jikkoku::Model::Role::TextData::Integration
+    Jikkoku::Model::Role::TextData::General::Integration
     Jikkoku::Model::Role::Integration::Expires
   );
 

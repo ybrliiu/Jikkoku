@@ -1,15 +1,14 @@
-package Jikkoku::Model::Role::Storable {
+package Jikkoku::Model::Role::FileHandler::Storable::General {
 
   use Mouse::Role;
   use Jikkoku;
-
   use Storable ();
 
   sub _default_data { +{} }
   
   sub open_data {
     my $class = shift;
-    open(my $fh, '<', $class->file_path) or throw("file open error", $!);
+    open(my $fh, '<', $class->file_path(@_)) or throw("file open error", $!);
     my $data = Storable::fd_retrieve($fh) or throw("fd_retrieve error", $!);
     $fh->close;
     (data => $data);
@@ -31,8 +30,8 @@ package Jikkoku::Model::Role::Storable {
   # init と統合
   sub make {
     my $class = shift;
-    if ( -f $class->file_path ) {
-      throw($class->file_path . 'is already exist.', 'file is already exist.');
+    if ( -f $class->file_path(@_) ) {
+      throw($class->file_path(@_) . 'is already exist.', 'file is already exist.');
     } else {
       Storable::nstore($class->_default_data, $class->file_path(@_));
     }

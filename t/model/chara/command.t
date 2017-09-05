@@ -1,19 +1,18 @@
-use v5.14;
-use warnings;
+use Jikkoku;
 use Test::More;
 use Test::Exception;
 
 my $CLASS = 'Jikkoku::Model::Chara::Command';
 use_ok $CLASS;
 
-ok( my $model = $CLASS->new('ybrliiu') );
-ok( my $list = $model->get(10) );
+ok( my $model = $CLASS->new );
+ok( my $list = $model->get('ybrliiu')->get(10) );
 is @$list, 10;
 
 my $test_id = 'test_player';
-ok $CLASS->create($test_id);
-ok( $model = $CLASS->new($test_id) );
-is scalar @{ $model->get_all }, $model->MAX;
-ok $model->remove;
+dies_ok { $model->get($test_id) };
+ok $model->create($test_id);
+ok (my $command_record = $model->get($test_id));
+ok $model->delete($test_id);
 
 done_testing;
