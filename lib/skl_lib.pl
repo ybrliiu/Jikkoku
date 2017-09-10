@@ -134,7 +134,9 @@ sub ENGO_SYORI {
   }
 }
 
+use Option;
 use Jikkoku::Model::Chara;
+use Jikkoku::Class::Chara::ExtChara;
 use Jikkoku::Model::MapLog;
 
 sub NEW_ENGO_SYORI {
@@ -143,15 +145,16 @@ sub NEW_ENGO_SYORI {
   return undef if $enemy_id eq "jyouhekisyugohei" || $enemy_id eq ""; 
 
   my $chara_model = Jikkoku::Model::Chara->new;
-  my $my_self = $chara_model->get($my_id);
-  my $enemy   = $chara_model->get($enemy_id);
+  my $my_self = Jikkoku::Class::Chara::ExtChara->new(chara => $chara_model->get($my_id));
+  my $enemy   = Jikkoku::Class::Chara::ExtChara->new(chara => $chara_model->get($enemy_id));
 
-  my $protector = Jikkoku::Model::Chara::Protector->new->is_chara_protected($enemy);
-  return unless defined $protector;
+  my $protect = $my_self->extensive_states->get('Protect');
+  my $result = $protect->override_battle_target($enemy);
+  return unless $result;
 
   ###### GLOBAL VALUES used by battle.pl ########
   # target chara id protector
-  $in{eid} = $protector->id;
+  $in{eid} = $result->giver_id;
   # original target chara is enemy
   $mae_name = $enemy->name;
   # battle.pl 互換性

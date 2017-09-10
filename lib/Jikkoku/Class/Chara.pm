@@ -8,7 +8,6 @@ package Jikkoku::Class::Chara {
   use Jikkoku::Model::Soldier;
   use Jikkoku::Model::Formation;
   use Jikkoku::Model::Chara::Profile;
-  use Jikkoku::Model::Chara::Protector;
   use Jikkoku::Model::ExtensiveState;
 
   use Jikkoku::Class::Chara::Soldier;
@@ -263,10 +262,6 @@ package Jikkoku::Class::Chara {
 
     $self->interval_time($_ => 0) for keys %{ $self->{interval_time} };
     $self->debuff($_ => 0) for keys %{ $self->{debuff} };
-
-    my $protector_model = Jikkoku::Model::Chara::Protector->new;
-    $protector_model->delete( $self->id );
-    $protector_model->save;
   }
 
   sub recover_morale {
@@ -301,11 +296,6 @@ package Jikkoku::Class::Chara {
   sub is_neutral {
     my $self = shift;
     $self->country_id == 0;
-  }
-
-  sub is_protect {
-    my ($self) = @_;
-    Jikkoku::Model::Chara::Protector->new->is_protect( $self->id );
   }
 
   sub is_same_country {

@@ -5,8 +5,6 @@ package Jikkoku::Class::Chara::Soldier {
 
   extends 'Jikkoku::Class::Soldier';
 
-  use Jikkoku::Model::Chara::Protector;
-
   use Carp;
   use Jikkoku::Util 'validate_values';
   
@@ -201,10 +199,6 @@ package Jikkoku::Class::Chara::Soldier {
 
     $self->chara->_interval_time->init;
     $self->chara->_debuff->init;
-
-    my $protector_model = Jikkoku::Model::Chara::Protector->new;
-    $protector_model->delete( $self->chara->id );
-    $protector_model->save;
   }
 
   # ailias methods

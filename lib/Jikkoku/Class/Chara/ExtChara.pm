@@ -191,6 +191,16 @@ package Jikkoku::Class::Chara::ExtChara {
     },
   );
 
+  has 'extensive_state_record_model' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Model::ExtensiveStateRecord',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->load_model('ExtensiveStateRecord')->new;
+    },
+  );
+
   has 'extensive_states' => (
     is      => 'ro',
     isa     => 'Jikkoku::Model::ExtensiveState::Result',
@@ -198,8 +208,9 @@ package Jikkoku::Class::Chara::ExtChara {
     default => sub {
       my $self = shift;
       $self->load_model('ExtensiveState')->new(
-        chara         => $self->chara,
+        chara         => $self,
         chara_soldier => $self->soldier,
+        record_model  => $self->extensive_state_record_model,
       )->get_all_with_result;
     },
   );

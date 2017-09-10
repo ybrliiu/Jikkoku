@@ -14,13 +14,13 @@ package Jikkoku::Class::ExtensiveState::Protect {
   );
 
   sub override_battle_target {
-    my ($self, $time) = @_;
-    Carp::croak 'few arguments($time)' if @_ < 2;
-    my $soldier = $self->chara_soldier;
+    my ($self, $enemy, $time) = @_;
+    Carp::croak 'few arguments($enemy, $time)' if @_ < 3;
     my $candidates = $self->charactors
-      ->get_charactors_by_else_id_with_result( $self->chara->id )
-      ->get_charactors_by_soldier_bm_id_with_result( $soldier->battle_map_id )
-      ->get_charactors_by_soldier_distance_less_than_with_result( $soldier, $self->range );
+      ->get_charactors_by_else_id_with_result( $enemy->id )
+      ->get_charactors_by_country_id_with_result( $enemy->country_id )
+      ->get_charactors_by_soldier_bm_id_with_result( $enemy->soldier->battle_map_id )
+      ->get_charactors_by_soldier_distance_less_than_with_result( $enemy->soldier, $self->range );
     my $giver;
     for my $candidate (@$candidates) {
       $self->record_model
@@ -36,7 +36,7 @@ package Jikkoku::Class::ExtensiveState::Protect {
 
     if (defined $giver) {
       Jikkoku::Class::ExtensiveState::BattleTargetOverriderResult->new({
-        giver           => $giver,
+        giver           => Jikkoku::Class::Chara::ExtChara->new(chara => $giver),
         extensive_state => $self,
       });
     } else {

@@ -141,9 +141,8 @@ package Jikkoku::Service::BattleCommand::Battle {
   sub throw { Jikkoku::Service::Role::BattleActionException->throw(@_) }
 
   sub get_target_overrider_result {
-    my $self = shift;
-    my $model = $self->model('ExtensiveState')->new(chara => $self->chara);
-    my $result = $model->get_all_with_result->override_battle_target($self->time);
+    my ($self, $enemy) = @_;
+    my $result = $self->chara->extensive_states->get_all_with_result->override_battle_target($enemy, $self->time);
     Option->new($result);
   }
 
@@ -152,14 +151,17 @@ package Jikkoku::Service::BattleCommand::Battle {
     $self->charactors->get_with_option( $self->target_id )->match(
       # 掩護で身代わりを入れる処理
       Some => sub {
-        my $enemy = shift;
-        my $orig = $self->get_target_overrider_result->match(
+        my $_enemy = shift;
+        my $enemy = $self->class('Chara::ExtChara')->new(
+          chara         => $_enemy,
+          town_model    => $self->town_model,
+          country_model => $self->country_model,
+        );
+        my $orig = $self->get_target_overrider_result($enemy)->match(
           Some => sub {
             my $result = shift;
-# after_override_battle_target_service_class role作成
-# test
             $result->after_override_battle_target_service_class_name->new({
-              chara          => $self->chara->chara,
+              chara          => $self->chara,
               original_enemy => $enemy,
               result         => $result,
               map_log_model  => $self->map_log_model,
@@ -168,11 +170,6 @@ package Jikkoku::Service::BattleCommand::Battle {
           },
           None => sub { $enemy },
         );
-        $self->class('Chara::ExtChara')->new({
-          chara         => $orig,
-          town_model    => $self->town_model,
-          country_model => $self->country_model,
-        });
       },
       None => sub { throw("その武将は存在していないようです。") },
     );

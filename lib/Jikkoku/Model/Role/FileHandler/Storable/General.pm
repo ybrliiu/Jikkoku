@@ -8,15 +8,18 @@ package Jikkoku::Model::Role::FileHandler::Storable::General {
   
   sub open_data {
     my $class = shift;
-    open(my $fh, '<', $class->file_path(@_)) or throw("file open error", $!);
-    my $data = Storable::fd_retrieve($fh) or throw("fd_retrieve error", $!);
+    open(my $fh, '<', $class->file_path(@_))
+      or Jikkoku::Role::FileHandlerException->throw("file open error", $!);
+    my $data = Storable::fd_retrieve($fh)
+      or Jikkoku::Role::FileHandlerException->throw("fd_retrieve error", $!);
     $fh->close;
     (data => $data);
   }
 
   sub abort {
     my $self = shift;
-    open(my $fh, '<', $self->file_path) or throw("file open error", $!);
+    open(my $fh, '<', $self->file_path)
+      or Jikkoku::Role::FileHandlerException->throw("file open error", $!);
     $self->fh($fh);
     $self->read;
     $fh->close;
@@ -39,13 +42,15 @@ package Jikkoku::Model::Role::FileHandler::Storable::General {
 
   sub read {
     my $self = shift;
-    my $data = Storable::fd_retrieve($self->fh) or throw("fd_retrieve error", $!);
+    my $data = Storable::fd_retrieve($self->fh)
+      or Jikkoku::Role::FileHandlerException->throw("fd_retrieve error", $!);
     $self->data($data);
   }
 
   sub write {
     my $self = shift;
-    Storable::nstore_fd($self->data, $self->fh) or throw("nstore_fd error", $!);
+    Storable::nstore_fd($self->data, $self->fh)
+      or Jikkoku::Role::FileHandlerException->throw("nstore_fd error", $!);
   }
 
 }
