@@ -12,8 +12,6 @@ ok( my $diplomacy = $CLASS->new({
   receive_country_id => 1,
 }) );
 
-ok $diplomacy->DOES('Jikkoku::Class::Role::Diplomacy');
-
 require Jikkoku::Model::Country;
 my $country_model = Jikkoku::Model::Country->new;
 is $diplomacy->show_status(2, $country_model), '(本当は)平和主義共和国へ停戦を要請中';

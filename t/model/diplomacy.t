@@ -18,14 +18,14 @@ ok( my $diplomacy_list  = $diplomacy_model->get_by_country_id( $country_id ) );
 is @$diplomacy_list, 0;
 
 ok $diplomacy_model->add({
-  type               => $CLASS->CLASS->CESSION_OR_ACCEPT_TERRITORY,
+  type               => $CLASS->INFLATE_TO->CESSION_OR_ACCEPT_TERRITORY,
   request_country_id => $country_id,
   receive_country_id => $country_id2,
 });
 
 subtest 'already_sended' => sub {
   my $param = +{
-    type               => $CLASS->CLASS->ALLOW_PASSAGE,
+    type               => $CLASS->INFLATE_TO->ALLOW_PASSAGE,
     request_country_id => $country_id2,
     receive_country_id => $country_id,
     now_game_date   => $now_game_date,
@@ -41,7 +41,7 @@ subtest 'already_sended' => sub {
 
 subtest 'already_sended_by_receiver' => sub {
   my $param = +{
-    type               => $CLASS->CLASS->ALLOW_PASSAGE,
+    type               => $CLASS->INFLATE_TO->ALLOW_PASSAGE,
     request_country_id => $country_id,
     receive_country_id => $country_id2,
     now_game_date      => $now_game_date,
@@ -55,7 +55,7 @@ subtest 'already_sended_by_receiver' => sub {
 
 subtest 'declare_war already_sended' => sub {
   my $param = +{
-    type               => $CLASS->CLASS->DECLARE_WAR,
+    type               => $CLASS->INFLATE_TO->DECLARE_WAR,
     request_country_id => $country_id2,
     receive_country_id => $country_id,
     now_game_date   => $now_game_date,
@@ -71,7 +71,7 @@ subtest 'declare_war already_sended' => sub {
 my $declare_war_params;
 subtest 'declare_war already_sended_by_receiver' => sub {
   $declare_war_params = +{
-    type               => $CLASS->CLASS->DECLARE_WAR,
+    type               => $CLASS->INFLATE_TO->DECLARE_WAR,
     request_country_id => $country_id,
     receive_country_id => $country_id2,
     now_game_date      => $now_game_date,
@@ -112,7 +112,7 @@ subtest 'can_attack, can_passage' => sub {
   {
     my $allow_passege_params = +{
       %$declare_war_params,
-      type => $diplomacy_model->CLASS->ALLOW_PASSAGE,
+      type => $diplomacy_model->INFLATE_TO->ALLOW_PASSAGE,
     };
     $diplomacy_model->add($allow_passege_params);
     ok not $diplomacy_model->can_attack(@country_set, $now_game_date);
@@ -127,7 +127,7 @@ subtest 'can_attack, can_passage' => sub {
   {
     my $trade_territory_params = +{
       %$declare_war_params,
-      type => $diplomacy_model->CLASS->CESSION_OR_ACCEPT_TERRITORY,
+      type => $diplomacy_model->INFLATE_TO->CESSION_OR_ACCEPT_TERRITORY,
     };
     $diplomacy_model->add($trade_territory_params);
     my $trade_territory = $diplomacy_model->get($trade_territory_params);
@@ -148,3 +148,4 @@ subtest 'can_attack, can_passage' => sub {
 };
 
 done_testing;
+
