@@ -8,7 +8,7 @@ package Jikkoku::Model::State {
     ROLE      => 'Jikkoku::Class::State::State',
   };
 
-  has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara', weak_ref => 1, required => 1 );
+  has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara::ExtChara', weak_ref => 1, required => 1 );
 
   with 'Jikkoku::Model::Role::Class';
 

@@ -3,12 +3,13 @@ use Test::More;
 use Test::Exception;
 
 use Jikkoku::Model::Chara;
+use Jikkoku::Class::Chara::ExtChara;
 
 use_ok 'Jikkoku::Model::State';
 
 # 準備
 my $chara_model = Jikkoku::Model::Chara->new;
-my $chara = $chara_model->get_with_option('ybrliiu')->get;
+my $chara = Jikkoku::Class::Chara::ExtChara->new(chara => $chara_model->get_with_option('ybrliiu')->get);
 
 ok( my $state_model = Jikkoku::Model::State->new(chara => $chara) );
 

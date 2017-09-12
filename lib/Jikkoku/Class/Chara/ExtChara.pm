@@ -187,7 +187,7 @@ package Jikkoku::Class::Chara::ExtChara {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->load_model('State')->new( chara => $self->chara )->get_all_with_result;
+      $self->load_model('State')->new(chara => $self)->get_all_with_result;
     },
   );
 

@@ -19,6 +19,7 @@ package Jikkoku::Util {
     load_child
     child_module_list
     is_game_update_hour
+    decamelize
     escape
     unescape
   );
@@ -205,6 +206,17 @@ package Jikkoku::Util {
       int $loyalty_sum / $country_sum;
     };
     return $average_loyalty;
+  }
+
+  # from Mojo::Util
+  sub decamelize {
+    my $str = shift;
+    return $str if $str !~ /^[A-Z]/;
+  
+    # snake_case words
+    return join '-', map {
+      join('_', map { lc $_ } grep { length $_ } split /([A-Z]{1}[^A-Z]*)/)
+    } split '::', $str;
   }
 
   {

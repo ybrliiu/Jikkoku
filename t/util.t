@@ -56,4 +56,10 @@ SKIP : {
   ok Jikkoku::Util::is_game_update_hour();
 };
 
+subtest 'decamelize' => sub {
+  is Jikkoku::Util::decamelize('SomeClassName'), 'some_class_name';
+  is Jikkoku::Util::decamelize('HogeHoge::HogeHoge'), 'hoge_hoge-hoge_hoge';
+};
+
 done_testing;
+

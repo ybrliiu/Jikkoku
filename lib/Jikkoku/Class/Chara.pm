@@ -211,7 +211,13 @@ package Jikkoku::Class::Chara {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      Jikkoku::Model::State->new( chara => $self )->get_all_with_result;
+      require Jikkoku::Class::Chara::ExtChara;
+      require Scalar::Util;
+      # 無理やり参照カウンタ+1させる
+      # メモリリークしてしまう
+      my $ext_chara = Jikkoku::Class::Chara::ExtChara->new( chara => $self );
+      $ext_chara->{inc_ref_count} = $ext_chara;
+      Jikkoku::Model::State->new( chara => $ext_chara )->get_all_with_result;
     },
   );
 

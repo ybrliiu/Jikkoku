@@ -2,13 +2,14 @@ package Jikkoku::Class::State::State {
   
   use Mouse::Role;
   use Jikkoku;
+  use Jikkoku::Util;
 
   # attribute
   requires qw( name );
 
   has 'id'    => ( is => 'ro', isa => 'Str', lazy => 1, builder => '_build_id' );
   has 'icon'  => ( is => 'ro', isa => 'Str', lazy => 1, builder => '_build_icon' );
-  has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara', weak_ref => 1, required => 1 );
+  has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara::ExtChara', weak_ref => 1, required => 1 );
 
   sub _build_id {
     my $self = shift;
@@ -18,7 +19,7 @@ package Jikkoku::Class::State::State {
 
   sub _build_icon {
     my $self = shift;
-    lc($self->id) . '.png';
+    Jikkoku::Util::decamelize($self->id) . '.png';
   }
 
   # method

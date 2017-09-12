@@ -10,6 +10,7 @@ package Jikkoku::Class::State::Role::Expires {
 
   sub available_time {
     my $self = shift;
+    Carp::confess 'undefined chara' unless defined $self->chara;
     $self->chara->states_data->get_with_option($self->id)->match(
       Some => sub { $_->{available_time} },
       None => sub { 0 },

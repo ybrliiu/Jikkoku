@@ -1,13 +1,14 @@
-use v5.14;
-use warnings;
+use Jikkoku;
 use Test::More;
 use Test::Exception;
 
+use Jikkoku::Model::Chara;
+use Jikkoku::Class::Chara::ExtChara;
+
 my $CLASS = 'Jikkoku::Class::State::Confuse';
 use_ok $CLASS;
-require Jikkoku::Model::Chara;
 my $chara_model = Jikkoku::Model::Chara->new;
-my $chara = $chara_model->get_with_option('ybrliiu')->get;
+my $chara = Jikkoku::Class::Chara::ExtChara->new(chara => $chara_model->get_with_option('ybrliiu')->get);
 ok my $confuse = $CLASS->new(chara => $chara);
 ok !$confuse->is_available;
 ok $confuse->set_state_for_chara({

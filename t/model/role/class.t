@@ -3,6 +3,7 @@ use Test::More;
 use Test::Exception;
 
 use Jikkoku::Model::Chara;
+use Jikkoku::Class::Chara::ExtChara;
 
 use_ok 'Jikkoku::Model::Role::Class';
 
@@ -16,7 +17,7 @@ package TestModel {
     ROLE      => 'Jikkoku::Class::State::State',
   };
 
-  has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara', weak_ref => 1, required => 1 );
+  has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara::ExtChara', weak_ref => 1, required => 1 );
 
   with 'Jikkoku::Model::Role::Class';
 
@@ -53,7 +54,7 @@ package TestModel::Result {
 
 is ref(TestModel->MODULES), 'ARRAY';
 
-my $chara = Jikkoku::Model::Chara->new->get('ybrliiu');
+my $chara = Jikkoku::Class::Chara::ExtChara->new(chara => Jikkoku::Model::Chara->new->get('ybrliiu'));
 ok( my $model = TestModel->new(chara => $chara) );
 ok( my $state = $model->get('Stuck') );
 is $state->name, '足止め';
