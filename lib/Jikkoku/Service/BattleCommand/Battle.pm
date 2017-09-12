@@ -6,6 +6,7 @@ package Jikkoku::Service::BattleCommand::Battle {
   use Jikkoku::Model::Config;
 
   use constant {
+    # 乱戦になる範囲
     CONFUSED_BATTLE_RANGE => 1,
   };
 

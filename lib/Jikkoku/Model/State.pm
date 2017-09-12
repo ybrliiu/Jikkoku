@@ -68,6 +68,22 @@ package Jikkoku::Model::State::Result {
     ]);
   }
 
+  sub get_attack_power_adjuster_states_with_result {
+    my $self = shift;
+    $self->create_result([
+      grep { $_->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackPowerAdjuster') }
+        @{ $self->data }
+    ]);
+  }
+
+  sub get_defence_power_adjuster_states_with_result {
+    my $self = shift;
+    $self->create_result([
+      grep { $_->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::DefencePowerAdjuster') }
+        @{ $self->data }
+    ]);
+  }
+
   __PACKAGE__->meta->make_immutable;
 
 };

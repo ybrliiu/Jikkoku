@@ -2,8 +2,6 @@ package Jikkoku::Class::State::State {
   
   use Mouse::Role;
   use Jikkoku;
-  
-  use Carp;
 
   # attribute
   requires qw( name );
@@ -24,10 +22,16 @@ package Jikkoku::Class::State::State {
   }
 
   # method
-  requires qw( description );
+  requires qw( description is_available );
   
   sub state_data_keys {
     [];
+  }
+
+  sub image_tag {
+    my ($self, $dir) = @_;
+    Carp::croak 'few arguments($dir)' if @_ < 2;
+    qq{<img src="${dir}/@{[ $self->icon ]}">};
   }
 
   sub set_state_for_chara {
