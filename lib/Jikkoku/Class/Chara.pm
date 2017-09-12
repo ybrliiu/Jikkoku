@@ -60,7 +60,7 @@ package Jikkoku::Class::Chara {
     metaclass => 'HashField',
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
-    keys      => [qw( assist disturb cheer move battle_method command auto_gather attack assist_move not_used )],
+    keys      => [qw( assist disturb cheer move battle_method command auto_gather invasion assist_move not_used )],
   );
   has '_config' => (
     metaclass => 'HashField',
@@ -168,7 +168,7 @@ package Jikkoku::Class::Chara {
     metaclass => 'HashField',
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
-    keys      => [qw( protect singeki )],
+    keys      => [qw( protect invasion )],
   );
   has 'not_used'    => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '' );
   has '_morale_data' => (

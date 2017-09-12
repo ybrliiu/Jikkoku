@@ -84,6 +84,14 @@ package Jikkoku::Model::State::Result {
     ]);
   }
 
+  sub get_move_cost_overwriter_states_with_result {
+    my ($self, $orig_move_cost) = @_;
+    $self->create_result([
+      grep { $_->DOES('Jikkoku::Class::BattleMap::Node::MoveCostOverwriter') }
+        @{ $self->data } 
+    ]);
+  }
+
   __PACKAGE__->meta->make_immutable;
 
 };
