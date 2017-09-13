@@ -232,7 +232,7 @@ sub skl_lib_adjust_state_move_cost {
   if ( !$skl_lib_move_cost_adjusted_by_states[$terrain] ) {
     $CAN_MOVE[$terrain] += Jikkoku::Service::States::AdjustMoveCost::AdjustMoveCost->new({
       origin_cost => $CAN_MOVE[$terrain],
-      chara       => Jikkoku::Class::Chara::ExtChara->new(chara => $chara),
+      chara       => $chara,
     })->adjust_move_cost;
     $skl_lib_move_cost_adjusted_by_states[$terrain] = 1;
   }

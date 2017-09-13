@@ -39,7 +39,7 @@ package Jikkoku::Service::Chara::Soldier::ChangeFormation {
     $self->chara->soldier->change_formation_time - $self->time;
   }
 
-  sub _build_is_advantage {
+  sub _build_is_arranging {
     my $self = shift;
     $self->remaining_time > 0;
   }

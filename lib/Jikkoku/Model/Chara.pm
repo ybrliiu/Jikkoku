@@ -154,19 +154,36 @@ package Jikkoku::Model::Chara::Result {
   sub get_charactors_by_soldier_distance_less_than_with_result {
     my ($self, $point, $distance) = @_;
     Carp::croak 'few arguments($point, $distance)' if @_ < 3;
-    $self->create_result([ grep { $_->soldier->distance_from_point($point) <= $distance } @{ $self->data } ]);
+    $self->create_result([
+      grep {
+        require Jikkoku::Class::Chara::ExtChara;
+        my $ext_chara = Jikkoku::Class::Chara::ExtChara->new(chara => $_);
+        $ext_chara->soldier->distance_from_point($point) <= $distance;
+      } @{ $self->data }
+    ]);
   }
 
   sub get_charactors_by_soldier_point_with_result {
     my ($self, $point) = @_;
     Carp::croak 'few arguments($point)' if @_ < 2;
-    $self->create_result([ grep { $_->soldier->is_same_point($point) } @{ $self->data } ]);
+    $self->create_result([
+      grep {
+        require Jikkoku::Class::Chara::ExtChara;
+        my $ext_chara = Jikkoku::Class::Chara::ExtChara->new(chara => $_);
+        $ext_chara->soldier->is_same_point($point);
+      } @{ $self->data }
+    ]);
   }
 
   sub get_charactors_by_soldier_point_as_coordinate_with_result {
     my ($self, $x, $y) = @_;
     Carp::croak 'few arguments($x, $y)' if @_ < 3;
-    $self->create_result([ grep { $_->soldier->is_same_point_as_coordinate($x, $y) } @{ $self->data } ]);
+    $self->create_result([
+      grep {
+        my $sbm = $_->_soldier_battle_map;
+        $sbm->get('x') == $x && $sbm->get('y') == $y;
+      } @{ $self->data }
+    ]);
   }
 
   __PACKAGE__->meta->make_immutable;
