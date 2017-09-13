@@ -3,14 +3,9 @@ package Jikkoku::Class::Chara {
   use Mouse;
   use Jikkoku;
 
-  use Jikkoku::Model::State;
-  use Jikkoku::Model::Skill;
-  use Jikkoku::Model::Soldier;
-  use Jikkoku::Model::Formation;
   use Jikkoku::Model::Chara::Profile;
   use Jikkoku::Model::ExtensiveState;
 
-  use Jikkoku::Class::Chara::Soldier;
   use Jikkoku::Class::Role::TextData;
 
   use constant {
@@ -203,24 +198,6 @@ package Jikkoku::Class::Chara {
     default   => sub { Jikkoku::Class::Role::TextData::HashContainer->new },
   );
 
-  has 'skills' => ( is => 'ro', isa => 'Jikkoku::Model::Skill', lazy => 1, default => sub { Jikkoku::Model::Skill->new(chara => $_[0]) } );
-
-  has 'states' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Model::State::Result',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      require Jikkoku::Class::Chara::ExtChara;
-      require Scalar::Util;
-      # 無理やり参照カウンタ+1させる
-      # メモリリークしてしまう
-      my $ext_chara = Jikkoku::Class::Chara::ExtChara->new( chara => $self );
-      $ext_chara->{inc_ref_count} = $ext_chara;
-      Jikkoku::Model::State->new( chara => $ext_chara )->get_all_with_result;
-    },
-  );
-
   with qw(
     Jikkoku::Class::Role::TextData::Division
     Jikkoku::Role::Loader
@@ -231,17 +208,6 @@ package Jikkoku::Class::Chara {
   sub is_dummy {
     my $self = shift;
     $self->id eq $self->DUMMY_ID;
-  }
-
-  sub soldier {
-    my $self = shift;
-    my $soldier_data = Jikkoku::Model::Soldier->instance->get( $self->ability_exp('soldier_id') );
-    Jikkoku::Class::Chara::Soldier->new({ %$soldier_data, chara => $self });
-  }
-
-  sub formation {
-    my $self = shift;
-    my $formation_model = Jikkoku::Model::Formation->instance->get( $self->soldier_battle_map('formation_id') );
   }
 
   before money => sub {

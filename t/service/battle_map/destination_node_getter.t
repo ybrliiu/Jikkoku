@@ -2,12 +2,14 @@ use Jikkoku;
 use Test::More;
 use Test::Exception;
 
+use Jikkoku::Model::Chara;
+use Jikkoku::Class::Chara::ExtChara;
+
 my $CLASS = 'Jikkoku::Service::BattleMap::DestinationNodeGetter';
 use_ok $CLASS;
 
-require Jikkoku::Model::Chara;
 my $chara_model = Jikkoku::Model::Chara->new;
-my $chara       = $chara_model->get_with_option('ybrliiu')->get;
+my $chara       = Jikkoku::Class::Chara::ExtChara->new(chara => $chara_model->get_with_option('ybrliiu')->get);
 my $charactors  = $chara_model->get_all_with_result;
 require Jikkoku::Model::BattleMap;
 my $battle_map_model = Jikkoku::Model::BattleMap->new;

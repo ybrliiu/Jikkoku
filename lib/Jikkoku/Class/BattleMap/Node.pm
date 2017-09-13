@@ -179,11 +179,19 @@ package Jikkoku::Class::BattleMap::Node {
 
   sub cost {
     my ($self, $chara) = @_;
-    my $origin_cost = $self->origin_cost($chara);
-    my $cost = $origin_cost;
+    my $origin_cost      = $self->origin_cost($chara);
+    my $cost             = $origin_cost;
+    my $time             = time;
+    my $available_states = $chara->states->get_available_states_with_result($time);
+
+    # 移動コスト書き換え
+    $cost = @{ $available_states->get_move_cost_overwriter_states_with_result }[-1] // $cost;
+
+    # 移動コスト調整
     $cost += $self->service('States::AdjustMoveCost::AdjustMoveCost')->new({
-      chara       => $chara,
-      origin_cost => $origin_cost,
+      chara            => $chara,
+      origin_cost      => $origin_cost,
+      available_states => $available_states,
     })->adjust_move_cost;
     $cost;
   }
@@ -192,11 +200,19 @@ package Jikkoku::Class::BattleMap::Node {
   # cost との違って, take_bonus_for_giver が呼ばれる
   sub cost_when_move {
     my ($self, $chara) = @_;
-    my $origin_cost = $self->origin_cost($chara);
-    my $cost = $origin_cost;
+    my $origin_cost      = $self->origin_cost($chara);
+    my $cost             = $origin_cost;
+    my $time             = time;
+    my $available_states = $chara->states->get_available_states_with_result($time);
+
+    # 移動コスト書き換え
+    $cost = @{ $available_states->get_move_cost_overwriter_states_with_result }[-1] // $cost;
+
+    # 移動コスト調整
     my $adjust_move_cost_service = $self->service('States::AdjustMoveCost::AdjustMoveCost')->new({
-      chara       => $chara,
-      origin_cost => $origin_cost,
+      chara            => $chara,
+      origin_cost      => $origin_cost,
+      available_states => $available_states,
     });
     $self->service('States::AdjustMoveCost::TakeBonusForGiver')
       ->new(adjust_move_cost_service => $adjust_move_cost_service)

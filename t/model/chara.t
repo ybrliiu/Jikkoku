@@ -41,8 +41,6 @@ is ref $chara_list_to_hash, 'HASH';
   $chara->morale_data(morale => $before_morale);
   lives_ok { $chara->save };
 
-  is $chara->soldier->name, '雑兵';
-  is $chara->soldier->attack_power( $chara ), 0;
   ok $chara->soldier_battle_map(move_point_charge_time => 120);
 
   subtest 'states_data' => sub {

@@ -2,16 +2,6 @@
 # やること
 
 CharaPower
-- 状態によるステータスの変化
-
-  * 非Mouse Class 書き換え
-  * Role::Tiny 使用クラスを書き換え
-
-  * やっぱLoggerは全部Modelに
-
-  * Model::Skill, SkillCategory Result, Role::Classの使用, adjust_* の別クラスへの分離
-
-  * 残りの状態(計数攻撃, 筋斗雲, 攻撃力上昇, 守備力上昇, 進撃)の実装
 
 - スキルによるステータスの変化
   (
@@ -21,31 +11,27 @@ CharaPower
     書物所有の
     防具所有の
   )
+
+Class::Chara のメモリリーク箇所修正
+
 - 戦闘モードによるステータスの変化
 
 Battle 攻城戦は拡張した別クラスで？
 
 stuck skill つかえるようになっていない
 
-c::BattleMap
-
 C::Chara set value exception & use trigger
 
 戦闘の相手プレイヤー選択部分に掩護を適用, hook_battle_build_target Roleを作成
 
-Chara::Profile 作り直し-
+Model層
+  * 非Mouse Class 書き換え
+  * Model::Skill, SkillCategory Result, Role::Classの使用, adjust_* の別クラスへの分離
+  * Model::Role::TextData::Integration::Expiresのりよう
 
-Role::Loader util に関数として作成したほうが良い?. (load_class, ...)
+BattleMAp書き換え
+  * service化, Extend class作成
 
-戦闘コマンドの作成
-
-BattleMap can_move service利用
-
-battle map の作成
-
-Model::Role::TextData::Integration::Expires
-
-Chara::Soldier の利用
 
 # 最終目標
 スキルは全て書き換え

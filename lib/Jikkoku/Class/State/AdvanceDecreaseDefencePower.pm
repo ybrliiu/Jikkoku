@@ -24,6 +24,14 @@ package Jikkoku::Class::State::AdvanceDecreaseDefencePower {
     '進撃スキルの効果で守備力が' . $self->defence_power_ratio * 100 . '%低下している状態です。';
   }
 
+  sub start_time {
+    my $self = shift;
+    $self->chara->states_data->get_with_option($self->id)->match(
+      Some => sub { $_->{start_time} },
+      None => sub { 0 },
+    );
+  }
+
   around is_available => sub {
     my ($orig, $self, $time) = @_;
     $time //= time;

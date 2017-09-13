@@ -10,7 +10,7 @@ package Jikkoku::Class::Chara::Soldier {
   
   has 'chara' => (
     is       => 'ro',
-    isa      => 'Jikkoku::Class::Chara',
+    isa      => 'Jikkoku::Class::Chara::ExtChara',
     handles  => { training => 'soldier_training' },
     weak_ref => 1,
   );

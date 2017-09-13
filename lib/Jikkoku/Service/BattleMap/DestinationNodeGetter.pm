@@ -3,10 +3,10 @@ package Jikkoku::Service::BattleMap::DestinationNodeGetter {
   use Mouse;
   use Jikkoku;
 
-  has 'battle_map' => ( is => 'ro', isa => 'Jikkoku::Class::BattleMap',     required => 1 );
-  has 'chara'      => ( is => 'ro', isa => 'Jikkoku::Class::Chara',         required => 1 );
-  has 'charactors' => ( is => 'ro', isa => 'Jikkoku::Model::Chara::Result', required => 1 );
-  has 'direction'  => ( is => 'ro', isa => 'Str',                           required => 1 );
+  has 'battle_map' => ( is => 'ro', isa => 'Jikkoku::Class::BattleMap',       required => 1 );
+  has 'chara'      => ( is => 'ro', isa => 'Jikkoku::Class::Chara::ExtChara', required => 1 );
+  has 'charactors' => ( is => 'ro', isa => 'Jikkoku::Model::Chara::Result',   required => 1 );
+  has 'direction'  => ( is => 'ro', isa => 'Str',                             required => 1 );
 
   has 'town_model' => (
     is      => 'ro',

@@ -34,7 +34,7 @@ package Jikkoku::Class::Chara::ExtChara {
     default => sub {
       my $self = shift;
       my $soldier_data = $self->load_model('Soldier')->instance->get( $self->_ability_exp->get('soldier_id') );
-      $self->load_class('Chara::Soldier')->new( { %$soldier_data, chara => $self->chara } );
+      $self->load_class('Chara::Soldier')->new( { %$soldier_data, chara => $self } );
     },
   );
 
@@ -177,7 +177,7 @@ package Jikkoku::Class::Chara::ExtChara {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->load_model('Skill')->new( chara => $self->chara );
+      $self->load_model('Skill')->new(chara => $self);
     },
   );
 

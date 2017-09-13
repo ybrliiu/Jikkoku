@@ -33,7 +33,7 @@ package Jikkoku::Model::Skill {
     @modules;
   }
 
-  has 'chara'  => ( is => 'ro', isa => 'Jikkoku::Class::Chara', weak_ref => 1, required => 1 );
+  has 'chara'  => ( is => 'ro', isa => 'Jikkoku::Class::Chara::ExtChara', weak_ref => 1, required => 1 );
   has '_cache' => ( is => 'ro', isa => 'HashRef', default => sub { +{} } );
 
   sub skill_key {

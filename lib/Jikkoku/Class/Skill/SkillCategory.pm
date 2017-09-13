@@ -92,19 +92,6 @@ package Jikkoku::Class::Skill::SkillCategory {
     } @{ $skill->next_skills_id };
   }
 
-  sub trace_skill_to_acquire_order {
-    my $self = shift;
-    $self->_trace( $self->get_next_skill($self->root_skill_id) );
-  }
-
-  sub _trace {
-    my ($self, $next_skill) = @_;
-    map {
-      my $skill = $_;
-      $self->_trace( $self->get_next_skill($skill->id) );
-    } @$next_skill;
-  }
-
 }
 
 1;

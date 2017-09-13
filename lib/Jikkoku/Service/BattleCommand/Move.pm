@@ -42,7 +42,7 @@ package Jikkoku::Service::BattleCommand::Move {
     my $bm        = $self->battle_map_model->get($bm_id);
     my $getter    = $self->service('BattleMap::DestinationNodeGetter')->new({
       direction  => $self->direction,
-      chara      => $self->chara->chara,
+      chara      => $self->chara,
       battle_map => $bm,
       charactors => $self->chara_model->get_all_with_result,
     });

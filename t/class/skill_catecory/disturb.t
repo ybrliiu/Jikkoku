@@ -2,13 +2,15 @@ use Jikkoku;
 use Test::More;
 use Test::Exception;
 
+use Jikkoku::Model::Chara;
+use Jikkoku::Model::Skill;
+use Jikkoku::Class::Chara::ExtChara;
+
 my $CLASS = 'Jikkoku::Class::Skill::Disturb';
 use_ok $CLASS;
 
-require Jikkoku::Model::Chara;
-require Jikkoku::Model::Skill;
 my $chara_model = Jikkoku::Model::Chara->new;
-my $chara       = $chara_model->get_with_option('ybrliiu')->get;
+my $chara       = Jikkoku::Class::Chara::ExtChara->new(chara => $chara_model->get_with_option('ybrliiu')->get);
 my $skill_model = Jikkoku::Model::Skill->new(chara => $chara);
 
 ok my $disturb = $CLASS->new(skill_model => $skill_model);
