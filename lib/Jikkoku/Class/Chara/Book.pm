@@ -1,4 +1,4 @@
-package Jikkoku::Class::Chara::Guard {
+package Jikkoku::Class::Chara::Book {
 
   use Mouse;
   use Jikkoku;
@@ -6,7 +6,7 @@ package Jikkoku::Class::Chara::Guard {
   has 'chara' => (
     is       => 'ro',
     isa      => 'Jikkoku::Class::Chara',
-    handles  => +{ map { $_ => 'guard_' . $_ } qw/ name power / },
+    handles  => +{ map { $_ => 'book_' . $_ } qw/ name power / },
     weak_ref => 1,
     required => 1,
   );
@@ -14,9 +14,9 @@ package Jikkoku::Class::Chara::Guard {
   sub skill {
     my $self = shift;
     if (@_) {
-      $self->chara->_equipment_skill->set(gurad => shift);
+      $self->chara->_equipment_skill->set(book => shift);
     } else {
-      $self->chara->_equipment_skill->get('guard');
+      $self->chara->_equipment_skill->get('book');
     }
   }
 

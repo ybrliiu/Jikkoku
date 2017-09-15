@@ -5,10 +5,11 @@ package Jikkoku::Class::Skill::HasWeapon::Saku {
 
   use constant {
     ACQUIRE_SIGN        => 7,
+    WEAPON_NAME         => '槊',
     TARGET_SOLDIER_NAME => '槍騎兵',
   };
 
-  has 'name'                  => ( is => 'ro', isa => 'Str', default => '槊' );
+  has 'name'                  => ( is => 'ro', isa => 'Str', default => WEAPON_NAME );
   has 'increase_attack_power' => ( is => 'ro', isa => 'Int', default => 10 );
 
   with qw(

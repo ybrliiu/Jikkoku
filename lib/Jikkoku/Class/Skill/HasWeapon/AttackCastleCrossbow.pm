@@ -3,9 +3,12 @@ package Jikkoku::Class::Skill::HasWeapon::AttackCastleCrossbow {
   use Mouse;
   use Jikkoku;
 
-  use constant ACQUIRE_SIGN => 7;
+  use constant {
+    ACQUIRE_SIGN => 7,
+    WEAPON_NAME  => '攻城弩',
+  };
 
-  has 'name'                   => ( is => 'ro', isa => 'Str', default => '攻城弩' );
+  has 'name'                   => ( is => 'ro', isa => 'Str', default => WEAPON_NAME );
   has 'increase_turn'          => ( is => 'ro', isa => 'Int', default => 1 );
   has 'increase_attack_power'  => ( is => 'ro', isa => 'Int', default => 80 );
   has 'increase_defence_power' => ( is => 'ro', isa => 'Int', default => 40 );

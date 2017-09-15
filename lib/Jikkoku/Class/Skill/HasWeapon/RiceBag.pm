@@ -3,9 +3,12 @@ package Jikkoku::Class::Skill::HasWeapon::RiceBag {
   use Mouse;
   use Jikkoku;
 
-  use constant ACQUIRE_SIGN => 1;
+  use constant {
+    ACQUIRE_SIGN => 1,
+    WEAPON_NAME  => '米俵',
+  };
 
-  has 'name' => ( is => 'ro', isa => 'Str', default => '米俵' );
+  has 'name' => ( is => 'ro', isa => 'Str', default => WEAPON_NAME );
 
   with qw(
     Jikkoku::Class::Skill::Skill
