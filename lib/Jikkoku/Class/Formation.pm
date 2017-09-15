@@ -16,7 +16,7 @@ package Jikkoku::Class::Formation {
   has 'reforming_time'             => ( is => 'ro', isa => 'Int', required => 1 );
   has 'class'                      => ( is => 'ro', isa => 'Int', default  => 0 );
   has 'advantageous_formations_id' => ( is => 'ro', isa => 'ArrayRef[Int]', default => sub { [] } );
-  has 'skills'                     => ( is => 'ro', isa => 'ArrayRef',      default => sub { [] } );
+  has 'skill_id_list'              => ( is => 'ro', isa => 'ArrayRef',      default => sub { [] } );
   has 'description'                => ( is => 'ro', isa => 'Str',           default => 1 );
   has 'acquire_condition'          => ( is => 'ro', isa => 'CodeRef',       default => sub { 1 } );
 

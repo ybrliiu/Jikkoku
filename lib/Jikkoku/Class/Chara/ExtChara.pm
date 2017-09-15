@@ -44,7 +44,9 @@ package Jikkoku::Class::Chara::ExtChara {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->load_model('Formation')->instance->get( $self->_soldier_battle_map->get('formation_id') );
+      my $orig = $self->load_model('Formation')
+        ->instance->get( $self->_soldier_battle_map->get('formation_id') );
+      $self->load_class('Chara::Formation')->new({ %$orig, chara => $self });
     },
   );
 

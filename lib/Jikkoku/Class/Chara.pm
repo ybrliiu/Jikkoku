@@ -156,7 +156,7 @@ package Jikkoku::Class::Chara {
     metaclass => 'HashField',
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
-    keys      => [qw( power name attr attr_power )],
+    keys      => [qw( power name attr attr_power skill )],
   );
   has 'bought_skill_point' => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
   has '_interval_time'      => (

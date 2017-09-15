@@ -6,7 +6,7 @@ package Jikkoku::Class::Chara::Weapon {
   has 'chara' => (
     is       => 'ro',
     isa      => 'Jikkoku::Class::Chara',
-    handles  => +{ map { $_ => 'weapon_' . $_ } qw/ name power attr_power / },
+    handles  => +{ map { $_ => 'weapon_' . $_ } qw/ name power attr_power skill / },
     weak_ref => 1,
     required => 1,
   );
