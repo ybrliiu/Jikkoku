@@ -20,12 +20,12 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::FormationPower {
   sub _build_attack_power {
     my $self = shift;
     if ( $self->change_formation_service->is_arranging ) {
-      - int( $self->attack_power_orig * ARRANGING_DECREASE_RATIO );
+      - int( $self->orig_attack_power * ARRANGING_DECREASE_RATIO );
     } else {
       my $formation = $self->chara->formation;
       my $power =
         $formation->increase_attack_power_num +
-        ( $self->attack_power_orig * $formation->increase_attack_power_ratio ) +
+        ( $self->orig_attack_power * $formation->increase_attack_power_ratio ) +
         (
           $formation->is_advantageous( $self->target->formation )
             ? $formation->increase_attack_power_ratio_when_advantageous
@@ -38,12 +38,12 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::FormationPower {
   sub _build_defence_power {
     my $self = shift;
     if ( $self->change_formation_service->is_arranging ) {
-      - int( $self->defence_power_orig * ARRANGING_DECREASE_RATIO );
+      - int( $self->orig_defence_power * ARRANGING_DECREASE_RATIO );
     } else {
       my $formation = $self->chara->formation;
       my $power =
         $formation->increase_defence_power_num +
-        ( $self->defence_power_orig * $formation->increase_defence_power_ratio ) +
+        ( $self->orig_defence_power * $formation->increase_defence_power_ratio ) +
         (
           $formation->is_advantageous( $self->target->formation )
             ? $formation->increase_defence_power_ratio_when_advantageous

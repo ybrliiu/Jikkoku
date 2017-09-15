@@ -6,7 +6,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPowerCalculato
   has 'chara_power' => (
     is       => 'ro',
     isa      => 'Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower',
-    handles  => [qw/ chara target attack_power_orig defence_power_orig /],
+    handles  => [qw/ chara target orig_attack_power orig_defence_power /],
     weak_ref => 1,
     required => 1,
   );
@@ -32,7 +32,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPowerCalculato
   around _build_defence_power => sub {
     my ($orig, $self) = @_;
     # 元の守備力が負値になっているときは何も値を変化させない
-    $self->defence_power_orig < 0 ? 0 : $self->$orig();
+    $self->orig_defence_power < 0 ? 0 : $self->$orig();
   };
 
 }

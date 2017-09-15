@@ -14,6 +14,6 @@ __END__
 
 =head1
 
-sub adjust_defence_power($defence_power_orig) : Int
+sub adjust_defence_power($orig_defence_power) : Int
 
 =cut

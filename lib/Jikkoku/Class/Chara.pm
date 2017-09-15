@@ -64,14 +64,14 @@ package Jikkoku::Class::Chara {
     keys      => [qw( battle_map_hidden font_size config2 config3 config4 config5 config6 )],
   );
   has 'skill_point'     => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
-  has '_equipment_skill' => (
+  has '_equipment_skill_id' => (
     metaclass => 'HashField',
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
     keys      => [qw( book guard )],
   );
   has 'last_login_host'    => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '' );
-  has 'weapon_skill'       => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '' );
+  has 'weapon_skill_id'    => ( metaclass => 'Column', is => 'rw', isa => 'Str', default  => '' );
   has '_soldier_battle_map' => (
     metaclass  => 'HashField',
     is         => 'rw',

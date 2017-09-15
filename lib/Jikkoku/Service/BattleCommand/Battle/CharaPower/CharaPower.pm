@@ -2,6 +2,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
   
   use Mouse;
   use Jikkoku;
+  use List::Util qw( sum );
 
   has [qw/ chara target /] => (
     is       => 'ro',
@@ -33,7 +34,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     },
   );
 
-  has 'attack_power_orig' => (
+  has 'orig_attack_power' => (
     is      => 'ro',
     isa     => 'Int',
     lazy    => 1,
@@ -63,25 +64,41 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     },
   );
 
+  has 'available_states' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Model::State::Result',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->chara->states->get_available_states_with_result;
+    },
+  );
+
   with 'Jikkoku::Role::Loader';
 
-  sub defence_power_orig {
+  sub orig_defence_power {
     my $self = shift;
     $self->chara->defence_power;
   }
 
   sub attack_power {
     my $self = shift;
-    $self->attack_power_orig
+    $self->orig_attack_power
       + $self->formation_power->attack_power
-      + $self->navy_power->attack_power;
+      + $self->navy_power->attack_power
+      + $self->skills->adjust_attack_power($self->orig_attack_power)
+      + $self->skills->adjust_enemy_attack_power($self->orig_attack_power)
+      + $self->available_states->adjust_attack_power($self->orig_attack_power);
   }
 
   sub defence_power {
     my $self = shift;
-    $self->defence_power_orig
+    $self->orig_defence_power
       + $self->formation_power->defence_power
-      + $self->navy_power->defence_power;
+      + $self->navy_power->defence_power
+      + $self->skills->adjust_defence_power($self->orig_defence_power)
+      + $self->skills->adjust_enemy_defence_power($self->orig_defence_power)
+      + $self->available_states->adjust_attack_power($self->orig_defence_power);
   }
 
   sub write_to_log {

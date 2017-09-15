@@ -102,7 +102,43 @@ package Jikkoku::Model::Skill {
     my @skills = grep {
       $_->DOES('Jikkoku::Class::Chara::Soldier::ChargeMovePointAdjuster')
     } @{ $self->get_acquired_skills };
-    sum map { $_->adjust_soldier_charge_move_point_time } @skills;
+    sum map { $_->adjust_soldier_charge_move_point_time($charge_time) } @skills;
+  }
+
+  sub adjust_attack_power {
+    my ($self, $orig_attack_power) = @_;
+    Carp::croak 'few arguments' if @_ < 2;
+    my @skills = grep {
+      $_->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackPowerAdjuster')
+    } @{ $self->get_acquired_skills };
+    sum map { $_->adjust_attack_power($orig_attack_power) } @skills;
+  }
+
+  sub adjust_defence_power {
+    my ($self, $orig_defence_power) = @_;
+    Carp::croak 'few arguments' if @_ < 2;
+    my @skills = grep {
+      $_->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::DefencePowerAdjuster')
+    } @{ $self->get_acquired_skills };
+    sum map { $_->adjust_defence_power($orig_defence_power) } @skills;
+  }
+
+  sub adjust_enemy_attack_power {
+    my ($self, $orig_attack_power) = @_;
+    Carp::croak 'few arguments' if @_ < 2;
+    my @skills = grep {
+      $_->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::EnemyAttackPowerAdjuster')
+    } @{ $self->get_acquired_skills };
+    sum map { $_->adjust_enemy_attack_power($orig_attack_power) } @skills;
+  }
+
+  sub adjust_enemy_defence_power {
+    my ($self, $orig_defence_power) = @_;
+    Carp::croak 'few arguments' if @_ < 2;
+    my @skills = grep {
+      $_->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::EnemyDefencePowerAdjuster')
+    } @{ $self->get_acquired_skills };
+    sum map { $_->adjust_enemy_defence_power($orig_defence_power) } @skills;
   }
 
   __PACKAGE__->meta->make_immutable;

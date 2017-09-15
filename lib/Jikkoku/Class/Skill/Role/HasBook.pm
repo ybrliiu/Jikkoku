@@ -7,12 +7,12 @@ package Jikkoku::Class::Skill::Role::HasBook {
 
   sub is_acquired {
     my $self = shift;
-    $self->chara->book->skill == $self->ACQUIRE_SIGN;
+    $self->chara->book->skill_id == $self->ACQUIRE_SIGN;
   }
 
   sub acquire {
     my $self = shift;
-    $self->chara->book->skill($self->ACQUIRE_SIGN);
+    $self->chara->book->skill_id($self->ACQUIRE_SIGN);
   }
 
   around description_of_acquire_body => sub {

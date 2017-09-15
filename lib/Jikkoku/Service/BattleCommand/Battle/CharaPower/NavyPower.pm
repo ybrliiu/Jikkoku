@@ -33,12 +33,12 @@ package Jikkoku::Service::BattleCommand::Battle::NavyPower {
 
   sub _build_attack_power {
     my $self = shift;
-    $self->current_node->is_water ? 0 : $self->attack_power_orig * NOT_SUITABLE_DECREASE_RATIO;
+    $self->current_node->is_water ? 0 : $self->orig_attack_power * NOT_SUITABLE_DECREASE_RATIO;
   }
 
   sub _build_defence_power {
     my $self = shift;
-    $self->current_node->is_water ? 0 : $self->defence_power_orig * NOT_SUITABLE_DECREASE_RATIO;
+    $self->current_node->is_water ? 0 : $self->orig_defence_power * NOT_SUITABLE_DECREASE_RATIO;
   }
 
   sub write_to_log {

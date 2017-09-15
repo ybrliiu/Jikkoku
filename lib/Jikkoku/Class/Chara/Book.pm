@@ -11,12 +11,12 @@ package Jikkoku::Class::Chara::Book {
     required => 1,
   );
 
-  sub skill {
+  sub skill_id {
     my $self = shift;
     if (@_) {
-      $self->chara->_equipment_skill->set(book => shift);
+      $self->chara->_equipment_skill_id->set(book => shift);
     } else {
-      $self->chara->_equipment_skill->get('book');
+      $self->chara->_equipment_skill_id->get('book');
     }
   }
 

@@ -9,8 +9,8 @@ package Jikkoku::Class::State::Role::AttackPowerAdjuster {
   with 'Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackPowerAdjuster';
 
   sub adjust_attack_power {
-    my ($self, $attack_power_orig) = @_;
-    $attack_power_orig * $self->attack_power_ratio;
+    my ($self, $orig_attack_power) = @_;
+    $orig_attack_power * $self->attack_power_ratio;
   }
 
 }

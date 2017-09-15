@@ -38,6 +38,6 @@ shift @hash_list;
 my $model = Jikkoku::Model::Announce->new;
 @hash_list = reverse @hash_list;
 $model->init;
-$model->add_by_hash($_) for @hash_list;
+$model->add($_) for @hash_list;
 $model->save;
 

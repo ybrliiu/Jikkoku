@@ -11,12 +11,12 @@ package Jikkoku::Class::Chara::Guard {
     required => 1,
   );
 
-  sub skill {
+  sub skill_id {
     my $self = shift;
     if (@_) {
-      $self->chara->_equipment_skill->set(gurad => shift);
+      $self->chara->_equipment_skill_id->set(gurad => shift);
     } else {
-      $self->chara->_equipment_skill->get('guard');
+      $self->chara->_equipment_skill_id->get('guard');
     }
   }
 

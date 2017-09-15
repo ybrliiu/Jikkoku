@@ -41,7 +41,7 @@ while ( my $path = $iter->() ) {
   }
 
   my ($start_next_y, $start_next_x) = split /,/, $ROOT[ $start_node->y ]->[ $start_node->x ]{ $start_bm->id };
-  my $start_next_node  = $start_bm->get_node_by_point($start_next_x, $start_next_y);
+  my $start_next_node  = $start_bm->get_node_by_coordinate($start_next_x, $start_next_y);
   my $castle_back_node = $start_bm->get_castle_back_node($start_node, $start_next_node);
   if ($castle_back_node) {
     my $middle_bm_id = trace_route($start_node->y, $start_node->x, $start_bm->id, 0);

@@ -26,6 +26,7 @@ package Jikkoku::Model::State::Result {
 
   use Mouse;
   use Jikkoku;
+  use List::Util qw( sum );
 
   with 'Jikkoku::Model::Role::Result';
 
@@ -68,28 +69,30 @@ package Jikkoku::Model::State::Result {
     ]);
   }
 
-  sub get_attack_power_adjuster_states_with_result {
-    my $self = shift;
-    $self->create_result([
-      grep { $_->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackPowerAdjuster') }
-        @{ $self->data }
-    ]);
-  }
-
-  sub get_defence_power_adjuster_states_with_result {
-    my $self = shift;
-    $self->create_result([
-      grep { $_->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::DefencePowerAdjuster') }
-        @{ $self->data }
-    ]);
-  }
-
   sub get_move_cost_overwriter_states_with_result {
     my ($self, $orig_move_cost) = @_;
     $self->create_result([
       grep { $_->DOES('Jikkoku::Class::BattleMap::Node::MoveCostOverwriter') }
         @{ $self->data } 
     ]);
+  }
+
+  sub adjust_attack_power {
+    my ($self, $orig_attack_power) = @_;
+    Carp::croak 'few arguments' if @_ < 2;
+    sum
+      map { $_->adjust_attack_power($orig_attack_power) }
+      grep { $_->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackPowerAdjuster') }
+      @{ $self->data };
+  }
+
+  sub adjust_defence_power {
+    my ($self, $orig_defence_power) = @_;
+    Carp::croak 'few arguments' if @_ < 2;
+    sum
+      map { $_->adjust_defence_power($orig_defence_power) }
+      grep { $_->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::DefencePowerAdjuster') }
+      @{ $self->data };
   }
 
   __PACKAGE__->meta->make_immutable;
