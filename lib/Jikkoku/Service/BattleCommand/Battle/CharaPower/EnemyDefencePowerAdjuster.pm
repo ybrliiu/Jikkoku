@@ -15,7 +15,7 @@ __END__
 
 =head1
 
-sub adjust_enemy_defence_power($orig_defence_power) : Int
+sub adjust_enemy_defence_power($enemy_power_adjuster_service : AdjusterService::EnemyPower) : Num
 
 =cut
 

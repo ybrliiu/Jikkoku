@@ -29,7 +29,8 @@ package Jikkoku::Class::Skill::HasFormation::Kakuyoku {
   }
 
   sub adjust_attack_power {
-    my ( $self, $orig_attack_power, $enemy ) = @_;
+    my ($self, $chara_power_adjuster_service) = @_;
+    my $enemy = $chara_power_adjuster_service->target;
     if ( $self->chara->soldier->num >= $enemy->soldier->num * $self->need_soldier_ratio ) {
       my $sub = $self->chara->soldier->num - $enemy->soldier->num;
       $sub > $self->increase_attack_power_limit ? $self->increase_attack_power_limit

@@ -3,15 +3,15 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService::At
   use Mouse;
   use Jikkoku;
 
+  with 'Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService::CharaPower';
+
   has 'adjuster' => (
     is       => 'ro',
     does     => 'Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackPowerAdjuster',
     required => 1,
   );
 
-  with 'Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService::CharaPower';
-
-  has 'orig_defence_power'  => ( is => 'ro', isa => 'Int', required => 0 );
+  has 'orig_defence_power'  => ( is => 'ro', isa => 'Num', required => 0 );
 
   around _build_adjust_defence_power => sub { 0 };
 

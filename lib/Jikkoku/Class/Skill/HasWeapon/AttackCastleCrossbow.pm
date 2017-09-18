@@ -30,9 +30,11 @@ package Jikkoku::Class::Skill::HasWeapon::AttackCastleCrossbow {
   }
 
   sub adjust_attack_power {
+    my ($self, $chara_power_adjuster_service) = @_;
   }
 
   sub adjust_defence_power {
+    my ($self, $chara_power_adjuster_service) = @_;
   }
 
   __PACKAGE__->meta->make_immutable;

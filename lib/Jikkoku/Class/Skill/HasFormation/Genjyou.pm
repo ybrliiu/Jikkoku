@@ -26,13 +26,13 @@ package Jikkoku::Class::Skill::HasFormation::Genjyou {
   }
 
   sub adjust_enemy_attack_power {
-    my ($self, $orig_attack_power) = @_;
-    $orig_attack_power * $self->decrease_ratio;
+    my ($self, $enemy_power_adjuster_service) = @_;
+    $enemy_power_adjuster_service->orig_attack_power * $self->decrease_ratio;
   }
 
   sub adjust_enemy_defence_power {
-    my ($self, $orig_defence_power) = @_;
-    $orig_defence_power * $self->decrease_ratio;
+    my ($self, $enemy_power_adjuster_service) = @_;
+    $enemy_power_adjuster_service->orig_defence_power * $self->decrease_ratio;
   }
 
   __PACKAGE__->meta->make_immutable;

@@ -16,6 +16,6 @@ __END__
 
 =head1
 
-sub adjust_defence_power($orig_defence_power) : Int
+sub adjust_defence_power($chara_power_adjuster_service : AdjusterService::CharaPower) : Num
 
 =cut

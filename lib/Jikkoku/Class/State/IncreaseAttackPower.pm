@@ -14,7 +14,7 @@ package Jikkoku::Class::State::IncreaseAttackPower {
   sub description { '出撃中にスキル効果で上昇している攻撃力の値です。' }
 
   sub adjust_attack_power {
-    my ($self, $orig_attack_power) = @_;
+    my ($self, $chara_power_adjuster_service) = @_;
     $self->count;
   }
 

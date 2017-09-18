@@ -41,7 +41,7 @@ package Jikkoku::Class::Skill::Invasion::IntensifyInvasion {
   }
 
   sub adjust_attack_power {
-    my ($self, $orig_attack_power) = @_;
+    my ($self, $chara_power_adjuster_service) = @_;
     $self->chara->is_invasion
       && $self->chara->force >= NEED_FORCE ? $self->increase_attack_power : 0;
   }

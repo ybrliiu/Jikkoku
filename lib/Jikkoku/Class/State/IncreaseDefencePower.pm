@@ -14,7 +14,7 @@ package Jikkoku::Class::State::IncreaseDefencePower {
   sub description { '出撃中にスキル効果で上昇している守備力の値です。' }
 
   sub adjust_defence_power {
-    my ($self, $orig_defence_power) = @_;
+    my ($self, $chara_power_adjuster_service) = @_;
     $self->count;
   }
 

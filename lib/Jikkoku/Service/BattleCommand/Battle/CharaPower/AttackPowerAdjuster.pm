@@ -18,6 +18,6 @@ __END__
 
 =head1
 
-sub adjust_attack_power($orig_attack_power) : Int
+sub adjust_attack_power($chara_power_adjuster_service : AdjusterService::CharaPower) : Num
 
 =cut

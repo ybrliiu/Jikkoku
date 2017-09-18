@@ -16,20 +16,20 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService::Ch
     required => 1,
   );
 
-  has 'orig_attack_power'  => ( is => 'ro', isa => 'Int', required => 1 );
-  has 'orig_defence_power' => ( is => 'ro', isa => 'Int', required => 1 );
+  has 'orig_attack_power'  => ( is => 'ro', isa => 'Num', required => 1 );
+  has 'orig_defence_power' => ( is => 'ro', isa => 'Num', required => 1 );
 
-  has 'adjust_attack_power'  => ( is => 'ro', isa => 'Int', lazy => 1, builder => '_build_adjust_attack_power' );
-  has 'adjust_defence_power' => ( is => 'ro', isa => 'Int', lazy => 1, builder => '_build_adjust_defence_power' );
+  has 'adjust_attack_power'  => ( is => 'ro', isa => 'Num', lazy => 1, builder => '_build_adjust_attack_power' );
+  has 'adjust_defence_power' => ( is => 'ro', isa => 'Num', lazy => 1, builder => '_build_adjust_defence_power' );
 
   sub _build_adjust_attack_power {
     my $self = shift;
-    int $self->adjuster->adjust_attack_power($self->orig_attack_power);
+    int $self->adjuster->adjust_attack_power($self);
   }
 
   sub _build_adjust_defence_power {
     my $self = shift;
-    int $self->adjuster->adjust_defence_power($self->orig_defence_power);
+    int $self->adjuster->adjust_defence_power($self);
   }
 
   requires qw( write_to_log );

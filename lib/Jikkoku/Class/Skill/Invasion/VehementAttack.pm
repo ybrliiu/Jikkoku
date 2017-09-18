@@ -8,14 +8,14 @@ package Jikkoku::Class::Skill::Invasion::VehementAttack {
     ACQUIRE_SIGN => 3,
   };
 
-  has 'name'                        => ( is => 'ro', isa => 'Str', default => '猛攻' );
-  has 'consume_skill_point'         => ( is => 'ro', isa => 'Int', default => 15 );
-  has 'increase_attack_power_ratio' => ( is => 'ro', isa => 'Num', default => 0.05 );
+  has 'name'                 => ( is => 'ro', isa => 'Str', default => '猛攻' );
+  has 'consume_skill_point'  => ( is => 'ro', isa => 'Int', default => 15 );
+  has 'increase_power_ratio' => ( is => 'ro', isa => 'Num', default => 0.05 );
 
   with qw(
     Jikkoku::Class::Skill::Skill
     Jikkoku::Class::Skill::Role::Purchasable
-    Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackPowerAdjuster
+    Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackAndDefencePowerAdjuster
   );
 
   sub is_acquired {
@@ -34,9 +34,16 @@ package Jikkoku::Class::Skill::Invasion::VehementAttack {
   }
 
   sub adjust_attack_power {
-    my ($self, $orig_attack_power) = @_;
+    my ($self, $chara_power_adjuster_service) = @_;
     $self->chara->is_invasion && $self->chara->force >= NEED_FORCE
-      ? $orig_attack_power * $self->increase_attack_power_ratio
+      ? $chara_power_adjuster_service->orig_attack_power * $self->increase_power_ratio
+      : 0;
+  }
+
+  sub adjust_defence_power {
+    my ($self, $chara_power_adjuster_service) = @_;
+    $self->chara->is_invasion && $self->chara->force >= NEED_FORCE
+      ? $chara_power_adjuster_service->orig_defence_power * $self->increase_power_ratio
       : 0;
   }
 

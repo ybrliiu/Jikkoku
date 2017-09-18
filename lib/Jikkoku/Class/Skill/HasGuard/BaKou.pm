@@ -23,7 +23,7 @@ package Jikkoku::Class::Skill::HasGuard::BaKou {
   }
 
   sub adjust_defence_power {
-    my ($self, $orig_defence_power) = @_;
+    my ($self, $chara_power_adjuster_service) = @_;
     $self->soldier->attr eq '騎' ? $self->increase_defence_power : 0;
   }
 

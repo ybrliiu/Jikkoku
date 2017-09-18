@@ -23,7 +23,7 @@ package Jikkoku::Class::Skill::HasGuard::KeihuKou {
   }
 
   sub adjust_attack_power {
-    my ($self, $orig_attack_power) = @_;
+    my ($self, $chara_power_adjuster_service) = @_;
     $self->soldier->attr eq '弓' ? $self->increase_attack_power : 0;
   }
 

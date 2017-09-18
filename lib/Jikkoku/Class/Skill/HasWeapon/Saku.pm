@@ -24,7 +24,7 @@ package Jikkoku::Class::Skill::HasWeapon::Saku {
   }
 
   sub adjust_attack_power {
-    my ($self, $orig_attack_power) = @_;
+    my ($self, $chara_power_adjuster_service) = @_;
     $self->chara->soldier->name eq TARGET_SOLDIER_NAME ? $self->increase_attack_power : 0;
   }
 

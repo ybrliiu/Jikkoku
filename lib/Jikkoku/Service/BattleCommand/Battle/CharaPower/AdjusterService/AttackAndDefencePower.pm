@@ -3,13 +3,13 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService::At
   use Mouse;
   use Jikkoku;
 
+  with 'Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService::CharaPower';
+
   has 'adjuster' => (
     is       => 'ro',
     does     => 'Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackAndDefencePowerAdjuster',
     required => 1,
   );
-
-  with 'Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService::CharaPower';
 
   sub write_to_log {
     my $self = shift;
