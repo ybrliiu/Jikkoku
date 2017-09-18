@@ -16,8 +16,7 @@ package Jikkoku::Class::Skill::HasWeapon::AttackCastleCrossbow {
   with qw(
     Jikkoku::Class::Skill::Skill
     Jikkoku::Class::Skill::Role::HasWeapon
-    Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackPowerAdjuster
-    Jikkoku::Service::BattleCommand::Battle::CharaPower::DefencePowerAdjuster
+    Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackAndDefencePowerAdjuster
   );
 
   sub description {

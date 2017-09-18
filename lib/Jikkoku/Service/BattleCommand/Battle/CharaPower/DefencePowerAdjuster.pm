@@ -3,6 +3,8 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::DefencePowerAdjuste
   use Mouse::Role;
   use Jikkoku;
 
+  with 'Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPowerAdjuster'; 
+
   # methods
   requires qw( adjust_defence_power );
 

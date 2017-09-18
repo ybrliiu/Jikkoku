@@ -9,6 +9,7 @@ package Jikkoku::Util {
     TEST_DIR
     open_data
     _open_data
+    sign
     save_data
     create_data
     remove_data
@@ -66,6 +67,8 @@ package Jikkoku::Util {
     $fh->close();
     \@file_data;
   }
+
+  sub sign { $_[0] < 0 ? '-' : '+' }
 
   sub save_data {
     my ($file_name, $file_data) = @_;

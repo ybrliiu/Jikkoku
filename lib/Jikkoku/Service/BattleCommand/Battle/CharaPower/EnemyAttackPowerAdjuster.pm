@@ -3,6 +3,8 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::EnemyAttackPowerAdj
   use Mouse::Role;
   use Jikkoku;
 
+  with 'Jikkoku::Service::BattleCommand::Battle::CharaPower::EnemyPowerAdjuster';
+
   requires qw( adjust_enemy_attack_power );
 
 }
