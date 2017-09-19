@@ -16,6 +16,21 @@ package Jikkoku::Class::BattleMode::Siege {
     Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackPowerAdjuster
   );
 
+  sub can_use {
+    my $self = shift;
+    0;
+  }
+
+  around use => sub {
+    my ($orig, $self, $battle_service) = @_;
+    my $enemy = $battle_service->target;
+    if ( $enemy->id eq $enemy->WALL_ID ) {
+      Jikkoku::Class::BattleMode::Exception
+        ->throw($self->name . 'は攻城戦では使えません');
+    }
+    $self->$orig($battle_service);
+  };
+
   sub adjust_attack_power {
     my ($self, $chara_power_adjuster_service) = @_;
     my ($chara, $enemy) = ($self->chara, $chara_power_adjuster_service->target);

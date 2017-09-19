@@ -3,7 +3,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::EnemyAttackAndDefen
   use Mouse::Role;
   use Jikkoku;
 
-  qw(
+  with qw(
     Jikkoku::Service::BattleCommand::Battle::CharaPower::EnemyAttackPowerAdjuster
     Jikkoku::Service::BattleCommand::Battle::CharaPower::EnemyDefencePowerAdjuster
   );

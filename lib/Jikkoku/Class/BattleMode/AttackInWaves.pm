@@ -8,6 +8,11 @@ package Jikkoku::Class::BattleMode::AttackInWaves {
 
   with qw( Jikkoku::Class::BattleMode::BattleMode );
 
+  sub can_use {
+    my $self = shift;
+    $self->skills->get({category => 'Invasion', id => 'AttackInWaves'})->is_acquired;
+  }
+
   __PACKAGE__->meta->make_immutable;
 
 }

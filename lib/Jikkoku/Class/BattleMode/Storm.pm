@@ -13,6 +13,21 @@ package Jikkoku::Class::BattleMode::Storm {
     Jikkoku::Service::BattleCommand::Battle::CharaPower::EnemyAttackAndDefencePowerAdjuster
   );
 
+  sub can_use {
+    my $self = shift;
+    0;
+  }
+
+  around use => sub {
+    my ($orig, $self, $battle_service) = @_;
+    my $enemy = $battle_service->target;
+    if ( $enemy->id eq $enemy->WALL_ID ) {
+      Jikkoku::Class::BattleMode::Exception
+        ->throw($self->name . 'は攻城戦では使えません');
+    }
+    $self->$orig($battle_service);
+  };
+
   sub _build_adjust_power_ratio {
     my $self = shift;
     ( int( $self->chara->force / 50 ) + 3 ) / 100;

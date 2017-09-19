@@ -8,6 +8,8 @@ package Jikkoku::Class::BattleMode::Nomal {
 
   with qw( Jikkoku::Class::BattleMode::BattleMode );
 
+  sub can_use { 1 }
+
   __PACKAGE__->meta->make_immutable;
 
 }

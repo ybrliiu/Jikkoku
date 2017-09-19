@@ -1,28 +1,23 @@
 
 # やること
 
-* 戦闘プログラム作成中
+## 戦闘プログラム作成中
 
-CharaPower
+### CharaPower
 
-- 戦闘モードによるステータスの変化
-  戦闘モードクラス
-    (通常, 強襲, 包囲 ...etc
+* chara power test
 
-ステ変化の記録
+### その後
 
-ターン数変化
+* ターン数変化
+* 行動待機時間adjuster(波状攻撃)
+* 戦闘処理
+* 戦闘中発動スキルの実装
+* 戦闘後処理
+* Battle 攻城戦は拡張した別クラスで作成
+* 攻城時のみ効果発動するスキルについても考える
 
-戦闘処理
-
-戦闘中発動スキルの実装
-
-戦闘後処理
-
-Battle 攻城戦は拡張した別クラスで作成
-攻城時のみ効果発動するスキルについても考える
-
----
+## 修正箇所
 
 stuck skill つかえるようになっていない
 
@@ -31,7 +26,7 @@ C::Chara set value exception & use trigger
 Model層
   * 非Mouse Class 書き換え
   * Model::Skill, SkillCategory Result, Role::Classの使用, adjust_* の別クラスへの分離
-  * Model::Role::TextData::Integration::Expiresのりよう
+  * Model::Role::TextData::Integration::Expiresの利用
 
 BattleMAp書き換え
   * service化, Extend class作成
