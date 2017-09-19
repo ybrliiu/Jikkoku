@@ -5,6 +5,8 @@ package Jikkoku::Class::BattleMode::BattleMode {
 
   requires qw( name consume_morale );
 
+  has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara::ExtChara', required => 1 );
+
 }
 
 1;

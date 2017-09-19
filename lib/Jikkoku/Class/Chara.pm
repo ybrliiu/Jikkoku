@@ -12,6 +12,10 @@ package Jikkoku::Class::Chara {
     DIR_PATH          => 'charalog/main/',
     PRIMARY_ATTRIBUTE => 'id',
 
+    # 城壁キャラを作る時のID
+    WALL_ID => '__wall_charactor',
+
+    # ダミーキャラを作る時のID
     DUMMY_ID => '__dummy_charactor',
 
     PROTECT_RANGE  => 3,

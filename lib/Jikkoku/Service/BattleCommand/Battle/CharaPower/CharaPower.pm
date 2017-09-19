@@ -140,7 +140,10 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
         "${pkg_name}::EnemyDefencePower"->new(%$param, adjuster => $adjuster);
       }
     };
-    [ map { $closure->($_) } @{ $self->target->skills->get_enemy_chara_power_adjuster_skills } ];
+    [
+      map { $closure->($_) } @{ $self->target->skills->get_enemy_power_adjuster_skills },
+      map { $closure->($_) } @{ $self->target->states->get_available_states_with_result->get_enemy_power_adjuster_states_with_result },
+    ];
   }
 
   sub attack_power {

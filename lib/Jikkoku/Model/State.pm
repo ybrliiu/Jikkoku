@@ -77,22 +77,20 @@ package Jikkoku::Model::State::Result {
     ]);
   }
 
-  sub adjust_attack_power {
-    my ($self, $orig_attack_power) = @_;
-    Carp::croak 'few arguments' if @_ < 2;
-    sum
-      map { $_->adjust_attack_power($orig_attack_power) }
-      grep { $_->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackPowerAdjuster') }
-      @{ $self->data };
+  sub get_chara_power_adjuster_states_with_result {
+    my $self = shift;
+    $self->create_result([
+      grep { $_->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPowerAdjuster') }
+        @{ $self->data }
+    ]);
   }
 
-  sub adjust_defence_power {
-    my ($self, $orig_defence_power) = @_;
-    Carp::croak 'few arguments' if @_ < 2;
-    sum
-      map { $_->adjust_defence_power($orig_defence_power) }
-      grep { $_->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::DefencePowerAdjuster') }
-      @{ $self->data };
+  sub get_enemy_power_adjuster_states_with_result {
+    my $self = shift;
+    $self->create_result([
+      grep { $_->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::EnemyPowerAdjuster') }
+        @{ $self->data }
+    ]);
   }
 
   __PACKAGE__->meta->make_immutable;
