@@ -14,8 +14,8 @@ package Jikkoku::Class::Chara::Formation {
       map {
         my $id = $_;
         $self->chara->skills->get({
+          id       => $id,
           category => 'HasFormation',
-          id       => $id
         })
       } @{ $self->skill_id_list }
     ];

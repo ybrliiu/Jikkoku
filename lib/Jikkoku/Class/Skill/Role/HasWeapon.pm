@@ -7,7 +7,7 @@ package Jikkoku::Class::Skill::Role::HasWeapon {
 
   sub is_acquired {
     my $self = shift;
-    $self->chara->weapon->skill_id == $self->ACQUIRE_SIGN;
+    $self->chara->weapon->skill_id eq $self->ACQUIRE_SIGN;
   }
 
   sub acquire {

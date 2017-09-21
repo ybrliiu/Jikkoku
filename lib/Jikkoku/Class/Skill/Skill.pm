@@ -15,7 +15,7 @@ package Jikkoku::Class::Skill::Skill {
   has 'next_skills_id'   => ( is => 'ro', isa => 'ArrayRef[Str]', lazy => 1, builder => '_build_next_skills_id' );
 
   # skillcategory で使う用
-  has 'before_skills_id' => ( is => 'ro', isa => 'ArrayRef[Str]', lazy => 1, builder => '_build_before_skills_id' );
+  has 'before_skills_id' => ( is => 'rw', isa => 'ArrayRef[Str]', lazy => 1, builder => '_build_before_skills_id' );
 
   sub _build_id {
     my $self = shift;
@@ -35,6 +35,11 @@ package Jikkoku::Class::Skill::Skill {
 
   # method
   requires qw( acquire is_acquired );
+
+  sub is_available {
+    my $self = shift;
+    $self->is_acquired;
+  }
 
   {
     my @methods = qw(
@@ -95,23 +100,23 @@ package Jikkoku::Class::Skill::Skill {
     my $self = shift;
     my $skill_category_model = Jikkoku::Model::SkillCategory->new;
     my $skill_category       = $skill_category_model->get({
-      id          => $self->category,
-      skill_model => $self->chara->skills,
+      id     => $self->category,
+      skills => $self->chara->skills,
     });
     my $before_skills_id = $skill_category->get_before_skills_id($self);
-    [ map { $skill_category->get_chached_skill($_) } @$before_skills_id ];
+    [ map { $skill_category->get_skill($_) } @$before_skills_id ];
   }
 
   before acquire => sub {
     my $self = shift;
     my $skill_category_model = Jikkoku::Model::SkillCategory->new;
     my $skill_category       = $skill_category_model->get({
-      id          => $self->category,
-      skill_model => $self->chara->skills,
+      id     => $self->category,
+      skills => $self->chara->skills,
     });
     my $before_skills_id = $skill_category->get_before_skills_id($self);
     for my $skill_id (@$before_skills_id) {
-      my $skill = $skill_category->get_chached_skill($skill_id);
+      my $skill = $skill_category->get_skill($skill_id);
       unless ($skill->is_acquired) {
         Jikkoku::Class::Skill::AcquireSkillException
           ->throw("修得条件を満たしていません(@{[ $skill->name ]}を修得していないため)");

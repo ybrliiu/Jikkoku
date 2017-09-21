@@ -4,7 +4,6 @@ package Jikkoku::Class::Chara {
   use Jikkoku;
 
   use Jikkoku::Model::Chara::Profile;
-  use Jikkoku::Model::ExtensiveState;
 
   use Jikkoku::Class::Role::TextData;
 

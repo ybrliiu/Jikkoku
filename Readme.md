@@ -5,7 +5,7 @@
 
 ### CharaPower
 
-* chara power test
+  * SkillCategory Result, Role::Classの使用
 
 ### その後
 
@@ -25,7 +25,6 @@ C::Chara set value exception & use trigger
 
 Model層
   * 非Mouse Class 書き換え
-  * Model::Skill, SkillCategory Result, Role::Classの使用, adjust_* の別クラスへの分離
   * Model::Role::TextData::Integration::Expiresの利用
 
 BattleMAp書き換え

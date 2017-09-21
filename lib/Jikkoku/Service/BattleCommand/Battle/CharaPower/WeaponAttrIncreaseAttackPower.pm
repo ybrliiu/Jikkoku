@@ -1,4 +1,4 @@
-package Jikkoku::Service::BattleCommand::Battle::WeaponAttrIncreaseAttackPower {
+package Jikkoku::Service::BattleCommand::Battle::CharaPower::WeaponAttrIncreaseAttackPower {
 
   use Mouse;
   use Jikkoku;

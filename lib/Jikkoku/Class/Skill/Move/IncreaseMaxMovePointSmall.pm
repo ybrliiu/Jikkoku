@@ -5,9 +5,9 @@ package Jikkoku::Class::Skill::Move::IncreaseMaxMovePointSmall {
 
   use constant ACQUIRE_SIGN => 1;
 
-  has 'name'                          => ( is => 'ro', isa => 'Str', default => '駿足【小】' );
-  has 'consume_skill_point'           => ( is => 'ro', isa => 'Int', default => 4 );
-  has 'adjust_soldier_max_move_point' => ( is => 'ro', isa => 'Int', default => 1 );
+  has 'name'                            => ( is => 'ro', isa => 'Str', default => '駿足【小】' );
+  has 'consume_skill_point'             => ( is => 'ro', isa => 'Int', default => 4 );
+  has 'increase_soldier_max_move_point' => ( is => 'ro', isa => 'Int', default => 1 );
 
   with qw(
     Jikkoku::Class::Skill::Skill
@@ -31,7 +31,12 @@ package Jikkoku::Class::Skill::Move::IncreaseMaxMovePointSmall {
 
   sub description_of_effect_body {
     my $self = shift;
-    "最大移動Pが+@{[ $self->increase_max_move_point ]}される。";
+    "最大移動Pが+@{[ $self->increase_soldier_max_move_point ]}される。";
+  }
+
+  sub adjust_soldier_max_move_point {
+    my ($self, $orig_max_move_point) = @_;
+    $self->increase_soldier_max_move_point;
   }
 
   __PACKAGE__->meta->make_immutable;

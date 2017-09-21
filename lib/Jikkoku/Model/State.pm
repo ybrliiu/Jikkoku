@@ -49,10 +49,7 @@ package Jikkoku::Model::State::Result {
   sub get_available_states_with_result {
     my ($self, $time) = @_;
     $time //= time;
-    $self->create_result([
-      grep { $_->is_available($time) }
-      grep { $_->DOES('Jikkoku::Class::State::Role::Expires') } @{ $self->data }
-    ]);
+    $self->create_result([ grep { $_->is_available($time) } @{ $self->data } ]);
   }
 
   sub get_move_cost_adjuster_states_with_result {

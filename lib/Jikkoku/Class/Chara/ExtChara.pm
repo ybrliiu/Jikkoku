@@ -173,25 +173,18 @@ package Jikkoku::Class::Chara::ExtChara {
     );
   }
 
-  has 'skills' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Model::Skill',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->load_model('Skill')->new(chara => $self);
-    },
-  );
-
-  has 'states' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Model::State::Result',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->load_model('State')->new(chara => $self)->get_all_with_result;
-    },
-  );
+  for my $name (qw/ skills states battle_modes /) {
+    my $class_name = ucfirst substr($name, 0, -1);
+    has $name => (
+      is      => 'ro',
+      isa     => "Jikkoku::Model::${class_name}::Result",
+      lazy    => 1,
+      default => sub {
+        my $self = shift;
+        $self->load_model($class_name)->new(chara => $self)->get_all_with_result;
+      },
+    );
+  }
 
   has 'extensive_state_record_model' => (
     is      => 'ro',

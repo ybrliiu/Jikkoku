@@ -19,7 +19,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::FormationPower {
 
   sub _build_attack_power {
     my $self = shift;
-    if ( $self->change_formation_service->is_arranging ) {
+    if ( $self->change_formation->is_arranging ) {
       - int( $self->orig_attack_power * ARRANGING_DECREASE_RATIO );
     } else {
       my $formation = $self->chara->formation;
@@ -37,8 +37,8 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::FormationPower {
 
   sub _build_defence_power {
     my $self = shift;
-    if ( $self->change_formation_service->is_arranging ) {
-      - int( $self->orig_defence_power * ARRANGING_DECREASE_RATIO );
+    if ( $self->change_formation->is_arranging ) {
+      int( $self->orig_defence_power * ARRANGING_DECREASE_RATIO ) * -1;
     } else {
       my $formation = $self->chara->formation;
       my $power =
@@ -55,7 +55,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::FormationPower {
 
   sub write_to_log {
     my $self = shift;
-    if ( $self->change_formation_service->is_arranging ) {
+    if ( $self->change_formation->is_arranging ) {
       my $log = sub {
         my $color = shift;
         qq{<span class="$color">【陣形編成中...】</span>@{[ $self->chara->name ]}は}

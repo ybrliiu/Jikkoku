@@ -6,12 +6,22 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
 
   with 'Jikkoku::Role::Loader';
 
-  for (qw/
-    AttackPower DefencePower AttackAndDefencePower
-    EnemyAttackPower EnemyDefencePower EnemyAttackAndDefencePower
-  /) {
-    __PACKAGE__->service("BattleCommand::Battle::CharaPower::AdjusterService::$_");
-  }
+  use Jikkoku::Service::BattleCommand::Battle::WeaponAttrAffinity;
+
+  __PACKAGE__->service("BattleCommand::Battle::CharaPower::$_") for qw/
+    NavyPower
+    FormationPower
+    WeaponAttrIncreaseAttackPower
+  /;
+
+  __PACKAGE__->service("BattleCommand::Battle::CharaPower::AdjusterService::$_") for qw/
+    AttackPower
+    DefencePower
+    AttackAndDefencePower
+    EnemyAttackPower
+    EnemyDefencePower
+    EnemyAttackAndDefencePower
+  /;
   
   has [qw/ chara target /] => (
     is       => 'ro',
@@ -25,7 +35,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->service('BattleCommand::Battle::WeaponAttrAffinity')->new({
+      Jikkoku::Service::BattleCommand::Battle::WeaponAttrAffinity->new({
         chara  => $self->chara,
         target => $self->target,
       });
@@ -38,7 +48,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->service('BattleCommand::Battle::WeaponAttrIncreaseAttackPower')
+      Jikkoku::Service::BattleCommand::Battle::CharaPower::WeaponAttrIncreaseAttackPower
         ->new( weapon_attr_affinity => $self->weapon_attr_affinity );
     },
   );
@@ -59,7 +69,8 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->service('BattleCommand::Battle::FormationPower')->new(chara_power => $self);
+      Jikkoku::Service::BattleCommand::Battle::CharaPower::FormationPower
+        ->new(chara_power => $self);
     },
   );
 
@@ -69,7 +80,8 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->service('BattleCommand::Battle::NavyPower')->new(chara_power => $self);
+      Jikkoku::Service::BattleCommand::Battle::CharaPower::NavyPower
+        ->new(chara_power => $self);
     },
   );
 
@@ -94,7 +106,8 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
 
   sub _build_chara_power_adjusters {
     my $self = shift;
-    my $pkg_name = 'Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService';
+    my $role_pkg_name = 'Jikkoku::Service::BattleCommand::Battle::CharaPower';
+    my $pkg_name      = $role_pkg_name . '::AdjusterService';
     my $param = {
       chara              => $self->chara,
       target             => $self->target,
@@ -103,10 +116,10 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     };
     my $closure = sub {
       my $adjuster = shift;
-      if ( $adjuster->DOES("${pkg_name}::AttackAndDefencePowerAdjuster") ) {
+      if ( $adjuster->DOES("${role_pkg_name}::AttackAndDefencePowerAdjuster") ) {
         "${pkg_name}::AttackAndDefencePower"->new(%$param, adjuster => $adjuster);
       }
-      elsif ( $adjuster->DOES("${pkg_name}::AttackPowerAdjuster") ) {
+      elsif ( $adjuster->DOES("${role_pkg_name}::AttackPowerAdjuster") ) {
         "${pkg_name}::AttackPower"->new(%$param, adjuster => $adjuster);
       }
       else {
@@ -114,14 +127,15 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
       }
     };
     [
-      map { $closure->($_) } @{ $self->chara->states->get_available_states_with_result->get_chara_power_adjuster_states_with_result },
-      map { $closure->($_) } @{ $self->chara->skills->get_chara_power_adjuster_skills },
+      ( map { $closure->($_) } @{ $self->chara->states->get_available_states_with_result->get_chara_power_adjuster_states_with_result } ),
+      ( map { $closure->($_) } @{ $self->chara->skills->get_available_skills_with_result->get_chara_power_adjuster_skills_with_result } ),
     ];
   }
 
   sub _build_enemy_power_adjusters {
     my $self = shift;
-    my $pkg_name = 'Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService';
+    my $role_pkg_name = 'Jikkoku::Service::BattleCommand::Battle::CharaPower';
+    my $pkg_name      = $role_pkg_name . '::AdjusterService';
     my $param = {
       chara              => $self->chara,
       target             => $self->target,
@@ -130,10 +144,10 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     };
     my $closure = sub {
       my $adjuster = shift;
-      if ( $adjuster->DOES("${pkg_name}::AttackAndDefencePowerAdjuster") ) {
+      if ( $adjuster->DOES("${role_pkg_name}::AttackAndDefencePowerAdjuster") ) {
         "${pkg_name}::EnemyAttackAndDefencePower"->new(%$param, adjuster => $adjuster);
       }
-      elsif ( $adjuster->DOES("${pkg_name}::AttackPowerAdjuster") ) {
+      elsif ( $adjuster->DOES("${role_pkg_name}::AttackPowerAdjuster") ) {
         "${pkg_name}::EnemyAttackPower"->new(%$param, adjuster => $adjuster);
       }
       else {
@@ -141,8 +155,8 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
       }
     };
     [
-      map { $closure->($_) } @{ $self->target->skills->get_enemy_power_adjuster_skills },
-      map { $closure->($_) } @{ $self->target->states->get_available_states_with_result->get_enemy_power_adjuster_states_with_result },
+      ( map { $closure->($_) } @{ $self->target->states->get_available_states_with_result->get_enemy_power_adjuster_states_with_result } ),
+      ( map { $closure->($_) } @{ $self->target->skills->get_available_skills_with_result->get_enemy_power_adjuster_skills_with_result } ),
     ];
   }
 

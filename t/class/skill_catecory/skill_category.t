@@ -30,8 +30,8 @@ package Jikkoku::Class::Skill::TestCategory {
 
 my $chara_model      = Jikkoku::Model::Chara->new;
 my $chara            = Jikkoku::Class::Chara::ExtChara->new(chara => $chara_model->get_with_option('ybrliiu')->get);
-my $skill_model      = Jikkoku::Model::Skill->new(chara => $chara);
-ok my $test_category = Jikkoku::Class::Skill::TestCategory->new(skill_model => $skill_model);
+my $skills           = Jikkoku::Model::Skill->new(chara => $chara)->get_all_with_result;
+ok my $test_category = Jikkoku::Class::Skill::TestCategory->new(skills => $skills);
 is $test_category->id, 'TestCategory';
 
 done_testing;

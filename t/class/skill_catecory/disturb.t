@@ -11,9 +11,9 @@ use_ok $CLASS;
 
 my $chara_model = Jikkoku::Model::Chara->new;
 my $chara       = Jikkoku::Class::Chara::ExtChara->new(chara => $chara_model->get_with_option('ybrliiu')->get);
-my $skill_model = Jikkoku::Model::Skill->new(chara => $chara);
+my $skills      = Jikkoku::Model::Skill->new(chara => $chara)->get_all_with_result;
 
-ok my $disturb = $CLASS->new(skill_model => $skill_model);
+ok my $disturb = $CLASS->new(skills => $skills);
 is $disturb->description, '文官向けの、相手の行動を妨害するスキルです。';
 for my $skill (@{ $disturb->get_belong_skills }) {
   ok $skill->DOES('Jikkoku::Class::Skill::Skill');

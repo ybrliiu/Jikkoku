@@ -2,65 +2,78 @@ package Jikkoku::Model::Skill {
 
   use Mouse;
   use Jikkoku;
+  use Jikkoku::Util qw( validate_values );
 
-  use Carp;
-  use Option;
-  use List::Util qw( sum );
-  use Module::Load 'load';
-  use Jikkoku::Util 'validate_values';
+  use constant {
+    NAMESPACE => 'Jikkoku::Class::Skill',
+    ROLE      => 'Jikkoku::Class::Skill::Skill',
+  };
 
-  our @SKILL_MODULES = _get_skill_module_list();
+  has 'chara' => ( is => 'ro', isa => 'Jikkoku::Class::Chara::ExtChara', weak_ref => 1, required => 1 );
 
-  sub _get_skill_module_list {
-    my $dir = './lib/Jikkoku/Class/Skill';
-    opendir(my $dh, $dir);
-    my @dir_list = grep { $_ ne 'Role' && $_ !~ /(\.pm$)|(\.)/ } readdir $dh;
-    close $dh;
-    my @modules = map {
-      my $dir_name = $_;
-      opendir(my $dh, "${dir}/${dir_name}");
-      my @modules =  map {
-        +{
-          category => $dir_name,
-          id       => $_,
-        };
-      } map {
-        $_ =~ /(\.pm$)/p ? ${^PREMATCH} : ()
-      } readdir $dh;
-      close $dh;
-      @modules;
-    } @dir_list;
-    @modules;
-  }
-
-  has 'chara'  => ( is => 'ro', isa => 'Jikkoku::Class::Chara::ExtChara', weak_ref => 1, required => 1 );
-  has '_cache' => ( is => 'ro', isa => 'HashRef', default => sub { +{} } );
+  with 'Jikkoku::Model::Role::Class';
 
   sub skill_key {
-    my ($self, $args) = @_;
+    my ($class, $args) = @_;
     "$args->{category}::$args->{id}";
   }
 
   sub get {
     my ($self, $args) = @_;
     validate_values $args => [qw/ category id /];
-
     my $key = $self->skill_key($args);
-    my $load_class = "Jikkoku::Class::Skill::${key}";
-    state $loaded_class = {};
-    unless (exists $loaded_class->{$key}) {
-      Module::Load::load $load_class;
-      $loaded_class->{$key} = 1;
-    }
-
-    $self->_cache->{$key} = $load_class->new(chara => $self->chara);
+    "Jikkoku::Class::Skill::${key}"->new(chara => $self->chara);
   }
 
-  sub get_chached_skill {
+  around get_all => sub {
+    my ($orig, $self) = @_;
+    [
+      map {
+        my ($category, $id) = split /::/, $_;
+        $self->get({
+          id       => $id,
+          category => $category,
+        })
+      } @{ $self->MODULES }
+    ];
+  };
+
+  __PACKAGE__->prepare;
+  __PACKAGE__->meta->make_immutable;
+
+}
+
+package Jikkoku::Model::Skill::Result {
+
+  use Mouse;
+  use Jikkoku;
+  use Jikkoku::Util qw( validate_values );
+
+  with 'Jikkoku::Model::Role::Result';
+
+  has 'key_map' => (
+    is      => 'ro',
+    isa     => 'HashRef[Jikkoku::Class::Skill::Skill]',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      +{
+        map {
+          my $key = Jikkoku::Model::Skill->skill_key({
+            id       => $_->id,
+            category => $_->category,
+          });
+          $key => $_;
+        } @{ $self->data }
+      };
+    },
+  );
+
+  sub get {
     my ($self, $args) = @_;
     validate_values $args => [qw/ category id /];
-    my $key = $self->skill_key($args);
-    exists $self->_cache->{$key} ? $self->_cache->{$key} : $self->get($args);
+    my $key = Jikkoku::Model::Skill->skill_key($args);
+    $self->key_map->{$key} // Carp::croak "no such skill($key)";
   }
 
   sub get_next_skills {
@@ -77,55 +90,51 @@ package Jikkoku::Model::Skill {
     ];
   }
 
-  sub get_all {
+  sub get_acquired_skills_with_result {
     my $self = shift;
-    [ map { $self->get($_) } @SKILL_MODULES ];
+    $self->create_result([ grep { $_->is_acquired } @{ $self->data } ]);
   }
 
-  sub get_acquired_skills {
+  sub get_available_skills_with_result {
     my $self = shift;
-    [ grep { $_->is_acquired } @{ $self->get_all } ];
+    $self->create_result([ grep { $_->is_available } @{ $self->data } ]);
   }
 
-  sub adjust_soldier_max_move_point {
-    my ($self, $orig_cost) = @_;
-    Carp::croak 'few arguments' if @_ < 2;
-    my @skills = grep {
-      $_->DOES('Jikkoku::Class::Chara::Soldier::MaxMovePointAdjuster')
-    } @{ $self->get_acquired_skills };
-    sum map { $_->adjust_soldier_max_move_point } @skills;
-  }
-
-  sub adjust_soldier_charge_move_point_time {
-    my ($self, $charge_time) = @_;
-    Carp::croak 'few arguments' if @_ < 2;
-    my @skills = grep {
-      $_->DOES('Jikkoku::Class::Chara::Soldier::ChargeMovePointAdjuster')
-    } @{ $self->get_acquired_skills };
-    sum map { $_->adjust_soldier_charge_move_point_time($charge_time) } @skills;
-  }
-
-  sub get_chara_power_adjuster_skills {
+  sub get_soldier_max_move_point_adjuster_skills_with_result {
     my $self = shift;
-    [
-      grep {
-        $_-DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPowerAdjuster')
-      } @{ $self->get_acquired_skills }
-    ];
+    $self->create_result([
+      grep { $_->DOES('Jikkoku::Class::Chara::Soldier::MaxMovePointAdjuster') }
+        @{ $self->data }
+    ]);
   }
 
-  sub get_enemy_power_adjuster_skills {
+  sub get_soldier_charge_move_point_time_adjuster_skills_with_result {
     my $self = shift;
-    [
-      grep {
-        $_-DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::EnemyPowerAdjuster')
-      } @{ $self->get_acquired_skills }
-    ];
+    $self->create_result([
+      grep { $_->DOES('Jikkoku::Class::Chara::Soldier::ChargeMovePointAdjuster') }
+        @{ $self->data }
+    ]);
+  }
+
+  sub get_chara_power_adjuster_skills_with_result {
+    my $self = shift;
+    $self->create_result([
+      grep { $_->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPowerAdjuster') }
+        @{ $self->data }
+    ]);
+  }
+
+  sub get_enemy_power_adjuster_skills_with_result {
+    my $self = shift;
+    $self->create_result([
+      grep { $_->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::EnemyPowerAdjuster') } 
+        @{ $self->data }
+    ]);
   }
 
   __PACKAGE__->meta->make_immutable;
 
-}
+};
 
 1;
 

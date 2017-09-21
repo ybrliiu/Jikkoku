@@ -68,7 +68,7 @@ package Jikkoku::Util {
     \@file_data;
   }
 
-  sub sign { $_[0] < 0 ? '-' : '+' }
+  sub sign { $_[0] < 0 ? '' : '+' }
 
   sub save_data {
     my ($file_name, $file_data) = @_;

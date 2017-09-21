@@ -1,4 +1,4 @@
-package Jikkoku::Service::BattleCommand::Battle::NavyPower {
+package Jikkoku::Service::BattleCommand::Battle::CharaPower::NavyPower {
 
   use Mouse;
   use Jikkoku;
@@ -21,6 +21,13 @@ package Jikkoku::Service::BattleCommand::Battle::NavyPower {
     lazy    => 1,
     builder => '_build_current_node',
   );
+
+  has 'is_apply' => (
+    is      => 'ro',
+    isa     => 'Bool',
+    lazy    => 1,
+    builder => '_build_is_apply',
+  );
   
   with qw( Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPowerCalculator );
 
@@ -31,22 +38,27 @@ package Jikkoku::Service::BattleCommand::Battle::NavyPower {
     $battle_map->get_node_by_point($soldier);
   }
 
+  sub _build_is_apply {
+    my $self = shift;
+    $self->chara->soldier->attr eq '水' && !$self->current_node->is_water;
+  }
+
   sub _build_attack_power {
     my $self = shift;
-    $self->current_node->is_water ? 0 : $self->orig_attack_power * NOT_SUITABLE_DECREASE_RATIO;
+    $self->is_apply ? 0 : int( $self->orig_attack_power * NOT_SUITABLE_DECREASE_RATIO );
   }
 
   sub _build_defence_power {
     my $self = shift;
-    $self->current_node->is_water ? 0 : $self->orig_defence_power * NOT_SUITABLE_DECREASE_RATIO;
+    $self->is_apply ? 0 : int( $self->orig_defence_power * NOT_SUITABLE_DECREASE_RATIO );
   }
 
   sub write_to_log {
     my $self = shift;
-    unless ( $self->current_node->is_water ) {
+    if ( $self->is_apply ) {
       my $log = qq{<span class="lightblue">【水軍不適応地形】</span>@{[ $self->chara->name ]}の}
-              . qq{攻撃力が<span clasS="red">@{[ $self->attack_power ]}</span>、}
-              . qq{守備力が<span class="red">@{[ $self->defence_power ]}</span>されました。};
+              . qq{攻撃力が-<span clasS="red">@{[ $self->attack_power ]}</span>、}
+              . qq{守備力が-<span class="red">@{[ $self->defence_power ]}</span>されました。};
       $self->chara->battle_logger->add($log);
       $self->target->battle_logger->add($log);
     }

@@ -19,7 +19,8 @@ package Jikkoku::Model::Role::Class {
     my ($orig, $class) = @_;
     my $dir_name = $class->NAMESPACE =~ s!::!/!gr;
     my @dir_list = map { "${_}/${dir_name}" } @INC;
-    my @applied_modules = map { $class->_applied_modules_of_dir($_) } @dir_list;
+    my @applied_modules =
+      map { $class->_applied_modules_of_dir($_, $class->NAMESPACE . '::') } @dir_list;
     $class->meta->add_method(MODULES => sub { \@applied_modules });
     eval {
       Module::Load::load( $class->result_class )
@@ -31,15 +32,24 @@ package Jikkoku::Model::Role::Class {
   };
 
   sub _applied_modules_of_dir {
-    my ($class, $dir) = @_;
+    my ($class, $dir, $name_space) = @_;
     if ( opendir(my $dh, $dir) ) {
+      my @files = readdir $dh;
+      my @dirs = grep { $_ !~ /^\.{1,2}$/ } grep { -d "${dir}/${_}" } @files;
+      my @child_modules = map {
+        my $orig_dir = $_;
+        my $new_dir        = "${dir}/${orig_dir}";
+        my $new_name_space = $name_space . "${orig_dir}::";
+        $class->_applied_modules_of_dir($new_dir, $new_name_space);
+      } @dirs;
       my @modules =
-        map { $_ =~ /(\.pm$)/p ? $class->NAMESPACE . '::' . ${^PREMATCH} : () } readdir $dh;
+        map { $_ =~ /(\.pm$)/p ? "${name_space}${^PREMATCH}" : () } @files;
       for my $module (@modules) {
         Module::Load::load($module) unless Jikkoku::Util::is_module_loaded($module);
       }
-      map { $_ =~ s/(??{ $class->NAMESPACE . '::' })//gr }
-        grep { $_->DOES( $class->ROLE ) } grep { $_->can('new') } @modules;
+      @child_modules,
+      ( map { $_ =~ s/(??{ $class->NAMESPACE . '::' })//gr }
+          grep { $_->DOES( $class->ROLE ) } grep { $_->can('new') } @modules );
     } else {
       ();
     }

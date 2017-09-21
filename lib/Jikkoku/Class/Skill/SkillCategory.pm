@@ -2,15 +2,13 @@ package Jikkoku::Class::Skill::SkillCategory {
 
   use Mouse::Role;
   use Jikkoku;
-  use Jikkoku::Util;
-  use List::Util;
 
   # attribute
   requires qw( name root_skill_id );
 
   has 'id'          => ( is => 'rw', isa => 'Str', lazy => 1, builder => '_build_id' );
+  has 'skills'      => ( is => 'ro', isa => 'Jikkoku::Model::Skill::Result', required => 1 );
   has 'target_type' => ( is => 'ro', isa => 'ArrayRef[Str]', lazy => 1, builder => '_build_target_type' );
-  has 'skill_model' => ( is => 'ro', isa => 'Jikkoku::Model::Skill', weak_ref => 1, required => 1 );
 
   sub _build_id {
     my $self = shift;
@@ -37,15 +35,7 @@ package Jikkoku::Class::Skill::SkillCategory {
 
   sub get_skill {
     my ($self, $id) = @_;
-    $self->skill_model->get({
-      id       => $id,
-      category => $self->id,
-    });
-  }
-
-  sub get_chached_skill {
-    my ($self, $id) = @_;
-    $self->skill_model->get_chached_skill({
+    $self->skills->get({
       id       => $id,
       category => $self->id,
     });
@@ -71,6 +61,12 @@ package Jikkoku::Class::Skill::SkillCategory {
       my $next_skill_id = $_;
       my $next_skill = $self->get_skill($next_skill_id);
       push @{ $next_skill->before_skills_id }, $skill->id;
+
+      # ハッシュを利用して重複値を消す(暫定, より良い方法を考える)
+      my $erase_multiple_id_list
+        = [ keys %{ +{ map { $_ => 1 } @{ $next_skill->before_skills_id } } } ];
+      $next_skill->before_skills_id($erase_multiple_id_list);
+
       ( $next_skill, $self->_trace_belong_skills_with_set_before_skills( $next_skill ) );
     } @{ $skill->next_skills_id };
   }

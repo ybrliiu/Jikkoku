@@ -17,21 +17,12 @@ package Jikkoku::Class::Skill::Invasion::Advance {
   with qw(
     Jikkoku::Class::Skill::Skill
     Jikkoku::Class::Skill::Role::Purchasable
+    Jikkoku::Class::Skill::Invasion::Invasion
   );
 
   around _build_next_skills_id => sub {
     [qw/ VehementAttack AttackInWaves /];
   };
-
-  sub is_acquired {
-    my $self = shift;
-    $self->chara->skill('invasion') =~ /(??{ ACQUIRE_SIGN })/;
-  }
-
-  sub acquire {
-    my $self = shift;
-    $self->chara->skill( invasion => $self->chara->skill('invasion') . ':' . ACQUIRE_SIGN );
-  }
 
   sub description_of_effect_body {
     my $self = shift;

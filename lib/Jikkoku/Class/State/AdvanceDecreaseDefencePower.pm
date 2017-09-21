@@ -5,7 +5,7 @@ package Jikkoku::Class::State::AdvanceDecreaseDefencePower {
 
   has 'name'                => ( is => 'ro', isa => 'Str', default => '進撃' );
   has 'defence_power'       => ( is => 'ro', isa => 'Int', default => 0 );
-  has 'defence_power_ratio' => ( is => 'ro', isa => 'Num', default => 0.5 );
+  has 'defence_power_ratio' => ( is => 'ro', isa => 'Num', default => -0.5 );
 
   with qw(
     Jikkoku::Class::State::State
@@ -21,7 +21,7 @@ package Jikkoku::Class::State::AdvanceDecreaseDefencePower {
 
   sub description {
     my $self = shift;
-    '進撃スキルの効果で守備力が' . $self->defence_power_ratio * 100 . '%低下している状態です。';
+    '進撃スキルの効果で守備力が' . $self->defence_power_ratio * -100 . '%低下している状態です。';
   }
 
   sub start_time {
@@ -39,7 +39,7 @@ package Jikkoku::Class::State::AdvanceDecreaseDefencePower {
       $self->start_time <= $time && $self->$orig($time);
     }
     else {
-      1;
+      0;
     }
   };
 

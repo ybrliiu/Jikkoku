@@ -15,22 +15,13 @@ package Jikkoku::Class::Skill::Invasion::IntensifyInvasion {
   with qw(
     Jikkoku::Class::Skill::Skill
     Jikkoku::Class::Skill::Role::Purchasable
+    Jikkoku::Class::Skill::Invasion::Invasion
     Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackPowerAdjuster
   );
 
   around _build_next_skills_id => sub {
     ['Advance'];
   };
-
-  sub is_acquired {
-    my $self = shift;
-    $self->chara->skill('invasion') =~ /(??{ ACQUIRE_SIGN })/;
-  }
-
-  sub acquire {
-    my $self = shift;
-    $self->chara->skill(invasion => ACQUIRE_SIGN);
-  }
 
   sub description_of_effect_body {
     my $self = shift;
@@ -42,8 +33,7 @@ package Jikkoku::Class::Skill::Invasion::IntensifyInvasion {
 
   sub adjust_attack_power {
     my ($self, $chara_power_adjuster_service) = @_;
-    $self->chara->is_invasion
-      && $self->chara->force >= NEED_FORCE ? $self->increase_attack_power : 0;
+    $self->increase_attack_power;
   }
 
   __PACKAGE__->meta->make_immutable;

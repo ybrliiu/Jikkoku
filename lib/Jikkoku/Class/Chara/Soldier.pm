@@ -5,7 +5,7 @@ package Jikkoku::Class::Chara::Soldier {
 
   extends 'Jikkoku::Class::Soldier';
 
-  use Carp;
+  use List::Util qw( sum );
   use Jikkoku::Util 'validate_values';
   
   has 'chara' => (
@@ -19,7 +19,14 @@ package Jikkoku::Class::Chara::Soldier {
     my $self = shift;
     my $orig_cost = super();
     my $cost = $orig_cost;
-    $cost += $self->chara->skills->adjust_soldier_max_move_point($orig_cost);
+    $cost += sum(
+      map { $_->adjust_soldier_max_move_point($orig_cost) }
+        @{
+          $self->chara->skills
+            ->get_available_skills_with_result
+            ->get_soldier_max_move_point_adjuster_skills_with_result
+        }
+    );
     $cost;
   };
 
@@ -35,7 +42,14 @@ package Jikkoku::Class::Chara::Soldier {
   sub occur_move_point_charge_time {
     my ($self, $value) = @_;
     Carp::croak 'few argments($value)' if @_ < 2;
-    $value += $self->chara->skills->adjust_soldier_charge_move_point_time($value);
+    $value += sum(
+      map { $_->adjust_soldier_charge_move_point_time($value) }
+        @{
+          $self->chara->skills
+            ->get_available_skills_with_result
+            ->get_soldier_charge_move_point_time_adjuster_skills_with_result
+        }
+    );
     my $soldier_bm = $self->chara->_soldier_battle_map;
     if ( $soldier_bm->get('move_point_charge_time') < $value ) {
       $soldier_bm->set( move_point_charge_time => $value );
