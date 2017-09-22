@@ -1,10 +1,10 @@
-package Jikkoku::Class::Skill::AttackCastle {
+package Jikkoku::Class::Skill::Siege {
 
   use Mouse;
   use Jikkoku;
 
   has 'name'          => ( is => 'ro', isa => 'Str', default => '攻城1' );
-  has 'root_skill_id' => ( is => 'ro', isa => 'Str', default => 'SmallAttackCastle' );
+  has 'root_skill_id' => ( is => 'ro', isa => 'Str', default => 'SmallSiege' );
 
   with 'Jikkoku::Class::Skill::SkillCategory';
 

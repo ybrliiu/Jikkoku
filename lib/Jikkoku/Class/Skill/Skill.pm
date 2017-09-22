@@ -11,7 +11,7 @@ package Jikkoku::Class::Skill::Skill {
   has 'category' => ( is => 'ro', isa => 'Str', lazy => 1, builder => '_build_category' );
 
   # 使用先で定義
-  has 'next_skills_id'   => ( is => 'ro', isa => 'ArrayRef[Str]', lazy => 1, builder => '_build_next_skills_id' );
+  has 'next_skills_id' => ( is => 'ro', isa => 'ArrayRef[Str]', lazy => 1, builder => '_build_next_skills_id' );
 
   # skillcategory で使う用
   has 'before_skills_id' => ( is => 'ro', isa => 'ArrayRef[Str]', lazy => 1, builder => '_build_before_skills_id' );

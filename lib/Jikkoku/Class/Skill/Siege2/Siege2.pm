@@ -1,4 +1,4 @@
-package Jikkoku::Class::Skill::AttackCastle2::Siege2 {
+package Jikkoku::Class::Skill::Siege2::Siege2 {
 
   use Mouse::Role;
   use Jikkoku;

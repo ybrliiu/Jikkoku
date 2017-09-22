@@ -1,4 +1,4 @@
-package Jikkoku::Class::Skill::AttackCastle2::GreatAttackCastle2 {
+package Jikkoku::Class::Skill::Siege2::GreatSiege2 {
 
   use Mouse;
   use Jikkoku;
@@ -14,7 +14,7 @@ package Jikkoku::Class::Skill::AttackCastle2::GreatAttackCastle2 {
   with qw(
     Jikkoku::Class::Skill::Skill
     Jikkoku::Class::Skill::Role::Practice
-    Jikkoku::Class::Skill::AttackCastle2::Siege2
+    Jikkoku::Class::Skill::Siege2::Siege2
   );
 
   __PACKAGE__->meta->make_immutable;
