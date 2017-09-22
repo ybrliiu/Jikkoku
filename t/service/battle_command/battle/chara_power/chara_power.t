@@ -16,7 +16,7 @@ Jikkoku::Service::Chara::Soldier::Sortie->new(soldier => $chara->soldier)->sorti
 my $target = Jikkoku::Class::Chara::ExtChara->new(chara => $chara_model->get('soukou'));
 Jikkoku::Service::Chara::Soldier::Sortie->new(soldier => $target->soldier)->sortie_to_staying_towns_castle;
 
-ok(my $chara_power = $TEST_CLASS->new(chara => $chara, target => $target));
+ok(my $chara_power = $TEST_CLASS->new(chara => $chara, target => $target, is_siege => 0));
 ok $chara_power->orig_attack_power;
 ok $chara_power->orig_defence_power;
 ok $chara_power->attack_power;

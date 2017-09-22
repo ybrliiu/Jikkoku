@@ -89,8 +89,9 @@ package Jikkoku::Service::BattleCommand::Battle {
     default => sub {
       my $self = shift;
       $self->service('BattleCommand::Battle::CharaPower::CharaPower')->new({
-        chara  => $self->chara,
-        target => $self->target,
+        chara    => $self->chara,
+        target   => $self->target,
+        is_siege => $self->is_siege,
       });
     },
   );
@@ -102,8 +103,9 @@ package Jikkoku::Service::BattleCommand::Battle {
     default => sub {
       my $self = shift;
       $self->service('BattleCommand::Battle::CharaPower::CharaPower')->new({
-        chara  => $self->target,
-        target => $self->chara,
+        chara    => $self->target,
+        target   => $self->chara,
+        is_siege => $self->is_siege,
       });
     },
   );
@@ -146,6 +148,8 @@ package Jikkoku::Service::BattleCommand::Battle {
   );
 
   with qw( Jikkoku::Service::BattleCommand::BattleCommand );
+
+  sub is_siege() { 0 }
 
   sub throw { Jikkoku::Service::Role::BattleActionException->throw(@_) }
 

@@ -29,6 +29,9 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     required => 1,
   );
 
+  # 攻城戦かどうか
+  has 'is_siege' => ( is => 'ro', isa => 'Bool', required => 1 );
+
   has 'weapon_attr_affinity' => (
     is      => 'ro',
     isa     => 'Jikkoku::Service::BattleCommand::Battle::WeaponAttrAffinity',
@@ -59,7 +62,18 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->chara->attack_power + $self->weapon_attr_increase_attack_power->increase_attack_power;
+      $self->chara->attack_power({is_siege => $self->is_siege})
+        + $self->weapon_attr_increase_attack_power->increase_attack_power;
+    },
+  );
+
+  has 'orig_defence_power' => (
+    is      => 'ro',
+    isa     => 'Int',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      $self->chara->defence_power({is_siege => $self->is_siege})
     },
   );
 
@@ -98,11 +112,6 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     lazy    => 1,
     builder => '_build_enemy_power_adjusters',
   );
-
-  sub orig_defence_power {
-    my $self = shift;
-    $self->chara->defence_power;
-  }
 
   sub _build_chara_power_adjusters {
     my $self = shift;

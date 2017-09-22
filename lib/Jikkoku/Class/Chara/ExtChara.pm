@@ -233,7 +233,7 @@ package Jikkoku::Class::Chara::ExtChara {
 
   sub attack_power {
     my $self = shift;
-    $self->soldier->attack_power + $self->force + $self->weapon->power + 
+    $self->soldier->attack_power(@_) + $self->force + $self->weapon->power + 
     $self->position->match(
       Some => sub { $_->increase_attack_power },
       None => sub { 0 },
@@ -242,7 +242,7 @@ package Jikkoku::Class::Chara::ExtChara {
 
   sub defence_power {
     my $self = shift;
-    $self->soldier->defence_power + ($self->soldier->training / 2) + $self->guard->power +
+    $self->soldier->defence_power(@_) + ($self->soldier->training / 2) + $self->guard->power +
     $self->position->match(
       Some => sub { $_->increase_defence_power },
       None => sub { 0 },
