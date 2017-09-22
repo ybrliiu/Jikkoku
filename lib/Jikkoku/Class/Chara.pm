@@ -122,7 +122,7 @@ package Jikkoku::Class::Chara {
       domestic_administration 
       conscription
       draw
-      attack_town
+      siege_count
       trick
       training_self
       conquer_town
@@ -139,7 +139,7 @@ package Jikkoku::Class::Chara {
       kill_soldier_reward
       win_reward
       lose_reward
-      attack_town_skill
+      siege_skill
       small_divine_protection
       great_divine_protection
       small_feint
