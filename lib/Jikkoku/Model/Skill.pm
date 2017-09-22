@@ -132,6 +132,14 @@ package Jikkoku::Model::Skill::Result {
     ]);
   }
 
+  sub get_battle_turn_adjuster_skills_with_result {
+    my $self = shift;
+    $self->create_result([
+      grep { $_->DOES('Jikkoku::Service::BattleCommand::Battle::TurnAdjuster') }
+        @{ $self->data }
+    ]);
+  }
+
   __PACKAGE__->meta->make_immutable;
 
 };

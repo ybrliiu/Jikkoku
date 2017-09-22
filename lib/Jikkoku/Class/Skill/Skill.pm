@@ -2,7 +2,6 @@ package Jikkoku::Class::Skill::Skill {
 
   use Mouse::Role;
   use Jikkoku;
-  use Jikkoku::Model::SkillCategory;
 
   # attribute
   requires qw( name );
@@ -15,7 +14,35 @@ package Jikkoku::Class::Skill::Skill {
   has 'next_skills_id'   => ( is => 'ro', isa => 'ArrayRef[Str]', lazy => 1, builder => '_build_next_skills_id' );
 
   # skillcategory で使う用
-  has 'before_skills_id' => ( is => 'rw', isa => 'ArrayRef[Str]', lazy => 1, builder => '_build_before_skills_id' );
+  has 'before_skills_id' => ( is => 'ro', isa => 'ArrayRef[Str]', lazy => 1, builder => '_build_before_skills_id' );
+
+  has 'skill_category' => (
+    is => 'ro',
+    does => 'Jikkoku::Class::Skill::SkillCategory',
+    lazy => 1,
+    default => sub {
+      my $self = shift;
+      $self->skill_category_model->get($self->category);
+    },
+  );
+
+  has 'skill_category_model' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Model::SkillCategory',
+    lazy    => 1,
+    default => sub {
+      my $self = shift;
+      require Jikkoku::Model::SkillCategory;
+      Jikkoku::Model::SkillCategory->new(skills => $self->chara->skills);
+    },
+  );
+
+  has 'before_skills' => (
+    is      => 'ro',
+    isa     => 'ArrayRef[Jikkoku::Class::Skill::Skill]',
+    lazy    => 1,
+    builder => '_build_before_skills',
+  );
 
   sub _build_id {
     my $self = shift;
@@ -32,6 +59,12 @@ package Jikkoku::Class::Skill::Skill {
   sub _build_next_skills_id   { [] }
 
   sub _build_before_skills_id { [] }
+
+  sub _build_before_skills {
+    my $self = shift;
+    my $before_skills_id = $self->skill_category->get_before_skills_id($self);
+    [ map { $self->skill_category->get_skill($_) } @$before_skills_id ];
+  }
 
   # method
   requires qw( acquire is_acquired );
@@ -81,7 +114,7 @@ package Jikkoku::Class::Skill::Skill {
       description_of_acquire_about_purchase
     );
 
-    sub description_of_acquire_body()         { '' }
+    sub description_of_acquire_body() { '' }
 
     sub description_of_acquire_about_purchase() { '' }
 
@@ -96,27 +129,9 @@ package Jikkoku::Class::Skill::Skill {
     }
   }
 
-  sub before_skills {
-    my $self = shift;
-    my $skill_category_model = Jikkoku::Model::SkillCategory->new;
-    my $skill_category       = $skill_category_model->get({
-      id     => $self->category,
-      skills => $self->chara->skills,
-    });
-    my $before_skills_id = $skill_category->get_before_skills_id($self);
-    [ map { $skill_category->get_skill($_) } @$before_skills_id ];
-  }
-
   before acquire => sub {
     my $self = shift;
-    my $skill_category_model = Jikkoku::Model::SkillCategory->new;
-    my $skill_category       = $skill_category_model->get({
-      id     => $self->category,
-      skills => $self->chara->skills,
-    });
-    my $before_skills_id = $skill_category->get_before_skills_id($self);
-    for my $skill_id (@$before_skills_id) {
-      my $skill = $skill_category->get_skill($skill_id);
+    for my $skill (@{ $self->before_skills }) {
       unless ($skill->is_acquired) {
         Jikkoku::Class::Skill::AcquireSkillException
           ->throw("修得条件を満たしていません(@{[ $skill->name ]}を修得していないため)");

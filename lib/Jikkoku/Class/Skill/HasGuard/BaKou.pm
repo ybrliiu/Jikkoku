@@ -17,10 +17,10 @@ package Jikkoku::Class::Skill::HasGuard::BaKou {
     Jikkoku::Service::BattleCommand::Battle::CharaPower::DefencePowerAdjuster
   );
 
-  sub description {
-    my $self = shift;
+  around description_of_effect_body => sub {
+    my ($orig, $self) = @_;
     '騎兵使用時、守備力+' . $self->increase_defence_power . '。';
-  }
+  };
 
   sub adjust_defence_power {
     my ($self, $chara_power_adjuster_service) = @_;

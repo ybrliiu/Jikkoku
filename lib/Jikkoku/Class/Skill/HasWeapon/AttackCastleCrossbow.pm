@@ -16,6 +16,7 @@ package Jikkoku::Class::Skill::HasWeapon::AttackCastleCrossbow {
   with qw(
     Jikkoku::Class::Skill::Skill
     Jikkoku::Class::Skill::Role::HasWeapon
+    Jikkoku::Service::BattleCommand::Battle::TurnAdjuster
     Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackAndDefencePowerAdjuster
   );
 
@@ -27,6 +28,11 @@ package Jikkoku::Class::Skill::HasWeapon::AttackCastleCrossbow {
       . $self->increase_defence_power
       . '、ターン数+'
       . $self->increase_turn . '。';
+  }
+
+  sub adjust_battle_turn {
+    my $self = shift;
+    $self->increase_turn;
   }
 
   sub adjust_attack_power {

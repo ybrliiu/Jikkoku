@@ -61,12 +61,6 @@ package Jikkoku::Class::Skill::SkillCategory {
       my $next_skill_id = $_;
       my $next_skill = $self->get_skill($next_skill_id);
       push @{ $next_skill->before_skills_id }, $skill->id;
-
-      # ハッシュを利用して重複値を消す(暫定, より良い方法を考える)
-      my $erase_multiple_id_list
-        = [ keys %{ +{ map { $_ => 1 } @{ $next_skill->before_skills_id } } } ];
-      $next_skill->before_skills_id($erase_multiple_id_list);
-
       ( $next_skill, $self->_trace_belong_skills_with_set_before_skills( $next_skill ) );
     } @{ $skill->next_skills_id };
   }

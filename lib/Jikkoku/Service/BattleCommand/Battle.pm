@@ -4,8 +4,11 @@ package Jikkoku::Service::BattleCommand::Battle {
   use Jikkoku;
   use Option;
   use Jikkoku::Model::Config;
+  use List::Util qw( sum );
 
   use constant {
+    DEFAULT_TURN => 1,
+
     # 乱戦になる範囲
     CONFUSED_BATTLE_RANGE => 1,
   };
@@ -131,11 +134,16 @@ package Jikkoku::Service::BattleCommand::Battle {
     },
   );
 
-  has 'is_target_can_counter_attack' => ( is => 'rw', isa => 'Bool', default => 0 );
+  has 'turn' => ( is => 'ro', isa => 'Int', lazy => 1, builder => '_build_turn' );
 
-  has 'turn' => ( is => 'rw', isa => 'Int', default => 1 );
+  has 'battle_result' => ( is => 'rw', isa => 'Int',  default => NONE );
 
-  has 'battle_result' => ( is => 'rw', isa => 'Int', default => NONE );
+  has 'is_target_can_counter_attack' => (
+    is      => 'ro',
+    isa     => 'Bool',
+    lazy    => 1,
+    builder => '_build_is_target_can_counter_attack',
+  );
 
   with qw( Jikkoku::Service::BattleCommand::BattleCommand );
 
@@ -174,6 +182,50 @@ package Jikkoku::Service::BattleCommand::Battle {
       },
       None => sub { throw("その武将は存在していないようです。") },
     );
+  }
+
+  sub _build_turn {
+    my $self = shift;
+    my $turn = DEFAULT_TURN;
+    $turn += 1 if $self->_is_confused_battle;
+    $turn += sum(
+      @{
+        $self->chara->skills
+          ->get_available_skills_with_result
+          ->get_battle_turn_adjuster_skills_with_result
+      }
+    );
+    $turn;
+  }
+
+  sub _is_confused_battle {
+    my $self = shift;
+    if ( $self->distance <= CONFUSED_BATTLE_RANGE ) {
+      my $log = qq{<span class="red">【乱戦】</span>@{[ $self->chara->name ]}の部隊と}
+                . qq{@{[ $self->target->name ]}の部隊の距離が近かったため乱戦となりました。}
+                . qq{ターン数+1};
+      $self->chara->battle_logger->add($log);
+      $self->target->battle_logger->add($log);
+      1;
+    } else {
+      0;
+    }
+  }
+
+  sub _build_is_target_can_counter_attack {
+    my $self = shift;
+    if ( $self->target->soldier->range < $self->distance ) {
+      my $log = sub {
+        my $color = shift;
+        qq{<span class="$color">【反撃不可】</span>@{[ $self->chara->name ]}の部隊が}
+        . qq{射程圏内に入っていないので@{[ $self->target->name ]}は反撃できない！};
+      };
+      $self->chara->battle_logger->add( $log->('red') );
+      $self->target->battle_logger->add( $log->('blue') );
+      1;
+    } else {
+      0;
+    }
   }
 
   sub ensure_target_can_battle {
@@ -226,15 +278,11 @@ package Jikkoku::Service::BattleCommand::Battle {
 
   sub ensure_can_exec {
     my $self = shift;
-
     $self->ensure_target_can_battle();
-
     if ( $self->chara->soldier->range < $self->distance ) {
       throw("攻撃が相手に届きません。");
     }
-
     $self->ensure_can_invasion();
-
   }
 
   sub prepare_exec {
@@ -242,25 +290,11 @@ package Jikkoku::Service::BattleCommand::Battle {
 
     $self->chara->is_attack(1);
 
-    if ( $self->target->soldier->range < $self->distance ) {
-      $self->is_target_can_counter_attack(1);
-      my $log = sub {
-        my $color = shift;
-        qq{<span class="$color">【反撃不可】</span>@{[ $self->chara->name ]}の部隊が}
-        . qq{射程圏内に入っていないので@{[ $self->target->name ]}は反撃できない！};
-      };
-      $self->chara->battle_logger->add( $log->('red') );
-      $self->target->battle_logger->add( $log->('blue') );
-    }
+    # call _build_is_target_can_counter_attack
+    $self->is_target_can_counter_attack;
 
-    if ( $self->distance <= CONFUSED_BATTLE_RANGE ) {
-      $self->turn( $self->turn + 1 );
-      my $log = qq{<span class="red">【乱戦】</span>@{[ $self->chara->name ]}の部隊と}
-                . qq{@{[ $self->target->name ]}の部隊の距離が近かったため乱戦となりました。}
-                . qq{ターン数+1};
-      $self->chara->battle_logger->add($log);
-      $self->target->battle_logger->add($log);
-    }
+    # call _build_turn
+    $self->turn;
 
   }
 
