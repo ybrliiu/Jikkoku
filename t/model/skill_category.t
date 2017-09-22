@@ -15,6 +15,7 @@ ok my $category = $model->get('Invasion');
 is $category->name, '侵攻';
 ok my $result = $model->get_all_with_result;
 ok my $category2 = $result->get('Disturb');
+diag explain [ map { $_->name } @$result ];
 
 done_testing;
 

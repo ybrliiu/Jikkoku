@@ -3,7 +3,6 @@ package Jikkoku::Class::Skill::Disturb::Confuse {
   use Mouse;
   use Jikkoku;
   
-  use Jikkoku::Util qw( validate_values );
   use Jikkoku::Model::Config;
   my $CONFIG = Jikkoku::Model::Config->get;
 

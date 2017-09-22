@@ -15,6 +15,7 @@ ok @{ $model2->get_all_with_result };
 ok my $skills = $model2->get_all_with_result;
 ok my $skill = $skills->get({category => 'Invasion', id => 'AttackInWaves'});
 is $skill->name, '波状攻撃';
+diag explain [ map { $_->name } @$skills ];
 
 done_testing;
 

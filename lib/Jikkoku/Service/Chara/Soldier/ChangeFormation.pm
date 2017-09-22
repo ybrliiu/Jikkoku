@@ -51,7 +51,7 @@ package Jikkoku::Service::Chara::Soldier::ChangeFormation {
     my $soldier = $chara->soldier;
     my $formation = $self->formation_model->get($change_formation_id);
     $chara->lock;
-    if ( $self->is_arranging_for_formation ) {
+    if ( $self->is_arranging ) {
       Jikkoku::Exception->throw("あと @{[ $self->remaining_time ]} 秒陣形を変更できません");
     }
     $soldier->formation_id($formation->id);

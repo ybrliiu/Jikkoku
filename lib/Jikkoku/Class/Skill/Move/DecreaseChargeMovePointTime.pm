@@ -5,9 +5,9 @@ package Jikkoku::Class::Skill::Move::DecreaseChargeMovePointTime {
 
   use constant ACQUIRE_SIGN => 2;
 
-  has 'name'                                  => ( is => 'ro', isa => 'Str', default => '迅速' );
-  has 'consume_skill_point'                   => ( is => 'ro', isa => 'Int', default => 10 );
-  has 'adjust_soldier_charge_move_point_time' => ( is => 'ro', isa => 'Int', default => -20 );
+  has 'name'                                    => ( is => 'ro', isa => 'Str', default => '迅速' );
+  has 'consume_skill_point'                     => ( is => 'ro', isa => 'Int', default => 10 );
+  has 'decrease_soldier_charge_move_point_time' => ( is => 'ro', isa => 'Int', default => -20 );
 
   with qw(
     Jikkoku::Class::Skill::Skill
@@ -32,6 +32,11 @@ package Jikkoku::Class::Skill::Move::DecreaseChargeMovePointTime {
   sub description_of_effect_body {
     my $self = shift;
     "移動ポイント補充にかかる時間が@{[ $self->adjust_charge_move_point_time * -1 ]}秒短縮される。";
+  }
+
+  sub adjust_soldier_charge_move_point_time {
+    my ($self, $orig_time) = @_;
+    $self->decrease_soldier_charge_move_point_time;
   }
 
   __PACKAGE__->meta->make_immutable;
