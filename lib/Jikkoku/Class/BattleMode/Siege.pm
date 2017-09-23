@@ -24,7 +24,7 @@ package Jikkoku::Class::BattleMode::Siege {
   around use => sub {
     my ($orig, $self, $battle_service) = @_;
     my $enemy = $battle_service->target;
-    if ( $enemy->id eq $enemy->WALL_ID ) {
+    if ( $battle_service->is_siege ) {
       Jikkoku::Class::BattleMode::Exception
         ->throw($self->name . 'は攻城戦では使えません');
     }

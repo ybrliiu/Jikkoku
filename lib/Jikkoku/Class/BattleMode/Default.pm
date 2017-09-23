@@ -1,4 +1,4 @@
-package Jikkoku::Class::BattleMode::Nomal {
+package Jikkoku::Class::BattleMode::Default {
 
   use Mouse;
   use Jikkoku;

@@ -6,6 +6,9 @@ package Jikkoku::Service::BattleCommand::Battle {
   use Jikkoku::Model::Config;
   use List::Util qw( sum );
 
+  use Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower;
+  use Jikkoku::Service::BattleCommand::Battle::IncreaseWeaponAttrPower;
+
   use constant {
     DEFAULT_TURN => 1,
 
@@ -52,16 +55,6 @@ package Jikkoku::Service::BattleCommand::Battle {
     );
   }
 
-  has 'chara_battle_log_model' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Model::Chara::BattleLog',
-    lazy    => 1,
-    default => sub {
-      my $self = shift;
-      $self->model('Chara::BattleLog')->new;
-    },
-  );
-
   has 'now_game_date' => (
     is      => 'ro',
     isa     => 'Jikkoku::Class::GameDate',
@@ -88,7 +81,7 @@ package Jikkoku::Service::BattleCommand::Battle {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->service('BattleCommand::Battle::CharaPower::CharaPower')->new({
+      Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower->new({
         chara    => $self->chara,
         target   => $self->target,
         is_siege => $self->is_siege,
@@ -102,10 +95,10 @@ package Jikkoku::Service::BattleCommand::Battle {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->service('BattleCommand::Battle::CharaPower::CharaPower')->new({
+      Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower->new({
         chara    => $self->target,
         target   => $self->chara,
-        is_siege => $self->is_siege,
+        is_siege => 0,
       });
     },
   );
@@ -116,7 +109,7 @@ package Jikkoku::Service::BattleCommand::Battle {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->service('BattleCommand::Battle::IncreaseWeaponAttrPower')->new({
+      Jikkoku::Service::BattleCommand::Battle::IncreaseWeaponAttrPower->new({
         is_win               => ($self->battle_result == $self->WIN ? 1 : 0),
         weapon_attr_affinity => $self->chara_power->weapon_attr_affinity,
       });
@@ -129,16 +122,12 @@ package Jikkoku::Service::BattleCommand::Battle {
     lazy    => 1,
     default => sub {
       my $self = shift;
-      $self->service('BattleCommand::Battle::IncreaseWeaponAttrPower')->new({
+      Jikkoku::Service::BattleCommand::Battle::IncreaseWeaponAttrPower->new({
         is_win               => ($self->battle_result == $self->LOSE ? 1 : 0),
         weapon_attr_affinity => $self->target_power->weapon_attr_affinity,
       });
     },
   );
-
-  has 'turn' => ( is => 'ro', isa => 'Int', lazy => 1, builder => '_build_turn' );
-
-  has 'battle_result' => ( is => 'rw', isa => 'Int',  default => NONE );
 
   has 'is_target_can_counter_attack' => (
     is      => 'ro',
@@ -147,11 +136,36 @@ package Jikkoku::Service::BattleCommand::Battle {
     builder => '_build_is_target_can_counter_attack',
   );
 
+  has 'battle_mode' => (
+    is      => 'ro',
+    does    => 'Jikkoku::Class::BattleMode::BattleMode',
+    lazy    => 1,
+    builder => '_build_battle_mode',
+  );
+
+  has 'turn'              => ( is => 'ro', isa => 'Int', lazy => 1, builder => '_build_turn' );
+  has 'battle_result'     => ( is => 'rw', isa => 'Int',  default => $self->NONE );
+  has 'occur_action_time' => ( is => 'ro', isa => 'Int', lazy => 1, builder => '_build_occur_action_time' );
+
   with qw( Jikkoku::Service::BattleCommand::BattleCommand );
 
   sub is_siege() { 0 }
 
   sub throw { Jikkoku::Service::Role::BattleActionException->throw(@_) }
+
+  sub _build_battle_mode {
+    my $self = shift;
+    $self->chara->battle_modes->get('Default');
+  }
+
+  sub _build_occur_action_time {
+    my $self = shift;
+    my $orig_time = $CONFIG->{game}{action_interval_time};
+    if ( $self->battle_mode->DOES('Jikkoku::Service::BattleCommand::Battle::OccurActionTimeOverwriter') ) {
+      $orig_time = $self->battle_mode->adjust_battle_action_success_ratio($orig_time);
+    }
+    $orig_time;
+  }
 
   sub get_target_overrider_result {
     my ($self, $enemy) = @_;
@@ -291,15 +305,10 @@ package Jikkoku::Service::BattleCommand::Battle {
 
   sub prepare_exec {
     my $self = shift;
-
     $self->chara->is_attack(1);
-
+    $self->battle_mode->use;
     # call _build_is_target_can_counter_attack
     $self->is_target_can_counter_attack;
-
-    # call _build_turn
-    $self->turn;
-
   }
 
   sub exec {
@@ -312,10 +321,10 @@ package Jikkoku::Service::BattleCommand::Battle {
 
       $self->prepare_exec();
 
-      my $chara->soldier = $self->chara->soldier;
-      $chara->soldier->move_point(0);
-      $chara->soldier->occur_move_point_charge_time( $CONFIG->{game}{action_interval_time} );
-      $chara->soldier->occur_action_time( $CONFIG->{game}{action_interval_time} );
+      my $soldier = $self->chara->soldier;
+      $soldier->move_point(0);
+      $soldier->occur_move_point_charge_time( $CONFIG->{game}{action_interval_time} );
+      $soldier->occur_action_time( $CONFIG->{game}{action_interval_time} );
 
     };
 
