@@ -7,25 +7,19 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
   with 'Jikkoku::Role::Loader';
 
   use Jikkoku::Service::BattleCommand::Battle::WeaponAttrAffinity;
-
-  __PACKAGE__->service("BattleCommand::Battle::CharaPower::$_") for qw/
-    NavyPower
-    FormationPower
-    WeaponAttrIncreaseAttackPower
-  /;
-
-  __PACKAGE__->service("BattleCommand::Battle::CharaPower::AdjusterService::$_") for qw/
-    AttackPower
-    DefencePower
-    AttackAndDefencePower
-    EnemyAttackPower
-    EnemyDefencePower
-    EnemyAttackAndDefencePower
-  /;
+  use Jikkoku::Service::BattleCommand::Battle::CharaPower::NavyPower;
+  use Jikkoku::Service::BattleCommand::Battle::CharaPower::FormationPower;
+  use Jikkoku::Service::BattleCommand::Battle::CharaPower::WeaponAttrIncreaseAttackPower;
+  use Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService::AttackPower;
+  use Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService::DefencePower;
+  use Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService::AttackAndDefencePower;
+  use Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService::EnemyAttackPower;
+  use Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService::EnemyDefencePower;
+  use Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService::EnemyAttackAndDefencePower;
   
   has [qw/ chara target /] => (
     is       => 'ro',
-    isa      => 'Jikkoku::Class::Chara::ExtChara',
+    isa      => 'Jikkoku::Service::BattleCommand::Battle::Chara',
     required => 1,
   );
 
@@ -136,6 +130,8 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
       }
     };
     [
+      $self->chara->battle_mode->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPowerAdjuster')
+        ? $closure->($self->chara->battle_mode) : (),
       ( map { $closure->($_) } @{ $self->chara->states->get_available_states_with_result->get_chara_power_adjuster_states_with_result } ),
       ( map { $closure->($_) } @{ $self->chara->skills->get_available_skills_with_result->get_chara_power_adjuster_skills_with_result } ),
     ];
@@ -164,6 +160,8 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
       }
     };
     [
+      $self->target->battle_mode->DOES('Jikkoku::Service::BattleCommand::Battle::CharaPower::EnemyPowerAdjuster')
+        ? $closure->($self->target->battle_mode) : (),
       ( map { $closure->($_) } @{ $self->target->states->get_available_states_with_result->get_enemy_power_adjuster_states_with_result } ),
       ( map { $closure->($_) } @{ $self->target->skills->get_available_skills_with_result->get_enemy_power_adjuster_skills_with_result } ),
     ];

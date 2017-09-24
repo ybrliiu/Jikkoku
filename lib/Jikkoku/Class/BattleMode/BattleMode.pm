@@ -17,12 +17,6 @@ package Jikkoku::Class::BattleMode::BattleMode {
 
   sub use {
     my ($self, $battle_service) = @_;
-
-    unless ( $self->can_use ) {
-      Jikkoku::Class::BattleMode::Exception
-        ->throw($self->name . 'は使用できません');
-    }
-
     my $soldier = $self->chara->soldier;
     if ( $soldier->morale - $self->consume_morale < 0 ) {
       Jikkoku::Class::BattleMode::Exception->throw(

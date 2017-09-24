@@ -36,7 +36,7 @@ package Jikkoku::Class::ExtensiveState::Protect {
 
     if (defined $giver) {
       Jikkoku::Class::ExtensiveState::BattleTargetOverriderResult->new({
-        giver           => Jikkoku::Class::Chara::ExtChara->new(chara => $giver),
+        giver           => Jikkoku::Service::BattleCommand::Battle::Chara->new(chara => $giver),
         extensive_state => $self,
       });
     } else {

@@ -6,6 +6,7 @@ package Jikkoku::Service::BattleCommand::Battle {
   use Jikkoku::Model::Config;
   use List::Util qw( sum );
 
+  use Jikkoku::Service::BattleCommand::Battle::CharaPower::Chara;
   use Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower;
   use Jikkoku::Service::BattleCommand::Battle::IncreaseWeaponAttrPower;
 
@@ -26,14 +27,27 @@ package Jikkoku::Service::BattleCommand::Battle {
 
   my $CONFIG = Jikkoku::Model::Config->get;
 
-  has 'traget_id' => ( is => 'ro', isa => 'Str', required => 1 );
+  has 'traget_id'         => ( is => 'ro', isa => 'Str', required => 1 );
+  has 'battle_mode_id'    => ( is => 'ro', isa => 'Str', default  => 'Default' );
+  has 'turn'              => ( is => 'ro', isa => 'Int', lazy => 1, builder => '_build_turn' );
+  has 'battle_result'     => ( is => 'rw', isa => 'Int',  default => $self->NONE );
+  has 'occur_action_time' => ( is => 'ro', isa => 'Int', lazy => 1, builder => '_build_occur_action_time' );
 
-  has 'target' => (
-    is      => 'ro',
-    isa     => 'Jikkoku::Class::Chara::ExtChara',
-    lazy    => 1,
-    builder => '_build_target',
+  has '_chara' => (
+    is       => 'ro',
+    isa      => 'Jikkoku::Class::Chara::ExtChara',
+    init_arg => 'chara',
+    required => 1,
   );
+
+  for my $name (qw/ chara target /) {
+    has $name => (
+      is      => 'ro',
+      isa     => 'Jikkoku::Service::BattleCommand::Battle::Chara',
+      lazy    => 1,
+      builder => "_build_${name}",
+    );
+  }
 
   has 'charactors' => (
     is      => 'ro',
@@ -136,33 +150,26 @@ package Jikkoku::Service::BattleCommand::Battle {
     builder => '_build_is_target_can_counter_attack',
   );
 
-  has 'battle_mode' => (
-    is      => 'ro',
-    does    => 'Jikkoku::Class::BattleMode::BattleMode',
-    lazy    => 1,
-    builder => '_build_battle_mode',
-  );
-
-  has 'turn'              => ( is => 'ro', isa => 'Int', lazy => 1, builder => '_build_turn' );
-  has 'battle_result'     => ( is => 'rw', isa => 'Int',  default => $self->NONE );
-  has 'occur_action_time' => ( is => 'ro', isa => 'Int', lazy => 1, builder => '_build_occur_action_time' );
-
   with qw( Jikkoku::Service::BattleCommand::BattleCommand );
 
   sub is_siege() { 0 }
 
   sub throw { Jikkoku::Service::Role::BattleActionException->throw(@_) }
 
-  sub _build_battle_mode {
+  sub _build_chara {
     my $self = shift;
-    $self->chara->battle_modes->get('Default');
+    Jikkoku::Service::BattleCommand::Battle::Chara->new({
+      %{ $self->_chara },
+      is_attack      => 1,
+      battle_mode_id => $self->battle_mode_id,
+    });
   }
 
   sub _build_occur_action_time {
     my $self = shift;
     my $orig_time = $CONFIG->{game}{action_interval_time};
-    if ( $self->battle_mode->DOES('Jikkoku::Service::BattleCommand::Battle::OccurActionTimeOverwriter') ) {
-      $orig_time = $self->battle_mode->adjust_battle_action_success_ratio($orig_time);
+    if ( $self->chara->battle_mode->DOES('Jikkoku::Service::BattleCommand::Battle::OccurActionTimeOverwriter') ) {
+      $orig_time = $self->chara->battle_mode->overwrite_battle_occur_action_time($orig_time);
     }
     $orig_time;
   }
@@ -179,7 +186,7 @@ package Jikkoku::Service::BattleCommand::Battle {
       # 掩護で身代わりを入れる処理
       Some => sub {
         my $_enemy = shift;
-        my $enemy = $self->class('Chara::ExtChara')->new(
+        my $enemy = Jikkoku::Service::BattleCommand::Battle::Chara->new(
           chara         => $_enemy,
           town_model    => $self->town_model,
           country_model => $self->country_model,
@@ -305,8 +312,7 @@ package Jikkoku::Service::BattleCommand::Battle {
 
   sub prepare_exec {
     my $self = shift;
-    $self->chara->is_attack(1);
-    $self->battle_mode->use;
+    $self->chara->battle_mode->use;
     # call _build_is_target_can_counter_attack
     $self->is_target_can_counter_attack;
   }
@@ -324,7 +330,7 @@ package Jikkoku::Service::BattleCommand::Battle {
       my $soldier = $self->chara->soldier;
       $soldier->move_point(0);
       $soldier->occur_move_point_charge_time( $CONFIG->{game}{action_interval_time} );
-      $soldier->occur_action_time( $CONFIG->{game}{action_interval_time} );
+      $soldier->occur_action_time( $self->occur_action_time );
 
     };
 

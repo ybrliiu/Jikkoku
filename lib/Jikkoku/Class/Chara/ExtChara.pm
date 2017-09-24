@@ -3,6 +3,7 @@ package Jikkoku::Class::Chara::ExtChara {
   use Mouse;
   use Jikkoku;
 
+  use Jikkoku::Util qw( decamelize );
   use Jikkoku::Class::Chara;
 
   {
@@ -173,9 +174,9 @@ package Jikkoku::Class::Chara::ExtChara {
     );
   }
 
-  for my $name (qw/ skills states battle_modes /) {
-    my $class_name = ucfirst substr($name, 0, -1);
-    has $name => (
+  for my $class_name (qw/ Skill State BattleMode /) {
+    my $attr_name = decamelize $class_name . 's';
+    has $attr_name => (
       is      => 'ro',
       isa     => "Jikkoku::Model::${class_name}::Result",
       lazy    => 1,
@@ -219,8 +220,6 @@ package Jikkoku::Class::Chara::ExtChara {
       $self->country->position_of_chara_with_option($self);
     },
   );
-
-  has 'is_attack' => ( is => 'rw', isa => 'Bool', default => 0 );
 
   with 'Jikkoku::Role::Loader' => {
     -alias => {
