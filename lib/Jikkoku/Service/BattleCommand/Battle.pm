@@ -9,7 +9,7 @@ package Jikkoku::Service::BattleCommand::Battle {
   use Jikkoku::Model::Config;
 
   use Jikkoku::Service::BattleCommand::Battle::Result;
-  use Jikkoku::Service::BattleCommand::Battle::TurnAdjusterService;
+  use Jikkoku::Service::BattleCommand::Battle::AdjustTurnCalculator;
   use Jikkoku::Service::BattleCommand::Battle::BattleLoop;
   use Jikkoku::Service::BattleCommand::Battle::CharaPower::Chara;
   use Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower;
@@ -17,7 +17,9 @@ package Jikkoku::Service::BattleCommand::Battle {
 
   # alias
   use constant {
-    Result => 'Jikkoku::Service::BattleCommand::Battle::CharaPower::Result',
+    Result                => 'Jikkoku::Service::BattleCommand::Battle::CharaPower::Result',
+    AdjustTurnCalculator  => 'Jikkoku::Service::BattleCommand::Battle::AdjustTurnCalculator',
+    BattleActionException => 'Jikkoku::Service::Role::BattleActionException',
   };
 
   use constant {
@@ -149,8 +151,6 @@ package Jikkoku::Service::BattleCommand::Battle {
 
   sub is_siege() { 0 }
 
-  sub throw { Jikkoku::Service::Role::BattleActionException->throw(@_) }
-
   sub _build_chara {
     my $self = shift;
     Jikkoku::Service::BattleCommand::Battle::Chara->new({
@@ -207,7 +207,7 @@ package Jikkoku::Service::BattleCommand::Battle {
           None => sub { $enemy },
         );
       },
-      None => sub { throw("その武将は存在していないようです。") },
+      None => sub { BattleActionException->throw("その武将は存在していないようです。") },
     );
   }
 
@@ -215,21 +215,9 @@ package Jikkoku::Service::BattleCommand::Battle {
     my $self = shift;
     my $turn = DEFAULT_TURN;
     $turn += 1 if $self->_is_confused_battle;
-    my @adjusters = map {
-      my $adjuster = $_;
-      Jikkoku::Service::BattleCommand::Battle::TurnAdjusterService->new({
-        chara  => $self->chara,
-        target => $self->target,
-        adjuster => $adjuster,
-      });
-    } @{
-      $self->chara->skills
-        ->get_available_skills_with_result
-        ->get_battle_turn_adjuster_skills_with_result
-    };
-    $_->write_to_log for @adjusters;
-    # 敵のも
-    $turn += sum( map { $_->adjust_battle_turn } @adjusters );
+    my $chara_calculator  = AdjustTurnCalculator->new(chara => $self->chara);
+    my $target_calculator = AdjustTurnCalculator->new(chara => $self->target);
+    $turn += $chara_calculator->calc() + $target_calculator->calc();
     $turn;
   }
 
@@ -264,16 +252,16 @@ package Jikkoku::Service::BattleCommand::Battle {
   sub ensure_target_can_battle {
     my $self = shift;
     if ( $self->target->soldier->num <= 0 ) {
-      throw("兵士0人では戦闘できません。");
+      BattleActionException->throw("兵士0人では戦闘できません。");
     }
     if ( !$self->target->soldier->is_sortie ) {
-      throw("指定した相手武将は出撃していません。");
+      BattleActionException->throw("指定した相手武将は出撃していません。");
     }
     if ( $self->target->soldier->battle_map_id ne $self->chara->soldier->battle_map_id ) {
-      throw("相手と同じマップ上にいません。");
+      BattleActionException->throw("相手と同じマップ上にいません。");
     }
     if ( $self->target->country_id eq $self->chara->country_id ) {
-      throw("同士打ちはできません。");
+      BattleActionException->throw("同士打ちはできません。");
     }
   }
 
@@ -289,19 +277,19 @@ package Jikkoku::Service::BattleCommand::Battle {
       $can_attack = 1;
     }
     unless ( $can_attack ) {
-      throw('宣戦布告をしていないか、まだ開戦時刻になっていません。'
+      BattleActionException->throw('宣戦布告をしていないか、まだ開戦時刻になっていません。'
           . '(他国と戦争するには、自国の幹部が司令部から宣戦布告を行う必要があります。)');
     }
 
     unless ( $self->target->country->can_invasion ) {
-      throw($self->target->country->name
+      BattleActionException->throw($self->target->country->name
           . 'にはまだ侵攻できません。(戦闘解除まで後 '
           . $self->target->country->remaining_month_until_can_invasion
           . ' ターン)');
     }
 
     unless ( $self->chara->country->can_invasion ) {
-      throw($self->chara->country->name
+      BattleActionException->throw($self->chara->country->name
           . 'の武将はまだ他国に侵攻できません。(戦闘解除まで後 '
           . $self->target->country->name
           . ' ターン)' );
@@ -313,7 +301,7 @@ package Jikkoku::Service::BattleCommand::Battle {
     my $self = shift;
     $self->ensure_target_can_battle();
     if ( $self->chara->soldier->range < $self->distance ) {
-      throw("攻撃が相手に届きません。");
+      BattleActionException->throw("攻撃が相手に届きません。");
     }
     $self->ensure_can_invasion();
   }

@@ -24,12 +24,12 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService::En
 
   sub _build_adjust_enemy_attack_power {
     my $self = shift;
-    $self->adjuster->adjust_enemy_attack_power($self);
+    int $self->adjuster->adjust_enemy_attack_power($self);
   }
 
   sub _build_adjust_enemy_defence_power {
     my $self = shift;
-    $self->adjuster->adjust_enemy_defence_power($self);
+    int $self->adjuster->adjust_enemy_defence_power($self);
   }
 
   requires qw( write_to_log );

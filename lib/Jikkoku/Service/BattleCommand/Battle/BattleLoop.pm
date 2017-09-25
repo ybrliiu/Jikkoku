@@ -12,7 +12,7 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
     has $name => (
       is       => 'ro',
       isa      => 'Jikkoku::Service::BattleCommand::Battle::Chara',
-      init_arg => $name,
+      init_arg => substr($name, 1),
       required => 1,
     );
   }
@@ -103,8 +103,8 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
   sub battle {
     my $self = shift;
     my ($chara, $target) = ($self->chara, $self->target);
-    $target->soldier -= $self->chara_take_damage;
-    $chara->soldier  -= $self->target_take_damage;
+    $target->soldier -= $chara->take_damage;
+    $chara->soldier  -= $target->take_damage;
     my $log = qq{ターン<span class="red">@{[ $self->current_turn ]}</span> : }
       . qq{@{[ $chara->soldier_status ]} ↓(-@{[ $self->target_take_damage ]}) | }
       . qq{@{[ $target->soldier_status ]} ↓(-@{[ $self->chara_take_damage ]})};
@@ -116,6 +116,8 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
   sub start_loop {
     my $self = shift;
     my $log = $self->chara->power_status . '|' . $self->target->power_status;
+    $self->chara->battle_logger->add($log);
+    $self->target->battle_logger->add($log);
     for my $turn (0 .. $self->end_turn - 1) {
       $self->current_turn($turn);
       $self->init_loop();
