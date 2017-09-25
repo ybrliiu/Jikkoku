@@ -3,11 +3,14 @@ package Jikkoku::Service::BattleCommand::Battle {
   use Mouse;
   use Jikkoku;
   use Option;
-  use Jikkoku::Model::Config;
-  use Jikkoku::Util qw( decamelize );
-  use List::Util qw( sum );
 
-  use Jikkoku::Service::BattleCommand::Battle::CharaPower::Result;
+  use List::Util qw( sum );
+  use Jikkoku::Util qw( decamelize );
+  use Jikkoku::Model::Config;
+
+  use Jikkoku::Service::BattleCommand::Battle::Result;
+  use Jikkoku::Service::BattleCommand::Battle::TurnAdjusterService;
+  use Jikkoku::Service::BattleCommand::Battle::BattleLoop;
   use Jikkoku::Service::BattleCommand::Battle::CharaPower::Chara;
   use Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower;
   use Jikkoku::Service::BattleCommand::Battle::IncreaseWeaponAttrPower;
@@ -205,13 +208,20 @@ package Jikkoku::Service::BattleCommand::Battle {
     my $self = shift;
     my $turn = DEFAULT_TURN;
     $turn += 1 if $self->_is_confused_battle;
-    $turn += sum(
-      @{
-        $self->chara->skills
-          ->get_available_skills_with_result
-          ->get_battle_turn_adjuster_skills_with_result
-      }
-    );
+    my @adjusters = map {
+      my $adjuster = $_;
+      Jikkoku::Service::BattleCommand::Battle::TurnAdjusterService->new({
+        chara  => $self->chara,
+        target => $self->target,
+        adjuster => $adjuster,
+      });
+    } @{
+      $self->chara->skills
+        ->get_available_skills_with_result
+        ->get_battle_turn_adjuster_skills_with_result
+    };
+    $_->write_to_log for @adjusters;
+    $turn += sum( map { $_->adjust_battle_turn } @adjusters );
     $turn;
   }
 
