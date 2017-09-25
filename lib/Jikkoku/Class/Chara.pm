@@ -208,6 +208,17 @@ package Jikkoku::Class::Chara {
 
   __PACKAGE__->make_hash_fields;
 
+  around soldier_num => sub {
+    my ($orig, $self) = (shift, shift);
+    if (@_) {
+      my $val = shift;
+      $val = $val < 0 ? 0 : $val;
+      $self->$orig($val);
+    } else {
+      $self->$orig();
+    }
+  };
+
   sub is_dummy {
     my $self = shift;
     $self->id eq $self->DUMMY_ID;

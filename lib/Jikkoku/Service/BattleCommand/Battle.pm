@@ -4,11 +4,18 @@ package Jikkoku::Service::BattleCommand::Battle {
   use Jikkoku;
   use Option;
   use Jikkoku::Model::Config;
+  use Jikkoku::Util qw( decamelize );
   use List::Util qw( sum );
 
+  use Jikkoku::Service::BattleCommand::Battle::CharaPower::Result;
   use Jikkoku::Service::BattleCommand::Battle::CharaPower::Chara;
   use Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower;
   use Jikkoku::Service::BattleCommand::Battle::IncreaseWeaponAttrPower;
+
+  # alias
+  use constant {
+    Result => 'Jikkoku::Service::BattleCommand::Battle::CharaPower::Result',
+  };
 
   use constant {
     DEFAULT_TURN => 1,
@@ -17,20 +24,12 @@ package Jikkoku::Service::BattleCommand::Battle {
     CONFUSED_BATTLE_RANGE => 1,
   };
 
-  # battle result
-  use constant {
-    NONE => 0,
-    WIN  => 1,
-    LOSE => 2,
-    DRAW => 3,
-  };
-
   my $CONFIG = Jikkoku::Model::Config->get;
 
   has 'traget_id'         => ( is => 'ro', isa => 'Str', required => 1 );
   has 'battle_mode_id'    => ( is => 'ro', isa => 'Str', default  => 'Default' );
   has 'turn'              => ( is => 'ro', isa => 'Int', lazy => 1, builder => '_build_turn' );
-  has 'battle_result'     => ( is => 'rw', isa => 'Int',  default => $self->NONE );
+  has 'battle_result'     => ( is => 'rw', isa => 'Int',  default => Result::NONE );
   has 'occur_action_time' => ( is => 'ro', isa => 'Int', lazy => 1, builder => '_build_occur_action_time' );
 
   has '_chara' => (
@@ -59,11 +58,11 @@ package Jikkoku::Service::BattleCommand::Battle {
     },
   );
 
-  for my $name (qw/ chara town country diplomacy /) {
-    my $class_name = ucfirst $name;
+  for my $class_name (qw/ Chara Town Country Diplomacy MapLog /) {
+    my $attr_name = decamelize $class_name;
     has "${name}_model" => (
       is      => 'ro',
-      isa     => "Jikkoku::Model::$class_name",
+      isa     => "Jikkoku::Model::${class_name}",
       lazy    => 1,
       default => sub { $_[0]->model($class_name)->new },
     );
@@ -143,13 +142,6 @@ package Jikkoku::Service::BattleCommand::Battle {
     },
   );
 
-  has 'is_target_can_counter_attack' => (
-    is      => 'ro',
-    isa     => 'Bool',
-    lazy    => 1,
-    builder => '_build_is_target_can_counter_attack',
-  );
-
   with qw( Jikkoku::Service::BattleCommand::BattleCommand );
 
   sub is_siege() { 0 }
@@ -199,7 +191,7 @@ package Jikkoku::Service::BattleCommand::Battle {
               original_enemy => $enemy,
               result         => $result,
               map_log_model  => $self->map_log_model,
-            });
+            })->notice();
             $result->giver;
           },
           None => sub { $enemy },
@@ -237,7 +229,7 @@ package Jikkoku::Service::BattleCommand::Battle {
     }
   }
 
-  sub _build_is_target_can_counter_attack {
+  sub set_target_can_take_damage {
     my $self = shift;
     if ( $self->target->soldier->range < $self->distance ) {
       my $log = sub {
@@ -247,9 +239,7 @@ package Jikkoku::Service::BattleCommand::Battle {
       };
       $self->chara->battle_logger->add( $log->('red') );
       $self->target->battle_logger->add( $log->('blue') );
-      1;
-    } else {
-      0;
+      $self->target->can_take_damage(0);
     }
   }
 
@@ -312,9 +302,12 @@ package Jikkoku::Service::BattleCommand::Battle {
 
   sub prepare_exec {
     my $self = shift;
-    $self->chara->battle_mode->use;
-    # call _build_is_target_can_counter_attack
-    $self->is_target_can_counter_attack;
+    $self->chara->battle_mode->use();
+    $self->set_target_can_take_damage();
+    $self->chara_power->write_to_log();
+    $self->target_power->write_to_log();
+    # turn write_to_log
+    # occur_action_time write_to_log
   }
 
   sub exec {
@@ -324,14 +317,11 @@ package Jikkoku::Service::BattleCommand::Battle {
     $self->$_->lock for @file_handlers;
 
     eval {
-
       $self->prepare_exec();
-
       my $soldier = $self->chara->soldier;
       $soldier->move_point(0);
       $soldier->occur_move_point_charge_time( $CONFIG->{game}{action_interval_time} );
       $soldier->occur_action_time( $self->occur_action_time );
-
     };
 
     if (my $e = $@) {

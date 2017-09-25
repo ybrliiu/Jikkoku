@@ -3,9 +3,9 @@ package Jikkoku::Service::ExtensiveState::AfterOverrideBattleTarget::Protect {
   use Mouse;
   use Jikkoku;
 
-  has 'chara'           => ( is => 'ro', isa => 'Jikkoku::Class::Chara::ExtChara', required => 1 );
+  has 'chara'           => ( is => 'ro', isa => 'Jikkoku::Service::BattleCommand::Battle::Chara', required => 1 );
   has 'map_log_model'   => ( is => 'ro', isa => 'Jikkoku::Model::MapLog', required => 1 );
-  has 'original_enemy'  => ( is => 'ro', isa => 'Jikkoku::Class::Chara::ExtChara', required => 1 );
+  has 'original_enemy'  => ( is => 'ro', isa => 'Jikkoku::Service::BattleCommand::Battle::Chara', required => 1 );
 
   has 'result' => (
     is       => 'ro',

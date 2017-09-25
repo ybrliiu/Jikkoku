@@ -3,6 +3,12 @@ package Jikkoku::Class::Chara::Soldier {
   use Mouse;
   use Jikkoku;
 
+  use overload (
+    '+='     => \&plus_equal,
+    '-='     => \&minus_equal,
+    fallback => 1,
+  );
+
   extends 'Jikkoku::Class::Soldier';
 
   use List::Util qw( sum );
@@ -194,6 +200,20 @@ package Jikkoku::Class::Chara::Soldier {
   sub num {
     my $self = shift;
     $self->chara->soldier_num(@_);
+  }
+
+  sub plus_equal {
+    my ($self, $val) = @_;
+    my $chara = $self->chara;
+    my $num = $chara->soldier_num;
+    $chara->soldier_num($num + $val);
+  }
+
+  sub minus_equal {
+    my ($self, $val) = @_;
+    my $chara = $self->chara;
+    my $num = $chara->soldier_num;
+    $chara->soldier_num($num - $val);
   }
 
   sub move_battle_map {
