@@ -8,6 +8,11 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::DefencePowerAdjuste
   # methods
   requires qw( adjust_defence_power );
 
+  around adjust_defence_power => sub {
+    my ($orig, $self, $chara_power_adjuster_service) = @_;
+    $chara_power_adjuster_service->orig_defence_power < 0 ? 0 : $self->$orig();
+  };
+
 }
 
 1;

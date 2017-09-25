@@ -162,9 +162,16 @@ package Jikkoku::Service::BattleCommand::Battle {
 
   sub _build_occur_action_time {
     my $self = shift;
+    my $chara = $self->chara;
     my $orig_time = $CONFIG->{game}{action_interval_time};
-    if ( $self->chara->battle_mode->DOES('Jikkoku::Service::BattleCommand::Battle::OccurActionTimeOverwriter') ) {
-      $orig_time = $self->chara->battle_mode->overwrite_battle_occur_action_time($orig_time);
+    if ( $chara->battle_mode->DOES('Jikkoku::Service::BattleCommand::Battle::OccurActionTimeOverwriter') ) {
+      $orig_time = $chara->battle_mode->overwrite_battle_occur_action_time($orig_time);
+      my $log = sub {
+        my $color = shift;
+        qq{<span class="$color">【@{[ $chara->battle_mode->name ]}】@{[ $chara->name ]}の行動待機時間が${orig_time}秒になりました！};
+      };
+      $chara->battle_logger->add( $log->('red') );
+      $target->battle_logger->add( $log->('blue') );
     }
     $orig_time;
   }
@@ -221,6 +228,7 @@ package Jikkoku::Service::BattleCommand::Battle {
         ->get_battle_turn_adjuster_skills_with_result
     };
     $_->write_to_log for @adjusters;
+    # 敵のも
     $turn += sum( map { $_->adjust_battle_turn } @adjusters );
     $turn;
   }
@@ -316,7 +324,6 @@ package Jikkoku::Service::BattleCommand::Battle {
     $self->set_target_can_take_damage();
     $self->chara_power->write_to_log();
     $self->target_power->write_to_log();
-    # turn write_to_log
     # occur_action_time write_to_log
   }
 
