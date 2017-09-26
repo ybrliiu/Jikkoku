@@ -20,7 +20,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::FormationPower {
   sub _build_attack_power {
     my $self = shift;
     if ( $self->change_formation->is_arranging ) {
-      - int( $self->orig_attack_power * ARRANGING_DECREASE_RATIO );
+      int( $self->orig_attack_power * ARRANGING_DECREASE_RATIO ) * -1;
     } else {
       my $formation = $self->chara->formation;
       my $power =

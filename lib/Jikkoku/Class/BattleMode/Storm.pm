@@ -40,17 +40,21 @@ package Jikkoku::Class::BattleMode::Storm {
 
   sub adjust_defence_power {
     my ($self, $chara_power_adjuster_service) = @_;
-    $chara_power_adjuster_service->orig_defence_power * $self->adjust_power_ratio;
+    $chara_power_adjuster_service->orig_defence_power < 0
+      ? 0
+      : $chara_power_adjuster_service->orig_defence_power * $self->adjust_power_ratio;
   }
 
   sub adjust_enemy_attack_power {
     my ($self, $enemy_power_adjuster_service) = @_;
-    $enemy_power_adjuster_service->orig_attack_power * $self->adjust_power_ratio;
+    $enemy_power_adjuster_service->orig_enemy_attack_power * $self->adjust_power_ratio;
   }
 
   sub adjust_enemy_defence_power {
     my ($self, $enemy_power_adjuster_service) = @_;
-    $enemy_power_adjuster_service->orig_defence_power * $self->adjust_power_ratio;
+    $enemy_power_adjuster_service->orig_enemy_defence_power < 0
+      ? 0
+      : $enemy_power_adjuster_service->orig_enemy_defence_power * $self->adjust_power_ratio;
   }
 
   __PACKAGE__->meta->make_immutable;

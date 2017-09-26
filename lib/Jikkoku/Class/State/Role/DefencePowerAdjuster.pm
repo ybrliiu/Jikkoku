@@ -10,7 +10,9 @@ package Jikkoku::Class::State::Role::DefencePowerAdjuster {
 
   sub adjust_defence_power {
     my ($self, $chara_power_adjuster_service) = @_;
-    $chara_power_adjuster_service->orig_defence_power * $self->defence_power_ratio + $self->defence_power;
+    $chara_power_adjuster_service->orig_defence_power < 0
+      ? 0
+      : $chara_power_adjuster_service->orig_defence_power * $self->defence_power_ratio + $self->defence_power;
   }
 
 }

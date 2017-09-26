@@ -31,7 +31,9 @@ package Jikkoku::Class::Skill::Invasion::VehementAttack {
 
   sub adjust_defence_power {
     my ($self, $chara_power_adjuster_service) = @_;
-    $chara_power_adjuster_service->orig_defence_power * $self->increase_power_ratio;
+    $chara_power_adjuster_service->orig_defence_power < 0
+      ? 0
+      : $chara_power_adjuster_service->orig_defence_power * $self->increase_power_ratio;
   }
 
   __PACKAGE__->meta->make_immutable;
