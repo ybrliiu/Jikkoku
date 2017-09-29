@@ -64,7 +64,7 @@ package Jikkoku::Class::Chara {
     metaclass => 'HashField',
     is        => 'rw',
     isa       => 'Jikkoku::Class::Role::TextData::HashField',
-    keys      => [qw( battle_map_hidden font_size config2 config3 config4 config5 config6 )],
+    keys      => [qw( battle_map_hidden font_size config2 config3 config4 config5 is_sacrifice_attack_available )],
   );
   has 'skill_point'     => ( metaclass => 'Column', is => 'rw', isa => 'Int', default  => 0 );
   has '_equipment_skill_id' => (

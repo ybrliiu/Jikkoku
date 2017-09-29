@@ -77,6 +77,7 @@ package Jikkoku::Class::Skill::Skill {
   {
     my @methods = qw(
       description_of_effect_about_state
+      description_of_effect_before_body
       description_of_effect_body
       description_of_effect_supplement
       description_of_effect_about_depend_abilities
@@ -92,6 +93,7 @@ package Jikkoku::Class::Skill::Skill {
 
   {
     my @methods = qw(
+      description_of_status_about_occur_ratio
       description_of_status_about_range
       description_of_status_about_consume_morale
       description_of_status_body

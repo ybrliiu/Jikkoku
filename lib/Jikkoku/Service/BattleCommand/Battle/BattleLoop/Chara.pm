@@ -41,7 +41,7 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop::Chara {
     my $self = shift;
     if ($self->can_take_damage) {
       my $damage = int(rand $self->orig_take_damage);
-      $damage <= 0 ? 1 : $damage;
+      $damage = $damage <= 0 ? 1 : $damage;
       $self->take_damage($damage);
     } else {
       $self->take_damage(0);
@@ -55,13 +55,12 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop::Chara {
 
   sub soldier_status {
     my $self = shift;
-    my $chara = $self->chara;
-    qq{@{[ $chara->name ]} @{[ $chara->soldier->name ]} (@{[ $chara->soldier->attr]}) @{[ $chara->soldier->num ]}人};
+    qq{@{[ $self->name ]} @{[ $self->soldier->name ]} (@{[ $self->soldier->attr]}) @{[ $self->soldier->num ]}人};
   }
 
   sub power_status {
     my $self = shift;
-    qq{[@{[ $self->is_invasion ? '侵攻' : '防衛' ]}]【@{[ $self->name ]} [@{[ $self->formation->name ]}] ( 攻 : @{[ $self->power->attack_power ]} 守 : @{[ $self->power->defence_power ]} ) 】};
+    qq{[@{[ $self->is_invasion ? '侵攻' : '防衛' ]}] 【@{[ $self->name ]} [@{[ $self->formation->name ]}] (攻:@{[ $self->power->attack_power ]} 守:@{[ $self->power->defence_power ]}) 】};
   }
 
   __PACKAGE__->meta->make_immutable;

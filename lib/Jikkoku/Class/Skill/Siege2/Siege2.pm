@@ -15,7 +15,8 @@ package Jikkoku::Class::Skill::Siege2::Siege2 {
 
   sub is_acquired {
     my $self = shift;
-    $self->chara->_buffer_and_reward_and_command_skill->get('siege_skill') >= $self->ACQUIRE_SIGN;
+    my $siege_skill = $self->chara->_buffer_and_reward_and_command_skill->get('siege_skill');
+    $siege_skill eq $self->ACQUIRE_SIGN || ($siege_skill ne '' ? $siege_skill >= $self->ACQUIRE_SIGN : 0);
   }
 
   sub acquire_conditions_of_practice_skill {

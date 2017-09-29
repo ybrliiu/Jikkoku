@@ -26,12 +26,13 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
   has [qw/ chara target /] => (
     is         => 'ro',
     isa        => 'Jikkoku::Service::BattleCommand::Battle::BattleLoop::Chara',
+    init_arg   => undef,
     lazy_build => 1,
   );
 
   has 'end_turn'     => ( is => 'ro', isa => 'Int', required => 1 );
   has 'current_turn' => ( is => 'rw', isa => 'Int', init_arg => undef, default => 0 );
-  has 'result'       => ( is => 'rw', isa => 'Int', default => Result::None );
+  has 'result'       => ( is => 'rw', isa => 'Int', default => Result->NONE );
 
   # スキルが戦闘中に記録しておきたいデータを記録しておくためのattribute
   # +{ skill_id => { count => 0 }, skill_id2 => {} ... } みたいな感じで使う
@@ -39,7 +40,7 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
 
   sub _build_chara {
     my $self = shift;
-    Jikkoku::Service::BattleCommand::Battle::BattleLoopChara->new({
+    Jikkoku::Service::BattleCommand::Battle::BattleLoop::Chara->new({
       %{ $self->_chara },
       power        => $self->chara_power,
       target_power => $self->target_power,
@@ -48,7 +49,7 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
 
   sub _build_target {
     my $self = shift;
-    Jikkoku::Service::BattleCommand::Battle::BattleLoopChara->new({
+    Jikkoku::Service::BattleCommand::Battle::BattleLoop::Chara->new({
       %{ $self->_target },
       power        => $self->target_power,
       target_power => $self->chara_power,
@@ -60,16 +61,16 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
     my $ksol = $self->chara->soldier->num;
     my $esol = $self->target->soldier->num;
     if ($ksol <= 0 && $esol <= 0) {
-      Result::DRAW;
+      Result->DRAW;
     }
     elsif ($ksol <= 0) {
-      Result::LOSE;
+      Result->LOSE;
     }
     elsif ($esol <= 0) {
-      Result::WIN;
+      Result->WIN;
     }
     else {
-      Result::NONE;
+      Result->NONE;
     }
   }
 
@@ -103,11 +104,12 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
   sub battle {
     my $self = shift;
     my ($chara, $target) = ($self->chara, $self->target);
-    $target->soldier -= $chara->take_damage;
-    $chara->soldier  -= $target->take_damage;
+    $target->soldier->minus_equal( $chara->take_damage );
+    $chara->soldier->minus_equal( $target->take_damage );
     my $log = qq{ターン<span class="red">@{[ $self->current_turn ]}</span> : }
-      . qq{@{[ $chara->soldier_status ]} ↓(-@{[ $self->target_take_damage ]}) | }
-      . qq{@{[ $target->soldier_status ]} ↓(-@{[ $self->chara_take_damage ]})};
+      . qq{@{[ $chara->soldier_status ]} ↓(-@{[ $self->target->take_damage ]}) | }
+      . qq{@{[ $target->soldier_status ]} ↓(-@{[ $self->chara->take_damage ]})};
+    warn $log;
     $chara->battle_logger->add($log);
     $target->battle_logger->add($log);
     $self->_end();
@@ -116,15 +118,16 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
   sub start_loop {
     my $self = shift;
     my $log = $self->chara->power_status . '|' . $self->target->power_status;
+    warn $log;
     $self->chara->battle_logger->add($log);
     $self->target->battle_logger->add($log);
     for my $turn (0 .. $self->end_turn - 1) {
       $self->current_turn($turn);
       $self->init_loop();
       $self->exec_skills();
-      last if $self->result != Result::NONE;
+      last if $self->result != Result->NONE;
       $self->battle();
-      last if $self->result != Result::NONE;
+      last if $self->result != Result->NONE;
     }
   }
 
