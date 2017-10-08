@@ -4,7 +4,7 @@ package Jikkoku::Class::Skill::BattleMethod {
   use Jikkoku;
 
   has 'name'          => ( is => 'ro', isa => 'Str', default => '戦闘術' );
-  has 'root_skill_id' => ( is => 'ro', isa => 'Str', default => 'KeisuCount' );
+  has 'root_skill_id' => ( is => 'ro', isa => 'Str', default => 'KeisuAttack' );
 
   with 'Jikkoku::Class::Skill::SkillCategory';
 

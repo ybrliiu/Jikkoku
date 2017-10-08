@@ -30,6 +30,8 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
     lazy_build => 1,
   );
 
+  has 'is_siege'     => ( is => 'ro', isa => 'Bool', required => 1 );
+  has 'distance'     => ( is => 'ro', isa => 'Int', required => 1 );
   has 'end_turn'     => ( is => 'ro', isa => 'Int', required => 1 );
   has 'current_turn' => ( is => 'rw', isa => 'Int', init_arg => undef, default => 0 );
   has 'result'       => ( is => 'rw', isa => 'Int', default => Result->NONE );
@@ -37,6 +39,8 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
   # スキルが戦闘中に記録しておきたいデータを記録しておくためのattribute
   # +{ skill_id => { count => 0 }, skill_id2 => {} ... } みたいな感じで使う
   has 'skills_record' => ( is => 'ro', isa => 'HashRef', default => sub { +{} } );
+
+  with 'Jikkoku::Role::Loader';
 
   sub _build_chara {
     my $self = shift;
@@ -90,7 +94,10 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
   sub exec_skill {
     my ($self, $chara) = @_;
     for my $executer (@{ $chara->event_executers }) {
-      $executer->exec_event($self);
+      $executer->event_execute_service_class_name->new({
+        battle_loop    => $self,
+        event_executer => $executer,
+      })->exec_event();
     }
   }
 
@@ -109,7 +116,6 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
     my $log = qq{ターン<span class="red">@{[ $self->current_turn ]}</span> : }
       . qq{@{[ $chara->soldier_status ]} ↓(-@{[ $self->target->take_damage ]}) | }
       . qq{@{[ $target->soldier_status ]} ↓(-@{[ $self->chara->take_damage ]})};
-    warn $log;
     $chara->battle_logger->add($log);
     $target->battle_logger->add($log);
     $self->_end();
@@ -118,7 +124,6 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
   sub start_loop {
     my $self = shift;
     my $log = $self->chara->power_status . '|' . $self->target->power_status;
-    warn $log;
     $self->chara->battle_logger->add($log);
     $self->target->battle_logger->add($log);
     for my $turn (0 .. $self->end_turn - 1) {

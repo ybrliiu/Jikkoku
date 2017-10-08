@@ -25,6 +25,7 @@ package Jikkoku::Class::Skill::BattleMethod::KeisuAttack {
       . '(ただしダメージが増えるのは発動回数' . $self->INCREASE_DAMAGE_LIMIT . '回まで。)';
   };
 
+  __PACKAGE__->prepare;
   __PACKAGE__->meta->make_immutable;
 
 }

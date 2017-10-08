@@ -1,4 +1,4 @@
-package Jikkoku::Class::Skill::BattleMethod::DestoryAttack {
+package Jikkoku::Class::Skill::BattleMethod::DestroyAttack {
 
   use Mouse;
   use Jikkoku;
@@ -19,6 +19,7 @@ package Jikkoku::Class::Skill::BattleMethod::DestoryAttack {
 
   around description_of_effect_body => sub { '相手に大ダメージを与える。' };
 
+  __PACKAGE__->prepare;
   __PACKAGE__->meta->make_immutable;
 
 }

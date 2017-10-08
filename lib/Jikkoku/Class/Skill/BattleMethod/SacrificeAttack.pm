@@ -26,6 +26,7 @@ package Jikkoku::Class::Skill::BattleMethod::SacrificeAttack {
       . 'のダメージを与える。(城壁戦は犠牲にした兵士×' . $self->take_damage_ratio_on_siege . ')';
   };
 
+  __PACKAGE__->prepare;
   __PACKAGE__->meta->make_immutable;
 
 }

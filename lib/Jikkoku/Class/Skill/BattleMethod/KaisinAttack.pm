@@ -10,9 +10,7 @@ package Jikkoku::Class::Skill::BattleMethod::KaisinAttack {
   has 'occur_ratio_coef'      => ( is => 'ro', isa => 'Num', default => 0.001 );
   has 'max_occur_ratio'       => ( is => 'ro', isa => 'Num', default => 0.33 );
   has 'increase_damage_ratio' => ( is => 'ro', isa => 'Num', default => 1.5 );
-
-  # dummy
-  sub range;
+  has 'range'                 => ( is => 'ro', isa => 'Int', lazy => 1, default => sub { $_[0]->chara->soldier->reach } );
 
   with qw( Jikkoku::Class::Skill::BattleMethod::BattleLoopEventExecuter );
 
@@ -23,6 +21,7 @@ package Jikkoku::Class::Skill::BattleMethod::KaisinAttack {
     '発動したターンは与えるダメージが' . $self->increase_damage_ratio . '倍される。';
   };
 
+  __PACKAGE__->prepare;
   __PACKAGE__->meta->make_immutable;
 
 }

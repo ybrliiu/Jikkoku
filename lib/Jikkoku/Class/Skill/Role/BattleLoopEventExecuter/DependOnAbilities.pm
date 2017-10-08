@@ -12,8 +12,6 @@ package Jikkoku::Class::Skill::Role::BattleLoopEventExecuter::DependOnAbilities 
 
   has 'occur_ratio'   => ( is => 'ro', isa => 'Num', lazy => 1, builder => '_build_occur_ratio' );
   has 'abilities_sum' => ( is => 'ro', isa => 'Int', lazy => 1, builder => '_build_abilities_sum' );
-  has 'event_execute_service_class_name' 
-    => ( is => 'ro', isa => 'Str', lazy => 1, builder => '_build_event_execute_service_class_name' );
 
   sub _build_abilities_sum {
     my $self = shift;
@@ -26,10 +24,10 @@ package Jikkoku::Class::Skill::Role::BattleLoopEventExecuter::DependOnAbilities 
     $ratio > $self->max_occur_ratio ? $self->max_occur_ratio : $ratio;
   }
 
-  sub _build_event_execute_service_class_name {
+  sub event_execute_service_class_name {
     my $self = shift;
-    my $pkg_name = ref $self;
-    $pkg_name =~ s/Class/Service/gr;
+    my $class = ref $self || $self;
+    $class =~ s/Class/Service/gr;
   }
 
   with qw(
