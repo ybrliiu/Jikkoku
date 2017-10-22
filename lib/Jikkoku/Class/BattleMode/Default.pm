@@ -10,6 +10,8 @@ package Jikkoku::Class::BattleMode::Default {
 
   sub can_use { 1 }
 
+  sub description { '' }
+
   __PACKAGE__->meta->make_immutable;
 
 }

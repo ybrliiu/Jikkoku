@@ -19,7 +19,7 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop::EventExecuter {
         unless Jikkoku::Util::is_module_loaded($class->event_execute_service_class_name);
     };
     if (my $e = $@) {
-      Carp::confess 'event execute service class is undefined.';
+      Carp::confess "event execute service class is undefined.($e)";
     }
   }
 

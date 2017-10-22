@@ -4,24 +4,43 @@ package Jikkoku::Class::Skill::Invasion::VehementAttack {
   use Jikkoku;
 
   use constant {
-    NEED_FORCE   => 130,
-    ACQUIRE_SIGN => 3,
+    ACQUIRE_SIGN                         => 3,
+    REQUIRE_ABILITIES                    => { force => 130 },
+    INCREASE_ATTACK_POWER                => 20,
+    INCREASE_ATTACK_POWER_LIMIT          => 60,
+    NUM_OF_DIVIDE_OCCUR_RATIO_WHEN_SIEGE => 2,
   };
 
   has 'name'                 => ( is => 'ro', isa => 'Str', default => '猛攻' );
+  has 'range'                => ( is => 'ro', isa => 'Int', lazy => 1, default => sub { $_[0]->chara->soldier->reach } );
+  has 'max_occur_ratio'      => ( is => 'ro', isa => 'Num', default => 0.33 );
+  has 'occur_ratio_coef'     => ( is => 'ro', isa => 'Num', default => 0.0011 );
   has 'consume_skill_point'  => ( is => 'ro', isa => 'Int', default => 15 );
   has 'increase_power_ratio' => ( is => 'ro', isa => 'Num', default => 0.05 );
 
   with qw(
-    Jikkoku::Class::Skill::Skill
-    Jikkoku::Class::Skill::Role::Purchasable
     Jikkoku::Class::Skill::Invasion::Invasion
+    Jikkoku::Class::Skill::Role::Purchasable
+    Jikkoku::Class::Skill::Role::BattleLoopEventExecuter::DependOnAbilities
     Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackAndDefencePowerAdjuster
   );
 
+  around description_of_effect_before_body => sub { '' };
+
+  sub depend_abilities { ['force'] }
+
+  sub _build_items_of_depend_on_abilities { ['発動率'] }
+
   sub description_of_effect_body {
     my $self = shift;
-    '侵攻側の時、使用してから410秒間攻撃力が25%上昇、その後200秒間>    守備力-50%。<br>防衛側の時、使用してから610秒間守備力-50%。（行動）';
+    <<"EOS"
+侵攻側の時、攻守+@{[ $self->increase_power_ratio * 100 ]}%。<br>
+また、戦闘中にイベント発生。<br>
+発動毎に攻撃力が+@{[ INCREASE_ATTACK_POWER ]}され、敵にダメージを与える。<br>
+※上昇した攻撃力は撤退すると元に戻る。<br>
+※1回の出撃中に上昇する攻撃力は@{[ INCREASE_ATTACK_POWER_LIMIT ]}まで。<br>
+※攻城戦は発動率が1/@{[ NUM_OF_DIVIDE_OCCUR_RATIO_WHEN_SIEGE ]}になる。<br>
+EOS
   }
 
   sub adjust_attack_power {
@@ -36,6 +55,7 @@ package Jikkoku::Class::Skill::Invasion::VehementAttack {
       : $chara_power_adjuster_service->orig_defence_power * $self->increase_power_ratio;
   }
 
+  __PACKAGE__->prepare;
   __PACKAGE__->meta->make_immutable;
 
 }

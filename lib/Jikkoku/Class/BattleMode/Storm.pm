@@ -18,6 +18,9 @@ package Jikkoku::Class::BattleMode::Storm {
     0;
   }
 
+  sub description {
+  }
+
   around use => sub {
     my ($orig, $self, $battle_service) = @_;
     my $enemy = $battle_service->target;

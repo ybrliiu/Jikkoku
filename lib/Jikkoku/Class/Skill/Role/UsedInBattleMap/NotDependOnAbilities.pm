@@ -4,10 +4,7 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap::NotDependOnAbilities {
   use Jikkoku;
 
   # attribute
-  requires qw(
-    success_ratio
-    effect_time
-  );
+  requires qw( success_ratio );
 
   around description_of_status_about_success_ratio => sub {
     my ($orig, $self) = @_;

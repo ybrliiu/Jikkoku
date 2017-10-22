@@ -32,7 +32,7 @@ package Jikkoku::Model::State::Result {
 
   has 'id_map' => (
     is      => 'ro',
-    isa     => 'HashRef[Jikkoku::Class::State::State]',
+    isa     => 'HashRef',
     lazy    => 1,
     default => sub {
       my $self = shift;

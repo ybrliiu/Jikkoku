@@ -309,10 +309,10 @@ package Jikkoku::Service::BattleCommand::Battle {
   sub prepare_exec {
     my $self = shift;
     $self->chara->battle_mode->use();
+    # occur_action_time write_to_log
     $self->set_target_can_take_damage();
     $self->chara_power->write_to_log();
     $self->target_power->write_to_log();
-    # occur_action_time write_to_log
   }
 
   sub exec {

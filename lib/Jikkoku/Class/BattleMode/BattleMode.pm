@@ -26,7 +26,7 @@ package Jikkoku::Class::BattleMode::BattleMode {
   }
 
   # methods
-  requires qw( can_use );
+  requires qw( can_use description );
 
 }
 

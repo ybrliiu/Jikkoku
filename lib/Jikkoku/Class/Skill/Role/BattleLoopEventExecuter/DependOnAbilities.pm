@@ -4,13 +4,13 @@ package Jikkoku::Class::Skill::Role::BattleLoopEventExecuter::DependOnAbilities 
   use Jikkoku;
   use List::Util;
 
-  # Role適用時にエラー出さないように
-  use subs qw( occur_ratio event_execute_service_class_name range );
-
   # attributes
   requires qw( occur_ratio_coef max_occur_ratio );
 
+  # Role適用時にエラー出さないように
+  sub occur_ratio;
   has 'occur_ratio'   => ( is => 'ro', isa => 'Num', lazy => 1, builder => '_build_occur_ratio' );
+
   has 'abilities_sum' => ( is => 'ro', isa => 'Int', lazy => 1, builder => '_build_abilities_sum' );
 
   sub _build_abilities_sum {

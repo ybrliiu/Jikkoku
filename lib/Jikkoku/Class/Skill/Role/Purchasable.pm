@@ -8,6 +8,7 @@ package Jikkoku::Class::Skill::Role::Purchasable {
 
   {
     my @methods = qw(
+      description_of_effect_about_require_abilities
       description_of_effect_about_state
       description_of_effect_body
       description_of_effect_about_depend_abilities

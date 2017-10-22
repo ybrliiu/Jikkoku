@@ -3,10 +3,6 @@ package Jikkoku::Class::Skill::Role::UsedInBattleMap {
   use Mouse::Role;
   use Jikkoku;
 
-  use Carp;
-  use List::Util;
-  use Jikkoku::Util qw( validate_values );
-
   with qw( Jikkoku::Class::Skill::Role::InBattleMap );
 
   # attribute

@@ -4,8 +4,8 @@ package Jikkoku::Class::Skill::Invasion::IntensifyInvasion {
   use Jikkoku;
 
   use constant {
-    NEED_FORCE   => 100,
-    ACQUIRE_SIGN => 1,
+    ACQUIRE_SIGN      => 1,
+    REQUIRE_ABILITIES => {force => 100},
   };
 
   has 'name'                  => ( is => 'ro', isa => 'Str', default => '侵攻強化' );
@@ -13,9 +13,8 @@ package Jikkoku::Class::Skill::Invasion::IntensifyInvasion {
   has 'increase_attack_power' => ( is => 'ro', isa => 'Int', default => 15 );
 
   with qw(
-    Jikkoku::Class::Skill::Skill
-    Jikkoku::Class::Skill::Role::Purchasable
     Jikkoku::Class::Skill::Invasion::Invasion
+    Jikkoku::Class::Skill::Role::Purchasable
     Jikkoku::Service::BattleCommand::Battle::CharaPower::AttackPowerAdjuster
   );
 
@@ -25,9 +24,7 @@ package Jikkoku::Class::Skill::Invasion::IntensifyInvasion {
 
   sub description_of_effect_body {
     my $self = shift;
-    '侵攻側かつ武力が'
-      . $self->NEED_FORCE
-      . '以上の時、攻撃力+'
+    '侵攻側の時、攻撃力+'
       . $self->increase_attack_power . '。';
   }
 
