@@ -16,7 +16,7 @@ package Jikkoku::Service::BattleCommand::Battle::AdjustTurnCalculator {
     is      => 'ro',
     isa     => 'ArrayRef[Jikkoku::Service::BattleCommand::Battle::TurnAdjusterService]',
     lazy    => 1,
-    bulider => '_build_adjusters',
+    builder => '_build_adjusters',
   );
 
   sub _build_adjusters {
@@ -38,7 +38,7 @@ package Jikkoku::Service::BattleCommand::Battle::AdjustTurnCalculator {
 
   sub calc {
     my $self = shift;
-    sum map { $_->adjust_battle_turn } @adjusters;
+    sum map { $_->adjust_battle_turn } @{ $self->adjusters }
   }
 
   sub write_to_log {

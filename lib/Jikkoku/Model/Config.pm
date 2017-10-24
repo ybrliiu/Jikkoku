@@ -1,6 +1,7 @@
 package Jikkoku::Model::Config {
 
   use Jikkoku;
+  use FindBin;
 
   use constant DIR_PATH => 'etc/';
 

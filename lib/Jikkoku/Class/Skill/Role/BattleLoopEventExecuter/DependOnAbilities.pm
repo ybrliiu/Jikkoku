@@ -30,10 +30,7 @@ package Jikkoku::Class::Skill::Role::BattleLoopEventExecuter::DependOnAbilities 
     $class =~ s/Class/Service/gr;
   }
 
-  with qw(
-    Jikkoku::Class::Skill::Role::DependOnAbilities
-    Jikkoku::Service::BattleCommand::Battle::BattleLoop::EventExecuter
-  );
+  with qw( Jikkoku::Service::BattleCommand::Battle::BattleLoop::EventExecuter );
 
   around description_of_effect_before_body => sub { '戦闘中にイベント発生。' };
 

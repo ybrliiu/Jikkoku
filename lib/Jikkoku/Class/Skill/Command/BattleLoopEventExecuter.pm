@@ -1,10 +1,10 @@
-package Jikkoku::Class::Skill::BattleMethod::BattleLoopEventExecuter {
+package Jikkoku::Class::Skill::Command::BattleLoopEventExecuter {
 
   use Mouse::Role;
   use Jikkoku;
 
   with qw(
-    Jikkoku::Class::Skill::BattleMethod::BattleMethod
+    Jikkoku::Class::Skill::Command::Command
     Jikkoku::Class::Skill::Role::BattleLoopEventExecuter::DependOnAbilities
   );
 

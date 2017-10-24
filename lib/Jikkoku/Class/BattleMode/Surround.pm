@@ -1,4 +1,4 @@
-package Jikkoku::Class::BattleMode::Siege {
+package Jikkoku::Class::BattleMode::Surround {
 
   use Mouse;
   use Jikkoku;
@@ -18,10 +18,14 @@ package Jikkoku::Class::BattleMode::Siege {
 
   sub can_use {
     my $self = shift;
-    0;
+    $self->skills->get({category => 'Command', id => $self->id})->is_acquired;
   }
 
   sub description {
+    << "EOS";
+敵が@{[ ENEMY_SOLDIER_NUM ]}人以下の時、(自軍-敵軍)×@{[ INCREASE_ATTACK_POWER_RATIO ]}だけ攻撃力上昇。<br>
+※攻城戦では使用できない
+EOS
   }
 
   around use => sub {

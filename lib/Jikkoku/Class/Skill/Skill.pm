@@ -80,8 +80,10 @@ package Jikkoku::Class::Skill::Skill {
       description_of_effect_about_state
       description_of_effect_before_body
       description_of_effect_body
+      description_of_effect_about_battle_mode
       description_of_effect_supplement
       description_of_effect_about_depend_abilities
+      description_of_effect_note
     );
 
     __PACKAGE__->meta->add_method($_ => sub { '' }) for @methods;

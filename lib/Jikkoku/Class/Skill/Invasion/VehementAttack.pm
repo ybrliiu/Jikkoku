@@ -31,17 +31,22 @@ package Jikkoku::Class::Skill::Invasion::VehementAttack {
 
   sub _build_items_of_depend_on_abilities { ['発動率'] }
 
-  sub description_of_effect_body {
-    my $self = shift;
-    <<"EOS"
+  around description_of_effect_body => sub {
+    my ($orig, $self) = @_;
+    << "EOS"
 侵攻側の時、攻守+@{[ $self->increase_power_ratio * 100 ]}%。<br>
 また、戦闘中にイベント発生。<br>
+EOS
+  };
+
+  around description_of_effect_note => sub {
+    << "EOS"
 発動毎に攻撃力が+@{[ INCREASE_ATTACK_POWER ]}され、敵にダメージを与える。<br>
 ※上昇した攻撃力は撤退すると元に戻る。<br>
 ※1回の出撃中に上昇する攻撃力は@{[ INCREASE_ATTACK_POWER_LIMIT ]}まで。<br>
 ※攻城戦は発動率が1/@{[ NUM_OF_DIVIDE_OCCUR_RATIO_WHEN_SIEGE ]}になる。<br>
 EOS
-  }
+  };
 
   sub adjust_attack_power {
     my ($self, $chara_power_adjuster_service) = @_;

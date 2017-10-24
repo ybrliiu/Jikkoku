@@ -11,13 +11,13 @@ package Jikkoku::Service::BattleCommand::Battle {
   use Jikkoku::Service::BattleCommand::Battle::Result;
   use Jikkoku::Service::BattleCommand::Battle::AdjustTurnCalculator;
   use Jikkoku::Service::BattleCommand::Battle::BattleLoop;
-  use Jikkoku::Service::BattleCommand::Battle::CharaPower::Chara;
+  use Jikkoku::Service::BattleCommand::Battle::Chara;
   use Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower;
   use Jikkoku::Service::BattleCommand::Battle::IncreaseWeaponAttrPower;
 
   # alias
   use constant {
-    Result                => 'Jikkoku::Service::BattleCommand::Battle::CharaPower::Result',
+    Result                => 'Jikkoku::Service::BattleCommand::Battle::Result',
     AdjustTurnCalculator  => 'Jikkoku::Service::BattleCommand::Battle::AdjustTurnCalculator',
     BattleActionException => 'Jikkoku::Service::Role::BattleActionException',
   };
@@ -34,7 +34,7 @@ package Jikkoku::Service::BattleCommand::Battle {
   has 'traget_id'         => ( is => 'ro', isa => 'Str', required => 1 );
   has 'battle_mode_id'    => ( is => 'ro', isa => 'Str', default  => 'Default' );
   has 'turn'              => ( is => 'ro', isa => 'Int', lazy => 1, builder => '_build_turn' );
-  has 'battle_result'     => ( is => 'rw', isa => 'Int',  default => Result::NONE );
+  has 'battle_result'     => ( is => 'rw', isa => 'Int',  default => Result->NONE );
   has 'occur_action_time' => ( is => 'ro', isa => 'Int', lazy => 1, builder => '_build_occur_action_time' );
 
   has '_chara' => (
@@ -65,7 +65,7 @@ package Jikkoku::Service::BattleCommand::Battle {
 
   for my $class_name (qw/ Chara Town Country Diplomacy MapLog /) {
     my $attr_name = decamelize $class_name;
-    has "${name}_model" => (
+    has "${attr_name}_model" => (
       is      => 'ro',
       isa     => "Jikkoku::Model::${class_name}",
       lazy    => 1,
@@ -171,7 +171,7 @@ package Jikkoku::Service::BattleCommand::Battle {
         qq{<span class="$color">【@{[ $chara->battle_mode->name ]}】@{[ $chara->name ]}の行動待機時間が${orig_time}秒になりました！};
       };
       $chara->battle_logger->add( $log->('red') );
-      $target->battle_logger->add( $log->('blue') );
+      $self->target->battle_logger->add( $log->('blue') );
     }
     $orig_time;
   }

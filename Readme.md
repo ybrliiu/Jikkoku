@@ -3,33 +3,48 @@
 
 ## 戦闘プログラム作成中
 
-### CharaPower
+* battle_event_executer skill 実装  
+  * 計数攻撃, 破壊攻撃, 犠牲攻撃, 会心攻撃 実装完了
+  * 猛攻 実装完了
+  * 突撃, 攻勢, 密集
+    * スキル作成 実装完了
+    * event executer service 実装
+    * 陣形再編 service 実装
+  * 回避
+  * 離間
+  * 米俵, 短百, マンリ, キブン
+  * 波状攻撃
+  * それぞれのスキルのテスト
+* 戦闘開始前のイベントロールもいる(強襲の戦闘開始前イベントとか)
 
-  * SkillCategory Result, Role::Classの使用
-
-### その後
-
-* ターン数変化
-* 行動待機時間adjuster(波状攻撃)
-* 戦闘処理
-* 戦闘中発動スキルの実装
 * 戦闘後処理
-* Battle 攻城戦は拡張した別クラスで作成
-* 攻城時のみ効果発動するスキルについても考える
+* Battle 攻城戦は拡張した別クラスで作成(is_siege => 0)
+* 攻城時のみ効果発動するスキル(Battle->is_siege)
+
+* CharaPower test
 
 ## 修正箇所
 
-stuck skill つかえるようになっていない
+既存のプログラム関係
+  * stuck skill つかえるようになっていない
+  * 犠牲攻撃のON/OFFは_config{is_sacifice_attack_available}の値で決定するようになっている
 
-C::Chara set value exception & use trigger
+Class層
+  * C::Chara set value exception & use trigger
+  * Skill UsedInBattleMap::DependOnAbilities abilities_sum は lazy_buildにしてしまう
+  * BattleMAp書き換え,service化, Extend class作成
 
 Model層
   * 非Mouse Class 書き換え
   * Model::Role::TextData::Integration::Expiresの利用
 
-BattleMAp書き換え
-  * service化, Extend class作成
+* 相互に依存してしまっているモジュールを切り離す
 
+戦闘,BattleActionが終わったら
+コマンド作成
+コマンド実行部分作成
+BM自動モード作成
+とりま完成
 
 # 最終目標
 スキルは全て書き換え
@@ -62,6 +77,11 @@ BattleMAp書き換え
 * 期中の仕様変更に関するガイドラインを作成
 * 期変更時のガイドラインを作成
 
+## MEMO
+
+* 戦闘時,スキル毎にメッセージ出させるなら
+  WriteToLog Roleを実装, Service class を作ってBattleLoop開始前に呼び出し
+
 # commit / abort / lock について
 * lock = トランザクション開始でだいたいあってる
 * class 単位で分割されていない場合
@@ -82,9 +102,6 @@ object に対して lock -> commit or abort
 
 # 最終目標
 * write test
-* qw// -> qw( ) (関数、メソッド)
-* Mouse化!! (Class::TextData HashField も書き換えつつ)
-  & ファイルを取り扱うロールのようなもの -> Base::TextData::Divison 相当, Modelにも使用可能
 * Diplomacy の year を elapsed_year に変更する(誤解をさけるため)
 * scssの整理
 * Jikkoku::Rooter Nodeオブジェクトに直接デフォルトルートを書き込む
