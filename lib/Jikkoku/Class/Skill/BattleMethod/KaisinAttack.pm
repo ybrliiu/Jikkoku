@@ -18,7 +18,7 @@ package Jikkoku::Class::Skill::BattleMethod::KaisinAttack {
 
   around description_of_effect_body => sub {
     my ($orig, $self) = @_;
-    '発動したターンは与えるダメージが' . $self->increase_damage_ratio . '倍される。';
+    '発動したターン最大ダメージが' . $self->increase_damage_ratio . '倍される。';
   };
 
   __PACKAGE__->prepare;

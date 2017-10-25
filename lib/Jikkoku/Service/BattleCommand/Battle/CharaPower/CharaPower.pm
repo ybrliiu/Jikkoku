@@ -71,7 +71,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     },
   );
 
-  has [qw/ attack_power defence_power /] => ( is => 'ro', isa => 'Int', lazy_build => 1 );
+  has [qw/ attack_power defence_power /] => ( is => 'rw', isa => 'Int', lazy_build => 1 );
 
   has 'formation_power' => (
     is      => 'ro',
@@ -185,6 +185,12 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
       + $self->navy_power->defence_power
       + sum( map { $_->adjust_defence_power } @{ $self->chara_power_adjusters } )
       + sum( map { $_->adjust_enemy_defence_power } @{ $self->enemy_power_adjusters } );
+  }
+
+  sub update_power {
+    my $self = shift;
+    $self->attack_power( $self->_build_attack_power );
+    $self->defence_power( $self->_build_defence_power );
   }
 
   sub write_to_log {

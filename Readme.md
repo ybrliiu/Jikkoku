@@ -8,8 +8,14 @@
   * 猛攻 実装完了
   * 突撃, 攻勢, 密集
     * スキル作成 実装完了
-    * event executer service 実装
-    * 陣形再編 service 実装
+    * event executer service 実装完了
+    * 陣形再編 service 実装完了
+    * skill category command 実装完了
+
+    * event executer Role化
+    * Roleの使用箇所明確化(衝突するかどうか, すればドキュメントに記載)
+    * event executer テスト
+    * 陣形再編service テスト
   * 回避
   * 離間
   * 米俵, 短百, マンリ, キブン
@@ -28,6 +34,7 @@
 既存のプログラム関係
   * stuck skill つかえるようになっていない
   * 犠牲攻撃のON/OFFは_config{is_sacifice_attack_available}の値で決定するようになっている
+  * 会心攻撃 最大ダメージ2倍に(あわせて新スキルの説明も変える)
 
 Class層
   * C::Chara set value exception & use trigger

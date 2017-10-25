@@ -9,6 +9,7 @@ package Jikkoku::Class::Skill::Command::RegroupFormation {
   my $CONFIG = Jikkoku::Model::Config->get;
   
   has 'name'                       => ( is => 'ro', isa => 'Str', default => '陣形再編' );
+  has 'success_ratio'              => ( is => 'ro', isa => 'Num', default => 1.0 );
   has 'consume_morale'             => ( is => 'ro', isa => 'Int', default => 25 );
   has 'action_interval_time'       => ( is => 'ro', isa => 'Int', default => $CONFIG->{game}{action_interval_time} * 0.5 );
   has 'consume_skill_point'        => ( is => 'ro', isa => 'Int', default => 15 );
@@ -18,6 +19,7 @@ package Jikkoku::Class::Skill::Command::RegroupFormation {
     Jikkoku::Class::Skill::Command::Command
     Jikkoku::Class::Skill::Role::UsedInBattleMap
     Jikkoku::Class::Skill::Role::UsedInBattleMap::OccurActionTime
+    Jikkoku::Class::Skill::Role::UsedInBattleMap::NotDependOnAbilities
   );
 
   # ここスキルでは例外的に必要ない

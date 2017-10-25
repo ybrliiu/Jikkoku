@@ -6,7 +6,6 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop::EventExecuteService
   has 'event_executer' => (
     is       => 'ro',
     does     => 'Jikkoku::Service::BattleCommand::Battle::BattleLoop::EventExecuter',
-    handles  => [qw/ occur_ratio /],
     required => 1,
   );
 
@@ -19,11 +18,19 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop::EventExecuteService
 
   has 'is_reach' => ( is => 'ro', isa => 'Bool', lazy => 1, builder => '_build_is_reach' );
 
+ # 引数で値かえられるように
+  has 'occur_ratio' => ( is => 'ro', isa => 'Num', lazy => 1, builder => '_build_occur_ratio' );
+
   requires qw( exec_event );
 
   sub _build_is_reach {
     my $self = shift;
     $self->battle_loop->distance <= $self->event_executer->range;
+  }
+
+  sub _build_occur_ratio {
+    my $self = shift;
+    $self->event_executer->occur_ratio;
   }
 
   sub can_exec_event {

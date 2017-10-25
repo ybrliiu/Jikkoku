@@ -3,6 +3,8 @@ package Jikkoku::Service::Skill::BattleMethod::SacrificeAttack {
   use Mouse;
   use Jikkoku;
 
+  use constant MAX_SACRIFICE_SOLDIER => 9;
+
   with 'Jikkoku::Service::BattleCommand::Battle::BattleLoop::EventExecuteService';
 
   around can_exec_event => sub {
@@ -16,7 +18,7 @@ package Jikkoku::Service::Skill::BattleMethod::SacrificeAttack {
 
     my $sacrifice_soldier = do {
       # 兵士が1人以下になって自滅しないように
-      my $sacrifice_soldier = int rand 9 + 1;
+      my $sacrifice_soldier = int(rand MAX_SACRIFICE_SOLDIER) + 1;
       my $lack = $self->soldier->num - $sacrifice_soldier;
       if ($lack < 1) {
         $sacrifice_soldier += $lack + 1;

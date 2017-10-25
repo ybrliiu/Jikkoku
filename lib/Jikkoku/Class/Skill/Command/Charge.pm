@@ -23,6 +23,7 @@ package Jikkoku::Class::Skill::Command::Charge {
     '相手にダメージを与える。';
   };
 
+  __PACKAGE__->prepare;
   __PACKAGE__->meta->make_immutable;
 
 }

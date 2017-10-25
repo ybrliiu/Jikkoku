@@ -34,6 +34,7 @@ package Jikkoku::Class::Skill::Command::Offensive {
 EOS
   };
 
+  __PACKAGE__->prepare;
   __PACKAGE__->meta->make_immutable;
 
 }

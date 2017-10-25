@@ -80,8 +80,8 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
 
   sub init_loop {
     my $self = shift;
-    $self->chara->set_new_take_damage();
-    $self->target->set_new_take_damage();
+    $self->chara->init_max_take_damage();
+    $self->target->init_max_take_damage();
   }
 
   sub _end {
@@ -111,6 +111,8 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
   sub battle {
     my $self = shift;
     my ($chara, $target) = ($self->chara, $self->target);
+    $target->update_take_damage();
+    $chara->update_take_damage();
     $target->soldier->minus_equal( $chara->take_damage );
     $chara->soldier->minus_equal( $target->take_damage );
     my $log = qq{ターン<span class="red">@{[ $self->current_turn ]}</span> : }
@@ -119,6 +121,12 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
     $chara->battle_logger->add($log);
     $target->battle_logger->add($log);
     $self->_end();
+  }
+
+  sub update_orig_max_take_damage {
+    my $self = shift;
+    $self->chara->update_orig_max_take_damage();
+    $self->target->update_orig_max_take_damage();
   }
 
   sub start_loop {
