@@ -3,7 +3,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::NavyPower {
   use Mouse;
   use Jikkoku;
 
-  use constant NOT_SUITABLE_DECREASE_RATIO => 0.25;
+  use constant NOT_SUITABLE_DECREASE_RATIO => -0.25;
 
   has 'battle_map_model' => (
     is      => 'ro',
@@ -45,20 +45,20 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::NavyPower {
 
   sub _build_attack_power {
     my $self = shift;
-    $self->is_apply ? 0 : int( $self->orig_attack_power * NOT_SUITABLE_DECREASE_RATIO );
+    $self->is_apply ? int( $self->orig_attack_power * NOT_SUITABLE_DECREASE_RATIO ) : 0;
   }
 
   sub _build_defence_power {
     my $self = shift;
-    $self->is_apply ? 0 : int( $self->orig_defence_power * NOT_SUITABLE_DECREASE_RATIO );
+    $self->is_apply ? int( $self->orig_defence_power * NOT_SUITABLE_DECREASE_RATIO ) : 0;
   }
 
   sub write_to_log {
     my $self = shift;
     if ( $self->is_apply ) {
       my $log = qq{<span class="lightblue">【水軍不適応地形】</span>@{[ $self->chara->name ]}の}
-              . qq{攻撃力が-<span clasS="red">@{[ $self->attack_power ]}</span>、}
-              . qq{守備力が-<span class="red">@{[ $self->defence_power ]}</span>されました。};
+              . qq{攻撃力が<span clasS="red">@{[ $self->attack_power ]}</span>、}
+              . qq{守備力が<span class="red">@{[ $self->defence_power ]}</span>されました。};
       $self->chara->battle_logger->add($log);
       $self->target->battle_logger->add($log);
     }

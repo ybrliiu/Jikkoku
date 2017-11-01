@@ -2,7 +2,8 @@ package Jikkoku::Service::Skill::Role::UsedInBattleMap::DependOnAbilities {
 
   use Mouse::Role;
   use Jikkoku;
-  use Carp;
+
+  with 'Jikkoku::Service::Skill::Role::UsedInBattleMap';
 
   sub calc_success_ratio {
     my ($self, $ability_sum) = @_;

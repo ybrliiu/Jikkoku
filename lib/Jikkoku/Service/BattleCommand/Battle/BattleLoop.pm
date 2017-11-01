@@ -30,6 +30,12 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
     lazy_build => 1,
   );
 
+  has [qw/ chara_events target_events /] => (
+    is         => 'rw',
+    isa        => 'ArrayRef',
+    lazy_build => 1,
+  );
+
   has 'is_siege'     => ( is => 'ro', isa => 'Bool', required => 1 );
   has 'distance'     => ( is => 'ro', isa => 'Int', required => 1 );
   has 'end_turn'     => ( is => 'ro', isa => 'Int', required => 1 );
@@ -58,6 +64,34 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
       power        => $self->target_power,
       target_power => $self->chara_power,
     });
+  }
+
+  sub _build_chara_events {
+    my $self = shift;
+    [
+      map {
+        $_->event_execute_service_class_name->new({
+          chara          => $self->chara,
+          target         => $self->target,
+          battle_loop    => $self,
+          event_executer => $_,
+        });
+      } @{ $self->chara->event_executers }
+    ];
+  }
+
+  sub _build_target_events {
+    my $self = shift;
+    [
+      map {
+        $_->event_execute_service_class_name->new({
+          chara          => $self->target,
+          target         => $self->chara,
+          battle_loop    => $self,
+          event_executer => $_,
+        });
+      } @{ $self->target->event_executers }
+    ];
   }
 
   sub battle_result {
@@ -91,20 +125,10 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop {
     $self->result( $self->battle_result );
   }
 
-  sub exec_skill {
-    my ($self, $chara) = @_;
-    for my $executer (@{ $chara->event_executers }) {
-      $executer->event_execute_service_class_name->new({
-        battle_loop    => $self,
-        event_executer => $executer,
-      })->exec_event();
-    }
-  }
-
   sub exec_skills {
     my $self = shift;
-    $self->exec_skill($self->chara);
-    $self->exec_skill($self->target);
+    $_->exec_event() for @{ $self->chara_events };
+    $_->exec_event() for @{ $self->target_events };
     $self->_end();
   }
 

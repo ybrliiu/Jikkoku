@@ -3,6 +3,8 @@ package Jikkoku::Service::Skill::Role::UsedInBattleMap::ToOneChara {
   use Mouse::Role;
   use Jikkoku;
 
+  with 'Jikkoku::Service::Skill::Role::UsedInBattleMap';
+
   has 'target_id' => ( is => 'ro', isa => 'Str', required => 1 );
 
   has 'chara_model' => (

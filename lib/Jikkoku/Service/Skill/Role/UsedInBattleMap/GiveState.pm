@@ -6,7 +6,6 @@ package Jikkoku::Service::Skill::Role::UsedInBattleMap::GiveState {
   use Jikkoku;
 
   with qw(
-    Jikkoku::Service::Skill::Skill
     Jikkoku::Service::Role::BattleAction::OccurActionTime
     Jikkoku::Service::Skill::Role::UsedInBattleMap::DependOnAbilities
   );

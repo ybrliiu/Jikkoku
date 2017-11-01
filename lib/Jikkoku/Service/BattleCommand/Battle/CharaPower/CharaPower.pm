@@ -174,8 +174,8 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     $self->orig_attack_power
       + $self->formation_power->attack_power
       + $self->navy_power->attack_power
-      + sum( map { $_->adjust_attack_power } @{ $self->chara_power_adjusters } )
-      + sum( map { $_->adjust_enemy_attack_power } @{ $self->enemy_power_adjusters } );
+      + ( sum( map { $_->adjust_attack_power } @{ $self->chara_power_adjusters } ) // 0 )
+      + ( sum( map { $_->adjust_enemy_attack_power } @{ $self->enemy_power_adjusters } ) // 0 )
   }
 
   sub _build_defence_power {
@@ -183,8 +183,8 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     $self->orig_defence_power
       + $self->formation_power->defence_power
       + $self->navy_power->defence_power
-      + sum( map { $_->adjust_defence_power } @{ $self->chara_power_adjusters } )
-      + sum( map { $_->adjust_enemy_defence_power } @{ $self->enemy_power_adjusters } );
+      + ( sum( map { $_->adjust_defence_power } @{ $self->chara_power_adjusters } ) // 0 )
+      + ( sum( map { $_->adjust_enemy_defence_power } @{ $self->enemy_power_adjusters } ) // 0 )
   }
 
   sub update_power {

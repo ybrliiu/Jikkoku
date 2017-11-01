@@ -9,10 +9,16 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop::EventExecuteService
     required => 1,
   );
 
+  has [qw/ chara target /] => (
+    is       => 'ro',
+    isa      => 'Jikkoku::Service::BattleCommand::Battle::BattleLoop::Chara',
+    required => 1,
+  );
+
   has 'battle_loop' => (
     is       => 'ro',
     isa      => 'Jikkoku::Service::BattleCommand::Battle::BattleLoop',
-    handles  => [qw/ chara target distance /],
+    handles  => [qw/ distance /],
     required => 1,
   );
 

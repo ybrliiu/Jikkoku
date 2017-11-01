@@ -3,6 +3,8 @@ package Jikkoku::Service::Skill::Role::UsedInBattleMap::NotDependOnAbilities {
   use Mouse::Role;
   use Jikkoku;
 
+  with 'Jikkoku::Service::Skill::Role::UsedInBattleMap';
+
   sub calc_success_ratio {
     my $self = shift;
     $self->skill->success_ratio;

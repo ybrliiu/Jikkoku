@@ -8,8 +8,6 @@ package Jikkoku::Service::Skill::Role::UsedInBattleMap::Disturb {
 
   has 'log_color' => ( is => 'ro', isa => 'Str', default => 'yellowgreen' );
 
-  with 'Jikkoku::Service::Skill::Role::UsedInBattleMap';
-
 }
 
 1;
