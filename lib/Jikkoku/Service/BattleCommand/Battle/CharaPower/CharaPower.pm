@@ -71,8 +71,6 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     },
   );
 
-  has [qw/ attack_power defence_power /] => ( is => 'rw', isa => 'Int', lazy_build => 1 );
-
   has 'formation_power' => (
     is      => 'ro',
     isa     => 'Jikkoku::Service::BattleCommand::Battle::CharaPower::FormationPower',
@@ -95,21 +93,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     },
   );
 
-  has 'chara_power_adjusters' => (
-    is      => 'ro',
-    isa     => 'ArrayRef[Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService::CharaPower]',
-    lazy    => 1,
-    builder => '_build_chara_power_adjusters',
-  );
-
-  has 'enemy_power_adjusters' => (
-    is      => 'ro',
-    isa     => 'ArrayRef[Jikkoku::Service::BattleCommand::Battle::CharaPower::AdjusterService::EnemyPower]',
-    lazy    => 1,
-    builder => '_build_enemy_power_adjusters',
-  );
-
-  sub _build_chara_power_adjusters {
+  sub chara_power_adjusters {
     my $self = shift;
     my $role_pkg_name = 'Jikkoku::Service::BattleCommand::Battle::CharaPower';
     my $pkg_name      = $role_pkg_name . '::AdjusterService';
@@ -139,7 +123,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     ];
   }
 
-  sub _build_enemy_power_adjusters {
+  sub enemy_power_adjusters {
     my $self = shift;
     my $role_pkg_name = 'Jikkoku::Service::BattleCommand::Battle::CharaPower';
     my $pkg_name      = $role_pkg_name . '::AdjusterService';
@@ -169,7 +153,7 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
     ];
   }
 
-  sub _build_attack_power {
+  sub attack_power {
     my $self = shift;
     $self->orig_attack_power
       + $self->formation_power->attack_power
@@ -178,19 +162,13 @@ package Jikkoku::Service::BattleCommand::Battle::CharaPower::CharaPower {
       + ( sum( map { $_->adjust_enemy_attack_power } @{ $self->enemy_power_adjusters } ) // 0 )
   }
 
-  sub _build_defence_power {
+  sub defence_power {
     my $self = shift;
     $self->orig_defence_power
       + $self->formation_power->defence_power
       + $self->navy_power->defence_power
       + ( sum( map { $_->adjust_defence_power } @{ $self->chara_power_adjusters } ) // 0 )
       + ( sum( map { $_->adjust_enemy_defence_power } @{ $self->enemy_power_adjusters } ) // 0 )
-  }
-
-  sub update_power {
-    my $self = shift;
-    $self->attack_power( $self->_build_attack_power );
-    $self->defence_power( $self->_build_defence_power );
   }
 
   sub write_to_log {

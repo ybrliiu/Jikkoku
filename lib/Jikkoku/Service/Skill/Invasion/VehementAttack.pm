@@ -47,10 +47,12 @@ package Jikkoku::Service::Skill::Invasion::VehementAttack {
 
     my $log = sub {
       my $color = shift;
+      my $attack_power_mes = $increase_power > 0
+        ? qq{@{[ $chara->name ]}の攻撃力が+<span class="red">${increase_power}</span>されました！}
+        : '';
       qq{<span class="$color">【@{[ $self->event_executer->name ]} 】</span>}
         . qq{@{[ $chara->name ]}は@{[ $target->name ]}の部隊を激しく攻め立てています！}
-        . qq{@{[ $chara->name ]}の攻撃力が+<span class="red">${increase_power}</span>}
-        . qq{されました！ @{[ $target->soldier_status ]} ↓(-${damage})};
+        . qq{${attack_power_mes} @{[ $target->soldier_status ]} ↓(-${damage})};
     };
     $chara->battle_logger->add( $log->('red') );
     $target->battle_logger->add( $log->('blue') );

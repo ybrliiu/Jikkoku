@@ -6,21 +6,22 @@
 * battle_event_executer skill 実装  
   * 計数攻撃, 破壊攻撃, 犠牲攻撃, 会心攻撃 実装完了
   * 猛攻 実装完了
-  * 突撃, 攻勢, 密集
-    * スキル作成 実装完了
-    * event executer service 実装完了
-    * 陣形再編 service 実装完了
-    * skill category command 実装完了
+  * 突撃, 攻勢, 密集 実装完了
 
-    * event executer Role化
-    * Roleの使用箇所明確化(衝突するかどうか, すればドキュメントに記載)
-    * event executer テスト
-    * 陣形再編service テスト
+  * event executer テスト
+    * BattleMethod 終了
+    * 猛攻 完了
+    * 指揮スキル
+
   * 回避
   * 離間
   * 米俵, 短百, マンリ, キブン
   * 波状攻撃
-  * それぞれのスキルのテスト
+
+  * Roleの使用箇所明確化(衝突するかどうか, すればドキュメントに記載)
+
+* 陣形再編service テスト
+
 * 戦闘開始前のイベントロールもいる(強襲の戦闘開始前イベントとか)
 
 * 戦闘後処理

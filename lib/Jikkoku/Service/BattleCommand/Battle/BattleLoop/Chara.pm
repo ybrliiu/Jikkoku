@@ -3,7 +3,10 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop::Chara {
   use Mouse;
   use Jikkoku;
 
-  use constant ADJUST_MAX_TAKE_DAMAGE => 1;
+  use constant {
+    ADJUST_MAX_TAKE_DAMAGE => 1,
+    DIVISION_POWER_NUM     => 10,
+  };
 
   extends 'Jikkoku::Service::BattleCommand::Battle::Chara';
 
@@ -13,9 +16,9 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop::Chara {
     required => 1,
   );
 
-  has '_base_max_take_damage' => ( is => 'rw', isa => 'Int', lazy => 1, builder => '_build_base_max_take_damage' );
-  has '_orig_max_take_damage' => ( is => 'rw', isa => 'Int', lazy => 1, builder => '_build_orig_max_take_damage' );
-  has 'max_take_damage'       => ( is => 'rw', isa => 'Int', lazy => 1, builder => '_build_max_take_damage' );
+  has '_base_max_take_damage' => ( is => 'rw', isa => 'Int' );
+  has '_orig_max_take_damage' => ( is => 'rw', isa => 'Int' );
+  has 'max_take_damage'       => ( is => 'rw', isa => 'Int' );
   has 'take_damage'           => ( is => 'rw', default => 0 );
   has 'first_soldier_num'     => ( is => 'ro', isa => 'Int', builder => '_build_first_soldier_num' );
   has 'increase_contribute'   => ( is => 'rw', isa => 'Num', default => 0 );
@@ -23,14 +26,14 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop::Chara {
 
   sub BUILD {
     my $self = shift;
-    # 後で値が変わる可能性もあるので, 生成後に値をセットしておく
-    $self->_base_max_take_damage;
-    $self->_orig_max_take_damage;
+    $self->_base_max_take_damage( $self->_build_base_max_take_damage );
+    $self->_orig_max_take_damage( $self->_build_orig_max_take_damage );
+    $self->max_take_damage( $self->_build_max_take_damage );
   }
 
   sub _build_base_max_take_damage {
     my $self = shift;
-    int( ($self->power->attack_power - $self->target_power->defence_power) / 10 );
+    int( ($self->power->attack_power - $self->target_power->defence_power) / DIVISION_POWER_NUM );
   }
 
   sub _build_orig_max_take_damage {
@@ -43,7 +46,7 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop::Chara {
 
   sub _build_max_take_damage {
     my $self = shift;
-    $self->orig_max_take_damage;
+    $self->_orig_max_take_damage;
   }
 
   sub _build_first_soldier_num {
@@ -60,8 +63,6 @@ package Jikkoku::Service::BattleCommand::Battle::BattleLoop::Chara {
 
   sub update_orig_max_take_damage {
     my $self = shift;
-    $self->power->update_power;
-    $self->target_power->update_power;
     $self->_base_max_take_damage( $self->_build_base_max_take_damage );
     $self->_orig_max_take_damage( $self->_build_orig_max_take_damage );
   }

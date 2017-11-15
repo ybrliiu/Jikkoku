@@ -19,7 +19,7 @@ package Jikkoku::Service::Skill::BattleMethod::SacrificeAttack {
     my $sacrifice_soldier = do {
       # 兵士が1人以下になって自滅しないように
       my $sacrifice_soldier = int(rand MAX_SACRIFICE_SOLDIER) + 1;
-      my $lack = $self->soldier->num - $sacrifice_soldier;
+      my $lack = $self->chara->soldier->num - $sacrifice_soldier;
       if ($lack < 1) {
         $sacrifice_soldier += $lack + 1;
       }
@@ -28,7 +28,7 @@ package Jikkoku::Service::Skill::BattleMethod::SacrificeAttack {
     my $damage = $sacrifice_soldier *
       ( $self->battle_loop->is_siege
         ? $self->event_executer->take_damage_ratio_on_siege
-        : $self->event_executer->take_damage_ratio_on_siege );
+        : $self->event_executer->take_damage_ratio );
 
     $self->chara->soldier->minus_equal($sacrifice_soldier);
     $self->target->soldier->minus_equal($damage);
