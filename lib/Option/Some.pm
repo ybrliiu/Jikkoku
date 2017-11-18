@@ -2,7 +2,7 @@ package Option::Some {
 
   use v5.14;
   use warnings;
-  use parent 'Option';
+  use parent 'Option::Option';
 
   # override
   sub new {
@@ -23,14 +23,21 @@ package Option::Some {
 
   # override
   sub fold {
-    my ($self, $default) = @_;
-    $self->SUPER::fold($default);
+    my ($self, $none) = @_;
+    $self->SUPER::fold($none);
     sub {
       my $code = shift;
       Carp::confess "please specify CodeRef" if ref $code ne 'CODE';
       local $_ = $self->{contents};
       $code->( $self->{contents} );
     };
+  }
+
+  # override
+  sub flatten {
+    my $self = shift;
+    $self->{contents}->isa('Option::Option') ? $self->{contents} : Carp::croak '$self->{contents} is not Option value';
+    # $self->{contents}->isa('Option::Option') ? $self->{contents}->flatten : $self;
   }
 
   # override
@@ -52,7 +59,7 @@ package Option::Some {
     $self->SUPER::map($code);
     local $_ = $self->{contents};
     my $ret = $code->( $self->{contents} );
-    (ref $self)->new($ret);
+    Option::Some->new($ret);
   }
 
   # override
@@ -66,10 +73,10 @@ package Option::Some {
   # override
   sub to_list {
     my $self = shift;
-    if ( $self->{contents}->isa('Option::Some') ) {
+    if ( $self->{contents}->isa('Option::Option') ) {
       ($self->{contents}, $self->{contents}->to_list);
     } else {
-      ($self->{contents});
+      ();
     }
   }
 

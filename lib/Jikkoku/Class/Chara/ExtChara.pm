@@ -213,7 +213,7 @@ package Jikkoku::Class::Chara::ExtChara {
 
   has 'position' => (
     is      => 'ro',
-    isa     => 'Option',
+    isa     => 'Option::Option',
     lazy    => 1,
     default => sub {
       my $self = shift;
