@@ -19,7 +19,7 @@ package Jikkoku::Model::Role::List {
 
   sub get {
     my ($self, $limit) = @_;
-    Carp::croak 'few arguments($limit)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $limit)' if @_ < 2;
     [ @{ $self->data }[0 .. $limit - 1] ];
   }
 
@@ -29,7 +29,7 @@ package Jikkoku::Model::Role::List {
 
   sub delete {
     my ($self, $index) = @_;
-    Carp::croak 'few arguments($index)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $index)' if @_ < 2;
     splice (@{ $self->data }, $index, 1);
   }
 

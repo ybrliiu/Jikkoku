@@ -42,7 +42,7 @@ package Jikkoku::Model::State::Result {
 
   sub get {
     my ($self, $id) = @_;
-    Carp::croak 'few arguments($id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $id)' if @_ < 2;
     $self->id_map->{$id} // Carp::croak "no such state($id)";
   }
 

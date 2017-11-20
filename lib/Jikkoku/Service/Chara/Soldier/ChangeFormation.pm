@@ -46,7 +46,7 @@ package Jikkoku::Service::Chara::Soldier::ChangeFormation {
 
   sub exec {
     my ($self, $change_formation_id) = @_;
-    Carp::croak 'few arguments($formation_id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $formation_id)' if @_ < 2;
     my $chara = $self->chara;
     my $soldier = $chara->soldier;
     my $formation = $self->formation_model->get($change_formation_id);

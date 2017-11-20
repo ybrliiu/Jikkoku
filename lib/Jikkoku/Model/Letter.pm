@@ -36,7 +36,7 @@ package Jikkoku::Model::Letter {
 
   sub get_country_letter {
     my ($self, $country_id, $limit) = @_;
-    Carp::croak 'few arguments($country_id, ($limit))' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $country_id, ($limit))' if @_ < 2;
     # letter_type に 国IDがある場合、国宛
     my @letters = grep { $_->letter_type eq $country_id } @{ $self->data };
     [ @letters[0 .. $limit - 1] ];
@@ -44,7 +44,7 @@ package Jikkoku::Model::Letter {
 
   sub get_unit_letter {
     my ($self, $unit_id, $limit) = @_;
-    Carp::croak 'few arguments($unit_id, ($limit))' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $unit_id, ($limit))' if @_ < 2;
     my @letters = grep {
       $_->letter_type eq UNIT && $_->sender_unit_id == $unit_id
     } @{ $self->data };
@@ -53,7 +53,7 @@ package Jikkoku::Model::Letter {
 
   sub get_town_letter {
     my ($self, $town_id, $limit) = @_;
-    Carp::croak 'few arguments($town_id, ($limit))' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $town_id, ($limit))' if @_ < 2;
     my @letters = grep {
       $_->letter_type eq TOWN && $_->sender_town_id == $town_id
     } @{ $self->data };
@@ -62,7 +62,7 @@ package Jikkoku::Model::Letter {
 
   sub get_chara_letter {
     my ($self, $chara_id, $limit) = @_;
-    Carp::croak 'few arguments($chara_id, ($limit))' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $chara_id, ($limit))' if @_ < 2;
     # letter_type にchara id がある場合、個宛
     my @letters = grep {
       $_->letter_type eq $chara_id || $_->sender_id eq $chara_id

@@ -15,7 +15,7 @@ package Jikkoku::Class::ExtensiveState::Protect {
 
   sub override_battle_target {
     my ($self, $enemy, $time) = @_;
-    Carp::croak 'few arguments($enemy, $time)' if @_ < 3;
+    Carp::croak 'Too few arguments (required: $enemy, $time)' if @_ < 3;
     my $candidates = $self->charactors
       ->get_charactors_by_else_id_with_result( $enemy->id )
       ->get_charactors_by_country_id_with_result( $enemy->country_id )
@@ -49,7 +49,7 @@ package Jikkoku::Class::ExtensiveState::Protect {
 
   sub is_give_effect {
     my ($self, $time) = @_;
-    Carp::croak 'few arguments($time)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $time)' if @_ < 2;
     $self->record_model->get_with_option($self->chara->id, $self->id)->match(
       Some => sub {
         my $state_record = shift;

@@ -119,13 +119,13 @@ package Jikkoku::Class::Formation {
 
   sub is_available {
     my ($self, $chara) = @_;
-    Carp::croak 'few arguments($chara)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $chara)' if @_ < 2;
     $chara->class >= $self->class && $self->acquire_condition->($chara);
   }
 
   sub is_advantageous {
     my ($self, $formation) = @_;
-    Carp::croak 'few arguments($formation)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $formation)' if @_ < 2;
     exists $self->advantageous_formations_id_map->{ $formation->id };
   }
 

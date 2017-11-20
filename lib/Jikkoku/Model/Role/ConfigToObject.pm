@@ -49,13 +49,13 @@ package Jikkoku::Model::Role::ConfigToObject {
 
   sub get {
     my ($self, $id) = @_;
-    Carp::croak 'few arguments (id)' if @_ < 2;
+    Carp::croak 'Too few arguments (id)' if @_ < 2;
     $self->data->[$id] // Carp::confess "no such id data ($id)";
   }
 
   sub get_by_name {
     my ($self, $name) = @_;
-    Carp::croak 'few arguments (name)' if @_ < 2;
+    Carp::croak 'Too few arguments (name)' if @_ < 2;
     $self->name_map->{$name} // Carp::confess "no such name data ($name)";
   }
 

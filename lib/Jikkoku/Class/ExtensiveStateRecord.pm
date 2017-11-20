@@ -14,7 +14,7 @@ package Jikkoku::Class::ExtensiveStateRecord {
 
   sub is_available {
     my ($self, $time) = @_;
-    Carp::croak 'few arguments($time)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $time)' if @_ < 2;
     $self->available_time >= $time;
   }
 

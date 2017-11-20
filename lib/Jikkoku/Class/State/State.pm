@@ -31,7 +31,7 @@ package Jikkoku::Class::State::State {
 
   sub image_tag {
     my ($self, $dir) = @_;
-    Carp::croak 'few arguments($dir)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $dir)' if @_ < 2;
     qq{<img src="${dir}/@{[ $self->icon ]}">};
   }
 

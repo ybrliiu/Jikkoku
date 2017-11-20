@@ -108,19 +108,19 @@ package Jikkoku::Model::Chara::Result {
 
   sub get_with_option {
     my ($self, $id) = @_;
-    Carp::croak 'few arguments($id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $id)' if @_ < 2;
     option $self->id_map->{$id};
   }
 
   sub get_by_name_with_option {
     my ($self, $name) = @_;
-    Carp::croak 'few arguments($name)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $name)' if @_ < 2;
     option $self->name_map->{$name};
   }
 
   sub get_charactors_by_id_list_with_result {
     my ($self, $id_list) = @_;
-    Carp::croak 'few arguments($id_list)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $id_list)' if @_ < 2;
     $self->create_result([ map {
       my $chara = $self->id_map->{$_};
       defined $chara ? $chara : ()
@@ -129,32 +129,32 @@ package Jikkoku::Model::Chara::Result {
 
   sub get_charactors_by_country_id_with_result {
     my ($self, $country_id) = @_;
-    Carp::croak 'few arguments($country_id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $country_id)' if @_ < 2;
     $self->create_result([ grep { $country_id == $_->country_id } @{ $self->data } ]);
   }
 
   sub get_not_applicable_charactors_by_country_id_with_result {
     my ($self, $country_id) = @_;
-    Carp::croak 'few arguments($country_id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $country_id)' if @_ < 2;
     $self->create_result([ grep { $country_id != $_->country_id } @{ $self->data } ]);
   }
 
   sub get_charactors_by_else_id_with_result {
     my ($self, $id) = @_;
-    Carp::croak 'few arguments($country_id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $country_id)' if @_ < 2;
     $self->create_result([ grep { $_->id != $id } @{ $self->data } ]);
   }
 
   sub get_charactors_by_soldier_bm_id_with_result {
     my ($self, $bm_id) = @_;
-    Carp::croak 'few arguments($bm_id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $bm_id)' if @_ < 2;
     $self->create_result([ grep { $bm_id eq $_->soldier_battle_map('battle_map_id') } @{ $self->data } ]);
   }
 
   # 以下要修正
   sub get_charactors_by_soldier_distance_less_than_with_result {
     my ($self, $point, $distance) = @_;
-    Carp::croak 'few arguments($point, $distance)' if @_ < 3;
+    Carp::croak 'Too few arguments (required: $point, $distance)' if @_ < 3;
     $self->create_result([
       grep {
         require Jikkoku::Class::Chara::ExtChara;
@@ -166,7 +166,7 @@ package Jikkoku::Model::Chara::Result {
 
   sub get_charactors_by_soldier_point_with_result {
     my ($self, $point) = @_;
-    Carp::croak 'few arguments($point)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $point)' if @_ < 2;
     $self->create_result([
       grep {
         require Jikkoku::Class::Chara::ExtChara;
@@ -178,7 +178,7 @@ package Jikkoku::Model::Chara::Result {
 
   sub get_charactors_by_soldier_point_as_coordinate_with_result {
     my ($self, $x, $y) = @_;
-    Carp::croak 'few arguments($x, $y)' if @_ < 3;
+    Carp::croak 'Too few arguments (required: $x, $y)' if @_ < 3;
     $self->create_result([
       grep {
         my $sbm = $_->_soldier_battle_map;

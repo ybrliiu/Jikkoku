@@ -48,7 +48,7 @@ package Jikkoku::Model::ExtensiveState {
 
   sub get {
     my ($self, $id) = @_;
-    Carp::croak 'few arguments($id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $id)' if @_ < 2;
     "@{[ $self->NAMESPACE ]}::${id}"->new({
       chara         => $self->chara->chara,
       chara_soldier => $self->chara->soldier,
@@ -82,13 +82,13 @@ package Jikkoku::Model::ExtensiveState::Result {
 
   sub get {
     my ($self, $id) = @_;
-    Carp::croak 'few arguments($id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $id)' if @_ < 2;
     $self->id_map->{$id} // Carp::croak "no such state($id)";
   }
 
   sub get_with_option {
     my ($self, $id) = @_;
-    Carp::croak 'few arguments($id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $id)' if @_ < 2;
     option $self->id_map->{$id};
   }
 

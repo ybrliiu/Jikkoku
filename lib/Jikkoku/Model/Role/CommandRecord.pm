@@ -10,7 +10,7 @@ package Jikkoku::Model::Role::CommandRecord {
   
   sub delete {
     my ($self, $delete_num_list) = @_;
-    Carp::croak 'few arguments($delete_num_list)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $delete_num_list)' if @_ < 2;
     # コマンドリストの削除するコマンドに目印をつけ、目印がついていない物のみ抽出
     $self->input('delete', $delete_num_list);
     my @command = grep { $_ ne 'delete' } @{ $self->data };
@@ -22,7 +22,7 @@ package Jikkoku::Model::Role::CommandRecord {
 
   sub input {
     my ($self, $input_data, $input_num_list) = @_;
-    Carp::croak 'few arguments($input_data, $input_num_list)' if @_ < 3;
+    Carp::croak 'Too few arguments (required: $input_data, $input_num_list)' if @_ < 3;
     splice( @{ $self->data }, $_, 1, $input_data ) for @$input_num_list;
     $self;
   }

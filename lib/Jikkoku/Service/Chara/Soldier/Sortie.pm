@@ -26,7 +26,7 @@ package Jikkoku::Service::Chara::Soldier::Sortie {
 
   sub sortie_to_around_staying_town {
     my ($self, $x, $y) = @_;
-    Carp::croak 'few arguments($x, $y)' if @_ < 3;
+    Carp::croak 'Too few arguments (required: $x, $y)' if @_ < 3;
     my $battle_map = $self->battle_map_model->get_battle_map( $self->soldier->chara->town_id );
     my $stay_node  = $battle_map->get_node_by_coordinate($x, $y);
     Carp::confess 'そのマスにはいけません' unless $stay_node->can_stay;
@@ -35,7 +35,7 @@ package Jikkoku::Service::Chara::Soldier::Sortie {
 
   sub sortie_to_adjacent_town {
     my ($self, $adjacent_town_id) = @_;
-    Carp::croak 'few arguments($adjacent_town_id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $adjacent_town_id)' if @_ < 2;
     my $battle_map = $self->battle_map_model->get_between_town_battle_map({
       start_town_id  => $self->chara->town_id,
       target_town_id => $adjacent_town_id,

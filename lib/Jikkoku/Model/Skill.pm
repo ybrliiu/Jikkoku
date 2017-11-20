@@ -78,7 +78,7 @@ package Jikkoku::Model::Skill::Result {
 
   sub get_next_skills {
     my ($self, $skill) = @_;
-    Carp::croak 'few arguments' if @_ < 2;
+    Carp::croak 'Too few arguments' if @_ < 2;
     [
       map {
         my $next_skill_id = $_;

@@ -17,7 +17,7 @@ package Jikkoku::Model::LoginList {
 
   sub add {
     my ($self, $chara) = @_;
-    Carp::croak 'few arguments($chara)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $chara)' if @_ < 2;
     my $obj = $self->INFLATE_TO->new({
       time         => time + $self->EXPIRE_TIME,
       name         => $chara->name,
@@ -29,7 +29,7 @@ package Jikkoku::Model::LoginList {
 
   sub get_by_country_id {
     my ($self, $country_id) = @_;
-    Carp::croak 'few arguments($country_id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $country_id)' if @_ < 2;
     [ grep { $_->country_id eq $country_id } values %{ $self->data } ];
   }
 

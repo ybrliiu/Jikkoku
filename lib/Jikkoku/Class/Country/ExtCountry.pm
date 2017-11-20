@@ -49,7 +49,7 @@ package Jikkoku::Class::Country::ExtCountry {
 
   sub is_chara_headquarters {
     my ($self, $chara) = @_;
-    Carp::croak 'few arguments($chara)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $chara)' if @_ < 2;
     grep { $self->$_ eq $chara->id } map { $_->id . '_id' } @{ $POSITION_MODEL->get_headquarters };
   }
 

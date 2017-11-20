@@ -15,7 +15,7 @@ package Either::Projection {
 
   sub exists {
     my ($self, $code) = @_;
-    Carp::croak 'few arguments($code)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $code)' if @_ < 2;
     my $content = $self->_content;
     local $_ = $content;
     $self->_is_available && $code->($content);
@@ -33,7 +33,7 @@ package Either::Projection {
     my ($self, $code) = @_;
     my $content = $self->_content;
     if ( $self->_is_available ) {
-      Carp::croak 'few arguments($code)' if @_ < 2;
+      Carp::croak 'Too few arguments (required: $code)' if @_ < 2;
       local $_ = $content;
       $code->($content);
     }
@@ -48,7 +48,7 @@ package Either::Projection {
 
   sub get_or_else {
     my ($self, $default) = @_;
-    Carp::croak 'few arguments($default)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $default)' if @_ < 2;
     my $content = $self->_content;
     $self->_is_available ? $content : $default;
   }
@@ -57,7 +57,7 @@ package Either::Projection {
     my ($self, $code) = @_;
     my $content = $self->_content;
     if ( $self->_is_available ) {
-      Carp::croak 'few arguments($code)' if @_ < 2;
+      Carp::croak 'Too few arguments (required: $code)' if @_ < 2;
       local $_ = $content;
       my $ret = $code->($content);
       Either::Right->new($ret);

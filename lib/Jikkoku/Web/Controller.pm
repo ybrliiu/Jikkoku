@@ -55,14 +55,14 @@ package Jikkoku::Web::Controller {
 
   sub render_error {
     my ($self, $message) = @_;
-    Carp::croak 'few arguments($message)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $message)' if @_ < 2;
     $self->render('error.pl', {message => $message});
     exit;
   }
 
   sub redirect_to {
     my ($self, $path) = @_;
-    Carp::croak 'few arguments($path)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $path)' if @_ < 2;
     print $self->redirect( url_for $path );
     exit;
   }

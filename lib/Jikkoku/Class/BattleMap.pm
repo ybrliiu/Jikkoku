@@ -206,7 +206,7 @@ package Jikkoku::Class::BattleMap {
 
   sub get_node_by_point {
     my ($self, $point) = @_;
-    Carp::croak 'few arguments ($point)' if @_ < 2;
+    Carp::croak 'Too few arguments ($point)' if @_ < 2;
     Carp::croak '指定された座標はマップの範囲外です'
       if $point->x < 0 || $point->y < 0 || $point->x >= $self->width || $point->y >= $self->height;
     $self->map_data->[ $point->y ][ $point->x ];
@@ -214,7 +214,7 @@ package Jikkoku::Class::BattleMap {
 
   sub get_node_by_coordinate {
     my ($self, $x, $y) = @_;
-    Carp::croak 'few arguments ($x, $y)' if @_ < 3;
+    Carp::croak 'Too few arguments ($x, $y)' if @_ < 3;
     Carp::croak '指定された座標はマップの範囲外です'
       if $x < 0 || $y < 0 || $x >= $self->width || $y >= $self->height;
     $self->map_data->[$y][$x];
@@ -288,7 +288,7 @@ package Jikkoku::Class::BattleMap {
 
   sub get_adjacent_check_points {
     my ($self, $soldier) = @_;
-    Carp::croak 'few arguments($soldier)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $soldier)' if @_ < 2;
     return [] if $self->id ne $soldier->battle_map_id;
     [ grep { $soldier->distance_from_point($_) <= 1 } values %{ $self->check_points } ];
   }

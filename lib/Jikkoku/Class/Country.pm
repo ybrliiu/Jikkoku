@@ -89,13 +89,13 @@ package Jikkoku::Class::Country {
 
   sub is_chara_headquarters {
     my ($self, $chara_id) = @_;
-    Carp::croak 'few arguments($chara_id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $chara_id)' if @_ < 2;
     grep { warn $self->$_; $self->$_ eq $chara_id } @HEADQUARTERS_ID;
   }
 
   sub is_chara_has_position {
     my ($self, $chara_id) = @_;
-    Carp::croak 'few arguments($chara_id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $chara_id)' if @_ < 2;
     grep {
       my $attr = $_->id . '_id';
       $self->$attr eq $chara_id
@@ -109,7 +109,7 @@ package Jikkoku::Class::Country {
 
   sub position_name_of_chara {
     my ($self, $chara) = @_;
-    Carp::croak 'few arguments($chara)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $chara)' if @_ < 2;
     my @positions = grep {
       my $attr = $_->id . '_id';
       $self->$attr eq $chara->id;
@@ -119,7 +119,7 @@ package Jikkoku::Class::Country {
 
   sub position_of_chara_with_option {
     my ($self, $chara) = @_;
-    Carp::croak 'few arguments($chara)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $chara)' if @_ < 2;
     my @positions = grep {
       my $attr = $_->id . '_id';
       $self->$attr eq $chara->id;

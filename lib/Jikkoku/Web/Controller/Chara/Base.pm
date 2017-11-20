@@ -65,7 +65,7 @@ package Jikkoku::Web::Controller::Chara::Base {
 
   override render_error => sub {
     my ($self, $message) = @_;
-    Carp::croak 'few arguments($message)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $message)' if @_ < 2;
     $self->render('chara/error.pl', {message => $message});
     exit;
   };

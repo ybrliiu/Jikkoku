@@ -7,7 +7,7 @@ package Jikkoku::Model::Role::Logger {
 
   around add => sub {
     my ($self, $str) = @_;
-    Carp::croak 'few arguments($str)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $str)' if @_ < 2;
     unshift @{ $self->data }, "$str (@{[ Jikkoku::Util::daytime ]})\n";
     $self;
   };

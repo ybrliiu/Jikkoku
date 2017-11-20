@@ -41,13 +41,13 @@ package Jikkoku::Model::Weapon::Attr {
 
   sub get {
     my ($self, $name) = @_;
-    Carp::croak 'few arguments($name)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $name)' if @_ < 2;
     $self->name_map->{$name} // Carp::croak "${name}という属性は見つかりませんでした";
   }
 
   sub get_with_option {
     my ($self, $name) = @_;
-    Carp::croak 'few arguments($name)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $name)' if @_ < 2;
     option $self->name_map->{$name};
   }
 

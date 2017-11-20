@@ -34,13 +34,13 @@ package Jikkoku::Model::Role::Division {
 
   sub get {
     my ($self, $primary_attribute_value) = @_;
-    Carp::croak 'few arguments($primary_attribute_value)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $primary_attribute_value)' if @_ < 2;
     $self->INFLATE_TO->new($primary_attribute_value);
   }
 
   sub get_with_option {
     my ($self, $primary_attribute_value) = @_;
-    Carp::croak 'few arguments($primary_attribute_value)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $primary_attribute_value)' if @_ < 2;
 
     # inline 展開しているためか, eval を二重にいないと例外を補足できない
     my $obj = eval {
@@ -76,7 +76,7 @@ package Jikkoku::Model::Role::Division {
 
   sub foreach {
     my ($self, $code) = @_;
-    Carp::croak 'few arguments($code)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $code)' if @_ < 2;
     opendir(my $dh, $self->dir_path);
     for (readdir $dh) {
       if ( (my $file = $_) =~ /.+\.cgi$/i ) {
@@ -89,7 +89,7 @@ package Jikkoku::Model::Role::Division {
 
   sub first {
     my ($self, $code) = @_;
-    Carp::croak 'few arguments($code)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $code)' if @_ < 2;
     my $chara_list = $self->get_all;
     for my $chara (@$chara_list) {
       return $chara if $code->($chara);
@@ -98,7 +98,7 @@ package Jikkoku::Model::Role::Division {
 
   sub delete {
     my ($self, $primary_attribute_value) = @_;
-    Carp::croak 'few arguments($primary_attribute_value)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $primary_attribute_value)' if @_ < 2;
     my $chara = $self->get($primary_attribute_value);
     unlink $chara->file_path;
   }

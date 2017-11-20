@@ -13,7 +13,7 @@ package Jikkoku::Model::Chara::AutoModeList {
 
   sub add {
     my ($self, $id) = @_;
-    Carp::croak 'few arguments($id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $id)' if @_ < 2;
     $self->data->{$id} = $id;
   }
 

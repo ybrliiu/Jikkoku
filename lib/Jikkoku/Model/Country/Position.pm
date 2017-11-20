@@ -24,7 +24,7 @@ package Jikkoku::Model::Country::Position {
 
   sub get {
     my ($self, $id) = @_;
-    Carp::croak 'few arguments (id)' if @_ < 2;
+    Carp::croak 'Too few arguments (id)' if @_ < 2;
     $self->id_map->{$id} // Carp::confess "no such id data ($id)";
   }
 

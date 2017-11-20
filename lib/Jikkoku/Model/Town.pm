@@ -62,19 +62,19 @@ package Jikkoku::Model::Town {
 
   sub get_by_name {
     my ($self, $name) = @_;
-    Carp::croak 'few arguments($name)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $name)' if @_ < 2;
     $self->name_map->{$name};
   }
 
   sub get_by_coordinate {
     my ($self, $x, $y) = @_;
-    Carp::croak 'few arguments($x, $y)' if @_ < 3;
+    Carp::croak 'Too few arguments (required: $x, $y)' if @_ < 3;
     $self->map_data->[$y][$x];
   }
 
   sub get_towns_by_country_id {
     my ($self, $country_id) = @_;
-    Carp::croak 'few arguments($country_id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $country_id)' if @_ < 2;
     [ grep { $_->country_id == $country_id } @{ $self->get_all } ];
   }
 

@@ -22,7 +22,7 @@ package Jikkoku::Web::Router::Root {
 
   sub any {
     my ($self, $path) = @_;
-    Carp::croak 'few arguments($path)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $path)' if @_ < 2;
     $self->router->any("$self->{path}${path}", +{ controller => $self->controller });
   }
 

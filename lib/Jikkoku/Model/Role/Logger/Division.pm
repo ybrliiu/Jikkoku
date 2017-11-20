@@ -7,7 +7,7 @@ package Jikkoku::Model::Role::Logger::Division {
 
   sub create {
     my ($self, $id) = @_;
-    Carp::croak 'few arguments($id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $id)' if @_ < 2;
     $self->INFLATE_TO->new(
       id   => $id,
       data => [],

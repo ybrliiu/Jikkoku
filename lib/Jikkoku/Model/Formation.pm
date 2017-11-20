@@ -20,7 +20,7 @@ package Jikkoku::Model::Formation {
 
   sub get_available_formations {
     my ($self, $chara) = @_;
-    Carp::croak 'few arguments($chara)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $chara)' if @_ < 2;
     [ grep { $_->is_available($chara) } @{ $self->get_all } ];
   }
 

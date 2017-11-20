@@ -8,13 +8,13 @@ package Either::Left {
 
   sub new {
     my ($class, $content) = @_;
-    Carp::croak 'few arguments($content)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $content)' if @_ < 2;
     bless {content => $content}, $class;
   }
 
   sub fold {
     my ($self, $left_code, $right_code) = @_;
-    Carp::croak 'few arguments($left_code, $right_code)' if @_ < 3;
+    Carp::croak 'Too few arguments (required: $left_code, $right_code)' if @_ < 3;
     local $_ = $self->{content};
     $left_code->($self->{content});
   }

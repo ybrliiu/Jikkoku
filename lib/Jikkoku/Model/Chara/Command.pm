@@ -9,7 +9,7 @@ package Jikkoku::Model::Chara::Command {
 
   around create => sub {
     my ($orig, $self, $id) = @_;
-    Carp::croak 'few arguments($id)' if @_ < 3;
+    Carp::croak 'Too few arguments (required: $id)' if @_ < 3;
     $self->$orig({
       id            => $id,
       data          => [ ($self->INFLATE_TO->EMPTY_DATA) x $self->INFLATE_TO->MAX ],
@@ -41,7 +41,7 @@ package Jikkoku::Model::Chara::Command::Result {
 
   sub get {
     my ($self, $id) = @_;
-    Carp::croak 'few arguments($id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $id)' if @_ < 2;
     $self->id_map->{$id};
   }
 

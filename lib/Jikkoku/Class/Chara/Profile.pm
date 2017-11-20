@@ -17,7 +17,7 @@ package Jikkoku::Class::Chara::Profile {
 
   sub edit {
     my ($self, $message) = @_;
-    Carp::croak 'few arguments($message)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $message)' if @_ < 2;
     $self->data->[0] = $message;
   }
 

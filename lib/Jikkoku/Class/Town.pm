@@ -64,7 +64,7 @@ package Jikkoku::Class::Town {
 
   sub distance {
     my ($self, $town) = @_;
-    Carp::croak 'few arguments($town)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $town)' if @_ < 2;
     abs( $self->x - $town->x ) + abs( $self->y - $town->y );
   }
 
@@ -79,7 +79,7 @@ package Jikkoku::Class::Town {
 
     sub can_move {
       my ($self, $town) = @_;
-      Carp::croak 'few arguments($town)' if @_ < 2;
+      Carp::croak 'Too few arguments (required: $town)' if @_ < 2;
       my $distance = $self->distance($town);
       # 斜めの時
       my $oblique = $distance == 2 && $self->x != $town->x && $self->y != $town->y;
@@ -206,7 +206,7 @@ package Jikkoku::Class::Town {
 
   sub wall_power_max {
     my ($class, $elapsed_year) = @_;
-    Carp::croak 'few arguments($elapsed_year)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $elapsed_year)' if @_ < 2;
     my $wall_power_max = $elapsed_year * MAX_WALL_POWER_COEF;
     if ($wall_power_max < MAX_WALL_POWER_MIN) {
       MAX_WALL_POWER_MIN;

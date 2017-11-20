@@ -43,14 +43,14 @@ package Jikkoku::Class::Diplomacy::DeclareWar {
 
   sub can_invation {
     my ($self, $now_game_date) = @_;
-    Carp::croak 'few arguments($now_game_date)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $now_game_date)' if @_ < 2;
     my $is_passed = $now_game_date->to_num >= $self->start_game_date->to_num;
     $self->is_accepted && $is_passed;
   }
 
   override show_status => sub {
     my ($self, $country_id, $country_model) = @_;
-    Carp::croak 'few arguments($country_id, $country_model)' if @_ < 3;
+    Carp::croak 'Too few arguments (required: $country_id, $country_model)' if @_ < 3;
     my $message = super( $country_id, $country_model );
     if ( $self->is_accepted ) {
       $message = chop_utf8($message);

@@ -50,7 +50,7 @@ package Either::Either {
   }
 
   sub match {
-    Carp::confess "few arguments" if @_ < 5;
+    Carp::confess 'Invalid arguments' if @_ < 5;
     my ($self, %args) = @_;
     for (qw/ Right Left /) {
       my $code = $args{$_};

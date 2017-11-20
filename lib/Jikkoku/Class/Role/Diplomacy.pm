@@ -26,7 +26,7 @@ package Jikkoku::Class::Role::Diplomacy {
 
   sub can_accept_request {
     my ($self, $country_id) = @_;
-    Carp::croak 'few arguments($country_id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $country_id)' if @_ < 2;
     !$self->is_accepted && $self->receive_country_id == $country_id;
   }
 
@@ -37,19 +37,19 @@ package Jikkoku::Class::Role::Diplomacy {
 
   sub has_country_id {
     my ($self, $country_id) = @_;
-    Carp::croak 'few arguments($country_id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $country_id)' if @_ < 2;
     $self->request_country_id == $country_id || $self->receive_country_id == $country_id;
   }
 
   sub has_both_country_id {
     my ($self, $country_id, $country_id2) = @_;
-    Carp::croak 'few arguments($country_id, $country_id2)' if @_ < 3;
+    Carp::croak 'Too few arguments (required: $country_id, $country_id2)' if @_ < 3;
     $self->has_country_id( $country_id ) && $self->has_country_id( $country_id2 );
   }
 
   sub has_type_and_both_country_id {
     my ($self, $type, $country_id, $country_id2) = @_;
-    Carp::croak 'few arguments($type, $country_id, $country_id2)' if @_ < 4;
+    Carp::croak 'Too few arguments (required: $type, $country_id, $country_id2)' if @_ < 4;
     $self->type == $type && $self->has_both_country_id( $country_id, $country_id2 );
   }
 

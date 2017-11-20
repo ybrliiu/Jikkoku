@@ -13,7 +13,7 @@ package Jikkoku::Model::Announce {
 
   sub add_by_message {
     my ($self, $message) = @_;
-    Carp::croak 'few arguments($message)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $message)' if @_ < 2;
     $self->add({message => $message});
   }
   

@@ -136,7 +136,7 @@ package Jikkoku::Class::Chara::Soldier {
 
   sub is_same_point_as_coordinate {
     my ($self, $x, $y) = @_;
-    Carp::croak 'few arguments($x, $y)' if @_ < 3;
+    Carp::croak 'Too few arguments (required: $x, $y)' if @_ < 3;
     $self->x == $x && $self->y == $y;
   }
 

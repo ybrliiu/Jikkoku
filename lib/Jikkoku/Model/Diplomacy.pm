@@ -48,7 +48,7 @@ package Jikkoku::Model::Diplomacy {
 
   sub get_by_country_id {
     my ($self, $country_id) = @_;
-    Carp::croak 'few arguments($country_id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $country_id)' if @_ < 2;
     [
       sort { $a->type_and_both_country_id cmp $b->type_and_both_country_id }
       grep { $_->has_country_id( $country_id ) } values %{ $self->data }
@@ -57,7 +57,7 @@ package Jikkoku::Model::Diplomacy {
 
   sub get_by_type_and_both_country_id {
     my ($self, $type, $country_id, $country_id2) = @_;
-    Carp::croak 'few arguments($type, $country_id, $country_id2)' if @_ < 4;
+    Carp::croak 'Too few arguments (required: $type, $country_id, $country_id2)' if @_ < 4;
     my $diplomacy = first {
       $_->has_type_and_both_country_id( $type, $country_id, $country_id2 )
     } values %{ $self->data };
@@ -88,7 +88,7 @@ package Jikkoku::Model::Diplomacy {
 
   sub delete_by_country_id {
     my ($self, $country_id) = @_;
-    Carp::croak 'few arguments($country_id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $country_id)' if @_ < 2;
     $self->data(+{
       map {
         my $diplomacy = $_;
@@ -99,7 +99,7 @@ package Jikkoku::Model::Diplomacy {
 
   sub can_attack {
     my ($self, $country_id, $target_country_id, $now_game_date) = @_;
-    Carp::croak 'few arguments($country_id, $target_country_id, $now_game_date)' if @_ < 4;
+    Carp::croak 'Too few arguments (required: $country_id, $target_country_id, $now_game_date)' if @_ < 4;
     my $is_territory_trading = $self
       ->get_by_type_and_both_country_id( $self->INFLATE_TO->CESSION_OR_ACCEPT_TERRITORY, $country_id, $target_country_id )
       ->exists( sub { $_->is_accepted } );
@@ -111,7 +111,7 @@ package Jikkoku::Model::Diplomacy {
 
   sub can_passage {
     my ($self, $country_id, $target_country_id, $now_game_date) = @_;
-    Carp::croak 'few arguments($country_id, $target_country_id, $now_game_date)' if @_ < 4;
+    Carp::croak 'Too few arguments (required: $country_id, $target_country_id, $now_game_date)' if @_ < 4;
     my $can_attack = $self->can_attack( $country_id, $target_country_id, $now_game_date );
     my $is_passage_allowed = $self
       ->get_by_type_and_both_country_id( $self->INFLATE_TO->ALLOW_PASSAGE, $country_id, $target_country_id )

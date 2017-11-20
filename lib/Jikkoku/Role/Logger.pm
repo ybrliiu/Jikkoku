@@ -47,14 +47,14 @@ package Jikkoku::Role::Logger {
 
   sub add {
     my ($self, $str) = @_;
-    Carp::croak 'few arguments($str)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $str)' if @_ < 2;
     unshift @{ $self->data }, "$str (@{[ Jikkoku::Util::daytime ]})\n";
     $self;
   }
 
   sub get {
     my ($self, $limit) = @_;
-    Carp::croak 'few arguments($limit)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $limit)' if @_ < 2;
     [ @{ $self->data }[0 .. $limit - 1] ];
   }
 

@@ -32,7 +32,7 @@ package Jikkoku::Model::Chara::CommandLog::Result {
 
   sub get_with_option {
     my ($self, $id) = @_;
-    Carp::croak 'few arguments($id)' if @_ < 2;
+    Carp::croak 'Too few arguments (required: $id)' if @_ < 2;
     option $self->id_map->{$id};
   }
 
