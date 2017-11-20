@@ -48,7 +48,7 @@ package Jikkoku::Model::Weapon::Attr {
   sub get_with_option {
     my ($self, $name) = @_;
     Carp::croak 'few arguments($name)' if @_ < 2;
-    Option->new( $self->name_map->{$name} );
+    option $self->name_map->{$name};
   }
 
   __PACKAGE__->meta->make_immutable;

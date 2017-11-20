@@ -179,7 +179,7 @@ package Jikkoku::Service::BattleCommand::Battle {
   sub get_target_overrider_result {
     my ($self, $enemy) = @_;
     my $result = $self->chara->extensive_states->get_all_with_result->override_battle_target($enemy, $self->time);
-    Option->new($result);
+    option $result;
   }
 
   sub _build_target {

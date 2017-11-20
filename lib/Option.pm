@@ -41,12 +41,6 @@ package Option {
     _rec(\@options, 0, [], $code);
   }
 
-  # deprecated
-  sub new {
-    my ($class, $contents) = @_;
-    option($contents);
-  }
-
 }
 
 1;

@@ -124,7 +124,7 @@ package Jikkoku::Class::Country {
       my $attr = $_->id . '_id';
       $self->$attr eq $chara->id;
     } @POSITIONS;
-    Option->new( $positions[0] );
+    option $positions[0];
   }
 
   sub total_salary {

@@ -3,6 +3,7 @@ package Jikkoku::Model::ExtensiveStateRecord {
   use Mouse;
   use Jikkoku;
   use Jikkoku::Util qw( validate_values );
+  use Option;
 
   use constant {
     FILE_PATH         => 'log_file/extensive_state_record.dat',
@@ -69,7 +70,7 @@ package Jikkoku::Model::ExtensiveStateRecord {
     }
     elsif (@_ == 2) {
       my ($giver_id, $state_id) = @_;
-      Option->new( $self->data->{"$giver_id.$state_id"} );
+      option $self->data->{"$giver_id.$state_id"};
     }
     else {
       Carp::croak "invalid arguments (" . (join ', ', @_) .")";

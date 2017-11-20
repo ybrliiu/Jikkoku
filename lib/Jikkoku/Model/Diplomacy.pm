@@ -3,6 +3,7 @@ package Jikkoku::Model::Diplomacy {
   use Mouse;
   use Jikkoku;
 
+  use Option;
   use List::Util qw( first );
   use Jikkoku::Util qw( validate_values );
   use Jikkoku::Class::Diplomacy::DeclareWar;
@@ -60,7 +61,7 @@ package Jikkoku::Model::Diplomacy {
     my $diplomacy = first {
       $_->has_type_and_both_country_id( $type, $country_id, $country_id2 )
     } values %{ $self->data };
-    Option->new($diplomacy);
+    option $diplomacy;
   }
 
   sub add {

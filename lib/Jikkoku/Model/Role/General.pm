@@ -2,7 +2,7 @@ package Jikkoku::Model::Role::General {
 
   use Mouse::Role;
   use Jikkoku;
-  use Option;
+  use Option ();
 
   has 'data' => ( is => 'rw', isa => 'HashRef', required => 1 );
 
@@ -17,7 +17,7 @@ package Jikkoku::Model::Role::General {
   sub get_with_option {
     my ($self, $primary_attribute_value) = @_;
     Carp::croak 'few arguments($primary_attribute_value)' if @_ < 2;
-    Option->new( $self->data->{$primary_attribute_value} );
+    Option::option( $self->data->{$primary_attribute_value} );
   }
 
   sub get_all {

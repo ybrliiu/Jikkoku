@@ -22,7 +22,7 @@ package Jikkoku::Class::Role::TextData::HashContainer {
 
   sub get_with_option {
     my ($self, $key) = @_;
-    Option->new( $self->data->{$key} );
+    option $self->data->{$key};
   }
 
   sub set {

@@ -2,6 +2,7 @@ package Jikkoku::Model::ExtensiveState {
 
   use Mouse;
   use Jikkoku;
+  use Option;
 
   use constant {
     NAMESPACE => 'Jikkoku::Class::ExtensiveState',
@@ -88,7 +89,7 @@ package Jikkoku::Model::ExtensiveState::Result {
   sub get_with_option {
     my ($self, $id) = @_;
     Carp::croak 'few arguments($id)' if @_ < 2;
-    Option->new( $self->id_map->{$id} );
+    option $self->id_map->{$id};
   }
 
   sub get_receive_effect_states_with_result {

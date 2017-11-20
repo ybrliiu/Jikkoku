@@ -26,7 +26,7 @@ package Jikkoku::Model::BattleMap {
   sub get_with_option {
     my ($self, $map_id) = @_;
     return $self->{data}{$map_id} if exists $self->{data}{$map_id};
-    Option->new( $self->load( $map_id ) );
+    option $self->load( $map_id );
   }
 
   sub get_between_town_battle_map {

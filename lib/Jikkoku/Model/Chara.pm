@@ -3,6 +3,7 @@ package Jikkoku::Model::Chara {
   use Mouse;
   use Jikkoku;
   use Jikkoku::Util qw( validate_values );
+  use Option;
 
   use constant INFLATE_TO => 'Jikkoku::Class::Chara';
 
@@ -108,13 +109,13 @@ package Jikkoku::Model::Chara::Result {
   sub get_with_option {
     my ($self, $id) = @_;
     Carp::croak 'few arguments($id)' if @_ < 2;
-    Option->new( $self->id_map->{$id} );
+    option $self->id_map->{$id};
   }
 
   sub get_by_name_with_option {
     my ($self, $name) = @_;
     Carp::croak 'few arguments($name)' if @_ < 2;
-    Option->new( $self->name_map->{$name} );
+    option $self->name_map->{$name};
   }
 
   sub get_charactors_by_id_list_with_result {

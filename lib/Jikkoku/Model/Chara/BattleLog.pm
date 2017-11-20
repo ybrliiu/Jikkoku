@@ -16,6 +16,7 @@ package Jikkoku::Model::Chara::BattleLog::Result {
 
   use Mouse;
   use Jikkoku;
+  use Option;
 
   has 'id_map' => (
     is      => 'ro',
@@ -32,7 +33,7 @@ package Jikkoku::Model::Chara::BattleLog::Result {
   sub get_with_option {
     my ($self, $id) = @_;
     Carp::croak 'few arguments($id)' if @_ < 2;
-    Option->new( $self->id_map->{$id} );
+    option $self->id_map->{$id};
   }
 
   __PACKAGE__->meta->make_immutable;

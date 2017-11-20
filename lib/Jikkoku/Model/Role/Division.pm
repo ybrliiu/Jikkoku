@@ -4,7 +4,7 @@ package Jikkoku::Model::Role::Division {
   use Jikkoku;
 
   use Carp;
-  use Option;
+  use Option ();
   use Module::Load;
   use Jikkoku::Util;
 
@@ -48,9 +48,9 @@ package Jikkoku::Model::Role::Division {
     };
     if (my $e = $@) {
       warn $e;
-      Option::None->new;
+      Option::none;
     } else {
-      Option->new($obj);
+      Option::option($obj);
     }
   }
 
