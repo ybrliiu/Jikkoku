@@ -39,8 +39,12 @@ package Either::Left {
   }
 
   sub match {
+    Carp::confess 'Invalid arguments' if @_ < 5;
     my ($self, %args) = @_;
-    $self->SUPER::match(%args);
+    for (qw/ Right Left /) {
+      my $code = $args{$_};
+      Carp::confess " please specify process $_ " if ref $code ne 'CODE';
+    }
     local $_ = $self->{content};
     $args{Left}->( $self->{content} );
   }

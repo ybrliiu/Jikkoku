@@ -49,14 +49,7 @@ package Either::Either {
     $self->{content};
   }
 
-  sub match {
-    Carp::confess 'Invalid arguments' if @_ < 5;
-    my ($self, %args) = @_;
-    for (qw/ Right Left /) {
-      my $code = $args{$_};
-      Carp::confess " please specify process $_ " if ref $code ne 'CODE';
-    }
-  }
+  sub match;
 
   sub right {
     my $self = shift;

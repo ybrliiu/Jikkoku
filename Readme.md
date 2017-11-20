@@ -1,7 +1,6 @@
 
 # やること
 
-## few arguments -> Too few arguments に書き換え
 ## option テスト完璧にする
 
 ## 戦闘プログラム作成中
