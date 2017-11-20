@@ -4,7 +4,8 @@ package Either::Projection {
   use warnings;
 
   use Carp ();
-  use Option;
+  use Option::Some;
+  use Option::None;
 
   sub new { Carp::croak 'you must define constructer.' }
 
@@ -23,7 +24,7 @@ package Either::Projection {
   sub filter {
     my ($self, $code) = @_;
     my $result = $self->exists($code);
-    $result ? option($self->{either}) : none;
+    $result ? Option::Some->new($self->{either}) : Option::None->new;
   }
 
   sub flat_map { Carp::croak 'you must define flat_map method.' }
@@ -67,7 +68,7 @@ package Either::Projection {
 
   sub to_option {
     my $self = shift;
-    $self->_is_available ? option($self->_content) : none;
+    $self->_is_available ? Option::Some->new($self->_content) : Option::None->new;
   }
 
 }

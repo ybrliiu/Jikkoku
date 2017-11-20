@@ -5,7 +5,8 @@ package Either::Either {
   use parent 'Either::Projection';
 
   use Carp ();
-  use Option;
+  use Option::Some;
+  use Option::None;
   use Either::LeftProjection;
   use Either::RightProjection;
 
@@ -19,7 +20,7 @@ package Either::Either {
   sub filter {
     my ($self, $code) = @_;
     my $result = $self->exists($code);
-    $result ? option($self) : none;
+    $result ? Option::Some->new($self) : Option::None->new;
   }
 
   # override
