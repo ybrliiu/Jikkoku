@@ -31,7 +31,7 @@ package Option::Option {
 
   sub is_defined;
 
-  sub is_empty { !shift->is_empty }
+  sub is_empty { !shift->is_defined }
 
   sub map;
 

@@ -1,11 +1,7 @@
 
 # やること
 
-## option テスト完璧にする
-
 ## 戦闘プログラム作成中
-
-* Either型(like scala) 作成, エラー処理に用いる
 
 * battle_event_executer skill 実装  
   * 計数攻撃, 破壊攻撃, 犠牲攻撃, 会心攻撃 実装完了

@@ -10,7 +10,7 @@ package Option {
   use Option::None;
 
   use Exporter qw( import );
-  our @EXPORT = qw( option some none flat_option );
+  our @EXPORT = qw( option some none for_each for_yield );
 
   sub option($) {
     defined $_[0] ? Option::Some->new($_[0]) : Option::None->new;
@@ -20,25 +20,46 @@ package Option {
 
   sub none { Option::None->new() }
 
-  sub _rec {
-    my ($options, $index, $params, $code) = @_;
-    if ($index == @$options - 1) {
-      $options->[$index]->map(sub {
+  sub _rec_for_each {
+    my ($iters, $index, $params, $code) = @_;
+    if ($index == @$iters - 1) {
+      $iters->[$index]->foreach(sub {
         my $c = shift;
         $code->(@$params, $c);
       });
     } else {
-      $options->[$index]->flat_map(sub {
+      $iters->[$index]->foreach(sub {
         my $c = shift;
         push @$params, $c;
-        _rec($options, $index + 1, $params, $code);
+        _rec_for_each($iters, $index + 1, $params, $code);
       });
     }
   }
 
-  sub flat_option(&@) {
-    my ($code, @options) = @_;
-    _rec(\@options, 0, [], $code);
+  sub for_each {
+    my ($iters, $code) = @_;
+    _rec_for_each($iters, 0, [], $code);
+  }
+
+  sub _rec_for_yield {
+    my ($iters, $index, $params, $code) = @_;
+    if ($index == @$iters - 1) {
+      $iters->[$index]->map(sub {
+        my $c = shift;
+        $code->(@$params, $c);
+      });
+    } else {
+      $iters->[$index]->flat_map(sub {
+        my $c = shift;
+        push @$params, $c;
+        _rec_for_yield($iters, $index + 1, $params, $code);
+      });
+    }
+  }
+
+  sub for_yield {
+    my ($iters, $code) = @_;
+    _rec_for_yield($iters, 0, [], $code);
   }
 
 }

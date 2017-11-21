@@ -1,13 +1,16 @@
-package Either 0.01 {
+package Either {
 
   use v5.14;
   use warnings;
+
+  our $VERSION = '0.01';
+
   use Carp;
   use Either::Right;
   use Either::Left;
 
   use Exporter qw( import );
-  our @EXPORT = qw( right left flat_option );
+  our @EXPORT = qw( right left );
 
   sub right($) { Either::Right->new($_[0]) }
 

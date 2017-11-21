@@ -4,6 +4,8 @@ package Option::None {
   use warnings;
   use parent 'Option::Option';
   
+  use Either::Right;
+  use Either::Left;
   use Option::NoSuchElementException;
 
   # override
@@ -16,6 +18,7 @@ package Option::None {
   sub exists {
     my ($self, $code) = @_;
     Carp::croak 'Too few arguments (required : $code)' if @_ < 2;
+    ();
   }
 
   # override
@@ -72,7 +75,7 @@ package Option::None {
   sub to_left {
     my ($self, $default) = @_;
     Carp::croak 'Too few arguments (required: $default)' if @_ < 2;
-    right($default);
+    Either::Right->new($default);
   }
 
   # override
@@ -82,7 +85,7 @@ package Option::None {
   sub to_right {
     my ($self, $default) = @_;
     Carp::croak 'Too few arguments (required: $default)' if @_ < 2;
-    left($default);
+    Either::Left->new($default);
   }
 
   # override
