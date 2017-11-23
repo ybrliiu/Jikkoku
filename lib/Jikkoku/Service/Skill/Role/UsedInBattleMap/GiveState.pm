@@ -7,7 +7,7 @@ package Jikkoku::Service::Skill::Role::UsedInBattleMap::GiveState {
 
   with qw(
     Jikkoku::Service::Role::BattleAction::OccurActionTime
-    Jikkoku::Service::Skill::Role::UsedInBattleMap::DependOnAbilities
+    Jikkoku::Service::Skill::Role::UsedInBattleMap::DependOnAbilities::SustainingEffect
   );
 
   sub ensure_can_exec {}
@@ -22,10 +22,9 @@ package Jikkoku::Service::Skill::Role::UsedInBattleMap::GiveState {
     eval {
       $chara->soldier->morale( $chara->soldier->morale - $skill->consume_morale );
       $chara->soldier->action_time( $self->time + $skill->action_interval_time );
-      my $ability_sum = $skill->depend_abilities_sum;
-      $is_success = $self->determine_whether_succeed($ability_sum);
+      $is_success = $self->determine_whether_succeed;
       if ($is_success) {
-        $effect_time = $self->calc_effect_time($ability_sum);
+        $effect_time = $self->calc_effect_time;
         $state = $target->states->get($self->id);
         $state->set_state_for_chara({
           giver_id       => $chara->id,

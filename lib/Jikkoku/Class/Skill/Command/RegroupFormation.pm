@@ -22,9 +22,6 @@ package Jikkoku::Class::Skill::Command::RegroupFormation {
     Jikkoku::Class::Skill::Role::UsedInBattleMap::NotDependOnAbilities
   );
 
-  # ここスキルでは例外的に必要ない
-  sub effect_time;
-
   around description_of_effect_body => sub {
     my ($orig, $self) = @_;
     "陣形の再編にかかる時間を使用時の1/@{[ $self->num_of_divide_regroup_time ]}に短縮する。";

@@ -21,10 +21,9 @@ package Jikkoku::Class::Skill::Disturb::Confuse {
 
   with qw(
     Jikkoku::Class::Skill::Skill
-    Jikkoku::Class::Skill::Role::UsedInBattleMap
     Jikkoku::Class::Skill::Role::UsedInBattleMap::OccurActionTime
     Jikkoku::Class::Skill::Role::UsedInBattleMap::ToOneChara::ToEnemy
-    Jikkoku::Class::Skill::Role::UsedInBattleMap::DependOnAbilities
+    Jikkoku::Class::Skill::Role::UsedInBattleMap::DependOnAbilities::SustainingEffect
     Jikkoku::Class::Skill::Role::UsedInBattleMap::Purchasable
     Jikkoku::Class::Skill::Role::GiveState
   );
