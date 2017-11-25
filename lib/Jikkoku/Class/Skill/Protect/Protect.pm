@@ -15,7 +15,7 @@ package Jikkoku::Class::Skill::Protect::Protect {
 
   with qw(
     Jikkoku::Class::Skill::Skill
-    Jikkoku::Class::Skill::Role::UsedInBattleMap
+    Jikkoku::Class::Skill::Role::UsedInBattleMap::SustainingEffect
     Jikkoku::Class::Skill::Role::UsedInBattleMap::NotDependOnAbilities
   );
 

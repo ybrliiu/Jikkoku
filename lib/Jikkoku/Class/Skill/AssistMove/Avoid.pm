@@ -2,33 +2,28 @@ package Jikkoku::Class::Skill::AssistMove::Avoid {
 
   use Mouse;
   use Jikkoku;
-  use Jikkoku::Model::Config;
 
   use constant ACQUIRE_SIGN => 4;
 
-  my $CONFIG = Jikkoku::Model::Config->get;
-
-  has 'name'                  => ( is => 'ro', isa => 'Str', default => '回避' );
-  has 'success_ratio'         => ( is => 'ro', isa => 'Num', default => 0.65 );
-  has 'max_success_ratio'     => ( is => 'ro', isa => 'Num', default => 0.9 );
-  has 'consume_morale'        => ( is => 'ro', isa => 'Int', default => 7 );
-  has 'consume_skill_point'   => ( is => 'ro', isa => 'Int', default => 7 );
-  has 'action_interval_time'  => ( is => 'ro', isa => 'Int', default => $CONFIG->{game}{action_interval_time} * 0.75 );
+  has 'name'                => ( is => 'ro', isa => 'Str', default => '回避' );
+  has 'range'               => ( is => 'ro', isa => 'Int', default => 1 ); # 不必要
+  has 'max_occur_ratio'     => ( is => 'ro', isa => 'Num', default => 0.33 );
+  has 'occur_ratio_coef'    => ( is => 'ro', isa => 'Num', default => 0.0011 );
+  has 'consume_skill_point' => ( is => 'ro', isa => 'Int', default => 15 );
 
   with qw(
     Jikkoku::Class::Skill::AssistMove::AssistMove
-    Jikkoku::Class::Skill::Role::UsedInBattleMap::OccurActionTime
-    Jikkoku::Class::Skill::Role::UsedInBattleMap::DependOnAbilities
+    Jikkoku::Class::Skill::Role::BattleLoopEventExecuter::DependOnAbilities
   );
 
-  sub _build_items_of_depend_on_abilities { [qw/ 短縮する時間 成功率 /] }
+  sub _build_items_of_depend_on_abilities { ['発動率'] }
 
   around description_of_effect_body => sub {
     my ($orig, $self) = @_;
-    "陣形の再編にかかる時間を使用時の1/@{[ $self->num_of_divide_regroup_time ]}に短縮する。";
-#  $i_hojyo = "<TR><TD bgcolor=$TD_C2><b>縮地</b></TD><TD bgcolor=$TD_C2>味方の移動ポイント補充時間を<b>$syukuti</b>秒短縮する。<br>短縮する時間、成功率は人望に依存。(行動)</TD><TD bgcolor=$TD_C2>スキル修得ページでSPを7消費して修得。</TD><TD bgcolor=$TD_C2>待機時間：<b>$koutime5</b>秒<br>成功率：<b>$syuku_seikou</b>%<br>リーチ：4<br>消費士気：$MOR_SYUKUTI</TD></TR>";
+    qq{自軍は敵からの攻撃を完全に回避し、そのターン敵から受けるダメージが0になる。};
   };
 
+  # __PACKAGE__->prepare;
   __PACKAGE__->meta->make_immutable;
 
 }

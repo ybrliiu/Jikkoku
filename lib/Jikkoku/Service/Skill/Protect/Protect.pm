@@ -30,7 +30,7 @@ package Jikkoku::Service::Skill::Protect::Protect {
   with qw(
     Jikkoku::Service::Skill::Skill
     Jikkoku::Service::Skill::Role::UsedInBattleMap
-    Jikkoku::Service::Skill::Role::UsedInBattleMap::NotDependOnAbilities
+    Jikkoku::Service::Skill::Role::UsedInBattleMap::NotDependOnAbilities::SustainingEffect
   );
 
   sub ensure_can_exec {

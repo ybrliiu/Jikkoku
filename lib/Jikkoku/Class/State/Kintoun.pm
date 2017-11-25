@@ -14,9 +14,9 @@ package Jikkoku::Class::State::Kintoun {
   sub description {
     my $self = shift;
     '消費移動ポイントが'
-      . $self->over_write_move_cost
+      . $self->overwriting_move_cost
       . '以上の地形での消費移動ポイントが'
-      . $self->over_write_move_cost
+      . $self->overwriting_move_cost
       . 'になります。';
   }
 

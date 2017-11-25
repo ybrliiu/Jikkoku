@@ -5,9 +5,16 @@ package Jikkoku::Service::Skill::Role::UsedInBattleMap::DependOnAbilities::Susta
 
   with qw( Jikkoku::Service::Skill::Role::UsedInBattleMap::DependOnAbilities );
 
+  # require :
+  # has 'skill' => (
+  #   does => [
+  #     'Jikkoku::Class::Skill::Skill',
+  #     'Jikkoku::Class::Skill::Role::UsedInBattleMap::DependOnAbilities::SustainingEffect'
+  #   ]
+  # );
+
   sub calc_effect_time {
     my $self = shift;
-    Carp::croak 'Too few arguments (required: $ability_sum)' if @_ < 2;
     my ($min_effect_time, $max_effect_time) = $self->skill->effect_time;
     $min_effect_time + int( rand $max_effect_time - $min_effect_time );
   }

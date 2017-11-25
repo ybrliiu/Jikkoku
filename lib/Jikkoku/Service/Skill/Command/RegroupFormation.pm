@@ -10,7 +10,6 @@ package Jikkoku::Service::Skill::Command::RegroupFormation {
   with qw(
     Jikkoku::Service::Skill::Skill
     Jikkoku::Service::Role::BattleAction::OccurActionTime
-    Jikkoku::Service::Skill::Role::UsedInBattleMap
     Jikkoku::Service::Skill::Role::UsedInBattleMap::NotDependOnAbilities
   );
 
