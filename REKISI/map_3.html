@@ -1,0 +1,351 @@
+
+<html>
+<head>
+<meta name="description" content="バトルマップ上で戦う三国志NET。">
+<meta name="keywords" content="十国志NET,三国志NET,ブラウザゲーム,オンラインゲーム,CGIゲーム,無料">
+<link rel="shortcut icon" href="../favicon.ico" >
+<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>十国志NET</title>
+<link rel="stylesheet" href="../js/base.css">
+
+<link rel="stylesheet" href="./tt.css">
+<STYLE type="text/css">
+<!--
+BODY,TR,TD,TH,FORM { font-family : "ＭＳ ゴシック"; font-size: 9pt; }
+a{ text-decoration:none;}
+a:link.mikata { color: blue; font-size: 9pt }
+a:link.enemy { color: red; font-size: 9pt }
+a:link#mikata { color: blue; font-size: 9pt }
+a:link#enemy { color: red; font-size: 9pt }
+a:link    { color: #4682B4 }
+a:visited { color: #4682B4 }
+a:hover   { color: #FFFF00 }
+a:active  { color: #00FF00 }
+.S1 {color:#fff; border-style: double; border-width: 3px;BACKGROUND: #633;}
+
+.dmg { color: #FF0000; font-size: 18pt }
+.clit { color: #0000FF; font-size: 18pt }
+#small { font-size: xx-small; }
+.bmj { color: #000000; font-size: 5pt }
+.r { color: #FF4444; font-size: 10pt }
+.b { color: #4444DD; font-size: 10pt }
+.s { color: #44AAEE; font-size: 10pt }
+.g { color: #44DD44; font-size: 10pt }
+.o { color: #EEAA44; font-size: 10pt }
+-->
+</STYLE>
+
+</head>
+<body background="../image/o.gif" bgcolor="#E0E088" text="" link="#CCAA88" vlink="#AA8855" alink="#AA8855" leftmargin="0" marginwidth="0" marginheight="0">
+
+<TABLE bgcolor=#6d614a width=100% border="0">
+  <TBODY>
+    <TR>
+      <TD bgcolor=#F0F0F0 width=50% valign=top>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH><font color=#444444><font size=4>十国志NET</font> <BR>- 大 陸 地 図 -</font></TH>
+          </TR>
+        </TBODY>
+      </TABLE>
+      <TABLE bgcolor=#F0F0F0 background="../image/mapbg.gif" width=100% height=5 border="0" cellspacing=1>
+        <TBODY>
+          <TR>
+            <TD width=20 bgcolor=#F0F0F0>-</TD>
+<TD width=20 bgcolor=#D0C088>1</TD><TD width=20 bgcolor=#D0C088>2</TD><TD width=20 bgcolor=#D0C088>3</TD><TD width=20 bgcolor=#D0C088>4</TD><TD width=20 bgcolor=#D0C088>5</TD><TD width=20 bgcolor=#D0C088>6</TD><TD width=20 bgcolor=#D0C088>7</TD><TD width=20 bgcolor=#D0C088>8</TD><TD width=20 bgcolor=#D0C088>9</TD><TD width=20 bgcolor=#D0C088>10</TD></TR><TR><TD bgcolor=#C0C088>1</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="上京【(本当は)平和主義共和国】"><font color="#000000">上京</font><br><img src="../image/m_4.gif" title="上京【(本当は)平和主義共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>2</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="晋陽【(本当は)平和主義共和国】"><font color="#000000">晋陽</font><br><img src="../image/m_4.gif" title="晋陽【(本当は)平和主義共和国】"></p></div></TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="幽州【(本当は)平和主義共和国】"><font color="#000000">幽州</font><br><img src="../image/m_4.gif" title="幽州【(本当は)平和主義共和国】"></p></div></TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="燕京【(本当は)平和主義共和国】"><font color="#000000">燕京</font><br><img src="../image/m_4.gif" title="燕京【(本当は)平和主義共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>3</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="敦煌【(本当は)平和主義共和国】"><font color="#000000">敦煌</font><br><img src="../image/m_4.gif" title="敦煌【(本当は)平和主義共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="京兆【(本当は)平和主義共和国】"><font color="#000000">京兆</font><br><img src="../image/m_4.gif" title="京兆【(本当は)平和主義共和国】"></p></div></TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="開封【(本当は)平和主義共和国】"><font color="#000000">開封</font><br><img src="../image/m_4.gif" title="開封【(本当は)平和主義共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="青州【(本当は)平和主義共和国】"><font color="#000000">青州</font><br><img src="../image/m_4.gif" title="青州【(本当は)平和主義共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>4</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="鳳翔【(本当は)平和主義共和国】"><font color="#000000">鳳翔</font><br><img src="../image/m_4.gif" title="鳳翔【(本当は)平和主義共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="荊州【(本当は)平和主義共和国】"><font color="#000000">荊州</font><br><img src="../image/m_4.gif" title="荊州【(本当は)平和主義共和国】"></p></div></TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="寿州【(本当は)平和主義共和国】"><font color="#000000">寿州</font><br><img src="../image/m_4.gif" title="寿州【(本当は)平和主義共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>5</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="成都【(本当は)平和主義共和国】"><font color="#000000">成都</font><br><img src="../image/m_4.gif" title="成都【(本当は)平和主義共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="金陵【(本当は)平和主義共和国】"><font color="#000000">金陵</font><br><img src="../image/m_4.gif" title="金陵【(本当は)平和主義共和国】"></p></div></TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="杭州【(本当は)平和主義共和国】"><font color="#000000">杭州</font><br><img src="../image/m_4.gif" title="杭州【(本当は)平和主義共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>6</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="潭州【(本当は)平和主義共和国】"><font color="#000000">潭州</font><br><img src="../image/m_4.gif" title="潭州【(本当は)平和主義共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="福州【(本当は)平和主義共和国】"><font color="#000000">福州</font><br><img src="../image/m_4.gif" title="福州【(本当は)平和主義共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="夷州【(本当は)平和主義共和国】"><font color="#000000">夷州</font><br><img src="../image/m_4.gif" title="夷州【(本当は)平和主義共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>7</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="広州【(本当は)平和主義共和国】"><font color="#000000">広州</font><br><img src="../image/m_4.gif" title="広州【(本当は)平和主義共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FF69B4 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="泉州【(本当は)平和主義共和国】"><font color="#000000">泉州</font><br><img src="../image/m_4.gif" title="泉州【(本当は)平和主義共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>8</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>9</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>10</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR>        </TBODY>
+      </TABLE>
+      </TD>
+      <TD bgcolor=#6d614a>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH bgcolor=#F0F0F0>MAP LOG</TH></TR><TR>
+<TD bgcolor=#a9987c>・<font color=#008080><b>【声明】</b></font>なんか統一したらしいね！　流水ちゃんってイケメンすぎ☆（(本当は)平和主義共和国君主：流水の弟より）(5日1時16分47秒)
+<BR>・流水『<font color=blue>やりました！</font>』(4日23時45分31秒)
+<BR>・<font color=blue>【勝利】</font>流水は農民反乱軍の指導者【NPC】を倒しました！(杭州の城付近)(4日23時45分31秒)
+<BR>・<font color=green>【引き分け】</font>流水と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時42分11秒)
+<BR>・<font color=green>【引き分け】</font>流水と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時38分51秒)
+<BR>・<font color=green>【引き分け】</font>宋江と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時37分19秒)
+<BR>・<font color=green>【引き分け】</font>流水と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時35分30秒)
+<BR>・<font color=green>【引き分け】</font>宋江と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時32分57秒)
+<BR>・<font color=green>【引き分け】</font>流水と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時32分0秒)
+<BR>・<font color=green>【引き分け】</font>宋江と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時30分36秒)
+<BR>・<font color=green>【引き分け】</font>流水と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時28分52秒)
+<BR>・<font color=green>【引き分け】</font>宋江と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時26分43秒)
+<BR>・<font color=green>【引き分け】</font>流水と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時25分23秒)
+<BR>・<font color=green>【引き分け】</font>流水と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時22分23秒)
+<BR>・<font color=green>【引き分け】</font>宋江と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時22分23秒)
+<BR>・<font color=green>【引き分け】</font>宋江と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時20分13秒)
+<BR>・<font color=green>【引き分け】</font>流水と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時19分33秒)
+<BR>・<font color=green>【引き分け】</font>宋江と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時18分5秒)
+<BR>・7月:(本当は)平和主義共和国の流水は杭州に入城しました！(4日23時17分21秒)
+<BR>・<font color=green>【引き分け】</font>宋江と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時15分42秒)
+<BR>・<font color=green>【引き分け】</font>宋江と農民反乱軍の指導者【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日23時12分45秒)
+<BR>・7月:(本当は)平和主義共和国の宋江は杭州に入城しました！(4日23時10分36秒)
+<BR>・7月:(本当は)平和主義共和国の流水は杭州へ向けて出城しました！(4日23時9分15秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(4日23時7分4秒)
+<BR>・6月:(本当は)平和主義共和国の宋江は杭州へ向けて出城しました！(4日22時53分43秒)
+<BR>・5月:(本当は)平和主義共和国の流水の弟は潭州へ向けて出城しました！(4日22時34分47秒)
+<BR>・<font color=#FFFF00>【統一】</font>[922年05月]大陸は(本当は)平和主義共和国によって統一されました！(4日22時33分35秒)
+<BR>・<font color=blue>【支配】</font>[922年05月](本当は)平和主義共和国の流水は雷州を支配しました。(4日22時33分35秒)
+<BR>・<font color=red>【滅亡】</font>[922年05月]は滅亡しました。。(4日22時33分35秒)
+<BR>・5月:(本当は)平和主義共和国の流水の弟は金陵に入城しました！(4日22時29分3秒)
+<BR>・5月:(本当は)平和主義共和国の流水の弟は金陵へ向けて出城しました！(4日22時26分50秒)
+<BR>・5月:(本当は)平和主義共和国の流水の弟は寿州に入城しました！(4日22時26分38秒)
+<BR>・5月:(本当は)平和主義共和国の流水の弟は杭州へ向けて出城しました！(4日22時24分21秒)
+<BR>・5月:(本当は)平和主義共和国の流水は雷州に入城しました！(4日22時24分19秒)
+<BR>・4月:(本当は)平和主義共和国の流水の弟は寿州に入城しました！(4日22時20分16秒)
+<BR>・農民反乱軍の指導者【NPC】『<font color=red>行くぞ農民共！政府軍は皆殺しだあ！！</font>』(4日22時16分29秒)
+<BR>・<font color=#ff0000>【敗北】</font>アイザックは農民反乱軍の指導者【NPC】に敗北しました。(杭州の城付近)(4日22時16分29秒)
+<BR>・アイザック『<font color=blue>ソード・ペイン・ブラック！</font>』(4日22時13分59秒)
+<BR>・<font color=blue>【勝利】</font>アイザックは農民反乱軍【NPC】を倒しました！(杭州の城付近)(4日22時13分59秒)
+<BR>・4月:(本当は)平和主義共和国の流水の弟は寿州へ向けて出城しました！(4日22時12分35秒)
+<BR>・<font color=green>【引き分け】</font>アイザックと農民反乱軍【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日22時11分46秒)
+<BR>・4月:(本当は)平和主義共和国の流水は雷州へ向けて出城しました！(4日22時10分36秒)
+<BR>・<font color=green>【引き分け】</font>アイザックと農民反乱軍【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日22時9分27秒)
+<BR>・<font color=blue>【支配】</font>[922年04月](本当は)平和主義共和国の流水は広州を支配しました。(4日22時7分41秒)
+<BR>・アイザック『<font color=blue>ソード・ペイン・ブラック！</font>』(4日22時6分59秒)
+<BR>・<font color=blue>【勝利】</font>アイザックは農民反乱軍【NPC】を倒しました！(杭州の城付近)(4日22時6分59秒)
+<BR>・4月:(本当は)平和主義共和国の流水の弟は青州に入城しました！(4日22時5分57秒)
+<BR>・農民反乱軍の指導者【NPC】『<font color=red>行くぞ農民共！政府軍は皆殺しだあ！！</font>』(4日22時5分23秒)
+<BR>・<font color=#ff0000>【敗北】</font>宋江は農民反乱軍の指導者【NPC】に敗北しました。(杭州の城付近)(4日22時5分23秒)
+<BR>・<font color=yellowgreen>【妨害】</font>農民反乱軍の指導者【NPC】は宋江に足止めさせられました。(杭州の城付近)(4日22時2分52秒)
+<BR>・<font color=green>【引き分け】</font>アイザックと農民反乱軍【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日22時2分52秒)
+<BR>・4月:(本当は)平和主義共和国の流水の弟は青州へ向けて出城しました！(4日22時2分16秒)
+<BR>・<font color=blue>【支配】</font>[922年03月](本当は)平和主義共和国の宋江は杭州を支配しました。(4日22時0分12秒)
+<BR>・3月:(本当は)平和主義共和国の流水の弟は燕京に入城しました！(4日21時58分31秒)
+<BR>・3月:(本当は)平和主義共和国の流水は広州に入城しました！(4日21時58分7秒)
+<BR>・<font color=green>【引き分け】</font>アイザックと城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日21時57分59秒)
+<BR>・<font color=green>【引き分け】</font>アイザックと城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日21時55分47秒)
+<BR>・<font color=green>【引き分け】</font>宋江と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日21時55分44秒)
+<BR>・<font color=green>【引き分け】</font>アイザックと城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日21時53分38秒)
+<BR>・3月:(本当は)平和主義共和国の流水の弟は燕京へ向けて出城しました！(4日21時52分32秒)
+<BR>・3月:(本当は)平和主義共和国のアイザックは杭州に入城しました！(4日21時49分40秒)
+<BR>・<font color=blue>【支配】</font>[922年03月](本当は)平和主義共和国の流水の弟は上京を支配しました。(4日21時46分12秒)
+<BR>・3月:(本当は)平和主義共和国の宋江は杭州に入城しました！(4日21時45分7秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟と城壁の戦闘は決着がつきませんでした。(上京の城付近)(4日21時43分36秒)
+<BR>・3月:(本当は)平和主義共和国のアイザックは杭州へ向けて出城しました！(4日21時43分17秒)
+<BR>・2月:(本当は)平和主義共和国の流水は広州へ向けて出城しました！(4日21時42分8秒)
+<BR>・2月:(本当は)平和主義共和国の流水の弟は上京に入城しました！(4日21時36分57秒)
+<BR>・2月:(本当は)平和主義共和国の宋江は杭州へ向けて出城しました！(4日21時34分10秒)
+<BR>・2月:(本当は)平和主義共和国の流水は潭州に入城しました！(4日21時32分44秒)
+<BR>・2月:(本当は)平和主義共和国の流水の弟は上京へ向けて出城しました！(4日21時28分57秒)
+<BR>・2月:(本当は)平和主義共和国の流水の弟は燕京に入城しました！(4日21時26分49秒)
+<BR>・1月:(本当は)平和主義共和国の流水は潭州へ向けて出城しました！(4日21時18分47秒)
+<BR>・1月:(本当は)平和主義共和国の流水の弟は燕京へ向けて出城しました！(4日21時18分46秒)
+<BR>・1月:(本当は)平和主義共和国の流水の弟は青州に入城しました！(4日21時13分7秒)
+<BR>・城壁『<font color=red>杭州はオラ達が守るベ！</font>』(4日21時11分49秒)
+<BR>・<font color=#ff0000>【敗北】</font>アイザックは城壁に敗北しました。(杭州の城付近)(4日21時11分49秒)
+<BR>・<font color=green>【引き分け】</font>アイザックと城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日21時9分40秒)
+<BR>・1月:(本当は)平和主義共和国の流水の弟は青州へ向けて出城しました！(4日21時7分52秒)
+<BR>・<font color=green>【引き分け】</font>アイザックと城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日21時7分30秒)
+<BR>・<font color=green>【引き分け】</font>アイザックと城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日21時5分21秒)
+<BR>・1月:(本当は)平和主義共和国の流水は金陵に入城しました！(4日21時3分23秒)
+<BR>・<font color="#666666">【反乱】</font>[922年01月]杭州は農民の反乱軍に支配されました。(4日21時1分32秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(4日21時1分32秒)
+<BR>・アイザック『<font color=blue>ソード・ペイン・ブラック！</font>』(4日20時49分45秒)
+<BR>・<font color=blue>【勝利】</font>アイザックは方臘軍【NPC】を倒しました！(杭州の城付近)(4日20時49分45秒)
+<BR>・12月:(本当は)平和主義共和国の流水は金陵へ向けて出城しました！(4日20時48分46秒)
+<BR>・<font color=green>【引き分け】</font>アイザックと方臘軍【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日20時47分26秒)
+<BR>・<font color=green>【引き分け】</font>アイザックと方臘軍【NPC】の戦闘は決着がつきませんでした。(杭州の城付近)(4日20時44分26秒)
+<BR>・12月:(本当は)平和主義共和国のアイザックは杭州に入城しました！(4日20時42分23秒)
+<BR>・12月:(本当は)平和主義共和国のアイザックは金陵へ向けて出城しました！(4日20時42分20秒)
+<BR>・<font color=blue>【支配】</font>[921年11月](本当は)平和主義共和国のアイザックは杭州を支配しました。(4日20時37分43秒)
+<BR>・<font color=green>【引き分け】</font>アイザックと城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日20時35分37秒)
+<BR>・<font color=green>【引き分け】</font>アイザックと城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日20時33分25秒)
+<BR>・11月:(本当は)平和主義共和国のアイザックは杭州に入城しました！(4日20時29分18秒)
+<BR>・11月:(本当は)平和主義共和国のアイザックは杭州へ向けて出城しました！(4日20時20分34秒)
+<BR>・城壁『<font color=red>死ぬ・・・。マジで、死ぬ・・・</font>』(4日19時55分27秒)
+<BR>・<font color=#ff0000>【敗北】</font>流水の弟は城壁に敗北しました。(杭州の城付近)(4日19時55分27秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日19時52分24秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日19時50分11秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日19時48分9秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日19時44分49秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日19時42分49秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日19時40分33秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日19時38分4秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日19時35分56秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日19時33分36秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(4日19時29分52秒)
+<BR>・8月:(本当は)平和主義共和国の流水の弟は杭州に入城しました！(4日19時24分45秒)
+<BR>・7月:流水は(本当は)平和主義共和国へ仕官しました。(4日19時22分54秒)
+<BR>・7月:宋江は(本当は)平和主義共和国へ仕官しました。(4日19時22分54秒)
+<BR>・7月:(本当は)平和主義共和国の流水の弟は杭州へ向けて出城しました！(4日19時18分11秒)
+<BR>・7月:(本当は)平和主義共和国の流水の弟は寿州に入城しました！(4日19時13分36秒)
+<BR>・<font color="#666666">【反乱】</font>[921年07月]杭州は農民の反乱軍に支配されました。(4日19時9分17秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(4日19時9分17秒)
+<BR>・6月:(本当は)平和主義共和国の流水の弟は青州へ向けて出城しました！(4日0時49分7秒)
+<BR>・5月:(本当は)平和主義共和国の流水の弟は寿州に入城しました！(4日0時44分2秒)
+<BR>・5月:(本当は)平和主義共和国の流水の弟は寿州へ向けて出城しました！(4日0時40分39秒)
+<BR>・5月:(本当は)平和主義共和国の流水の弟は金陵に入城しました！(4日0時33分48秒)
+<BR>・5月:(本当は)平和主義共和国の流水の弟は金陵へ向けて出城しました！(4日0時29分14秒)
+<BR>・<font color=blue>【支配】</font>[921年05月](本当は)平和主義共和国のアイザックは敦煌を支配しました。(4日0時26分49秒)
+<BR>・<font color=red>【滅亡】</font>[921年05月]梁山泊は滅亡しました。。(4日0時26分49秒)
+<BR>・5月:(本当は)平和主義共和国の流水の弟は福州に入城しました！(4日0時25分11秒)
+<BR>・4月:(本当は)平和主義共和国の流水の弟は福州へ向けて出城しました！(4日0時19分47秒)
+<BR>・4月:(本当は)平和主義共和国のアイザックは敦煌に入城しました！(4日0時16分0秒)
+<BR>・4月:(本当は)平和主義共和国の流水の弟は泉州に入城しました！(4日0時15分35秒)
+<BR>・4月:(本当は)平和主義共和国の流水の弟は泉州へ向けて出城しました！(4日0時4分5秒)
+<BR>・4月:(本当は)平和主義共和国のアイザックは敦煌へ向けて出城しました！(4日0時2分25秒)
+<BR>・<font color=blue>【支配】</font>[921年03月](本当は)平和主義共和国の流水の弟は夷州を支配しました。(3日23時59分2秒)
+<BR>・<font color=blue>【支配】</font>[921年03月](本当は)平和主義共和国のアイザックは鳳翔を支配しました。(3日23時57分52秒)
+<BR>・3月:(本当は)平和主義共和国のアイザックは鳳翔に入城しました！(3日23時53分32秒)
+<BR>・3月:(本当は)平和主義共和国の流水の弟は夷州に入城しました！(3日23時52分49秒)
+<BR>・2月:(本当は)平和主義共和国のアイザックは鳳翔へ向けて出城しました！(3日23時42分45秒)
+<BR>・2月:(本当は)平和主義共和国の流水の弟は夷州へ向けて出城しました！(3日23時41分57秒)
+<BR>・<font color=blue>【支配】</font>[921年02月](本当は)平和主義共和国のアイザックは成都を支配しました。(3日23時38分17秒)
+<BR>・<font color=blue>【支配】</font>[921年02月](本当は)平和主義共和国の流水の弟は泉州を支配しました。(3日23時34分19秒)
+<BR>・2月:(本当は)平和主義共和国のアイザックは成都に入城しました！(3日23時33分59秒)
+<BR>・1月:(本当は)平和主義共和国の流水の弟は泉州に入城しました！(3日23時27分17秒)
+<BR>・1月:(本当は)平和主義共和国の流水の弟は泉州へ向けて出城しました！(3日23時22分58秒)
+<BR>・1月:(本当は)平和主義共和国のアイザックは成都へ向けて出城しました！(3日23時21分9秒)
+<BR>・<font color=blue>【支配】</font>[921年01月](本当は)平和主義共和国の流水の弟は福州を支配しました。(3日23時18分22秒)
+<BR>・<font color=blue>【支配】</font>[921年01月](本当は)平和主義共和国のアイザックは潭州を支配しました。(3日23時16分39秒)
+<BR>・1月:(本当は)平和主義共和国の流水の弟は福州に入城しました！(3日23時14分11秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(3日23時13分51秒)
+<BR>・12月:(本当は)平和主義共和国の流水の弟は福州へ向けて出城しました！(3日23時11分58秒)
+<BR>・12月:(本当は)平和主義共和国のアイザックは潭州に入城しました！(3日23時11分1秒)
+<BR>・<font color=blue>【支配】</font>[920年12月](本当は)平和主義共和国の流水の弟は杭州を支配しました。(3日23時6分59秒)
+<BR>・12月:(本当は)平和主義共和国の流水の弟は杭州に入城しました！(3日23時4分49秒)
+<BR>・12月:(本当は)平和主義共和国のアイザックは潭州へ向けて出城しました！(3日23時4分36秒)
+<BR>・12月:(本当は)平和主義共和国の流水の弟は杭州へ向けて出城しました！(3日23時3分0秒)
+<BR>・12月:(本当は)平和主義共和国の流水の弟は金陵に入城しました！(3日22時58分42秒)
+<BR>・12月:(本当は)平和主義共和国の流水の弟は金陵へ向けて出城しました！(3日22時56分11秒)
+<BR>・<font color=blue>【支配】</font>[920年12月](本当は)平和主義共和国のアイザックは金陵を支配しました。(3日22時55分21秒)
+<BR>・12月:(本当は)平和主義共和国の流水の弟は寿州に入城しました！(3日22時50分30秒)
+<BR>・12月:(本当は)平和主義共和国のアイザックは金陵に入城しました！(3日22時46分41秒)
+<BR>・11月:(本当は)平和主義共和国のアイザックは金陵へ向けて出城しました！(3日22時44分11秒)
+<BR>・11月:(本当は)平和主義共和国の流水の弟は寿州へ向けて出城しました！(3日22時41分33秒)
+<BR>・アイザック『<font color=blue>ソード・ペイン・ブラック！</font>』(3日22時37分43秒)
+<BR>・<font color=blue>【勝利】</font>アイザックは流水を倒しました！(寿州の城付近)(3日22時37分43秒)
+<BR>・<font color=green>【引き分け】</font>流水とアイザックの戦闘は決着がつきませんでした。(寿州の城付近)(3日22時36分48秒)
+<BR>・<font color=green>【引き分け】</font>アイザックと流水の戦闘は決着がつきませんでした。(寿州の城付近)(3日22時35分35秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(3日22時34分44秒)
+<BR>・11月:(本当は)平和主義共和国の流水の弟は青州に入城しました！(3日22時31分53秒)
+<BR>・11月:梁山泊の流水は寿州に入城しました！(3日22時28分47秒)
+<BR>・11月:(本当は)平和主義共和国のアイザックは寿州に入城しました！(3日22時26分28秒)
+<BR>・11月:(本当は)平和主義共和国の流水の弟は青州へ向けて出城しました！(3日22時24分38秒)
+<BR>・<font color=blue>【支配】</font>[920年10月](本当は)平和主義共和国の流水の弟は燕京を支配しました。(3日22時20分30秒)
+<BR>・10月:(本当は)平和主義共和国のアイザックは寿州へ向けて出城しました！(3日22時18分46秒)
+<BR>・10月:(本当は)平和主義共和国の流水の弟は燕京に入城しました！(3日22時18分18秒)
+<BR>・10月:梁山泊の流水は寿州へ向けて出城しました！(3日22時18分9秒)
+<BR>・10月:(本当は)平和主義共和国のアイザックは金陵に入城しました！(3日22時18分4秒)
+<BR>・10月:(本当は)平和主義共和国の流水の弟は燕京へ向けて出城しました！(3日22時16分2秒)
+<BR>・<font color=blue>【支配】</font>[920年10月](本当は)平和主義共和国の流水の弟は幽州を支配しました。(3日22時11分3秒)
+<BR>・10月:(本当は)平和主義共和国のアイザックは金陵へ向けて出城しました！(3日22時10分41秒)
+<BR>・10月:(本当は)平和主義共和国の流水の弟は幽州に入城しました！(3日22時9分1秒)
+<BR>・<font color=blue>【支配】</font>[920年10月]梁山泊の流水は杭州を支配しました。(3日22時8分25秒)
+<BR>・アイザック『<font color=blue>ソード・ペイン・ブラック！</font>』(3日22時8分22秒)
+<BR>・<font color=blue>【勝利】</font>アイザックは宋江を倒しました！(寿州の城付近)(3日22時8分22秒)
+<BR>・10月:(本当は)平和主義共和国のアイザックは寿州に入城しました！(3日22時6分6秒)
+<BR>・10月:梁山泊の宋江は寿州に入城しました！(3日22時4分34秒)
+<BR>・10月:(本当は)平和主義共和国の流水の弟は幽州へ向けて出城しました！(3日22時4分2秒)
+<BR>・<font color=yellowgreen>【妨害】</font>アイザックは宋江に足止めさせられました。(金陵-寿州間)(3日22時2分28秒)
+<BR>・10月:梁山泊の流水は杭州に入城しました！(3日22時1分32秒)
+<BR>・<font color=blue>【支配】</font>[920年10月](本当は)平和主義共和国の流水の弟は晋陽を支配しました。(3日22時1分13秒)
+<BR>・10月:(本当は)平和主義共和国のアイザックは金陵へ向けて出城しました！(3日22時1分11秒)
+<BR>・9月:(本当は)平和主義共和国の流水の弟は晋陽に入城しました！(3日21時57分47秒)
+<BR>・9月:梁山泊の流水は杭州へ向けて出城しました！(3日21時55分13秒)
+<BR>・9月:梁山泊の宋江は寿州へ向けて出城しました！(3日21時50分29秒)
+<BR>・9月:梁山泊の流水は金陵に入城しました！(3日21時50分3秒)
+<BR>・9月:(本当は)平和主義共和国の流水の弟は晋陽へ向けて出城しました！(3日21時49分43秒)
+<BR>・9月:(本当は)平和主義共和国のアイザックは寿州に入城しました！(3日21時49分18秒)
+<BR>・9月:梁山泊の流水は寿州へ向けて出城しました！(3日21時48分54秒)
+<BR>・<font color=blue>【支配】</font>[920年09月](本当は)平和主義共和国の流水の弟は開封を支配しました。(3日21時45分18秒)
+<BR>・9月:(本当は)平和主義共和国のアイザックは金陵へ向けて出城しました！(3日21時44分52秒)
+<BR>・9月:(本当は)平和主義共和国の流水の弟は開封に入城しました！(3日21時42分59秒)
+<BR>・8月:(本当は)平和主義共和国の流水の弟は開封へ向けて出城しました！(3日21時36分57秒)
+<BR>・<font color=blue>【支配】</font>[920年08月](本当は)平和主義共和国の流水の弟は京兆を支配しました。(3日21時32分23秒)
+<BR>・8月:(本当は)平和主義共和国の流水の弟は京兆に入城しました！(3日21時30分19秒)
+<BR>・8月:(本当は)平和主義共和国の流水の弟は京兆へ向けて出城しました！(3日21時24分53秒)
+<BR>・<font color=blue>【支配】</font>[920年07月](本当は)平和主義共和国の流水の弟は荊州を支配しました。(3日21時17分27秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟と城壁の戦闘は決着がつきませんでした。(荊州の城付近)(3日21時14分19秒)
+<BR></TD>
+          </TR>
+        </TBODY>
+      </TABLE>
+</TD>
+    </TR>
+<TR>      <TD colspan=2 bgcolor=#6d614a>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH bgcolor=#F0F0F0>史記</TH></TR><TR>
+<TD bgcolor=#a9987c>・<b><font color=#008080><b>【声明】</b></font>なんか統一したらしいね！　流水ちゃんってイケメンすぎ☆（(本当は)平和主義共和国君主：流水の弟より）</b>(5日1時16分47秒)
+<BR>・<b><font color=#FFFF00>【統一】</font>[922年05月]大陸は(本当は)平和主義共和国によって統一されました！</b>(4日22時33分35秒)
+<BR>・<b><font color=blue>【支配】</font>[922年05月](本当は)平和主義共和国の流水は雷州を支配しました。</b>(4日22時33分35秒)
+<BR>・<b><font color=red>【滅亡】</font>[922年05月]は滅亡しました。。</b>(4日22時33分35秒)
+<BR>・<b><font color=blue>【支配】</font>[922年04月](本当は)平和主義共和国の流水は広州を支配しました。</b>(4日22時7分41秒)
+<BR>・<b><font color=blue>【支配】</font>[922年03月](本当は)平和主義共和国の宋江は杭州を支配しました。</b>(4日22時0分12秒)
+<BR>・<b><font color=blue>【支配】</font>[922年03月](本当は)平和主義共和国の流水の弟は上京を支配しました。</b>(4日21時46分12秒)
+<BR>・<b><font color="#666666">【反乱】</font>[922年01月]杭州は農民の反乱軍に支配されました。</b>(4日21時1分32秒)
+<BR>・<b><font color=blue>【支配】</font>[921年11月](本当は)平和主義共和国のアイザックは杭州を支配しました。</b>(4日20時37分43秒)
+<BR>・<b><font color="#666666">【反乱】</font>[921年07月]杭州は農民の反乱軍に支配されました。</b>(4日19時9分17秒)
+<BR>・<b><font color=blue>【支配】</font>[921年05月](本当は)平和主義共和国のアイザックは敦煌を支配しました。</b>(4日0時26分49秒)
+<BR>・<b><font color=red>【滅亡】</font>[921年05月]梁山泊は滅亡しました。。</b>(4日0時26分49秒)
+<BR>・<b><font color=blue>【支配】</font>[921年03月](本当は)平和主義共和国の流水の弟は夷州を支配しました。</b>(3日23時59分2秒)
+<BR>・<b><font color=blue>【支配】</font>[921年03月](本当は)平和主義共和国のアイザックは鳳翔を支配しました。</b>(3日23時57分52秒)
+<BR>・<b><font color=blue>【支配】</font>[921年02月](本当は)平和主義共和国のアイザックは成都を支配しました。</b>(3日23時38分17秒)
+<BR>・<b><font color=blue>【支配】</font>[921年02月](本当は)平和主義共和国の流水の弟は泉州を支配しました。</b>(3日23時34分19秒)
+<BR>・<b><font color=blue>【支配】</font>[921年01月](本当は)平和主義共和国の流水の弟は福州を支配しました。</b>(3日23時18分22秒)
+<BR>・<b><font color=blue>【支配】</font>[921年01月](本当は)平和主義共和国のアイザックは潭州を支配しました。</b>(3日23時16分39秒)
+<BR>・<b><font color=blue>【支配】</font>[920年12月](本当は)平和主義共和国の流水の弟は杭州を支配しました。</b>(3日23時6分59秒)
+<BR>・<b><font color=blue>【支配】</font>[920年12月](本当は)平和主義共和国のアイザックは金陵を支配しました。</b>(3日22時55分21秒)
+<BR>・<b><font color=blue>【支配】</font>[920年10月](本当は)平和主義共和国の流水の弟は燕京を支配しました。</b>(3日22時20分30秒)
+<BR>・<b><font color=blue>【支配】</font>[920年10月](本当は)平和主義共和国の流水の弟は幽州を支配しました。</b>(3日22時11分3秒)
+<BR>・<b><font color=blue>【支配】</font>[920年10月]梁山泊の流水は杭州を支配しました。</b>(3日22時8分25秒)
+<BR>・<b><font color=blue>【支配】</font>[920年10月](本当は)平和主義共和国の流水の弟は晋陽を支配しました。</b>(3日22時1分13秒)
+<BR>・<b><font color=blue>【支配】</font>[920年09月](本当は)平和主義共和国の流水の弟は開封を支配しました。</b>(3日21時45分18秒)
+<BR>・<b><font color=blue>【支配】</font>[920年08月](本当は)平和主義共和国の流水の弟は京兆を支配しました。</b>(3日21時32分23秒)
+<BR>・<b><font color=blue>【支配】</font>[920年07月](本当は)平和主義共和国の流水の弟は荊州を支配しました。</b>(3日21時17分27秒)
+<BR>・<b><font color=blue>【支配】</font>[920年04月]梁山泊の流水は開封を支配しました。</b>(3日20時7分11秒)
+<BR>・<b><font color=red>【イベント】</font>[918年08月]洪水がおこりました！各地で被害が出ています！</b>(2日19時33分39秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>９２０年１月（４月３日１９時）に梁山泊さんを侵攻させていただきますので、宜しくお願いします。（(本当は)平和主義共和国君主：流水の弟より）</b>(2日13時38分33秒)
+<BR>・<b><font color="#ff6600"><b>【宣戦布告】</b></font>(本当は)平和主義共和国は梁山泊へ宣戦布告を行いました！　「920年１月（４月３日１９時）に梁山泊さんを侵攻させていただきますのでよろしくお願いします。」　開戦時間:920年1月（(本当は)平和主義共和国君主：流水の弟より））</b>(2日13時36分53秒)
+<BR>・<b><font color=red>【イベント】</font>[918年06月]各町の商店が賑わっています。</b>(2日1時25分1秒)
+<BR>・<b><font color=red>【イベント】</font>[910年05月]洪水がおこりました！各地で被害が出ています！</b>(27日22時51分31秒)
+<BR>・<b><font color=red>【イベント】</font>[909年12月]今年は豊作になりそうです。</b>(27日21時53分2秒)
+<BR>・<b><font color=red>【イベント】</font>[903年03月]大地震がおこりました！</b>(23日1時12分29秒)
+<BR>・<b><font color=red>【イベント】</font>[895年05月]今年は豊作になりそうです。</b>(17日22時39分10秒)
+<BR>・<b><font color=red>【イベント】</font>[892年09月]洪水がおこりました！各地で被害が出ています！</b>(15日23時50分47秒)
+<BR>・<b><font color=red>【イベント】</font>[889年05月]いなごの大群が畑を襲いました！</b>(13日22時28分0秒)
+<BR>・<b><font color=red>【イベント】</font>[886年12月]各町の商店が賑わっています。</b>(12日1時19分34秒)
+<BR>・<b><font color=red>【イベント】</font>[884年08月]疫病が流行っているようです。街の人々も苦しんでいます。。</b>(10日22時18分24秒)
+<BR>・<b><font color=red>【イベント】</font>[884年04月]洪水がおこりました！各地で被害が出ています！</b>(10日21時54分46秒)
+<BR>・<b><font color=blue>【支配】</font>[881年08月]梁山泊の流水は泉州を支配しました。</b>(8日21時36分8秒)
+<BR>・<b><font color=blue>【支配】</font>[881年07月]梁山泊の流水は福州を支配しました。</b>(8日21時7分12秒)
+<BR>・<b><font color=blue>【支配】</font>[881年05月]梁山泊の流水は潭州を支配しました。</b>(8日20時25分47秒)
+<BR>・<b><font color=blue>【支配】</font>[881年03月](本当は)平和主義共和国のアイザックは杭州を支配しました。</b>(8日19時58分17秒)
+<BR>・<b><font color=blue>【支配】</font>[881年01月]梁山泊の流水は晋陽を支配しました。</b>(8日19時11分2秒)
+<BR>・<b><font color=blue>【支配】</font>[880年11月]梁山泊の流水は燕京を支配しました。</b>(8日0時39分22秒)
+<BR>・<b><font color=blue>【支配】</font>[880年11月](本当は)平和主義共和国のアイザックは青州を支配しました。</b>(8日0時31分29秒)
+<BR>・<b><font color=blue>【支配】</font>[880年11月]梁山泊の流水は幽州を支配しました。</b>(8日0時20分43秒)
+<BR>・<b><font color=blue>【支配】</font>[880年09月]梁山泊の流水は京兆を支配しました。</b>(7日23時47分44秒)
+<BR>・<b><font color=blue>【支配】</font>[880年05月](本当は)平和主義共和国のアイザックは開封を支配しました。</b>(7日22時39分37秒)
+<BR>・<b><font color=blue>【支配】</font>[880年02月]梁山泊の流水は金陵を支配しました。</b>(7日21時30分24秒)
+<BR>・<b><font color=blue>【支配】</font>[879年08月]梁山泊の流水は敦煌を支配しました。</b>(7日19時44分48秒)
+<BR>・<b><font color=blue>【支配】</font>[879年06月]梁山泊の流水は鳳翔を支配しました。</b>(7日0時53分26秒)
+<BR>・<b><font color=blue>【支配】</font>[879年03月]梁山泊の流水は成都を支配しました。</b>(7日0時16分32秒)
+<BR>・<b><font color=red>【イベント】</font>[877年10月]洪水がおこりました！各地で被害が出ています！</b>(6日0時4分12秒)
+<BR>・<b><font color=red>【イベント】</font>[876年11月]今年は豊作になりそうです。</b>(5日20時26分19秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[875年00月]新しく宋江が梁山泊を建国しました。</b>(3日19時48分59秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[875年00月]新しく流水の弟が(本当は)平和主義共和国を建国しました。</b>(3日19時47分2秒)
+<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR></TD>
+          </TR>
+        </TBODY>
+      </TABLE>
+</TD>
+    </TR>
+  </TBODY>
+</TABLE>
+※街にカーソルを合わせると街の名前が表示されます。
+<p>
+2015/04/05/(Sun) 13:28:34
+<CENTER><HR SIZE=0>
+<font color=998877>十国志NET </font><font size=1 color=998877>第3期</font> <font color=998877>ver.0.66fix</font><br>
+<font color=998877>ADMINISTARTOR liiu </font><a href="http://lunadraco.sakura.ne.jp/sangokuframe/index.cgi">GAME TOP</a><br>
+<font color=998877>三国志NET ver.2.80 </font><a href="http://www3.to/maccyu2/" target="_top">maccyu</a><br>
+<a href="http://ayfreenet.web.infoseek.co.jp/" target="_blank">HOMEPAGE GARO</a>
+</body></html>

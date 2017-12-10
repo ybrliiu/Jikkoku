@@ -1,0 +1,391 @@
+
+<html>
+<head>
+<meta name="description" content="バトルマップ上で戦う三国志NET。">
+<meta name="keywords" content="三国志NET,ブラウザゲーム,オンラインゲーム,CGIゲーム,無料">
+<link rel="shortcut icon" href="../favicon.ico" >
+<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>十国志NET</title>
+<link rel="stylesheet" href="../js/base.css">
+<link rel="stylesheet" href="./tt.css">
+<STYLE type="text/css">
+<!--
+BODY,TR,TD,TH,FORM { font-family : "ＭＳ ゴシック"; font-size: 9pt; }
+a{ text-decoration:none;}
+a:link.mikata { color: blue; font-size: 9pt }
+a:link.enemy { color: red; font-size: 9pt }
+a:link#mikata { color: blue; font-size: 9pt }
+a:link#enemy { color: red; font-size: 9pt }
+a:link    { color: #4682B4 }
+a:visited { color: #4682B4 }
+a:hover   { color: #FFFF00 }
+a:active  { color: #00FF00 }
+.S1 {color:#fff; border-style: double; border-width: 3px;BACKGROUND: #633;}
+
+.dmg { color: #FF0000; font-size: 18pt }
+.clit { color: #0000FF; font-size: 18pt }
+#small { font-size: xx-small; }
+.bmj { color: #000000; font-size: 5pt }
+.r { color: #FF4444; font-size: 10pt }
+.b { color: #4444DD; font-size: 10pt }
+.s { color: #44AAEE; font-size: 10pt }
+.g { color: #44DD44; font-size: 10pt }
+.o { color: #EEAA44; font-size: 10pt }
+-->
+</STYLE>
+<script type="text/javascript" src="../js/ballon.js"></script>
+</head>
+<body background="../image/o.gif" bgcolor="#E0E088" text="" link="#CCAA88" vlink="#AA8855" alink="#AA8855" leftmargin="0" marginwidth="0" marginheight="0">
+
+<TABLE bgcolor=#6d614a width=100% border="0">
+  <TBODY>
+    <TR>
+      <TD bgcolor=#F0F0F0 width=50% valign=top>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH><font color=#444444><font size=4>十国志NET</font> <BR>- 大 陸 地 図 -</font></TH>
+          </TR>
+        </TBODY>
+      </TABLE>
+      <TABLE bgcolor=#F0F0F0 background="../image/mapbg.gif" width=100% height=5 border="0" cellspacing=1>
+        <TBODY>
+          <TR>
+            <TD width=20 bgcolor=#F0F0F0>-</TD>
+<TD width=20 bgcolor=#D0C088>1</TD><TD width=20 bgcolor=#D0C088>2</TD><TD width=20 bgcolor=#D0C088>3</TD><TD width=20 bgcolor=#D0C088>4</TD><TD width=20 bgcolor=#D0C088>5</TD><TD width=20 bgcolor=#D0C088>6</TD><TD width=20 bgcolor=#D0C088>7</TD><TD width=20 bgcolor=#D0C088>8</TD><TD width=20 bgcolor=#D0C088>9</TD><TD width=20 bgcolor=#D0C088>10</TD></TR><TR><TD bgcolor=#C0C088>1</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="上京【星組】"><font color="#000000">上京</font><br><img src="../image/m_4.gif" title="上京【星組】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>2</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="晋陽【星組】"><font color="#000000">晋陽</font><br><img src="../image/m_4.gif" title="晋陽【星組】"></p></div></TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="幽州【星組】"><font color="#000000">幽州</font><br><img src="../image/m_4.gif" title="幽州【星組】"></p></div></TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="燕京【星組】"><font color="#000000">燕京</font><br><img src="../image/m_4.gif" title="燕京【星組】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>3</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="敦煌【星組】"><font color="#000000">敦煌</font><br><img src="../image/m_4.gif" title="敦煌【星組】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="京兆【星組】"><font color="#000000">京兆</font><br><img src="../image/m_4.gif" title="京兆【星組】"></p></div></TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="開封【星組】"><font color="#000000">開封</font><br><img src="../image/m_4.gif" title="開封【星組】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="青州【星組】"><font color="#000000">青州</font><br><img src="../image/m_4.gif" title="青州【星組】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>4</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="鳳翔【星組】"><font color="#000000">鳳翔</font><br><img src="../image/m_4.gif" title="鳳翔【星組】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="荊州【星組】"><font color="#000000">荊州</font><br><img src="../image/m_4.gif" title="荊州【星組】"></p></div></TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="寿州【星組】"><font color="#000000">寿州</font><br><img src="../image/m_4.gif" title="寿州【星組】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>5</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="成都【星組】"><font color="#000000">成都</font><br><img src="../image/m_4.gif" title="成都【星組】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="金陵【星組】"><font color="#000000">金陵</font><br><img src="../image/m_4.gif" title="金陵【星組】"></p></div></TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="杭州【星組】"><font color="#000000">杭州</font><br><img src="../image/m_4.gif" title="杭州【星組】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>6</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="潭州【星組】"><font color="#000000">潭州</font><br><img src="../image/m_4.gif" title="潭州【星組】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="福州【星組】"><font color="#000000">福州</font><br><img src="../image/m_4.gif" title="福州【星組】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="夷州【星組】"><font color="#000000">夷州</font><br><img src="../image/m_4.gif" title="夷州【星組】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>7</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="広州【星組】"><font color="#000000">広州</font><br><img src="../image/m_4.gif" title="広州【星組】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#00DD00 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="泉州【星組】"><font color="#000000">泉州</font><br><img src="../image/m_4.gif" title="泉州【星組】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>8</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>9</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>10</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR>        </TBODY>
+      </TABLE>
+      </TD>
+      <TD bgcolor=#6d614a>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH bgcolor=#F0F0F0>MAP LOG</TH></TR><TR>
+<TD bgcolor=#a9987c>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(11日13時9分6秒)
+<BR>・[放置]：カヤーは削除されました。(11日12時11分29秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(11日9時2分48秒)
+<BR>・<font color=red>【イベント】</font>[963年10月]いなごの大群が畑を襲いました！(11日5時57分19秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(11日1時35分50秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(10日19時21分47秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(10日13時1分48秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(10日7時2分4秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(10日6時51分9秒)
+<BR>・<font color=blue>【支配】</font>[961年04月]星組のIRISHは雷州を支配しました。(9日22時28分16秒)
+<BR>・<font color=red>【滅亡】</font>[961年04月]イニシアチブ共和国は滅亡しました。。(9日22時28分16秒)
+<BR>・<font color=orange>【支援】</font>羊はIRISHに支援を行いました。(雷州の城付近)(9日22時26分54秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(9日22時26分32秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(雷州の城付近)(9日22時25分5秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(9日22時22分23秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(雷州の城付近)(9日22時22分5秒)
+<BR>・4月:星組の流水は雷州に入城しました！(9日22時20分13秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(9日22時19分13秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(雷州の城付近)(9日22時18分59秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(9日22時16分5秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(雷州の城付近)(9日22時15分56秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(雷州の城付近)(9日22時12分56秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(9日22時12分56秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(9日22時9分50秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(雷州の城付近)(9日22時9分19秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(雷州の城付近)(9日22時6分19秒)
+<BR>・<font color=orange>【支援】</font>羊はIRISHに支援を行いました。(雷州の城付近)(9日22時6分9秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(雷州の城付近)(9日22時3分17秒)
+<BR>・4月:星組の羊は雷州に入城しました！(9日22時1分22秒)
+<BR>・4月:星組のIRISHは雷州に入城しました！(9日22時0分15秒)
+<BR>・<font color=red>【イベント】</font>[961年04月]洪水がおこりました！各地で被害が出ています！(9日22時0分3秒)
+<BR>・3月:星組の流水は雷州へ出兵しました！(9日21時55分50秒)
+<BR>・3月:星組の羊は雷州へ出兵しました！(9日21時37分37秒)
+<BR>・2月:星組のIRISHは雷州へ出兵しました！(9日21時10分4秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(9日19時3分40秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(9日13時0分23秒)
+<BR>・<font color=red>【イベント】</font>[960年06月]洪水がおこりました！各地で被害が出ています！(9日12時30分55秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(9日8時49分43秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(9日1時10分45秒)
+<BR>・4月:星組のIRISHは寿州に入城しました！(8日22時31分53秒)
+<BR>・4月:星組のIRISHは寿州へ出兵しました！(8日22時25分51秒)
+<BR>・4月:星組のIRISHは金陵に入城しました！(8日22時16分58秒)
+<BR>・4月:星組のIRISHは金陵へ出兵しました！(8日22時7分8秒)
+<BR>・3月:星組のIRISHは潭州に入城しました！(8日22時2分6秒)
+<BR>・3月:星組のIRISHは潭州へ出兵しました！(8日21時44分10秒)
+<BR>・<font color=#008080><b>【声明】</b></font>【961年4月】より、イニシアチブ共和国さんへ侵攻しますのでよろしくお願いします（星組君主：IRISHより）(8日21時29分20秒)
+<BR>・<font color=blue>【支配】</font>[959年03月]星組のIRISHは広州を支配しました。(8日21時24分32秒)
+<BR>・<font color=red>【滅亡】</font>[959年03月]てｓｔは滅亡しました。。(8日21時24分32秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(広州の城付近)(8日21時21分23秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(広州の城付近)(8日21時18分18秒)
+<BR>・3月:星組のIRISHは広州に入城しました！(8日21時9分59秒)
+<BR>・2月:星組のIRISHは広州へ出兵しました！(8日21時4分27秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(8日19時33分34秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(8日13時28分13秒)
+<BR>・[放置]：にゃんにゃんは削除されました。(8日10時1分48秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(8日7時47分56秒)
+<BR>・7月:キャス狐は星組へ仕官しました。(8日2時40分23秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(8日2時5分7秒)
+<BR>・<font color=blue>【支配】</font>[957年02月]星組のIRISHは夷州を支配しました。(7日20時50分45秒)
+<BR>・<font color=red>【滅亡】</font>[957年02月]は滅亡しました。。(7日20時50分45秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(夷州の城付近)(7日20時47分16秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(夷州の城付近)(7日20時44分15秒)
+<BR>・2月:星組のIRISHは夷州に入城しました！(7日20時38分14秒)
+<BR>・<font color=#008080><b>【声明】</b></font>【959年3月】より、てｓｔさんへ侵攻させていただきますのでよろしくお願いします。（星組君主：IRISHより）(7日20時27分2秒)
+<BR>・2月:星組のIRISHは夷州へ出兵しました！(7日20時24分55秒)
+<BR>・2月:星組の悠@Celebrityは夷州へ出兵しました！(7日20時22分16秒)
+<BR>・2月:星組の羊は杭州に入城しました！(7日20時20分44秒)
+<BR>・<font color=blue>【支配】</font>[957年02月]星組のIRISHは泉州を支配しました。(7日20時17分11秒)
+<BR>・<font color=red>【滅亡】</font>[957年02月]泉州は滅亡しました。。(7日20時17分11秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(泉州の城付近)(7日20時14分9秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(泉州の城付近)(7日20時10分58秒)
+<BR>・2月:星組の悠@Celebrityは泉州に入城しました！(7日20時9分57秒)
+<BR>・2月:星組のIRISHは泉州に入城しました！(7日20時3分23秒)
+<BR>・2月:星組の悠@Celebrityは泉州へ出兵しました！(7日20時2分41秒)
+<BR>・2月:星組の羊は杭州へ出兵しました！(7日20時1分14秒)
+<BR>・1月:星組のIRISHは泉州へ出兵しました！(7日20時0分30秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(7日19時4分44秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(7日13時12分5秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(7日7時48分13秒)
+<BR>・[放置]：うんこもれ蔵は削除されました。(7日7時48分6秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(7日1時9分36秒)
+<BR>・<font color=#008080><b>【声明】</b></font>【957年2月】より泉州さんへ侵攻しますのでよろしくお願いします。（星組君主：IRISHより）(6日19時10分31秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(6日19時6分9秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(6日13時15分4秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(6日8時42分13秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(6日1時5分0秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(5日19時11分22秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(5日13時1分47秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(5日7時6分6秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(5日1時2分20秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(4日19時0分31秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(4日13時11分17秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(4日7時12分11秒)
+<BR>・<font color=red>【イベント】</font>[949年10月]洪水がおこりました！各地で被害が出ています！(4日6時50分49秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(4日1時13分21秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(3日19時3分48秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(3日13時2分43秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(3日8時2分11秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(3日1時48分28秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(2日19時6分38秒)
+<BR>・<font color=red>【イベント】</font>[946年09月]疫病が流行っているようです。街の人々も苦しんでいます。。(2日15時0分15秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(2日13時6分53秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(2日9時6分7秒)
+<BR>・[放置]：おいらんは削除されました。(2日5時10分44秒)
+<BR>・[放置]：ねこは削除されました。(2日5時10分41秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(2日1時13分34秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(1日19時7分49秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(1日13時2分18秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(1日7時37分53秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(1日1時36分31秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(30日19時2分11秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(30日13時5分26秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(30日7時5分35秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(30日1時0分58秒)
+<BR>・<font color=red>【イベント】</font>[941年04月]いなごの大群が畑を襲いました！(29日22時5分1秒)
+<BR>・3月:無所属のりーう＠管理人は実験場に入城しました！(29日22時4分42秒)
+<BR>・3月:無所属のりーう＠管理人は実験場2へ出兵しました！(29日22時4分33秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(29日19時11分19秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(29日13時6分5秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(29日8時15分40秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(29日1時13分55秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(28日19時1分54秒)
+<BR>・悠@Celebrityは星組に寝返りました。(28日16時52分10秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(28日13時15分10秒)
+<BR>・<font color=red>【イベント】</font>[938年06月]各町の商店が賑わっています。(28日12時51分19秒)
+<BR>・<font color=blue>【支配】</font>[938年03月]星組の流水は敦煌を支配しました。(28日10時7分1秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(28日10時2分41秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(28日9時59分36秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(28日9時54分12秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(28日9時51分10秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(28日9時48分8秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(28日9時43分41秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(28日9時40分13秒)
+<BR>・3月:星組の流水は敦煌へ出兵しました！(28日9時3分46秒)
+<BR>・2月:無所属のりーう＠管理人は敦煌へ出兵しました！(28日8時12分16秒)
+<BR>・2月:無所属のりーう＠管理人は敦煌へ出兵しました！(28日8時6分2秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(28日7時53分49秒)
+<BR>・12月:星組の流水は敦煌へ出兵しました！(28日7時34分27秒)
+<BR>・7月:星組の流水は敦煌へ出兵しました！(28日1時55分43秒)
+<BR>・7月:星組のシークは開封へ出兵しました！(28日1時5分58秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(28日1時2分43秒)
+<BR>・6月:星組の流水は敦煌へ出兵しました！(28日0時54分7秒)
+<BR>・6月:星組の流水は敦煌へ出兵しました！(28日0時53分53秒)
+<BR>・6月:星組の流水は敦煌へ出兵しました！(28日0時46分21秒)
+<BR>・6月:星組のPARKERは荊州へ出兵しました！(28日0時40分48秒)
+<BR>・6月:星組の流水は敦煌へ出兵しました！(28日0時40分14秒)
+<BR>・6月:星組の流水は敦煌へ出兵しました！(28日0時38分21秒)
+<BR>・6月:星組の流水は敦煌へ出兵しました！(28日0時38分11秒)
+<BR>・<font color=blue>【支配】</font>[937年06月]星組の流水は鳳翔を支配しました。(28日0時31分47秒)
+<BR>・<font color=red>【滅亡】</font>[937年06月]テストは滅亡しました。。(28日0時31分47秒)
+<BR>・6月:星組のIRISHは杭州へ出兵しました！(28日0時29分30秒)
+<BR>・6月:星組のPARKERは荊州へ出兵しました！(28日0時26分12秒)
+<BR>・6月:星組のIRISHは福州へ出兵しました！(28日0時20分53秒)
+<BR>・<font color=blue>【支配】</font>[937年06月]星組のIRISHは金陵を支配しました。(28日0時15分28秒)
+<BR>・6月:星組の流水は鳳翔へ出兵しました！(28日0時13分24秒)
+<BR>・<font color=blue>【支配】</font>[937年06月]星組のaaaは福州を支配しました。(28日0時6分58秒)
+<BR>・5月:星組のPARKERは金陵へ出兵しました！(28日0時5分31秒)
+<BR>・5月:星組のIRISHは金陵へ出兵しました！(28日0時5分2秒)
+<BR>・5月:星組の流水は鳳翔へ出兵しました！(28日0時2分44秒)
+<BR>・<font color=blue>【支配】</font>[937年05月]星組のIRISHは潭州を支配しました。(28日0時2分1秒)
+<BR>・5月:星組のaaaは福州へ出兵しました！(27日23時57分1秒)
+<BR>・5月:星組のPARKERは寿州へ出兵しました！(27日23時53分6秒)
+<BR>・<font color=blue>【支配】</font>[937年05月]星組のaaaは杭州を支配しました。(27日23時50分13秒)
+<BR>・5月:星組のIRISHは潭州へ出兵しました！(27日23時48分19秒)
+<BR>・5月:星組のPARKERは荊州へ出兵しました！(27日23時43分14秒)
+<BR>・<font color=blue>【支配】</font>[937年05月]星組のIRISHは成都を支配しました。(27日23時42分51秒)
+<BR>・5月:星組の流水は京兆へ出兵しました！(27日23時42分20秒)
+<BR>・<font color=blue>【支配】</font>[937年05月]星組の流水は開封を支配しました。(27日23時35分54秒)
+<BR>・<font color=green>【引き分け】</font>PARKERと城壁の戦闘は決着がつきませんでした。(開封の城付近)(27日23時34分27秒)
+<BR>・5月:星組のaaaは杭州へ出兵しました！(27日23時33分55秒)
+<BR>・流水『<font color=blue>やりました！</font>』(27日23時32分45秒)
+<BR>・<font color=blue>【勝利】</font>流水は悠@Celebrityを倒しました！(開封の城付近)(27日23時32分45秒)
+<BR>・<font color=green>【引き分け】</font>PARKERと悠@Celebrityの戦闘は決着がつきませんでした。(開封の城付近)(27日23時30分56秒)
+<BR>・<font color=green>【引き分け】</font>流水と悠@Celebrityの戦闘は決着がつきませんでした。(開封の城付近)(27日23時29分11秒)
+<BR>・<font color=green>【引き分け】</font>PARKERと悠@Celebrityの戦闘は決着がつきませんでした。(開封の城付近)(27日23時27分49秒)
+<BR>・5月:星組のIRISHは成都へ出兵しました！(27日23時23分44秒)
+<BR>・<font color=blue>【支配】</font>[937年05月]星組のIRISHは荊州を支配しました。(27日23時18分7秒)
+<BR>・5月:星組のIRISHは荊州へ出兵しました！(27日23時7分37秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと悠@Celebrityの戦闘は決着がつきませんでした。(開封の城付近)(27日23時4分33秒)
+<BR>・5月:星組のPARKERは開封へ出兵しました！(27日23時3分27秒)
+<BR>・5月:星組の流水は開封へ出兵しました！(27日23時2分38秒)
+<BR>・流水『<font color=blue>やりました！</font>』(27日22時53分25秒)
+<BR>・<font color=blue>【勝利】</font>流水はにゃんにゃんを倒しました！(寿州の城付近)(27日22時53分25秒)
+<BR>・<font color=green>【引き分け】</font>にゃんにゃんと城壁の戦闘は決着がつきませんでした。(寿州の城付近)(27日22時50分27秒)
+<BR>・流水『<font color=blue>やりました！</font>』(27日22時49分59秒)
+<BR>・<font color=blue>【勝利】</font>流水はおいらんを倒しました！(寿州の城付近)(27日22時49分59秒)
+<BR>・4月:星組のIRISHは寿州へ出兵しました！(27日22時49分52秒)
+<BR>・<font color=green>【引き分け】</font>おいらんと流水の戦闘は決着がつきませんでした。(寿州の城付近)(27日22時48分2秒)
+<BR>・<font color=green>【引き分け】</font>にゃんにゃんと城壁の戦闘は決着がつきませんでした。(寿州の城付近)(27日22時47分20秒)
+<BR>・流水『<font color=blue>やりました！</font>』(27日22時46分41秒)
+<BR>・<font color=blue>【勝利】</font>流水はねこを倒しました！(寿州の城付近)(27日22時46分41秒)
+<BR>・<font color=green>【引き分け】</font>ねこと流水の戦闘は決着がつきませんでした。(寿州の城付近)(27日22時46分22秒)
+<BR>・<font color=green>【引き分け】</font>にゃんにゃんと城壁の戦闘は決着がつきませんでした。(寿州の城付近)(27日22時44分8秒)
+<BR>・<font color=green>【引き分け】</font>流水とねこの戦闘は決着がつきませんでした。(寿州の城付近)(27日22時43分24秒)
+<BR>・ねこ『<font color=blue>にゃー</font>』(27日22時43分7秒)
+<BR>・<font color=blue>【勝利】</font>ねこは羊を倒しました！(寿州の城付近)(27日22時43分7秒)
+<BR>・<font color=green>【引き分け】</font>おいらんと羊の戦闘は決着がつきませんでした。(寿州の城付近)(27日22時42分40秒)
+<BR>・<font color=green>【引き分け】</font>流水とおいらんの戦闘は決着がつきませんでした。(寿州の城付近)(27日22時40分3秒)
+<BR>・<font color=green>【引き分け】</font>ねこと羊の戦闘は決着がつきませんでした。(寿州の城付近)(27日22時39分57秒)
+<BR>・<font color=yellowgreen>【妨害】</font>羊はねこに妨害行動を行いました。(寿州の城付近)(27日22時39分43秒)
+<BR></TD>
+          </TR>
+        </TBODY>
+      </TABLE>
+</TD>
+    </TR>
+<TR>      <TD colspan=2 bgcolor=#6d614a>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH bgcolor=#F0F0F0>史記</TH></TR><TR>
+<TD bgcolor=#a9987c>・<b><font color=red>【イベント】</font>[963年10月]いなごの大群が畑を襲いました！</b>(11日5時57分19秒)
+<BR>・<b><font color=blue>【支配】</font>[961年04月]星組のIRISHは雷州を支配しました。</b>(9日22時28分16秒)
+<BR>・<b><font color=red>【滅亡】</font>[961年04月]イニシアチブ共和国は滅亡しました。。</b>(9日22時28分16秒)
+<BR>・<b><font color=red>【イベント】</font>[961年04月]洪水がおこりました！各地で被害が出ています！</b>(9日22時0分3秒)
+<BR>・<b><font color=red>【イベント】</font>[960年06月]洪水がおこりました！各地で被害が出ています！</b>(9日12時30分55秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【961年4月】より、イニシアチブ共和国さんへ侵攻しますのでよろしくお願いします（星組君主：IRISHより）</b>(8日21時29分20秒)
+<BR>・<b><font color=blue>【支配】</font>[959年03月]星組のIRISHは広州を支配しました。</b>(8日21時24分32秒)
+<BR>・<b><font color=red>【滅亡】</font>[959年03月]てｓｔは滅亡しました。。</b>(8日21時24分32秒)
+<BR>・<b><font color=blue>【支配】</font>[957年02月]星組のIRISHは夷州を支配しました。</b>(7日20時50分45秒)
+<BR>・<b><font color=red>【滅亡】</font>[957年02月]は滅亡しました。。</b>(7日20時50分45秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【959年3月】より、てｓｔさんへ侵攻させていただきますのでよろしくお願いします。（星組君主：IRISHより）</b>(7日20時27分2秒)
+<BR>・<b><font color=blue>【支配】</font>[957年02月]星組のIRISHは泉州を支配しました。</b>(7日20時17分11秒)
+<BR>・<b><font color=red>【滅亡】</font>[957年02月]泉州は滅亡しました。。</b>(7日20時17分11秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【957年2月】より泉州さんへ侵攻しますのでよろしくお願いします。（星組君主：IRISHより）</b>(6日19時10分31秒)
+<BR>・<b><font color=red>【イベント】</font>[949年10月]洪水がおこりました！各地で被害が出ています！</b>(4日6時50分49秒)
+<BR>・<b><font color=red>【イベント】</font>[946年09月]疫病が流行っているようです。街の人々も苦しんでいます。。</b>(2日15時0分15秒)
+<BR>・<b><font color=red>【イベント】</font>[941年04月]いなごの大群が畑を襲いました！</b>(29日22時5分1秒)
+<BR>・<b><font color=red>【イベント】</font>[938年06月]各町の商店が賑わっています。</b>(28日12時51分19秒)
+<BR>・<b><font color=blue>【支配】</font>[938年03月]星組の流水は敦煌を支配しました。</b>(28日10時7分1秒)
+<BR>・<b><font color=blue>【支配】</font>[937年06月]星組の流水は鳳翔を支配しました。</b>(28日0時31分47秒)
+<BR>・<b><font color=red>【滅亡】</font>[937年06月]テストは滅亡しました。。</b>(28日0時31分47秒)
+<BR>・<b><font color=blue>【支配】</font>[937年06月]星組のIRISHは金陵を支配しました。</b>(28日0時15分28秒)
+<BR>・<b><font color=blue>【支配】</font>[937年06月]星組のaaaは福州を支配しました。</b>(28日0時6分58秒)
+<BR>・<b><font color=blue>【支配】</font>[937年05月]星組のIRISHは潭州を支配しました。</b>(28日0時2分1秒)
+<BR>・<b><font color=blue>【支配】</font>[937年05月]星組のaaaは杭州を支配しました。</b>(27日23時50分13秒)
+<BR>・<b><font color=blue>【支配】</font>[937年05月]星組のIRISHは成都を支配しました。</b>(27日23時42分51秒)
+<BR>・<b><font color=blue>【支配】</font>[937年05月]星組の流水は開封を支配しました。</b>(27日23時35分54秒)
+<BR>・<b><font color=blue>【支配】</font>[937年05月]星組のIRISHは荊州を支配しました。</b>(27日23時18分7秒)
+<BR>・<b><font color=blue>【支配】</font>[937年03月]星組のIRISHは京兆を支配しました。</b>(27日21時54分6秒)
+<BR>・<b><font color=blue>【支配】</font>[937年03月]星組のIRISHは晋陽を支配しました。</b>(27日21時35分24秒)
+<BR>・<b><font color=blue>【支配】</font>[937年03月]星組のIRISHは幽州を支配しました。</b>(27日21時24分10秒)
+<BR>・<b><font color=blue>【支配】</font>[937年03月]星組のIRISHは上京を支配しました。</b>(27日21時5分20秒)
+<BR>・<b><font color=blue>【支配】</font>[937年02月]星組のIRISHは燕京を支配しました。</b>(27日20時40分15秒)
+<BR>・<b><font color=blue>【支配】</font>[937年02月]テストのおいらんは荊州を支配しました。</b>(27日20時38分7秒)
+<BR>・<b><font color=blue>【支配】</font>[937年02月]星組のIRISHは青州を支配しました。</b>(27日20時20分37秒)
+<BR>・<b><font color=blue>【支配】</font>[936年10月]テストのおいらんは京兆を支配しました。</b>(27日16時58分9秒)
+<BR>・<b><font color=blue>【支配】</font>[936年09月]テストのおいらんは幽州を支配しました。</b>(27日15時17分34秒)
+<BR>・<b><font color=blue>【支配】</font>[936年08月]星組のIRISHは幽州を支配しました。</b>(27日14時46分12秒)
+<BR>・<b><font color=blue>【支配】</font>[936年08月]星組のIRISHは京兆を支配しました。</b>(27日14時30分3秒)
+<BR>・<b><font color=blue>【支配】</font>[936年08月]星組のIRISHは荊州を支配しました。</b>(27日14時10分27秒)
+<BR>・<b><font color=blue>【支配】</font>[936年04月]テストのおいらんは鳳翔を支配しました。</b>(27日10時25分18秒)
+<BR>・<b><font color=blue>【支配】</font>[936年03月]テストのねこは荊州を支配しました。</b>(27日9時54分40秒)
+<BR>・<b><font color=blue>【支配】</font>[936年03月]テストのおいらんは成都を支配しました。</b>(27日9時43分27秒)
+<BR>・<b><font color=blue>【支配】</font>[936年03月]テストのねこは京兆を支配しました。</b>(27日9時19分22秒)
+<BR>・<b><font color=blue>【支配】</font>[936年03月]テストのおいらんは潭州を支配しました。</b>(27日9時15分57秒)
+<BR>・<b><font color=blue>【支配】</font>[936年02月]テストのおいらんは金陵を支配しました。</b>(27日8時47分48秒)
+<BR>・<b><font color=blue>【支配】</font>[936年02月]テストのねこは晋陽を支配しました。</b>(27日8時34分31秒)
+<BR>・<b><font color=blue>【支配】</font>[936年02月]テストのねこは幽州を支配しました。</b>(27日8時13分42秒)
+<BR>・<b><font color=blue>【支配】</font>[935年09月]星組のIRISHは幽州を支配しました。</b>(27日4時12分1秒)
+<BR>・<b><font color=blue>【支配】</font>[935年09月]星組のIRISHは晋陽を支配しました。</b>(27日3時39分37秒)
+<BR>・<b><font color=blue>【支配】</font>[935年09月]星組の流水は京兆を支配しました。</b>(27日3時34分46秒)
+<BR>・<b><font color=blue>【支配】</font>[935年08月]星組のIRISHは鳳翔を支配しました。</b>(27日3時8分35秒)
+<BR>・<b><font color=blue>【支配】</font>[935年08月]星組の流水は荊州を支配しました。</b>(27日3時5分52秒)
+<BR>・<b><font color=blue>【支配】</font>[935年08月]星組のIRISHは成都を支配しました。</b>(27日2時45分10秒)
+<BR>・<b><font color=blue>【支配】</font>[935年08月]星組のIRISHは潭州を支配しました。</b>(27日2時26分26秒)
+<BR>・<b><font color=blue>【支配】</font>[935年08月]星組のIRISHは金陵を支配しました。</b>(27日2時10分13秒)
+<BR>・<b><font color=blue>【支配】</font>[934年10月]テストのおいらんは金陵を支配しました。</b>(26日16時55分12秒)
+<BR>・<b><font color=blue>【支配】</font>[934年10月]テストのおいらんは杭州を支配しました。</b>(26日16時25分28秒)
+<BR>・<b><font color=blue>【支配】</font>[934年08月]星組のpantherは金陵を支配しました。</b>(26日14時31分11秒)
+<BR>・<b><font color=blue>【支配】</font>[934年08月]テストのおいらんは青州を支配しました。</b>(26日14時30分10秒)
+<BR>・<b><font color=blue>【支配】</font>[934年07月]星組のpantherは杭州を支配しました。</b>(26日13時34分38秒)
+<BR>・<b><font color=blue>【支配】</font>[934年06月]テストのおいらんは荊州を支配しました。</b>(26日12時1分57秒)
+<BR>・<b><font color=blue>【支配】</font>[934年05月]星組のシークは荊州を支配しました。</b>(26日11時54分17秒)
+<BR>・<b><font color=blue>【支配】</font>[934年03月]テストのねこは燕京を支配しました。</b>(26日9時9分21秒)
+<BR>・<b><font color=blue>【支配】</font>[934年02月]星組の流水は燕京を支配しました。</b>(26日8時51分10秒)
+<BR>・<b><font color=blue>【支配】</font>[934年02月]テストのねこは開封を支配しました。</b>(26日8時26分26秒)
+<BR>・<b><font color=blue>【支配】</font>[934年01月]星組の流水は青州を支配しました。</b>(26日7時59分44秒)
+<BR>・<b><font color=blue>【支配】</font>[933年10月]星組のIRISHは開封を支配しました。</b>(26日4時46分47秒)
+<BR>・<b><font color=blue>【支配】</font>[933年08月]テストの悠@Celebrityは青州を支配しました。</b>(26日2時19分25秒)
+<BR>・<b><font color=blue>【支配】</font>[933年04月]テストのにゃんにゃんは上京を支配しました。</b>(25日22時23分50秒)
+<BR>・<b><font color=red>【滅亡】</font>[933年04月]Strike Noirは滅亡しました。。</b>(25日22時23分50秒)
+<BR>・<b><font color=blue>【支配】</font>[933年03月]テストの悠@Celebrityは燕京を支配しました。</b>(25日21時44分59秒)
+<BR>・<b><font color=blue>【支配】</font>[933年03月]テストのにゃんにゃんは幽州を支配しました。</b>(25日21時36分30秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>ミスですごめんなさい。（テスト君主：ねこより）</b>(25日19時23分33秒)
+<BR>・<b><font color=red>【イベント】</font>[933年01月]いなごの大群が畑を襲いました！</b>(25日19時2分18秒)
+<BR>・<b><font color=red>【イベント】</font>[932年01月]いなごの大群が畑を襲いました！</b>(25日7時9分35秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【933年7月】より　テストさんに侵攻いたしますのでよろしくお願いします。（星組君主：IRISHより）</b>(25日1時8分0秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【933年3月】よりstrike noirさんに侵攻させていただきます（テスト君主：ねこより）</b>(24日20時8分37秒)
+<BR>・<b><font color=red>【イベント】</font>[928年06月]いなごの大群が畑を襲いました！</b>(23日13時34分55秒)
+<BR>・<b><font color=red>【イベント】</font>[924年11月]いなごの大群が畑を襲いました！</b>(21日17時18分23秒)
+<BR>・<b><font color=red>【イベント】</font>[917年03月]大地震がおこりました！</b>(17日21時18分29秒)
+<BR>・<b><font color=blown>【反乱】</font>[915年02月]開封で悠@Celebrityが反乱をおこしました。</b>(16日20時24分44秒)
+<BR>・<b><font color=blown>【反乱】</font>[913年04月]開封で悠@Celebrityが反乱をおこしました。</b>(15日22時24分27秒)
+<BR>・<b><font color=blown>【反乱】</font>[911年04月]荊州で悠@Celebrityが反乱をおこしました。</b>(15日0時1分28秒)
+<BR>・<b><font color=blue>【支配】</font>[909年11月]テストの悠@Celebrityは福州を支配しました。</b>(14日6時38分44秒)
+<BR>・<b><font color=blue>【支配】</font>[908年06月]テストの悠@Celebrityは杭州を支配しました。</b>(13日12時37分59秒)
+<BR>・<b><font color=red>【イベント】</font>[906年07月]今年は豊作になりそうです。</b>(12日13時14分23秒)
+<BR>・<b><font color=red>【イベント】</font>[906年06月]今年は豊作になりそうです。</b>(12日12時26分31秒)
+<BR>・<b><font color=blue>【支配】</font>[901年11月]テストのねこは晋陽を支配しました。</b>(10日5時52分42秒)
+<BR>・<b><font color=red>【滅亡】</font>[901年11月]エクスカリパーは滅亡しました。。</b>(10日5時52分42秒)
+<BR>・<b><font color=blue>【支配】</font>[901年09月]テストのにゃんにゃんは鳳翔を支配しました。</b>(10日4時19分52秒)
+<BR>・<b><font color=blue>【支配】</font>[901年09月]テストのにゃんにゃんは京兆を支配しました。</b>(10日3時45分58秒)
+<BR>・<b><font color=blue>【支配】</font>[901年08月]テストのにゃんにゃんは荊州を支配しました。</b>(10日3時2分34秒)
+<BR>・<b><font color=blue>【支配】</font>[901年08月]テストのねこは開封を支配しました。</b>(10日2時57分35秒)
+<BR>・<b><font color=blue>【支配】</font>[901年06月]エクスカリパーの悠@Celebrityは荊州を支配しました。</b>(10日0時29分23秒)
+<BR>・<b><font color=blue>【支配】</font>[901年05月]エクスカリパーの悠@Celebrityは開封を支配しました。</b>(9日23時48分59秒)
+<BR>・<b><font color=blue>【支配】</font>[901年05月]テストのにゃんにゃんは成都を支配しました。</b>(9日23時46分36秒)
+<BR>・<b><font color=blue>【支配】</font>[901年03月]エクスカリパーの悠@Celebrityは鳳翔を支配しました。</b>(9日21時50分45秒)
+<BR>・<b><font color=blue>【支配】</font>[901年03月]星組のIRISHは青州を支配しました。</b>(9日21時45分6秒)
+<BR>・<b><font color=blue>【支配】</font>[901年02月]エクスカリパーの悠@Celebrityは成都を支配しました。</b>(9日20時47分38秒)
+<BR></TD>
+          </TR>
+        </TBODY>
+      </TABLE>
+</TD>
+    </TR>
+  </TBODY>
+</TABLE>
+※街にカーソルを合わせると街の名前が表示されます。
+<p>
+2014/12/11/(Thu) 19:00:22
+<CENTER><HR SIZE=0>
+<font color=998877>十国志NET </font><font size=1 color=998877>テスト期</font> <font color=998877>ver.0.62fix</font><br>
+<font color=998877>ADMINISTARTOR liiu </font><a href="http://lunadraco.sakura.ne.jp/sangokuframe/index.cgi">GAME TOP</a><br>
+<font color=998877>三国志NET ver.2.80 </font><a href="http://www3.to/maccyu2/" target="_top">maccyu</a><br>
+<a href="http://ayfreenet.web.infoseek.co.jp/" target="_blank">HOMEPAGE GARO</a>
+</body></html>

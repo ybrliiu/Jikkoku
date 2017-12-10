@@ -1,0 +1,338 @@
+
+<html>
+<head>
+<meta name="description" content="バトルマップ上で戦う三国志NET。">
+<meta name="keywords" content="十国志NET,三国志NET,ブラウザゲーム,オンラインゲーム,CGIゲーム,無料">
+<link rel="shortcut icon" href="../favicon.ico" >
+<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>十国志NET</title>
+<link rel="stylesheet" href="../js/base.css">
+
+<link rel="stylesheet" href="./tt.css">
+<STYLE type="text/css">
+<!--
+BODY,TR,TD,TH,FORM { font-family : "ＭＳ ゴシック"; font-size: 9pt; }
+a{ text-decoration:none;}
+a:link.mikata { color: blue; font-size: 9pt }
+a:link.enemy { color: red; font-size: 9pt }
+a:link#mikata { color: blue; font-size: 9pt }
+a:link#enemy { color: red; font-size: 9pt }
+a:link    { color: #4682B4 }
+a:visited { color: #4682B4 }
+a:hover   { color: #FFFF00 }
+a:active  { color: #00FF00 }
+.S1 {color:#fff; border-style: double; border-width: 3px;BACKGROUND: #633;}
+
+.dmg { color: #FF0000; font-size: 18pt }
+.clit { color: #0000FF; font-size: 18pt }
+#small { font-size: xx-small; }
+.bmj { color: #000000; font-size: 5pt }
+.r { color: #FF4444; font-size: 10pt }
+.b { color: #4444DD; font-size: 10pt }
+.s { color: #44AAEE; font-size: 10pt }
+.g { color: #44DD44; font-size: 10pt }
+.o { color: #EEAA44; font-size: 10pt }
+-->
+</STYLE>
+
+</head>
+<body background="../image/o.gif" bgcolor="#E0E088" text="" link="#CCAA88" vlink="#AA8855" alink="#AA8855" leftmargin="0" marginwidth="0" marginheight="0">
+
+<TABLE bgcolor=#6d614a width=100% border="0">
+  <TBODY>
+    <TR>
+      <TD bgcolor=#F0F0F0 width=50% valign=top>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH><font color=#444444><font size=4>十国志NET</font> <BR>- 大 陸 地 図 -</font></TH>
+          </TR>
+        </TBODY>
+      </TABLE>
+      <TABLE bgcolor=#F0F0F0 background="../image/mapbg.gif" width=100% height=5 border="0" cellspacing=1>
+        <TBODY>
+          <TR>
+            <TD width=20 bgcolor=#F0F0F0>-</TD>
+<TD width=20 bgcolor=#D0C088>1</TD><TD width=20 bgcolor=#D0C088>2</TD><TD width=20 bgcolor=#D0C088>3</TD><TD width=20 bgcolor=#D0C088>4</TD><TD width=20 bgcolor=#D0C088>5</TD><TD width=20 bgcolor=#D0C088>6</TD><TD width=20 bgcolor=#D0C088>7</TD><TD width=20 bgcolor=#D0C088>8</TD><TD width=20 bgcolor=#D0C088>9</TD><TD width=20 bgcolor=#D0C088>10</TD></TR><TR><TD bgcolor=#C0C088>1</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="上京【D.D.D】"><font color="#000000">上京</font><br><img src="../image/m_4.gif" title="上京【D.D.D】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>2</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="晋陽【D.D.D】"><font color="#000000">晋陽</font><br><img src="../image/m_4.gif" title="晋陽【D.D.D】"></p></div></TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="幽州【D.D.D】"><font color="#000000">幽州</font><br><img src="../image/m_4.gif" title="幽州【D.D.D】"></p></div></TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="燕京【D.D.D】"><font color="#000000">燕京</font><br><img src="../image/m_4.gif" title="燕京【D.D.D】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>3</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="敦煌【D.D.D】"><font color="#000000">敦煌</font><br><img src="../image/m_4.gif" title="敦煌【D.D.D】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="京兆【D.D.D】"><font color="#000000">京兆</font><br><img src="../image/m_4.gif" title="京兆【D.D.D】"></p></div></TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="開封【D.D.D】"><font color="#000000">開封</font><br><img src="../image/m_4.gif" title="開封【D.D.D】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="青州【D.D.D】"><font color="#000000">青州</font><br><img src="../image/m_4.gif" title="青州【D.D.D】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>4</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="鳳翔【D.D.D】"><font color="#000000">鳳翔</font><br><img src="../image/m_4.gif" title="鳳翔【D.D.D】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="荊州【D.D.D】"><font color="#000000">荊州</font><br><img src="../image/m_4.gif" title="荊州【D.D.D】"></p></div></TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="寿州【D.D.D】"><font color="#000000">寿州</font><br><img src="../image/m_4.gif" title="寿州【D.D.D】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>5</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="成都【D.D.D】"><font color="#000000">成都</font><br><img src="../image/m_4.gif" title="成都【D.D.D】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="金陵【D.D.D】"><font color="#000000">金陵</font><br><img src="../image/m_4.gif" title="金陵【D.D.D】"></p></div></TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="杭州【D.D.D】"><font color="#000000">杭州</font><br><img src="../image/m_4.gif" title="杭州【D.D.D】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>6</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="潭州【D.D.D】"><font color="#000000">潭州</font><br><img src="../image/m_4.gif" title="潭州【D.D.D】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="福州【D.D.D】"><font color="#000000">福州</font><br><img src="../image/m_4.gif" title="福州【D.D.D】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="夷州【D.D.D】"><font color="#000000">夷州</font><br><img src="../image/m_4.gif" title="夷州【D.D.D】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>7</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="広州【D.D.D】"><font color="#000000">広州</font><br><img src="../image/m_4.gif" title="広州【D.D.D】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="泉州【D.D.D】"><font color="#000000">泉州</font><br><img src="../image/m_4.gif" title="泉州【D.D.D】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>8</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>9</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>10</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR>        </TBODY>
+      </TABLE>
+      </TD>
+      <TD bgcolor=#6d614a>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH bgcolor=#F0F0F0>MAP LOG</TH></TR><TR>
+<TD bgcolor=#a9987c>・<font color=#FFFF00>【統一】</font>[892年11月]大陸はD.D.Dによって統一されました！(22日0時26分2秒)
+<BR>・<font color=blue>【支配】</font>[892年11月]D.D.Dの流水は雷州を支配しました。(22日0時26分2秒)
+<BR>・<font color=red>【滅亡】</font>[892年11月]バルスは滅亡しました。。(22日0時26分2秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(22日0時23分58秒)
+<BR>・10月:D.D.Dの流水は雷州に入城しました！(22日0時18分31秒)
+<BR>・<font color=red>【イベント】</font>[892年08月]各町の商店が賑わっています。(22日0時2分36秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(21日23時12分48秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(21日21時25分17秒)
+<BR>・12月:D.D.Dの流水は雷州へ向けて出城しました！(21日21時25分17秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(21日19時9分21秒)
+<BR>・<font color=blue>【支配】</font>[891年03月]D.D.Dの流水は敦煌を支配しました。(20日23時59分30秒)
+<BR>・<font color=red>【滅亡】</font>[891年03月]は滅亡しました。。(20日23時59分30秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(20日23時56分20秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(20日23時53分28秒)
+<BR>・2月:D.D.Dの流水は敦煌に入城しました！(20日23時26分59秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(20日23時4分48秒)
+<BR>・12月:D.D.Dの流水は敦煌へ向けて出城しました！(20日23時4分48秒)
+<BR>・<font color=blue>【支配】</font>[890年09月]D.D.Dのクラスティは夷州を支配しました。(20日22時1分18秒)
+<BR>・<font color=red>【滅亡】</font>[890年09月]パルスは滅亡しました。。(20日22時1分18秒)
+<BR>・9月:D.D.Dのクラスティは夷州に入城しました！(20日21時43分30秒)
+<BR>・8月:D.D.Dのクラスティは夷州へ向けて出城しました！(20日21時23分16秒)
+<BR>・<font color=blue>【支配】</font>[890年07月]D.D.Dのクラスティは泉州を支配しました。(20日21時11分9秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(20日21時3分22秒)
+<BR>・6月:D.D.Dのこおりは泉州へ向けて出城しました！(20日20時58分26秒)
+<BR>・6月:D.D.Dのクラスティは泉州に入城しました！(20日20時55分48秒)
+<BR>・6月:D.D.Dのこおりは福州に入城しました！(20日20時52分12秒)
+<BR>・6月:D.D.Dのこおりは福州へ向けて出城しました！(20日20時46分6秒)
+<BR>・5月:D.D.Dのクラスティは泉州へ向けて出城しました！(20日20時45分8秒)
+<BR>・5月:D.D.Dの流水は杭州に入城しました！(20日20時40分15秒)
+<BR>・<font color=blue>【支配】</font>[890年05月]D.D.Dのこおりは杭州を支配しました。(20日20時39分36秒)
+<BR>・<font color=blue>【支配】</font>[890年05月]D.D.Dのクラスティは福州を支配しました。(20日20時38分28秒)
+<BR>・5月:D.D.Dのこおりは杭州に入城しました！(20日20時31分10秒)
+<BR>・5月:D.D.Dのクラスティは福州に入城しました！(20日20時27分39秒)
+<BR>・5月:D.D.Dのこおりは杭州へ向けて出城しました！(20日20時24分52秒)
+<BR>・5月:D.D.Dの流水は杭州へ向けて出城しました！(20日20時21分4秒)
+<BR>・4月:D.D.Dのこおりは金陵に入城しました！(20日20時18分59秒)
+<BR>・4月:D.D.Dのこおりは福州へ向けて出城しました！(20日20時18分42秒)
+<BR>・<font color=blue>【支配】</font>[890年04月]D.D.Dの流水は寿州を支配しました。(20日20時16分33秒)
+<BR>・4月:D.D.Dの流水は寿州に入城しました！(20日20時12分28秒)
+<BR>・<font color=blue>【支配】</font>[890年04月]D.D.Dのこおりは金陵を支配しました。(20日20時12分18秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(20日20時9分56秒)
+<BR>・4月:D.D.Dのクラスティは福州へ向けて出城しました！(20日20時6分56秒)
+<BR>・1月:D.D.Dの流水は寿州へ向けて出城しました！(20日19時53分2秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(20日19時46分34秒)
+<BR>・12月:D.D.Dのクラスティは金陵に入城しました！(20日19時23分10秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(20日0時58分10秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(20日0時55分39秒)
+<BR>・12月:D.D.Dのクラスティは金陵へ向けて出城しました！(20日0時54分44秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(20日0時53分11秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(20日0時50分12秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(20日0時47分3秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(20日0時44分5秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(20日0時41分40秒)
+<BR>・12月:D.D.Dのクラスティは荊州に入城しました！(20日0時41分19秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(20日0時39分20秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(20日0時37分10秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(20日0時35分1秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(20日0時31分14秒)
+<BR>・11月:D.D.Dの流水は晋陽に入城しました！(20日0時30分54秒)
+<BR>・11月:D.D.Dの流水は開封へ向けて出城しました！(20日0時29分10秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(20日0時29分2秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(20日0時26分43秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(20日0時24分28秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(20日0時22分8秒)
+<BR>・10月:D.D.Dのこおりは金陵に入城しました！(20日0時15分16秒)
+<BR>・<font color=blue>【支配】</font>[889年10月]D.D.Dの流水は晋陽を支配しました。(20日0時14分51秒)
+<BR>・10月:D.D.Dの流水は晋陽に入城しました！(20日0時8分46秒)
+<BR>・9月:D.D.Dのクラスティは荊州へ向けて出城しました！(20日0時1分16秒)
+<BR>・9月:D.D.Dの流水は晋陽へ向けて出城しました！(20日0時1分16秒)
+<BR>・<font color=blue>【支配】</font>[889年09月]D.D.Dの流水は幽州を支配しました。(19日23時59分0秒)
+<BR>・9月:D.D.Dのこおりは金陵へ向けて出城しました！(19日23時58分8秒)
+<BR>・9月:D.D.Dの流水は幽州に入城しました！(19日23時51分28秒)
+<BR>・<font color="#ff6600"><b>【宣戦布告】</b></font>D.D.Dはバルスへ宣戦布告を行いました！　「再度お相手よろしくお願いします。」　開戦時間:892年10月（D.D.D君主：クラスティより）(19日23時44分4秒)
+<BR>・9月:D.D.Dのこおりは荊州に入城しました！(19日23時43分50秒)
+<BR>・<font color=blue>【支配】</font>[889年09月]D.D.Dのクラスティは広州を支配しました。(19日23時42分30秒)
+<BR>・8月:D.D.Dの流水は幽州へ向けて出城しました！(19日23時40分23秒)
+<BR>・<font color=blue>【支配】</font>[889年08月]D.D.Dの流水は上京を支配しました。(19日23時32分32秒)
+<BR>・8月:D.D.Dのクラスティは広州に入城しました！(19日23時27分9秒)
+<BR>・8月:D.D.Dのこおりは荊州へ向けて出城しました！(19日23時24分37秒)
+<BR>・8月:D.D.Dのこおりは成都に入城しました！(19日23時20分32秒)
+<BR>・7月:D.D.Dのこおりは潭州へ向けて出城しました！(19日23時20分6秒)
+<BR>・7月:D.D.Dの流水は上京に入城しました！(19日23時16分49秒)
+<BR>・7月:D.D.Dのクラスティは広州へ向けて出城しました！(19日23時13分20秒)
+<BR>・<font color=blue>【支配】</font>[889年07月]D.D.Dのクラスティは潭州を支配しました。(19日23時3分13秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(19日23時0分19秒)
+<BR>・6月:D.D.Dの流水は上京へ向けて出城しました！(19日22時59分54秒)
+<BR>・6月:D.D.Dのクラスティは潭州に入城しました！(19日22時58分31秒)
+<BR>・5月:D.D.Dのクラスティは潭州へ向けて出城しました！(19日22時42分49秒)
+<BR>・城壁『<font color=red>死ぬ・・・。マジで、死ぬ・・・</font>』(19日22時36分41秒)
+<BR>・<font color=#ff0000>【敗北】</font>こおりは城壁に敗北しました。(金陵の城付近)(19日22時36分41秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日22時34分36秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日22時32分25秒)
+<BR>・<font color=blue>【支配】</font>[889年05月]D.D.Dの流水は青州を支配しました。(19日22時30分46秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日22時28分34秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日22時26分27秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日22時23分1秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日22時19分18秒)
+<BR>・4月:D.D.Dの流水は青州に入城しました！(19日22時18分33秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日22時16分56秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日22時14分27秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日22時11分6秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日22時8分58秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日22時6分52秒)
+<BR>・<font color=000088><B>【建国】</B></font>アルスラーンがバルスを建国しました。(19日22時5分52秒)
+<BR>・3月:D.D.Dの流水は青州へ向けて出城しました！(19日22時4分18秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日22時2分28秒)
+<BR>・<font color=blue>【支配】</font>[889年03月]D.D.Dの流水は燕京を支配しました。(19日22時1分16秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日21時59分54秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日21時56分35秒)
+<BR>・3月:D.D.Dの流水は燕京に入城しました！(19日21時56分23秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日21時52分56秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日21時48分21秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日21時45分28秒)
+<BR>・2月:D.D.Dの流水は燕京へ向けて出城しました！(19日21時43分40秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(金陵の城付近)(19日21時43分5秒)
+<BR>・<font color=blue>【支配】</font>[889年02月]D.D.Dの流水は開封を支配しました。(19日21時40分22秒)
+<BR>・2月:D.D.Dの流水は開封に入城しました！(19日21時32分0秒)
+<BR>・2月:D.D.Dのこおりは金陵に入城しました！(19日21時26分33秒)
+<BR>・1月:D.D.Dの流水は開封へ向けて出城しました！(19日21時18分37秒)
+<BR>・<font color=blue>【支配】</font>[889年01月]D.D.Dの流水は京兆を支配しました。(19日21時16分23秒)
+<BR>・1月:D.D.Dの流水は京兆に入城しました！(19日21時12分15秒)
+<BR>・1月:D.D.Dのこおりは金陵へ向けて出城しました！(19日21時11分43秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(19日21時1分54秒)
+<BR>・<font color=blue>【支配】</font>[888年12月]D.D.Dのこおりは荊州を支配しました。(19日21時1分39秒)
+<BR>・12月:D.D.Dの流水は京兆へ向けて出城しました！(19日20時59分44秒)
+<BR>・<font color=blue>【支配】</font>[888年12月]D.D.Dの流水は鳳翔を支配しました。(19日20時53分26秒)
+<BR>・12月:D.D.Dのこおりは荊州に入城しました！(19日20時52分16秒)
+<BR>・12月:D.D.Dの流水は鳳翔に入城しました！(19日20時46分44秒)
+<BR>・12月:アルスラーンは下野しました。(19日20時45分41秒)
+<BR>・10月:D.D.Dの流水は鳳翔へ向けて出城しました！(19日20時19分51秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(19日19時44分27秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(18日23時54分59秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(18日21時16分13秒)
+<BR>・3月:D.D.Dのこおりは荊州へ向けて出城しました！(18日19時55分50秒)
+<BR>・3月:D.D.Dのこおりは成都に入城しました！(18日19時51分59秒)
+<BR>・3月:D.D.Dのこおりは潭州へ向けて出城しました！(18日19時50分36秒)
+<BR>・1月:D.D.Dのこおりは成都に入城しました！(18日19時43分46秒)
+<BR>・1月:D.D.Dのこおりは荊州へ向けて出城しました！(18日19時42分57秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(18日19時41分27秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(17日23時31分23秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(17日21時1分46秒)
+<BR>・<font color="#ff6600"><b>【宣戦布告】</b></font>D.D.Dはパルスへ宣戦布告を行いました！　「お相手よろしくお願いします。」　開戦時間:888年11月（D.D.D君主：クラスティより）(17日20時10分19秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(17日19時14分31秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(16日23時11分14秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(16日21時17分47秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(16日19時2分2秒)
+<BR>・こおりはD.D.Dに寝返りました。(16日0時17分8秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(15日23時4分21秒)
+<BR>・流水はD.D.Dに寝返りました。(15日22時46分18秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(15日21時0分35秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(15日19時4分20秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(14日23時40分51秒)
+<BR>・<font color=blue>【支配】</font>[881年12月]パルスの流水は夷州を支配しました。(14日23時1分48秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(夷州の城付近)(14日22時59分31秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(夷州の城付近)(14日22時56分43秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(夷州の城付近)(14日22時52分57秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(夷州の城付近)(14日22時50分56秒)
+<BR>・9月:パルスの流水は夷州に入城しました！(14日22時38分40秒)
+<BR>・8月:パルスの流水は夷州へ向けて出城しました！(14日21時42分41秒)
+<BR>・<font color=blue>【支配】</font>[881年08月]パルスの流水は泉州を支配しました。(14日21時39分44秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(泉州の城付近)(14日21時36分59秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(泉州の城付近)(14日21時34分22秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(泉州の城付近)(14日21時31分34秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(泉州の城付近)(14日21時29分11秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(泉州の城付近)(14日21時27分9秒)
+<BR>・7月:パルスの流水は泉州に入城しました！(14日21時15分45秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(14日21時3分24秒)
+<BR>・6月:パルスの流水は泉州へ向けて出城しました！(14日21時3分24秒)
+<BR>・<font color=blue>【支配】</font>[881年05月]パルスの流水は福州を支配しました。(14日20時26分6秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(福州の城付近)(14日20時23分54秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(福州の城付近)(14日20時21分11秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(福州の城付近)(14日20時18分24秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(福州の城付近)(14日20時15分36秒)
+<BR>・4月:パルスの流水は福州に入城しました！(14日20時5分13秒)
+<BR>・3月:パルスの流水は福州へ向けて出城しました！(14日20時0分21秒)
+<BR>・<font color=blue>【支配】</font>[881年03月]パルスのこおりは広州を支配しました。(14日20時0分6秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(広州の城付近)(14日19時57分56秒)
+<BR>・<font color=blue>【支配】</font>[881年03月]パルスの流水は杭州を支配しました。(14日19時57分54秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(広州の城付近)(14日19時54分1秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(14日19時53分39秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(14日19時51分35秒)
+<BR>・<font color=green>【引き分け】</font>こおりと城壁の戦闘は決着がつきませんでした。(広州の城付近)(14日19時50分52秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(14日19時48分44秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(14日19時45分51秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(14日19時43分48秒)
+<BR>・2月:パルスの流水は杭州に入城しました！(14日19時34分37秒)
+<BR>・2月:パルスのこおりは広州に入城しました！(14日19時34分13秒)
+<BR>・1月:パルスのこおりは広州へ向けて出城しました！(14日19時19分26秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(14日19時13分0秒)
+<BR>・12月:パルスの流水は杭州へ向けて出城しました！(14日0時59分43秒)
+<BR>・<font color=blue>【支配】</font>[880年10月]パルスの流水は開封を支配しました。(14日0時23分24秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(開封の城付近)(14日0時19分47秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(開封の城付近)(14日0時13分44秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(開封の城付近)(14日0時11分31秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(開封の城付近)(14日0時2分10秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(開封の城付近)(14日0時0分10秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(開封の城付近)(13日23時57分50秒)
+<BR>・9月:パルスの流水は開封に入城しました！(13日23時49分44秒)
+<BR>・8月:パルスの流水は開封へ向けて出城しました！(13日23時30分58秒)
+<BR>・7月:パルスの流水は京兆に入城しました！(13日23時20分12秒)
+<BR></TD>
+          </TR>
+        </TBODY>
+      </TABLE>
+</TD>
+    </TR>
+<TR>      <TD colspan=2 bgcolor=#6d614a>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH bgcolor=#F0F0F0>史記</TH></TR><TR>
+<TD bgcolor=#a9987c>・<b><font color=#FFFF00>【統一】</font>[892年11月]大陸はD.D.Dによって統一されました！</b>(22日0時26分2秒)
+<BR>・<b><font color=blue>【支配】</font>[892年11月]D.D.Dの流水は雷州を支配しました。</b>(22日0時26分2秒)
+<BR>・<b><font color=red>【滅亡】</font>[892年11月]バルスは滅亡しました。。</b>(22日0時26分2秒)
+<BR>・<b><font color=red>【イベント】</font>[892年08月]各町の商店が賑わっています。</b>(22日0時2分36秒)
+<BR>・<b><font color=blue>【支配】</font>[891年03月]D.D.Dの流水は敦煌を支配しました。</b>(20日23時59分30秒)
+<BR>・<b><font color=red>【滅亡】</font>[891年03月]は滅亡しました。。</b>(20日23時59分30秒)
+<BR>・<b><font color=blue>【支配】</font>[890年09月]D.D.Dのクラスティは夷州を支配しました。</b>(20日22時1分18秒)
+<BR>・<b><font color=red>【滅亡】</font>[890年09月]パルスは滅亡しました。。</b>(20日22時1分18秒)
+<BR>・<b><font color=blue>【支配】</font>[890年07月]D.D.Dのクラスティは泉州を支配しました。</b>(20日21時11分9秒)
+<BR>・<b><font color=blue>【支配】</font>[890年05月]D.D.Dのこおりは杭州を支配しました。</b>(20日20時39分36秒)
+<BR>・<b><font color=blue>【支配】</font>[890年05月]D.D.Dのクラスティは福州を支配しました。</b>(20日20時38分28秒)
+<BR>・<b><font color=blue>【支配】</font>[890年04月]D.D.Dの流水は寿州を支配しました。</b>(20日20時16分33秒)
+<BR>・<b><font color=blue>【支配】</font>[890年04月]D.D.Dのこおりは金陵を支配しました。</b>(20日20時12分18秒)
+<BR>・<b><font color=blue>【支配】</font>[889年10月]D.D.Dの流水は晋陽を支配しました。</b>(20日0時14分51秒)
+<BR>・<b><font color=blue>【支配】</font>[889年09月]D.D.Dの流水は幽州を支配しました。</b>(19日23時59分0秒)
+<BR>・<b><font color="#ff6600"><b>【宣戦布告】</b></font>D.D.Dはバルスへ宣戦布告を行いました！　「再度お相手よろしくお願いします。」　開戦時間:892年10月（D.D.D君主：クラスティより））</b>(19日23時44分4秒)
+<BR>・<b><font color=blue>【支配】</font>[889年09月]D.D.Dのクラスティは広州を支配しました。</b>(19日23時42分30秒)
+<BR>・<b><font color=blue>【支配】</font>[889年08月]D.D.Dの流水は上京を支配しました。</b>(19日23時32分32秒)
+<BR>・<b><font color=blue>【支配】</font>[889年07月]D.D.Dのクラスティは潭州を支配しました。</b>(19日23時3分13秒)
+<BR>・<b><font color=blue>【支配】</font>[889年05月]D.D.Dの流水は青州を支配しました。</b>(19日22時30分46秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[889年04月]アルスラーンがバルスを建国しました。</b>(19日22時5分52秒)
+<BR>・<b><font color=blue>【支配】</font>[889年03月]D.D.Dの流水は燕京を支配しました。</b>(19日22時1分16秒)
+<BR>・<b><font color=blue>【支配】</font>[889年02月]D.D.Dの流水は開封を支配しました。</b>(19日21時40分22秒)
+<BR>・<b><font color=blue>【支配】</font>[889年01月]D.D.Dの流水は京兆を支配しました。</b>(19日21時16分23秒)
+<BR>・<b><font color=blue>【支配】</font>[888年12月]D.D.Dのこおりは荊州を支配しました。</b>(19日21時1分39秒)
+<BR>・<b><font color=blue>【支配】</font>[888年12月]D.D.Dの流水は鳳翔を支配しました。</b>(19日20時53分26秒)
+<BR>・<b><font color="#ff6600"><b>【宣戦布告】</b></font>D.D.Dはパルスへ宣戦布告を行いました！　「お相手よろしくお願いします。」　開戦時間:888年11月（D.D.D君主：クラスティより））</b>(17日20時10分19秒)
+<BR>・<b><font color=blue>【支配】</font>[881年12月]パルスの流水は夷州を支配しました。</b>(14日23時1分48秒)
+<BR>・<b><font color=blue>【支配】</font>[881年08月]パルスの流水は泉州を支配しました。</b>(14日21時39分44秒)
+<BR>・<b><font color=blue>【支配】</font>[881年05月]パルスの流水は福州を支配しました。</b>(14日20時26分6秒)
+<BR>・<b><font color=blue>【支配】</font>[881年03月]パルスのこおりは広州を支配しました。</b>(14日20時0分6秒)
+<BR>・<b><font color=blue>【支配】</font>[881年03月]パルスの流水は杭州を支配しました。</b>(14日19時57分54秒)
+<BR>・<b><font color=blue>【支配】</font>[880年10月]パルスの流水は開封を支配しました。</b>(14日0時23分24秒)
+<BR>・<b><font color=blue>【支配】</font>[880年07月]パルスのこおりは潭州を支配しました。</b>(13日23時14分33秒)
+<BR>・<b><font color=red>【イベント】</font>[880年06月]今年は豊作になりそうです。</b>(13日22時41分43秒)
+<BR>・<b><font color=blue>【支配】</font>[880年05月]パルスの流水は晋陽を支配しました。</b>(13日22時33分36秒)
+<BR>・<b><font color=blue>【支配】</font>[880年02月]パルスの流水は幽州を支配しました。</b>(13日21時37分52秒)
+<BR>・<b><font color=blue>【支配】</font>[879年12月]パルスの流水は上京を支配しました。</b>(13日20時49分34秒)
+<BR>・<b><font color=blue>【支配】</font>[879年11月]パルスのこおりは鳳翔を支配しました。</b>(13日20時44分2秒)
+<BR>・<b><font color=blue>【支配】</font>[879年09月]パルスの流水は燕京を支配しました。</b>(13日19時49分58秒)
+<BR>・<b><font color=blue>【支配】</font>[879年05月]パルスのこおりは京兆を支配しました。</b>(13日0時52分21秒)
+<BR>・<b><font color=blue>【支配】</font>[879年05月]パルスの流水は青州を支配しました。</b>(13日0時42分23秒)
+<BR>・<b><font color=blue>【支配】</font>[879年02月]パルスのこおりは荊州を支配しました。</b>(12日23時30分3秒)
+<BR>・<b><font color=blue>【支配】</font>[879年01月]パルスの流水は寿州を支配しました。</b>(12日23時16分35秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[877年12月]新しくクラスティがD.D.Dを建国しました。</b>(12日18時56分52秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[875年00月]新しくアルスラーンがパルスを建国しました。</b>(10日0時25分24秒)
+<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR></TD>
+          </TR>
+        </TBODY>
+      </TABLE>
+</TD>
+    </TR>
+  </TBODY>
+</TABLE>
+※街にカーソルを合わせると街の名前が表示されます。
+<p>
+2015/04/22/(Wed) 06:53:51
+<CENTER><HR SIZE=0>
+<font color=998877>十国志NET </font><font size=1 color=998877>第4期</font> <font color=998877>ver.0.67</font><br>
+<font color=998877>ADMINISTARTOR liiu </font><a href="http://lunadraco.sakura.ne.jp/sangokuframe/index.cgi">GAME TOP</a><br>
+<font color=998877>三国志NET ver.2.80 </font><a href="http://www3.to/maccyu2/" target="_top">maccyu</a><br>
+<a href="http://ayfreenet.web.infoseek.co.jp/" target="_blank">HOMEPAGE GARO</a>
+</body></html>

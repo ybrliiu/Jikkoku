@@ -1,0 +1,90 @@
+
+<html>
+<head>
+<meta name="description" content="バトルマップ上で戦う三国志NET。">
+<meta name="keywords" content="三国志NET,ブラウザゲーム,オンラインゲーム,CGIゲーム,無料">
+<link rel="shortcut icon" href="./favicon.ico" >
+<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>十国志NET</title>
+<link rel="stylesheet" href="../js/base.css">
+
+<STYLE type="text/css">
+<!--
+BODY,TR,TD,TH,FORM { font-family : "ＭＳ ゴシック"; font-size: 9pt; }
+a{ text-decoration:none;}
+a:link.mikata { color: blue; font-size: 9pt }
+a:link.enemy { color: red; font-size: 9pt }
+a:link#mikata { color: blue; font-size: 9pt }
+a:link#enemy { color: red; font-size: 9pt }
+a:link    { color: #4682B4 }
+a:visited { color: #4682B4 }
+a:hover   { color: #FFFF00 }
+a:active  { color: #00FF00 }
+.S1 {color:#fff; border-style: double; border-width: 3px;BACKGROUND: #633;}
+
+.dmg { color: #FF0000; font-size: 18pt }
+.clit { color: #0000FF; font-size: 18pt }
+#small { font-size: xx-small; }
+.bmj { color: #000000; font-size: 5pt }
+.r { color: #FF4444; font-size: 10pt }
+.b { color: #4444DD; font-size: 10pt }
+.s { color: #44AAEE; font-size: 10pt }
+.g { color: #44DD44; font-size: 10pt }
+.o { color: #EEAA44; font-size: 10pt }
+-->
+</STYLE>
+<script type="text/javascript" src="./ballon.js"></script>
+</head>
+<body background="../image/o.gif" bgcolor="#E0E088" text="" link="#CCAA88" vlink="#AA8855" alink="#AA8855" leftmargin="0" marginwidth="0" marginheight="0">
+
+
+
+
+<TABLE WIDTH="100%" height=100% bgcolor=#884422>
+  <TBODY>
+    <TR>
+      <TD BGCOLOR=#D0C088 WIDTH=100% height=5>　<font size=4>　　　＜＜<B> 　 - RANKING - 　 </B>＞＞</font></TD>
+    </TR>
+    <TR>
+      <TD bgcolor=#F0F0F0><CENTER>
+<BR>
+<div id="kyasuko" style="position:absolute; display:none; border:solid 2px #00DD00; padding:7px; background-image : url(../image/ballon-back.png); text-align:left;">キャス狐さんのプロフィール:<br><br></div><div id="meemee" style="position:absolute; display:none; border:solid 2px #00DD00; padding:7px; background-image : url(../image/ballon-back.png); text-align:left;">羊さんのプロフィール:<br><br>宜しくお願いします。</div><div id="irish" style="position:absolute; display:none; border:solid 2px #00DD00; padding:7px; background-image : url(../image/ballon-back.png); text-align:left;">IRISHさんのプロフィール:<br><br></div><div id="Buster" style="position:absolute; display:none; border:solid 2px #00DD00; padding:7px; background-image : url(../image/ballon-back.png); text-align:left;">シークさんのプロフィール:<br><br></div><div id="tibi" style="position:absolute; display:none; border:solid 2px #00DD00; padding:7px; background-image : url(../image/ballon-back.png); text-align:left;">aaaさんのプロフィール:<br><br></div><div id="gnin" style="position:absolute; display:none; border:solid 2px #00DD00; padding:7px; background-image : url(../image/ballon-back.png); text-align:left;">PARKERさんのプロフィール:<br><br></div><div id="leon" style="position:absolute; display:none; border:solid 2px #00DD00; padding:7px; background-image : url(../image/ballon-back.png); text-align:left;">流水さんのプロフィール:<br><br></div><div id="panther" style="position:absolute; display:none; border:solid 2px #00DD00; padding:7px; background-image : url(../image/ballon-back.png); text-align:left;">pantherさんのプロフィール:<br><br></div><div id="togetoge" style="position:absolute; display:none; border:solid 2px #00DD00; padding:7px; background-image : url(../image/ballon-back.png); text-align:left;">悠@Celebrityさんのプロフィール:<br><br>ジョセフ・ジョースター！　きさま！　見ているなッ！<br><br></div>
+<TABLE bgcolor=#00DD00 width=60%><TBODY><TR><TD colspan=6 bgcolor=#00DD00 align=center><font color=#DDFFDD size=4><B>星組</font></TD></TR><TR><TH bgcolor=#DDFFDD><font color=#00DD00>君主</TH><TH bgcolor=FFFFFF colspan=2><font size=3 color=#00DD00>IRISH</TH><TD bgcolor=#DDFFDD><font color=#00DD00>武将数</TD><TD bgcolor=#DDFFDD><font color=#00DD00> 9 名</TD><TD bgcolor=#DDFFDD><a href=./ranking.cgi?mode=C_RAN&con_no=4>武将一覧</a></TD></TR>
+<TR><TH bgcolor=#00DD00><font color=#DDFFDD>軍師</TH>
+<TH bgcolor=#DDFFDD><font size=2 color=#00DD00>羊</TH>
+<TH bgcolor=#00DD00><font color=#DDFFDD>宰相</TH>
+<TH bgcolor=#DDFFDD><font size=2 color=#00DD00>シーク</TH>
+<TH bgcolor=#00DD00><font color=#DDFFDD>大将軍</TH>
+<TH bgcolor=#DDFFDD><font size=2 color=#00DD00>流水</TH></TR>
+<TR><TD bgcolor=#DDFFDD><font color=#00DD00>支配都市数</TD><TD colspan=5 bgcolor=#DDFFDD><font color=#00DD00>20都市(晋陽 燕京 開封 寿州 金陵 杭州 福州 潭州 荊州 広州 幽州 鳳翔 成都 敦煌 上京 夷州 雷州 泉州 京兆 青州 )</TD></TR></TBODY></TABLE><BR>
+      <TABLE bgcolor=#00DD00 border="0">
+        <TBODY bgcolor=#DDFFDD>
+<TR><TD></TD><TH>名前</TH><TH>武力</TH><TH>知力</TH><TH>統率力</TH><TH>人望</TH><TH>階級</TH><TH>装備品</TH><TH>削除まで</TH></TR> <TR><TD><img src=../image/302.gif width=64 height=64></TD><TD><a href="javascript:void(0)" onmouseover="balloon_showblock('kyasuko', -15, -15)" onmouseout="hide_block('kyasuko')" what="kyasuko">キャス狐</a></div></div></TD><TD>8</TD><TD>197</TD><TD>53</TD><TD>47</TD><TD>戸部尚書</TD><TD>武器：エクスカリバー(鍬：威力：0<BR>書物：ホライゾン上中下：威力：137.36<BR>防具：プラットフォーム：威力：0</TD><TD><font color=blue>100</font>ターン</TD></TR><TR><TD><img src=../image/307.gif width=64 height=64></TD><TD><a href="javascript:void(0)" onmouseover="balloon_showblock('meemee', -15, -15)" onmouseout="hide_block('meemee')" what="meemee">羊</a></div></div></TD><TD>13</TD><TD>30</TD><TD>63</TD><TD>185</TD><TD>鎮東将軍</TD><TD>武器：火龍玉：威力：2.9<BR>書物：：威力：54.8<BR>防具：錆びた銅の盾：威力：53.28</TD><TD><font color=blue>100</font>ターン</TD></TR><TR><TD><img src=../image/269.gif width=64 height=64></TD><TD><a href="javascript:void(0)" onmouseover="balloon_showblock('irish', -15, -15)" onmouseout="hide_block('irish')" what="irish">IRISH</a></div></div></TD><TD>64</TD><TD>99</TD><TD>116</TD><TD>20</TD><TD>鎮東将軍</TD><TD>武器：黒雛：威力：75.67<BR>書物：超・占事略決：威力：100.85<BR>防具：黒雛：威力：5.2</TD><TD><font color=blue>100</font>ターン</TD></TR><TR><TD><img src=../image/224.gif width=64 height=64></TD><TD><a href="javascript:void(0)" onmouseover="balloon_showblock('Buster', -15, -15)" onmouseout="hide_block('Buster')" what="Buster">シーク</a></div></div></TD><TD>38</TD><TD>148</TD><TD>52</TD><TD>66</TD><TD>建武将軍</TD><TD>武器：狻猊槍：威力：4.9<BR>書物：パタポンドンチャカ：威力：62.7<BR>防具：錆びた鉄の盾：威力：45.825</TD><TD><font color=blue>100</font>ターン</TD></TR><TR><TD><img src=../image/64.gif width=64 height=64></TD><TD><a href="javascript:void(0)" onmouseover="balloon_showblock('tibi', -15, -15)" onmouseout="hide_block('tibi')" what="tibi">aaa</a></div></div></TD><TD>3</TD><TD>162</TD><TD>14</TD><TD>95</TD><TD>安撫設置使</TD><TD>武器：針金：威力：1<BR>書物：紙切れ：威力：45.99<BR>防具：紙の盾：威力：0</TD><TD><font color=blue>100</font>ターン</TD></TR><TR><TD><img src=../image/0.gif width=64 height=64></TD><TD><a href="javascript:void(0)" onmouseover="balloon_showblock('gnin', -15, -15)" onmouseout="hide_block('gnin')" what="gnin">PARKER</a></div></div></TD><TD>122</TD><TD>34</TD><TD>108</TD><TD>18</TD><TD>設置使</TD><TD>武器：狻猊槍：威力：0.8<BR>書物：紙切れ：威力：49.77<BR>防具：錆びた鉄の盾：威力：45.65</TD><TD><font color=blue>100</font>ターン</TD></TR><TR><TD><img src=../image/228.gif width=64 height=64></TD><TD><a href="javascript:void(0)" onmouseover="balloon_showblock('leon', -15, -15)" onmouseout="hide_block('leon')" what="leon">流水</a></div></div></TD><TD>235</TD><TD>6</TD><TD>67</TD><TD>10</TD><TD>進士</TD><TD>武器：針金：威力：11.5<BR>書物：紙切れ：威力：47.32<BR>防具：紙の盾：威力：3.5</TD><TD><font color=blue>100</font>ターン</TD></TR><TR><TD><img src=../image/71.gif width=64 height=64></TD><TD><a href="javascript:void(0)" onmouseover="balloon_showblock('panther', -15, -15)" onmouseout="hide_block('panther')" what="panther">panther</a></div></div></TD><TD>137</TD><TD>87</TD><TD>41</TD><TD>4</TD><TD>禁軍</TD><TD>武器：針金：威力：1.3<BR>書物：紙切れ：威力：20.93<BR>防具：木の板：威力：15.1</TD><TD><font color=blue>100</font>ターン</TD></TR><TR><TD><img src=../image/99.gif width=64 height=64></TD><TD><a href="javascript:void(0)" onmouseover="balloon_showblock('togetoge', -15, -15)" onmouseout="hide_block('togetoge')" what="togetoge">悠@Celebrity</a></div></div></TD><TD>142</TD><TD>22</TD><TD>120</TD><TD>6</TD><TD>知県</TD><TD>武器：日本刀：威力：34.5<BR>書物：だが断る：威力：21.49<BR>防具：鏡の盾：威力：39.725</TD><TD><font color=blue>99</font>ターン</TD></TR> 
+         </TR>
+		<TR><TD bgcolor=#DDFFDD align=center colspan=20><font color=#00DD00>
+		</TD></TR>
+        </TBODY>
+      </TABLE><br><br><br><br><br>
+<div id="you1" style="position:absolute; display:none; border:solid 2px #666666; padding:7px; background-image : url(../image/ballon-back.png); text-align:left;">しゃなななな。さんのプロフィール:<br><br></div><div id="ybrliiu" style="position:absolute; display:none; border:solid 2px #666666; padding:7px; background-image : url(../image/ballon-back.png); text-align:left;">りーう＠管理人さんのプロフィール:<br><br>管理人です。<br></div><div id="kuxexexe" style="position:absolute; display:none; border:solid 2px #666666; padding:7px; background-image : url(../image/ballon-back.png); text-align:left;">はいはいわろすわろすさんのプロフィール:<br><br></div><div id="liiukoku" style="position:absolute; display:none; border:solid 2px #666666; padding:7px; background-image : url(../image/ballon-back.png); text-align:left;">NPCさんのプロフィール:<br><br></div>
+<TABLE bgcolor=#666666 width=60%><TBODY><TR><TD colspan=5 bgcolor=#666666 align=center><font color=#f1f1f1 size=4><B>無所属国</font></TD></TR><TR><TD align=center bgcolor=#f1f1f1><a href=./ranking.cgi?mode=C_RAN&con_no=0>放浪者一覧</a></TD></TR></TBODY></TABLE><BR>
+      <TABLE width=100% bgcolor=#666666 border="0">
+        <TBODY bgcolor=#f1f1f1>
+		<TR><TD bgcolor=#f1f1f1 align=center><font color=#666666><a href="javascript:void(0)" onmouseover="balloon_showblock('you1', -15, -15)" onmouseout="hide_block('you1')" what="you1">しゃなななな。</a></div></div> <a href="javascript:void(0)" onmouseover="balloon_showblock('ybrliiu', -15, -15)" onmouseout="hide_block('ybrliiu')" what="ybrliiu">りーう＠管理人</a></div></div> <a href="javascript:void(0)" onmouseover="balloon_showblock('kuxexexe', -15, -15)" onmouseout="hide_block('kuxexexe')" what="kuxexexe">はいはいわろすわろす</a></div></div> <a href="javascript:void(0)" onmouseover="balloon_showblock('liiukoku', -15, -15)" onmouseout="hide_block('liiukoku')" what="liiukoku">NPC</a></div></div> 
+		</TD></TR>
+        </TBODY>
+      </TABLE><br><br><br><br><br>
+<p>現在総人口 13 名
+<form action="index.cgi" method="post">
+<input type=submit id=input value="メニューに戻る"></form>
+
+      </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<CENTER><HR SIZE=0>
+<font color=998877>十国志NET </font><font size=1 color=998877>テスト期</font> <font color=998877>ver.0.62fix</font><br>
+<font color=998877>ADMINISTARTOR liiu </font><a href="http://lunadraco.sakura.ne.jp/sangokuframe/index.cgi">GAME TOP</a><br>
+<font color=998877>三国志NET ver.2.80 </font><a href="http://www3.to/maccyu2/" target="_top">maccyu</a><br>
+<a href="http://ayfreenet.web.infoseek.co.jp/" target="_blank">HOMEPAGE GARO</a>
+</body></html>

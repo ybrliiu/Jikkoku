@@ -1,0 +1,421 @@
+<html>
+<head>
+
+<link rel="shortcut icon" href="../favicon.ico" >
+<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>十国志NET</title>
+<script src="../js/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="../js/base.css">
+
+
+<STYLE type="text/css">
+<!--
+
+body,tr,td,th,form { font-family : "メイリオ","Yu Gothic","VL Gothic","Ubuntu","monospace"; font-size: 9pt; }
+a{ text-decoration:none;}
+a:link.mikata { color: blue; font-size: 9pt }
+a:link.enemy { color: red; font-size: 9pt }
+a:link#mikata { color: blue; font-size: 9pt }
+a:link#enemy { color: red; font-size: 9pt }
+a:link    { color: #4682B4 }
+a:visited { color: #4682B4 }
+a:hover   { color: #FFFF00 }
+a:active  { color: #00FF00 }
+.S1 {color:#fff; border-style: double; border-width: 3px;BACKGROUND: #633;}
+.dmg { color: #FF0000; font-size: 18pt }
+.clit { color: #0000FF; font-size: 18pt }
+#small { font-size: xx-small; }
+.bmj { color: #000000; font-size: 5pt }
+.r { color: #FF4444; font-size: 10pt }
+.b { color: #4444DD; font-size: 10pt }
+.s { color: #44AAEE; font-size: 10pt }
+.g { color: #44DD44; font-size: 10pt }
+.o { color: #EEAA44; font-size: 10pt }
+#tool-tip{
+  position: relative;
+}
+#tool-tip2{
+  display: none;
+  position: absolute;
+  top: 16px;
+  left: -1px;
+  padding: 5px;
+  width: 170px;
+  background:rgba(000,000,000,0.7);
+  border: solid 1px #a9987c;
+  border-radius:5px;
+  color:#FFFFFF;
+}
+-->
+</STYLE>
+
+</head>
+<body background="../image/o.gif" bgcolor="#E0E088" text="" link="#CCAA88" vlink="#AA8855" alink="#AA8855" leftmargin="0" marginwidth="0" marginheight="0">
+
+<a name="top"></a>
+<script type="text/javascript"><!--
+  $(document).ready(function(){
+
+$("span#tool-tip").hover(
+	function () {
+		$(this).children('span#tool-tip2').show(0);
+	},function () {
+		$(this).children('span#tool-tip2').hide(0);
+	}
+);
+
+});
+--></script>
+
+<TABLE bgcolor=#6d614a width=100% border="0">
+  <TBODY>
+    <TR>
+      <TD bgcolor=#F0F0F0 width=50% valign=top>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH><font color=#444444><font size=4>十国志NET</font> <BR>- 大 陸 地 図 -</font></TH>
+          </TR>
+        </TBODY>
+      </TABLE>
+      <TABLE bgcolor=#F0F0F0 background="../image/mapbg.gif" width=100% height=5 border="0" cellspacing=1>
+        <TBODY>
+          <TR>
+            <TD width=20 bgcolor=#F0F0F0>-</TD>
+<TD width=20 bgcolor=#D0C088>1</TD><TD width=20 bgcolor=#D0C088>2</TD><TD width=20 bgcolor=#D0C088>3</TD><TD width=20 bgcolor=#D0C088>4</TD><TD width=20 bgcolor=#D0C088>5</TD><TD width=20 bgcolor=#D0C088>6</TD><TD width=20 bgcolor=#D0C088>7</TD><TD width=20 bgcolor=#D0C088>8</TD><TD width=20 bgcolor=#D0C088>9</TD><TD width=20 bgcolor=#D0C088>10</TD></TR><TR><TD bgcolor=#C0C088>1</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">上京【落ちこぼれ共和国】</span><font color="#000000">上京</font><br><img src="../image/m_4.gif" title="上京【】"></span></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>2</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">晋陽【落ちこぼれ共和国】</span><font color="#000000">晋陽</font><br><img src="../image/m_4.gif" title="晋陽【落ちこぼれ共和国】"></span></TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">幽州【落ちこぼれ共和国】</span><font color="#000000">幽州</font><br><img src="../image/m_4.gif" title="幽州【落ちこぼれ共和国】"></span></TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">燕京【落ちこぼれ共和国】</span><font color="#000000">燕京</font><br><img src="../image/m_4.gif" title="燕京【落ちこぼれ共和国】"></span></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>3</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">敦煌【落ちこぼれ共和国】</span><font color="#000000">敦煌</font><br><img src="../image/m_4.gif" title="敦煌【落ちこぼれ共和国】"></span></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">京兆【落ちこぼれ共和国】</span><font color="#000000">京兆</font><br><img src="../image/m_4.gif" title="京兆【落ちこぼれ共和国】"></span></TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">開封【落ちこぼれ共和国】</span><font color="#000000">開封</font><br><img src="../image/m_4.gif" title="開封【落ちこぼれ共和国】"></span></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">青州【落ちこぼれ共和国】</span><font color="#000000">青州</font><br><img src="../image/m_4.gif" title="青州【落ちこぼれ共和国】"></span></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>4</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">鳳翔【落ちこぼれ共和国】</span><font color="#000000">鳳翔</font><br><img src="../image/m_4.gif" title="鳳翔【落ちこぼれ共和国】"></span></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">荊州【落ちこぼれ共和国】</span><font color="#000000">荊州</font><br><img src="../image/m_4.gif" title="荊州【落ちこぼれ共和国】"></span></TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">寿州【落ちこぼれ共和国】</span><font color="#000000">寿州</font><br><img src="../image/m_4.gif" title="寿州【落ちこぼれ共和国】"></span></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>5</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">成都【落ちこぼれ共和国】</span><font color="#000000">成都</font><br><img src="../image/m_4.gif" title="成都【落ちこぼれ共和国】"></span></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">金陵【落ちこぼれ共和国】</span><font color="#000000">金陵</font><br><img src="../image/m_4.gif" title="金陵【落ちこぼれ共和国】"></span></TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">杭州【落ちこぼれ共和国】</span><font color="#000000">杭州</font><br><img src="../image/m_4.gif" title="杭州【落ちこぼれ共和国】"></span></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>6</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">潭州【落ちこぼれ共和国】</span><font color="#000000">潭州</font><br><img src="../image/m_4.gif" title="潭州【落ちこぼれ共和国】"></span></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">福州【落ちこぼれ共和国】</span><font color="#000000">福州</font><br><img src="../image/m_4.gif" title="福州【落ちこぼれ共和国】"></span></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">夷州【落ちこぼれ共和国】</span><font color="#000000">夷州</font><br><img src="../image/m_4.gif" title="夷州【落ちこぼれ共和国】"></span></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>7</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">広州【落ちこぼれ共和国】</span><font color="#000000">広州</font><br><img src="../image/m_4.gif" title="広州【落ちこぼれ共和国】"></span></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#FFD700 width="30" height="30" align=center valign=middle><span id="tool-tip"><span id="tool-tip2">泉州【落ちこぼれ共和国】</span><font color="#000000">泉州</font><br><img src="../image/m_4.gif" title="泉州【落ちこぼれ共和国】"></span></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>8</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>9</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>10</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR>        </TBODY>
+      </TABLE>
+      </TD>
+      <TD bgcolor=#6d614a>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH bgcolor=#F0F0F0>MAP LOG</TH></TR><TR>
+<TD bgcolor=#a9987c>・<font color=#FFFF00>【統一】</font>[928年05月]大陸は落ちこぼれ共和国によって統一されました！(22日22時38分57秒)
+<BR>・<font color=blue>【支配】</font>[928年05月]落ちこぼれ共和国の流水は上京を支配しました。(22日22時38分57秒)
+<BR>・<font color=red>【滅亡】</font>[928年05月]蒼い煌きは滅亡しました。。(22日22時38分57秒)
+<BR>・5月:落ちこぼれ共和国の流水は上京に入城しました！(22日22時34分22秒)
+<BR>・5月:落ちこぼれ共和国の流水は上京へ向けて出城しました！(22日22時27分30秒)
+<BR>・<font color=blue>【支配】</font>[928年04月]落ちこぼれ共和国の流水は燕京を支配しました。(22日22時23分42秒)
+<BR>・4月:落ちこぼれ共和国の流水は燕京に入城しました！(22日22時20分38秒)
+<BR>・4月:落ちこぼれ共和国の流水は燕京へ向けて出城しました！(22日22時18分9秒)
+<BR>・<font color=blue>【支配】</font>[928年04月]落ちこぼれ共和国の流水は幽州を支配しました。(22日22時12分53秒)
+<BR>・4月:落ちこぼれ共和国の流水は幽州に入城しました！(22日22時10分29秒)
+<BR>・3月:落ちこぼれ共和国の流水は幽州へ向けて出城しました！(22日22時4分0秒)
+<BR>・<font color=blue>【支配】</font>[928年03月]落ちこぼれ共和国のプログラマーは金陵を支配しました。(22日21時46分19秒)
+<BR>・3月:落ちこぼれ共和国のプログラマーは金陵に入城しました！(22日21時41分53秒)
+<BR>・2月:落ちこぼれ共和国のプログラマーは金陵へ向けて出城しました！(22日21時37分35秒)
+<BR>・2月:落ちこぼれ共和国のプログラマーは寿州に入城しました！(22日21時32分33秒)
+<BR>・1月:落ちこぼれ共和国のプログラマーは寿州へ向けて出城しました！(22日21時20分35秒)
+<BR>・<font color=green>【引き分け】</font>流水と方臘軍【NPC】の戦闘は決着がつきませんでした。(鳳翔の城付近)(22日21時17分3秒)
+<BR>・<font color=blue>【支配】</font>[928年01月]落ちこぼれ共和国のプログラマーは開封を支配しました。(22日21時16分13秒)
+<BR>・1月:落ちこぼれ共和国のプログラマーは開封に入城しました！(22日21時14分10秒)
+<BR>・<font color=blue>【支配】</font>[928年01月]落ちこぼれ共和国の流水は鳳翔を支配しました。(22日21時13分21秒)
+<BR>・<font color=red>【滅亡】</font>[928年01月]は滅亡しました。。(22日21時13分21秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(22日21時11分20秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(22日21時9分11秒)
+<BR>・1月:落ちこぼれ共和国のプログラマーは開封へ向けて出城しました！(22日21時8分7秒)
+<BR>・1月:落ちこぼれ共和国の流水は鳳翔に入城しました！(22日21時7分6秒)
+<BR>・<font color=blue>【支配】</font>[928年01月]落ちこぼれ共和国のプログラマーは荊州を支配しました。(22日21時3分38秒)
+<BR>・1月:落ちこぼれ共和国のプログラマーは荊州に入城しました！(22日21時1分37秒)
+<BR>・1月:落ちこぼれ共和国の流水は鳳翔へ向けて出城しました！(22日21時1分32秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(22日21時0分48秒)
+<BR>・12月:落ちこぼれ共和国のプログラマーは荊州へ向けて出城しました！(22日20時57分28秒)
+<BR>・<font color=blue>【支配】</font>[927年12月]落ちこぼれ共和国の流水は敦煌を支配しました。(22日20時53分58秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(22日20時51分55秒)
+<BR>・12月:落ちこぼれ共和国のプログラマーは寿州に入城しました！(22日20時51分49秒)
+<BR>・流水『<font color=blue>　</font>』(22日20時49分53秒)
+<BR>・<font color=blue>【勝利】</font>流水はメルモを倒しました！(敦煌の城付近)(22日20時49分53秒)
+<BR>・流水『<font color=blue>　</font>』(22日20時47分53秒)
+<BR>・<font color=blue>【勝利】</font>流水は農民Aを倒しました！(敦煌の城付近)(22日20時47分53秒)
+<BR>・<font color=green>【引き分け】</font>農民Aと流水の戦闘は決着がつきませんでした。(敦煌の城付近)(22日20時46分41秒)
+<BR>・12月:落ちこぼれ共和国のプログラマーは金陵へ向けて出城しました！(22日20時45分53秒)
+<BR>・11月:落ちこぼれ共和国の流水は敦煌に入城しました！(22日20時42分58秒)
+<BR>・11月:落ちこぼれ共和国の流水は敦煌へ向けて出城しました！(22日20時38分43秒)
+<BR>・<font color=blue>【支配】</font>[927年11月]蒼い煌きの農民Bは開封を支配しました。(22日20時34分38秒)
+<BR>・11月:蒼い煌きの農民Bは開封に入城しました！(22日20時31分56秒)
+<BR>・11月:落ちこぼれ共和国の流水は鳳翔に入城しました！(22日20時31分54秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(荊州-開封間)(22日20時30分52秒)
+<BR>・11月:蒼い煌きの農民Bは開封へ向けて出城しました！(22日20時28分22秒)
+<BR>・11月:落ちこぼれ共和国のプログラマーは寿州に入城しました！(22日20時28分11秒)
+<BR>・11月:落ちこぼれ共和国の流水は鳳翔へ向けて出城しました！(22日20時27分30秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(荊州の城付近)(22日20時27分11秒)
+<BR>・<font color=blue>【支配】</font>[927年11月]蒼い煌きの農民Bは荊州を支配しました。(22日20時24分50秒)
+<BR>・11月:落ちこぼれ共和国の流水は京兆に入城しました！(22日20時24分15秒)
+<BR>・10月:蒼い煌きの農民Bは荊州に入城しました！(22日20時22分26秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(荊州-寿州間)(22日20時22分20秒)
+<BR>・10月:落ちこぼれ共和国のプログラマーは荊州へ向けて出城しました！(22日20時21分36秒)
+<BR>・<font color=blue>【支配】</font>[927年10月]落ちこぼれ共和国のプログラマーは寿州を支配しました。(22日20時19分22秒)
+<BR>・10月:落ちこぼれ共和国の流水は京兆へ向けて出城しました！(22日20時19分10秒)
+<BR>・10月:蒼い煌きの農民Bは荊州へ向けて出城しました！(22日20時19分7秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(寿州の城付近)(22日20時19分2秒)
+<BR>・10月:落ちこぼれ共和国のプログラマーは寿州に入城しました！(22日20時17分11秒)
+<BR>・<font color=blue>【支配】</font>[927年10月]蒼い煌きの農民Bは寿州を支配しました。(22日20時16分55秒)
+<BR>・10月:落ちこぼれ共和国の流水は開封に入城しました！(22日20時14分54秒)
+<BR>・<font color=green>【引き分け】</font>農民Bと城壁の戦闘は決着がつきませんでした。(寿州の城付近)(22日20時14分52秒)
+<BR>・10月:落ちこぼれ共和国の流水は幽州へ向けて出城しました！(22日20時13分59秒)
+<BR>・10月:落ちこぼれ共和国のプログラマーは寿州へ向けて出城しました！(22日20時12分57秒)
+<BR>・<font color=green>【引き分け】</font>農民Bと城壁の戦闘は決着がつきませんでした。(寿州の城付近)(22日20時12分47秒)
+<BR>・10月:蒼い煌きの農民Bは寿州に入城しました！(22日20時10分44秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(金陵-寿州間)(22日20時10分38秒)
+<BR>・<font color=blue>【支配】</font>[927年10月]落ちこぼれ共和国の流水は開封を支配しました。(22日20時10分19秒)
+<BR>・10月:落ちこぼれ共和国のプログラマーは金陵に入城しました！(22日20時8分44秒)
+<BR>・10月:落ちこぼれ共和国の流水は開封に入城しました！(22日20時7分26秒)
+<BR>・10月:蒼い煌きの農民Bは寿州へ向けて出城しました！(22日20時6分59秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(金陵の城付近)(22日20時6分49秒)
+<BR>・10月:落ちこぼれ共和国のプログラマーは金陵へ向けて出城しました！(22日20時6分39秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(金陵の城付近)(22日20時4分56秒)
+<BR>・<font color=blue>【支配】</font>[927年10月]蒼い煌きの農民Bは金陵を支配しました。(22日20時2分12秒)
+<BR>・<font color=blue>【支配】</font>[927年09月]落ちこぼれ共和国のプログラマーは杭州を支配しました。(22日20時0分16秒)
+<BR>・9月:落ちこぼれ共和国の流水は開封へ向けて出城しました！(22日19時59分48秒)
+<BR>・9月:蒼い煌きの農民Bは金陵に入城しました！(22日19時59分32秒)
+<BR>・9月:蒼い煌きの農民Bは金陵へ向けて出城しました！(22日19時59分2秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(杭州の城付近)(22日19時58分56秒)
+<BR>・9月:落ちこぼれ共和国のプログラマーは杭州に入城しました！(22日19時58分14秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(杭州の城付近)(22日19時57分23秒)
+<BR>・<font color=blue>【支配】</font>[927年09月]蒼い煌きの農民Bは杭州を支配しました。(22日19時55分6秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(杭州の城付近)(22日19時53分42秒)
+<BR>・9月:蒼い煌きの農民Bは杭州に入城しました！(22日19時51分40秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(杭州-寿州間)(22日19時51分16秒)
+<BR>・9月:落ちこぼれ共和国のプログラマーは杭州へ向けて出城しました！(22日19時50分7秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(杭州-寿州間)(22日19時49分38秒)
+<BR>・8月:蒼い煌きの農民Bは杭州へ向けて出城しました！(22日19時47分37秒)
+<BR>・8月:落ちこぼれ共和国のプログラマーは寿州に入城しました！(22日19時45分51秒)
+<BR>・<font color=green>【引き分け】</font>農民Bと城壁の戦闘は決着がつきませんでした。(寿州の城付近)(22日19時45分24秒)
+<BR>・<font color=green>【引き分け】</font>農民Bと城壁の戦闘は決着がつきませんでした。(寿州の城付近)(22日19時43分23秒)
+<BR>・8月:蒼い煌きの農民Bは寿州に入城しました！(22日19時41分20秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(寿州-開封間)(22日19時41分15秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(寿州-開封間)(22日19時39分5秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(寿州-開封間)(22日19時37分20秒)
+<BR>・<font color=green>【引き分け】</font>プログラマーと農民Bの戦闘は決着がつきませんでした。(寿州-開封間)(22日19時36分56秒)
+<BR>・8月:蒼い煌きの農民Bは寿州へ向けて出城しました！(22日19時34分40秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(開封の城付近)(22日19時34分35秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(開封の城付近)(22日19時32分55秒)
+<BR>・<font color=blue>【支配】</font>[927年08月]蒼い煌きの農民Bは開封を支配しました。(22日19時30分50秒)
+<BR>・8月:蒼い煌きの農民Bは開封に入城しました！(22日19時28分5秒)
+<BR>・8月:落ちこぼれ共和国のプログラマーは開封へ向けて出城しました！(22日19時27分56秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(開封-燕京間)(22日19時27分44秒)
+<BR>・城壁『<font color=red>あ〜ぁ、城壁崩れてきたじゃねぇか・・・。</font>』(22日19時25分48秒)
+<BR>・<font color=#ff0000>【敗北】</font>流水は城壁に敗北しました。(敦煌の城付近)(22日19時25分48秒)
+<BR>・8月:蒼い煌きの農民Bは開封へ向けて出城しました！(22日19時25分17秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(燕京の城付近)(22日19時25分10秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(22日19時23分47秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(燕京の城付近)(22日19時23分29秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(22日19時21分45秒)
+<BR>・<font color=blue>【支配】</font>[927年08月]蒼い煌きの農民Bは燕京を支配しました。(22日19時21分12秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(22日19時19分43秒)
+<BR>・7月:蒼い煌きの農民Bは燕京に入城しました！(22日19時18分45秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(燕京-上京間)(22日19時18分40秒)
+<BR>・流水『<font color=blue>　</font>』(22日19時17分40秒)
+<BR>・<font color=blue>【勝利】</font>流水はInterstitialを倒しました！(敦煌の城付近)(22日19時17分40秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(燕京-上京間)(22日19時17分6秒)
+<BR>・<font color=green>【引き分け】</font>流水とInterstitialの戦闘は決着がつきませんでした。(敦煌の城付近)(22日19時15分36秒)
+<BR>・7月:蒼い煌きの農民Bは燕京へ向けて出城しました！(22日19時14分59秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(上京の城付近)(22日19時14分51秒)
+<BR>・<font color=green>【引き分け】</font>流水とInterstitialの戦闘は決着がつきませんでした。(敦煌の城付近)(22日19時13分26秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(上京の城付近)(22日19時13分20秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(上京の城付近)(22日19時11分49秒)
+<BR>・流水『<font color=blue>　</font>』(22日19時11分25秒)
+<BR>・<font color=blue>【勝利】</font>流水は農民Aを倒しました！(敦煌の城付近)(22日19時11分25秒)
+<BR>・<font color=green>【引き分け】</font>流水と農民Aの戦闘は決着がつきませんでした。(敦煌の城付近)(22日19時9分21秒)
+<BR>・<font color=blue>【支配】</font>[927年07月]蒼い煌きの農民Bは上京を支配しました。(22日19時9分21秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(上京の城付近)(22日19時7分50秒)
+<BR>・流水『<font color=blue>　</font>』(22日19時7分20秒)
+<BR>・<font color=blue>【勝利】</font>流水はメルモを倒しました！(敦煌の城付近)(22日19時7分20秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(上京の城付近)(22日19時6分15秒)
+<BR>・7月:蒼い煌きの農民Bは上京に入城しました！(22日19時4分13秒)
+<BR>・7月:蒼い煌きの農民Bは幽州へ向けて出城しました！(22日19時4分7秒)
+<BR>・7月:蒼い煌きの農民Bは上京に入城しました！(22日19時3分56秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(幽州-上京間)(22日19時3分27秒)
+<BR>・7月:落ちこぼれ共和国の流水は敦煌に入城しました！(22日19時2分58秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(幽州-上京間)(22日19時1分55秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(22日19時0分18秒)
+<BR>・6月:蒼い煌きの農民Bは上京へ向けて出城しました！(22日0時59分12秒)
+<BR>・6月:落ちこぼれ共和国の流水は敦煌へ向けて出城しました！(22日0時58分31秒)
+<BR>・<font color=blue>【支配】</font>[927年06月]蒼い煌きの農民Bは幽州を支配しました。(22日0時56分41秒)
+<BR>・6月:蒼い煌きの農民Bは幽州に入城しました！(22日0時54分3秒)
+<BR>・6月:落ちこぼれ共和国の流水は鳳翔に入城しました！(22日0時53分24秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(京兆-幽州間)(22日0時53分22秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(京兆-幽州間)(22日0時51分44秒)
+<BR>・6月:蒼い煌きの農民Bは幽州へ向けて出城しました！(22日0時49分33秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(京兆の城付近)(22日0時49分23秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(京兆の城付近)(22日0時47分45秒)
+<BR>・6月:蒼い煌きの農民Bは京兆に入城しました！(22日0時45分40秒)
+<BR>・5月:落ちこぼれ共和国の流水は鳳翔へ向けて出城しました！(22日0時44分25秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(鳳翔-京兆間)(22日0時43分41秒)
+<BR>・<font color=red>【イベント】</font>[927年05月]大地震がおこりました！(22日0時42分8秒)
+<BR>・4月:蒼い煌きの農民Bは京兆へ向けて出城しました！(22日0時41分31秒)
+<BR>・4月:落ちこぼれ共和国の流水は成都に入城しました！(22日0時40分56秒)
+<BR>・4月:蒼い煌きの農民Bは鳳翔に入城しました！(22日0時40分35秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(成都-鳳翔間)(22日0時36分49秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(成都-鳳翔間)(22日0時34分17秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(成都-鳳翔間)(22日0時32分23秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(成都-鳳翔間)(22日0時26分33秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(成都-鳳翔間)(22日0時25分0秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(成都-鳳翔間)(22日0時23分23秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(成都-鳳翔間)(22日0時21分15秒)
+<BR>・4月:落ちこぼれ共和国の流水は成都へ向けて出城しました！(22日0時7分23秒)
+<BR>・4月:落ちこぼれ共和国の流水は鳳翔に入城しました！(22日0時4分5秒)
+<BR>・3月:落ちこぼれ共和国の流水は鳳翔へ向けて出城しました！(21日23時58分10秒)
+<BR>・3月:落ちこぼれ共和国の流水は京兆に入城しました！(21日23時57分18秒)
+<BR>・3月:蒼い煌きの農民Bは成都へ向けて出城しました！(21日23時56分41秒)
+<BR>・<font color=green>【引き分け】</font>農民Bと城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時52分3秒)
+<BR>・3月:落ちこぼれ共和国の流水は京兆へ向けて出城しました！(21日23時51分46秒)
+<BR>・農民B『<font color=blue></font>』(21日23時49分44秒)
+<BR>・<font color=blue>【勝利】</font>農民Bは黄巣軍の残党【NPC】を倒しました！(鳳翔の城付近)(21日23時49分44秒)
+<BR>・3月:落ちこぼれ共和国の流水は開封に入城しました！(21日23時48分26秒)
+<BR>・<font color=green>【引き分け】</font>農民Bと黄巣軍の残党【NPC】の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時45分40秒)
+<BR>・<font color=green>【引き分け】</font>農民Bと黄巣軍の残党【NPC】の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時42分13秒)
+<BR>・2月:落ちこぼれ共和国の流水は開封へ向けて出城しました！(21日23時40分15秒)
+<BR>・農民B『<font color=blue></font>』(21日23時38分21秒)
+<BR>・<font color=blue>【勝利】</font>農民Bはプログラマーを倒しました！(鳳翔の城付近)(21日23時38分21秒)
+<BR>・1月:蒼い煌きの農民Bは鳳翔に入城しました！(21日23時36分13秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(鳳翔-敦煌間)(21日23時32分10秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Bに支援を行いました。(鳳翔-敦煌間)(21日23時30分26秒)
+<BR>・1月:蒼い煌きの農民Bは鳳翔へ向けて出城しました！(21日23時27分24秒)
+<BR>・<font color=orange>【支援】</font>農民Bは農民Aに支援を行いました。(敦煌の城付近)(21日23時21分53秒)
+<BR>・<font color=green>【引き分け】</font>プログラマーと城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時8分38秒)
+<BR>・<font color=green>【引き分け】</font>プログラマーと城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時6分35秒)
+<BR>・<font color=green>【引き分け】</font>プログラマーと黄巣軍の残党【NPC】の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時4分32秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(21日23時2分57秒)
+<BR>・<font color=green>【引き分け】</font>プログラマーと城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時2分27秒)
+<BR>・<font color=green>【引き分け】</font>プログラマーと城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時0分2秒)
+<BR>・<font color=green>【引き分け】</font>プログラマーと城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日22時57分45秒)
+<BR>・<font color=green>【引き分け】</font>プログラマーと城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日22時54分57秒)
+<BR>・<font color=green>【引き分け】</font>プログラマーと城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日22時52分50秒)
+<BR>・<font color=green>【引き分け】</font>プログラマーと城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日22時50分33秒)
+<BR>・<font color=green>【引き分け】</font>プログラマーと城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日22時48分30秒)
+<BR>・<font color=green>【引き分け】</font>プログラマーと城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日22時46分26秒)
+<BR>・プログラマー『<font color=blue>俺ってイケメン！</font>』(21日22時44分16秒)
+<BR>・<font color=blue>【勝利】</font>プログラマーは方臘軍【NPC】を倒しました！(鳳翔の城付近)(21日22時44分16秒)
+<BR>・<font color=green>【引き分け】</font>プログラマーと方臘軍【NPC】の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日22時42分3秒)
+<BR>・11月:無所属のりーう＠管理人は実験場に入城しました！(21日22時28分32秒)
+<BR>・11月:無所属のりーう＠管理人は実験場2へ向けて出城しました！(21日22時28分23秒)
+<BR></TD>
+          </TR>
+        </TBODY>
+      </TABLE>
+</TD>
+    </TR>
+<TR>      <TD colspan=2 bgcolor=#6d614a>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH bgcolor=#F0F0F0>史記</TH></TR><TR>
+<TD bgcolor=#a9987c>・<b><font color=#FFFF00>【統一】</font>[928年05月]大陸は落ちこぼれ共和国によって統一されました！</b>(22日22時38分57秒)
+<BR>・<b><font color=blue>【支配】</font>[928年05月]落ちこぼれ共和国の流水は上京を支配しました。</b>(22日22時38分57秒)
+<BR>・<b><font color=red>【滅亡】</font>[928年05月]蒼い煌きは滅亡しました。。</b>(22日22時38分57秒)
+<BR>・<b><font color=blue>【支配】</font>[928年04月]落ちこぼれ共和国の流水は燕京を支配しました。</b>(22日22時23分42秒)
+<BR>・<b><font color=blue>【支配】</font>[928年04月]落ちこぼれ共和国の流水は幽州を支配しました。</b>(22日22時12分53秒)
+<BR>・<b><font color=blue>【支配】</font>[928年03月]落ちこぼれ共和国のプログラマーは金陵を支配しました。</b>(22日21時46分19秒)
+<BR>・<b><font color=blue>【支配】</font>[928年01月]落ちこぼれ共和国のプログラマーは開封を支配しました。</b>(22日21時16分13秒)
+<BR>・<b><font color=blue>【支配】</font>[928年01月]落ちこぼれ共和国の流水は鳳翔を支配しました。</b>(22日21時13分21秒)
+<BR>・<b><font color=red>【滅亡】</font>[928年01月]は滅亡しました。。</b>(22日21時13分21秒)
+<BR>・<b><font color=blue>【支配】</font>[928年01月]落ちこぼれ共和国のプログラマーは荊州を支配しました。</b>(22日21時3分38秒)
+<BR>・<b><font color=blue>【支配】</font>[927年12月]落ちこぼれ共和国の流水は敦煌を支配しました。</b>(22日20時53分58秒)
+<BR>・<b><font color=blue>【支配】</font>[927年11月]蒼い煌きの農民Bは開封を支配しました。</b>(22日20時34分38秒)
+<BR>・<b><font color=blue>【支配】</font>[927年11月]蒼い煌きの農民Bは荊州を支配しました。</b>(22日20時24分50秒)
+<BR>・<b><font color=blue>【支配】</font>[927年10月]落ちこぼれ共和国のプログラマーは寿州を支配しました。</b>(22日20時19分22秒)
+<BR>・<b><font color=blue>【支配】</font>[927年10月]蒼い煌きの農民Bは寿州を支配しました。</b>(22日20時16分55秒)
+<BR>・<b><font color=blue>【支配】</font>[927年10月]落ちこぼれ共和国の流水は開封を支配しました。</b>(22日20時10分19秒)
+<BR>・<b><font color=blue>【支配】</font>[927年10月]蒼い煌きの農民Bは金陵を支配しました。</b>(22日20時2分12秒)
+<BR>・<b><font color=blue>【支配】</font>[927年09月]落ちこぼれ共和国のプログラマーは杭州を支配しました。</b>(22日20時0分16秒)
+<BR>・<b><font color=blue>【支配】</font>[927年09月]蒼い煌きの農民Bは杭州を支配しました。</b>(22日19時55分6秒)
+<BR>・<b><font color=blue>【支配】</font>[927年08月]蒼い煌きの農民Bは開封を支配しました。</b>(22日19時30分50秒)
+<BR>・<b><font color=blue>【支配】</font>[927年08月]蒼い煌きの農民Bは燕京を支配しました。</b>(22日19時21分12秒)
+<BR>・<b><font color=blue>【支配】</font>[927年07月]蒼い煌きの農民Bは上京を支配しました。</b>(22日19時9分21秒)
+<BR>・<b><font color=blue>【支配】</font>[927年06月]蒼い煌きの農民Bは幽州を支配しました。</b>(22日0時56分41秒)
+<BR>・<b><font color=red>【イベント】</font>[927年05月]大地震がおこりました！</b>(22日0時42分8秒)
+<BR>・<b><font color="#666666">【反乱】</font>[926年07月]鳳翔は農民の反乱軍に支配されました。</b>(21日21時29分11秒)
+<BR>・<b><font color="#ff6600"><b>【宣戦布告】</b></font>落ちこぼれ共和国は蒼い煌きへ宣戦布告を行いました！　「よろしくです」　開戦時間:927年6月（落ちこぼれ共和国君主：プログラマーより））</b>(20日0時21分59秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[924年04月]農民Bが蒼い煌きを建国しました。</b>(20日0時20分11秒)
+<BR>・<b><font color=blue>【支配】</font>[924年02月]の農民Bは敦煌を支配しました。</b>(19日23時44分18秒)
+<BR>・<b><font color=red>【滅亡】</font>[924年02月]蒼い壁は滅亡しました。。</b>(19日23時44分18秒)
+<BR>・<b><font color=blown>【反乱】</font>[923年12月]敦煌で農民Bが反乱をおこしました。</b>(19日22時59分55秒)
+<BR>・<b><font color=blown>【反乱】</font>[923年12月]鳳翔でInterstitialが反乱をおこしました。</b>(19日22時42分13秒)
+<BR>・<b><font color=blue>【支配】</font>[923年06月]落ちこぼれ共和国のプログラマーは鳳翔を支配しました。</b>(19日20時57分22秒)
+<BR>・<b><font color=red>【滅亡】</font>[923年06月]蒼い農村は滅亡しました。。</b>(19日20時57分22秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>あ・・・、コホン。　 うなレ、備中グワ！ 続ケ、牛馬鶏豚！ 大黒天もご照覧アレ！　農民兵出陣！（蒼い農村君主：農民Aより）</b>(19日18時48分12秒)
+<BR>・<b><font color="#ff6600"><b>【宣戦布告】</b></font>蒼い農村は落ちこぼれ共和国へ宣戦布告を行いました！　「うなれ」　開戦時間:926年1月（蒼い農村君主：農民Aより））</b>(19日18時46分19秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>フゥ、なんとか開戦に間に合いマシたか（蒼い農村君主：農民Aより）</b>(19日18時44分55秒)
+<BR>・<b><font color=blue>【支配】</font>[922年07月]落ちこぼれ共和国の流水は泉州を支配しました。</b>(18日23時25分12秒)
+<BR>・<b><font color=red>【滅亡】</font>[922年07月]は滅亡しました。。</b>(18日23時25分12秒)
+<BR>・<b><font color="#666666">【反乱】</font>[922年01月]泉州は農民の反乱軍に支配されました。</b>(18日21時19分22秒)
+<BR>・<b><font color="#ff6600"><b>【宣戦布告】</b></font>落ちこぼれ共和国は蒼い壁へ宣戦布告を行いました！　「流水ちゃんがイケメン過ぎてつらたん」　開戦時間:924年9月（落ちこぼれ共和国君主：プログラマーより））</b>(18日19時40分12秒)
+<BR>・<b><font color=blue>【支配】</font>[921年07月]落ちこぼれ共和国の流水は福州を支配しました。</b>(18日19時30分57秒)
+<BR>・<b><font color=red>【滅亡】</font>[921年07月]は滅亡しました。。</b>(18日19時30分57秒)
+<BR>・<b><font color="#666666">【反乱】</font>[921年01月]福州は農民の反乱軍に支配されました。</b>(18日0時21分46秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>畑を踏みにじろうというのデスね。麦や米にも尊い命があるというのに…。 あ、人間の命はどうでもいいデス。肥料になって下サイ。（蒼い農村君主：農民Aより）</b>(17日21時36分49秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>落ちこぼれから、滅亡させたぜ！！（落ちこぼれ共和国君主：プログラマーより）</b>(17日20時25分54秒)
+<BR>・<b><font color=blue>【支配】</font>[920年04月]落ちこぼれ共和国のプログラマーは晋陽を支配しました。</b>(17日20時21分2秒)
+<BR>・<b><font color=red>【滅亡】</font>[920年04月]Haienは滅亡しました。。</b>(17日20時21分2秒)
+<BR>・<b><font color=blue>【支配】</font>[920年02月]落ちこぼれ共和国のプログラマーは幽州を支配しました。</b>(17日19時48分57秒)
+<BR>・<b><font color="#ff6600"><b>【宣戦布告】</b></font>落ちこぼれ共和国は蒼い農村へ宣戦布告を行いました！　「対戦よろしくお願いします！」　開戦時間:923年1月（落ちこぼれ共和国軍師：流水より））</b>(17日18時0分27秒)
+<BR>・<b><font color=blue>【支配】</font>[919年10月]落ちこぼれ共和国のプログラマーは上京を支配しました。</b>(17日0時7分59秒)
+<BR>・<b><font color=blue>【支配】</font>[919年09月]落ちこぼれ共和国のプログラマーは燕京を支配しました。</b>(16日23時45分41秒)
+<BR>・<b><font color=blue>【支配】</font>[919年08月]落ちこぼれ共和国のプログラマーは青州を支配しました。</b>(16日23時27分18秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>ここにイケメンがいるらしい（落ちこぼれ共和国君主：プログラマーより）</b>(16日23時19分22秒)
+<BR>・<b><font color=blue>【支配】</font>[919年06月]落ちこぼれ共和国のプログラマーは夷州を支配しました。</b>(16日23時4分50秒)
+<BR>・<b><font color=red>【滅亡】</font>[919年06月]は滅亡しました。。</b>(16日23時4分50秒)
+<BR>・<b><font color="#ff6600"><b>【宣戦布告】</b></font>蒼い農村は蒼い壁へ宣戦布告を行いました！　「砂漠に畑を！」　開戦時間:922年7月（蒼い農村君主：農民Aより））</b>(16日22時59分9秒)
+<BR>・<b><font color=blue>【支配】</font>[919年04月]落ちこぼれ共和国のプログラマーは雷州を支配しました。</b>(16日22時24分38秒)
+<BR>・<b><font color=blue>【支配】</font>[919年04月]落ちこぼれ共和国の流水は泉州を支配しました。</b>(16日22時18分15秒)
+<BR>・<b><font color=blue>【支配】</font>[919年04月]落ちこぼれ共和国のプログラマーは広州を支配しました。</b>(16日22時5分25秒)
+<BR>・<b><font color=blue>【支配】</font>[919年03月]落ちこぼれ共和国の流水は福州を支配しました。</b>(16日22時0分58秒)
+<BR>・<b><font color=blue>【支配】</font>[919年03月]落ちこぼれ共和国の流水は杭州を支配しました。</b>(16日21時50分29秒)
+<BR>・<b><font color=blue>【支配】</font>[919年03月]落ちこぼれ共和国のプログラマーは潭州を支配しました。</b>(16日21時48分25秒)
+<BR>・<b><font color=blue>【支配】</font>[919年02月]落ちこぼれ共和国の流水は金陵を支配しました。</b>(16日21時39分47秒)
+<BR>・<b><font color=blue>【支配】</font>[919年02月]落ちこぼれ共和国のプログラマーは成都を支配しました。</b>(16日21時32分5秒)
+<BR>・<b><font color=blue>【支配】</font>[919年01月]落ちこぼれ共和国のプログラマーは荊州を支配しました。</b>(16日21時14分50秒)
+<BR>・<b><font color=blue>【支配】</font>[918年10月]落ちこぼれ共和国のプログラマーは寿州を支配しました。</b>(16日20時43分39秒)
+<BR>・<b><font color=blue>【支配】</font>[918年09月]落ちこぼれ共和国のプログラマーは開封を支配しました。</b>(16日19時47分30秒)
+<BR>・<b><font color="#ff6600"><b>【宣戦布告】</b></font>落ちこぼれ共和国はHaienへ宣戦布告を行いました！　「やったるぜ！」　開戦時間:918年9月（落ちこぼれ共和国君主：プログラマーより））</b>(14日19時35分40秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[915年08月]プログラマーが落ちこぼれ共和国を建国しました。</b>(14日19時30分53秒)
+<BR>・<b><font color=blown>【反乱】</font>[915年04月]寿州で流水が反乱をおこしました。</b>(14日0時28分34秒)
+<BR>・<b><font color=blown>【反乱】</font>[915年03月]寿州でプログラマーが反乱をおこしました。</b>(13日23時48分28秒)
+<BR>・<b><font color=blown>【反乱】</font>[915年02月]寿州で流水が反乱をおこしました。</b>(13日23時40分31秒)
+<BR>・<b><font color=red>【イベント】</font>[915年02月]洪水がおこりました！各地で被害が出ています！</b>(13日23時20分2秒)
+<BR>・<b><font color="#666666">【反乱】</font>[915年01月]夷州は農民の反乱軍に支配されました。</b>(13日23時1分9秒)
+<BR>・<b><font color=blue>【支配】</font>[914年12月]Haienの流水は開封を支配しました。</b>(13日22時44分25秒)
+<BR>・<b><font color="#666666">【反乱】</font>[914年07月]京兆は農民の反乱軍に支配されました。</b>(13日22時0分14秒)
+<BR>・<b><font color=blue>【支配】</font>[913年01月]Haienの流水は泉州を支配しました。</b>(12日21時37分20秒)
+<BR>・<b><font color="#666666">【反乱】</font>[913年01月]開封は農民の反乱軍に支配されました。</b>(12日21時1分47秒)
+<BR>・<b><font color=blue>【支配】</font>[910年01月]Haienのプログラマーは京兆を支配しました。</b>(10日21時23分8秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>ダレ？（蒼い農村君主：農民Aより）</b>(10日20時20分15秒)
+<BR>・<b><font color="#666666">【反乱】</font>[909年07月]京兆は農民の反乱軍に支配されました。</b>(10日20時7分30秒)
+<BR>・<b><font color="#666666">【反乱】</font>[908年01月]泉州は農民の反乱軍に支配されました。</b>(9日19時1分12秒)
+<BR>・<b><font color=blue>【支配】</font>[907年12月]Haienの流水は夷州を支配しました。</b>(9日0時58分18秒)
+<BR>・<b><font color=red>【滅亡】</font>[907年12月]は滅亡しました。。</b>(9日0時58分18秒)
+<BR>・<b><font color=blue>【支配】</font>[907年11月]Haienの流水は泉州を支配しました。</b>(9日0時33分23秒)
+<BR>・<b><font color="#666666">【反乱】</font>[907年07月]泉州は農民の反乱軍に支配されました。</b>(8日23時20分42秒)
+<BR>・<b><font color=blue>【支配】</font>[907年05月]Haienの流水は開封を支配しました。</b>(8日22時31分38秒)
+<BR>・<b><font color="#666666">【反乱】</font>[906年07月]開封は農民の反乱軍に支配されました。</b>(8日19時20分49秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[906年03月]農民Aが蒼い農村を建国しました。</b>(7日23時56分42秒)
+<BR>・<b><font color=blue>【支配】</font>[906年02月]の農民Aは鳳翔を支配しました。</b>(7日23時39分28秒)
+<BR>・<b><font color=blown>【反乱】</font>[906年01月]鳳翔で農民Aが反乱をおこしました。</b>(7日23時16分45秒)
+<BR>・<b><font color="#666666">【反乱】</font>[905年07月]夷州は農民の反乱軍に支配されました。</b>(7日21時4分39秒)
+<BR>・<b><font color="#ff6600"><b>【宣戦布告】</b></font>Haienは蒼い壁へ宣戦布告を行いました！　「908年1月より貴国に攻撃開始させていただきます。」　開戦時間:908年1月（Haien君主：Interstitialより））</b>(7日13時33分22秒)
+<BR>・<b><font color=blue>【支配】</font>[903年12月]Haienのプログラマーは成都を支配しました。</b>(6日21時2分29秒)
+<BR>・<b><font color=red>【滅亡】</font>[903年12月]平和な農村は滅亡しました。。</b>(6日21時2分29秒)
+<BR>・<b><font color=blue>【支配】</font>[903年11月]Haienの流水は開封を支配しました。</b>(6日20時37分14秒)
+<BR>・<b><font color=blue>【支配】</font>[903年10月]Haienのプログラマーは広州を支配しました。</b>(6日20時14分24秒)
+<BR>・<b><font color=blue>【支配】</font>[903年10月]Haienの流水は晋陽を支配しました。</b>(6日20時7分59秒)
+<BR>・<b><font color=blue>【支配】</font>[903年10月]平和な農村の農民Aは開封を支配しました。</b>(6日20時6分53秒)
+<BR>・<b><font color=blue>【支配】</font>[903年09月]Haienのプログラマーは潭州を支配しました。</b>(6日19時53分27秒)
+<BR></TD>
+          </TR>
+        </TBODY>
+      </TABLE>
+</TD>
+    </TR>
+  </TBODY>
+</TABLE>
+※街にカーソルを合わせると街の名前が表示されます。
+<p>
+2015/06/22/(Mon) 22:38:57
+<CENTER><a name="sita"></a><HR SIZE=0>
+<font color=998877>十国志NET </font><font size=1 color=998877>第6期</font> <font color=998877>ver.0.70fix</font><br>
+<font color=998877>ADMINISTARTOR liiu </font><a href="http://lunadraco.sakura.ne.jp/sangokuframe/index.cgi">GAME TOP</a><br>
+<font color=998877>三国志NET ver.2.80 </font><a href="http://www3.to/maccyu2/" target="_top">maccyu</a><br>
+<a href="http://ayfreenet.web.infoseek.co.jp/" target="_blank">HOMEPAGE GARO</a>
+</body></html>

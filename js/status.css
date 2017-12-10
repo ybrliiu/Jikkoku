@@ -1,0 +1,134 @@
+@charset "utf-8";
+
+/* 指令 */
+div#sirei{
+width:98%;
+box-shadow:3px 3px 6px;
+padding:5px;
+margin:5px;
+border-radius:5px;
+}
+
+
+/* マップ、都市データ、国データ */
+table#map{
+width:40%;
+float:left;
+border:0;
+border-collapse:separate;
+border-spacing:1px;
+margin:3px;
+}
+table#map th{
+text-align:center;
+vertical-align:middle;
+}
+
+table#towndata{
+width:28%;
+min-width:120px;
+float:left;
+border:0;
+border-collapse:separate;
+border-spacing:2px;
+margin:3px;
+}
+table#towndata div{
+height:5px;
+float:left;
+}
+
+table#coudata{
+width:30%;
+min-width:100px;
+float:left;
+border:0;
+border-collapse:separate;
+border-spacing:1px;
+margin:3px;
+}
+
+
+/* BMなど */
+table iframe{
+width:100%;
+height:100%;
+border:0;
+overflow:hidden;
+}
+
+table#battlemap{
+width:60%;
+margin:3px;
+float:left;
+border:0;
+border-collapse:separate;
+border-spacing:1px;
+}
+table#battlemap th{
+width:35px;
+height:35px;
+text-align:center;
+vertical-align:middle;
+}
+
+table#bmcom{
+width:39%;
+margin:3px;
+border-collapse:separate;
+border-spacing:2px;
+}
+
+
+/* 武将データ */
+table#busyodata{
+width:99%;
+margin:3px;
+border-collapse:separate;
+border-spacing:1px;
+}
+
+
+/* コマンドリスト */
+table#com_arr{
+width:99%;
+margin:3px;
+border-collapse:separate;
+border-spacing:1px;
+overflow:auto;
+}
+table#command{
+width:100%;
+border-collapse:separate;
+border-spacing:1px;
+}
+@media screen and (max-width:1024px) {
+	table#command th{
+	height:30px;
+	}
+}
+
+
+/* 手紙 */
+table#tegami{
+width:99.5%;
+}
+table#tegami p{
+display:inline;
+}
+table#tegami img{
+width:64px;
+height:64px;
+}
+table#tegami > tbody > tr > td{
+width:50%;
+vertical-align:top;
+}
+table#tegami > tbody > tr > td > table{
+width:100%;
+border-top-left-radius:0px;
+border-top-right-radius:0px;
+}
+table#tegami > tbody > tr > td > table > tbody > tr > td{
+background-color:#000000;
+}

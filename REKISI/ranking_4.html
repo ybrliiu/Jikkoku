@@ -1,0 +1,107 @@
+
+<html>
+<head>
+<meta name="description" content="バトルマップ上で戦う三国志NET。">
+<meta name="keywords" content="十国志NET,三国志NET,ブラウザゲーム,オンラインゲーム,CGIゲーム,無料">
+<link rel="shortcut icon" href="../favicon.ico" >
+<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>十国志NET</title>
+<link rel="stylesheet" href="../js/base.css">
+<script src="../js/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="../js/jqballon.css">
+
+<STYLE type="text/css">
+<!--
+BODY,TR,TD,TH,FORM { font-family : "ＭＳ ゴシック"; font-size: 9pt; }
+a{ text-decoration:none;}
+a:link.mikata { color: blue; font-size: 9pt }
+a:link.enemy { color: red; font-size: 9pt }
+a:link#mikata { color: blue; font-size: 9pt }
+a:link#enemy { color: red; font-size: 9pt }
+a:link    { color: #4682B4 }
+a:visited { color: #4682B4 }
+a:hover   { color: #FFFF00 }
+a:active  { color: #00FF00 }
+.S1 {color:#fff; border-style: double; border-width: 3px;BACKGROUND: #633;}
+
+.dmg { color: #FF0000; font-size: 18pt }
+.clit { color: #0000FF; font-size: 18pt }
+#small { font-size: xx-small; }
+.bmj { color: #000000; font-size: 5pt }
+.r { color: #FF4444; font-size: 10pt }
+.b { color: #4444DD; font-size: 10pt }
+.s { color: #44AAEE; font-size: 10pt }
+.g { color: #44DD44; font-size: 10pt }
+.o { color: #EEAA44; font-size: 10pt }
+-->
+</STYLE>
+
+</head>
+<body background="../image/o.gif" bgcolor="#E0E088" text="" link="#CCAA88" vlink="#AA8855" alink="#AA8855" leftmargin="0" marginwidth="0" marginheight="0">
+
+
+<script type="text/javascript"><!--
+var num = 0;
+
+$(document).ready(function(){
+
+$(".ryuhyo").click(function () {if(num<1){$(this).append($("<div id=ballon style=background-color:rgba(0,0,255,0.7);><table border=0 width=100% height=100%><tr><td align=right height=5><span id=clo><b>×閉じる</b></span></td><tr><td><iframe src=../menu.cgi?id=ryuhyo&send=1 scrolling=yes align=center frameborder=0 width=100% height=100%></iframe></td></tr></table></div>"));}num++;});
+$(".meemee").click(function () {if(num<1){$(this).append($("<div id=ballon style=background-color:rgba(0,0,255,0.7);><table border=0 width=100% height=100%><tr><td align=right height=5><span id=clo><b>×閉じる</b></span></td><tr><td><iframe src=../menu.cgi?id=meemee&send=1 scrolling=yes align=center frameborder=0 width=100% height=100%></iframe></td></tr></table></div>"));}num++;});
+$(".leon333").click(function () {if(num<1){$(this).append($("<div id=ballon style=background-color:rgba(0,0,255,0.7);><table border=0 width=100% height=100%><tr><td align=right height=5><span id=clo><b>×閉じる</b></span></td><tr><td><iframe src=../menu.cgi?id=leon333&send=1 scrolling=yes align=center frameborder=0 width=100% height=100%></iframe></td></tr></table></div>"));}num++;});
+$(".ybrliiu").click(function () {if(num<1){$(this).append($("<div id=ballon style=background-color:rgba(102,102,102,0.7);><table border=0 width=100% height=100%><tr><td align=right height=5><span id=clo><b>×閉じる</b></span></td><tr><td><iframe src=../menu.cgi?id=ybrliiu&send=1 scrolling=yes align=center frameborder=0 width=100% height=100%></iframe></td></tr></table></div>"));}num++;});
+$(".neuro").click(function () {if(num<1){$(this).append($("<div id=ballon style=background-color:rgba(102,102,102,0.7);><table border=0 width=100% height=100%><tr><td align=right height=5><span id=clo><b>×閉じる</b></span></td><tr><td><iframe src=../menu.cgi?id=neuro&send=1 scrolling=yes align=center frameborder=0 width=100% height=100%></iframe></td></tr></table></div>"));}num++;});
+
+
+$(document).on('click','#clo', function(){$("div:last").remove();num = 0;});
+
+});
+--></script>
+
+<TABLE WIDTH="100%" height=100% bgcolor=#884422>
+  <TBODY>
+    <TR>
+      <TD BGCOLOR=#D0C088 WIDTH=100% height=5>　<font size=4>　　　＜＜<B> 　 - RANKING - 　 </B>＞＞</font></TD>
+    </TR>
+    <TR>
+      <TD bgcolor=#F0F0F0><CENTER>
+<BR>
+<TABLE bgcolor=#0000FF width=60%><TBODY><TR><TD colspan=6 bgcolor=#0000FF align=center><font color=#99CCFF size=4><B>D.D.D</font></TD></TR><TR><TH bgcolor=#99CCFF><font color=#0000FF>君主</TH><TH bgcolor=FFFFFF colspan=2><font size=3 color=#0000FF>クラスティ</TH><TD bgcolor=#99CCFF><font color=#0000FF>武将数</TD><TD bgcolor=#99CCFF><font color=#0000FF> 3 名</TD><TD bgcolor=#99CCFF><a href=../ranking.cgi?mode=C_RAN&con_no=2>武将一覧</a></TD></TR>
+<TR><TH bgcolor=#0000FF><font color=#99CCFF>軍師</TH>
+<TH bgcolor=#99CCFF><font size=2 color=#0000FF>流水</TH>
+<TH bgcolor=#0000FF><font color=#99CCFF>宰相</TH>
+<TH bgcolor=#99CCFF><font size=2 color=#0000FF></TH>
+<TH bgcolor=#0000FF><font color=#99CCFF>大将軍</TH>
+<TH bgcolor=#99CCFF><font size=2 color=#0000FF>こおり</TH></TR>
+<TR><TD bgcolor=#99CCFF><font color=#0000FF>支配都市数</TD><TD colspan=5 bgcolor=#99CCFF><font color=#0000FF>20都市(晋陽 燕京 開封 寿州 金陵 杭州 福州 潭州 荊州 広州 幽州 鳳翔 成都 敦煌 上京 夷州 雷州 泉州 京兆 青州 )</TD></TR>
+<TR><TD bgcolor=#99CCFF><font color=#0000FF>外交状況</font></TD><TD colspan=5 bgcolor=#99CCFF><font color=#0000FF></font></TD></TR>
+</TBODY></TABLE><BR>
+      <TABLE bgcolor=#0000FF border="0">
+        <TBODY bgcolor=#99CCFF>
+<TR><TD></TD><TH>名前</TH><TH>武力</TH><TH>知力</TH><TH>統率力</TH><TH>人望</TH><TH>階級</TH><TH>装備品</TH><TH>削除まで</TH></TR> <TR><TD><img src=../image/6.gif width=64 height=64></TD><TD><span class=ryuhyo>こおり</span></TD><TD>117</TD><TD>2</TD><TD>59</TD><TD>12</TD><TD>Lv.15 県令</TD><TD>武器：流水と一緒に攻撃する武器：威力：20.3<BR>書物：本「女の子を落とすためには？」：威力：12.32<BR>防具：流水の可愛さから守る防具：威力：2</TD><TD><font color=blue>54</font>ターン</TD></TR><TR><TD><img src=../image/311.gif width=64 height=64></TD><TD><span class=meemee>クラスティ</span></TD><TD>57</TD><TD>5</TD><TD>118</TD><TD>5</TD><TD>Lv.13 県丞</TD><TD>武器：鮮血の魔人斧：威力：5<BR>書物：空を往く瞳：威力：10.01<BR>防具：死せる戦士の鎧：威力：0</TD><TD><font color=blue>54</font>ターン</TD></TR><TR><TD><img src=../image/228.gif width=64 height=64></TD><TD><span class=leon333>流水</span></TD><TD>128</TD><TD>5</TD><TD>55</TD><TD>4</TD><TD>Lv.12 部隊長</TD><TD>武器：こおりと一緒に攻撃する武器：威力：36.275<BR>書物：魔法の光る石板：威力：7.35<BR>防具：こおりの可愛さから守る防具：威力：2</TD><TD><font color=blue>54</font>ターン</TD></TR> 
+         </TR>
+		<TR><TD bgcolor=#99CCFF align=center colspan=20><font color=#0000FF>
+		</TD></TR>
+        </TBODY>
+      </TABLE><br><br><br><br><br>
+<TABLE bgcolor=#666666 width=60%><TBODY><TR><TD colspan=5 bgcolor=#666666 align=center><font color=#f1f1f1 size=4><B>無所属国</font></TD></TR><TR><TD align=center bgcolor=#f1f1f1><a href=../ranking.cgi?mode=C_RAN&con_no=0>放浪者一覧</a></TD></TR></TBODY></TABLE><BR>
+      <TABLE width=100% bgcolor=#666666 border="0">
+        <TBODY bgcolor=#f1f1f1>
+		<TR><TD bgcolor=#f1f1f1 align=center><font color=#666666><span class=ybrliiu>りーう＠管理人</span> <span class=neuro>アルスラーン</span> 
+		</TD></TR>
+        </TBODY>
+      </TABLE><br><br><br><br><br>
+<p>現在総人口 5 名
+<form action="index.cgi" method="post">
+<input type=submit id=input value="メニューに戻る"></form>
+
+      </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<CENTER><HR SIZE=0>
+<font color=998877>十国志NET </font><font size=1 color=998877>第4期</font> <font color=998877>ver.0.67</font><br>
+<font color=998877>ADMINISTARTOR liiu </font><a href="http://lunadraco.sakura.ne.jp/sangokuframe/index.cgi">GAME TOP</a><br>
+<font color=998877>三国志NET ver.2.80 </font><a href="http://www3.to/maccyu2/" target="_top">maccyu</a><br>
+<a href="http://ayfreenet.web.infoseek.co.jp/" target="_blank">HOMEPAGE GARO</a>
+</body></html>

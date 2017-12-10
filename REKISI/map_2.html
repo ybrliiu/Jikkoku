@@ -1,0 +1,297 @@
+
+<html>
+<head>
+<meta name="description" content="バトルマップ上で戦う三国志NET。">
+<meta name="keywords" content="三国志NET,ブラウザゲーム,オンラインゲーム,CGIゲーム,無料">
+<link rel="shortcut icon" href="../favicon.ico" >
+<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>十国志NET</title>
+<link rel="stylesheet" href="../js/base.css">
+<link rel="stylesheet" href="./tt.css">
+<STYLE type="text/css">
+<!--
+BODY,TR,TD,TH,FORM { font-family : "ＭＳ ゴシック"; font-size: 9pt; }
+a{ text-decoration:none;}
+a:link.mikata { color: blue; font-size: 9pt }
+a:link.enemy { color: red; font-size: 9pt }
+a:link#mikata { color: blue; font-size: 9pt }
+a:link#enemy { color: red; font-size: 9pt }
+a:link    { color: #4682B4 }
+a:visited { color: #4682B4 }
+a:hover   { color: #FFFF00 }
+a:active  { color: #00FF00 }
+.S1 {color:#fff; border-style: double; border-width: 3px;BACKGROUND: #633;}
+
+.dmg { color: #FF0000; font-size: 18pt }
+.clit { color: #0000FF; font-size: 18pt }
+#small { font-size: xx-small; }
+.bmj { color: #000000; font-size: 5pt }
+.r { color: #FF4444; font-size: 10pt }
+.b { color: #4444DD; font-size: 10pt }
+.s { color: #44AAEE; font-size: 10pt }
+.g { color: #44DD44; font-size: 10pt }
+.o { color: #EEAA44; font-size: 10pt }
+-->
+</STYLE>
+<script type="text/javascript" src="../js/ballon.js"></script>
+</head>
+<body background="../image/o.gif" bgcolor="#E0E088" text="" link="#CCAA88" vlink="#AA8855" alink="#AA8855" leftmargin="0" marginwidth="0" marginheight="0">
+
+<TABLE bgcolor=#6d614a width=100% border="0">
+  <TBODY>
+    <TR>
+      <TD bgcolor=#F0F0F0 width=50% valign=top>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH><font color=#444444><font size=4>十国志NET</font> <BR>- 大 陸 地 図 -</font></TH>
+          </TR>
+        </TBODY>
+      </TABLE>
+      <TABLE bgcolor=#F0F0F0 background="../image/mapbg.gif" width=100% height=5 border="0" cellspacing=1>
+        <TBODY>
+          <TR>
+            <TD width=20 bgcolor=#F0F0F0>-</TD>
+<TD width=20 bgcolor=#D0C088>1</TD><TD width=20 bgcolor=#D0C088>2</TD><TD width=20 bgcolor=#D0C088>3</TD><TD width=20 bgcolor=#D0C088>4</TD><TD width=20 bgcolor=#D0C088>5</TD><TD width=20 bgcolor=#D0C088>6</TD><TD width=20 bgcolor=#D0C088>7</TD><TD width=20 bgcolor=#D0C088>8</TD><TD width=20 bgcolor=#D0C088>9</TD><TD width=20 bgcolor=#D0C088>10</TD></TR><TR><TD bgcolor=#C0C088>1</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="上京【デドマンワンダーランド】"><font color="#000000">上京</font><br><img src="../image/m_4.gif" title="上京【デドマンワンダーランド】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>2</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="晋陽【デドマンワンダーランド】"><font color="#000000">晋陽</font><br><img src="../image/m_4.gif" title="晋陽【デドマンワンダーランド】"></p></div></TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="幽州【デドマンワンダーランド】"><font color="#000000">幽州</font><br><img src="../image/m_4.gif" title="幽州【デドマンワンダーランド】"></p></div></TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="燕京【デドマンワンダーランド】"><font color="#000000">燕京</font><br><img src="../image/m_4.gif" title="燕京【デドマンワンダーランド】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>3</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="敦煌【デドマンワンダーランド】"><font color="#000000">敦煌</font><br><img src="../image/m_4.gif" title="敦煌【デドマンワンダーランド】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="京兆【デドマンワンダーランド】"><font color="#000000">京兆</font><br><img src="../image/m_4.gif" title="京兆【デドマンワンダーランド】"></p></div></TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="開封【デドマンワンダーランド】"><font color="#000000">開封</font><br><img src="../image/m_4.gif" title="開封【デドマンワンダーランド】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="青州【デドマンワンダーランド】"><font color="#000000">青州</font><br><img src="../image/m_4.gif" title="青州【デドマンワンダーランド】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>4</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="鳳翔【デドマンワンダーランド】"><font color="#000000">鳳翔</font><br><img src="../image/m_4.gif" title="鳳翔【デドマンワンダーランド】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="荊州【デドマンワンダーランド】"><font color="#000000">荊州</font><br><img src="../image/m_4.gif" title="荊州【デドマンワンダーランド】"></p></div></TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="寿州【デドマンワンダーランド】"><font color="#000000">寿州</font><br><img src="../image/m_4.gif" title="寿州【デドマンワンダーランド】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>5</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="成都【デドマンワンダーランド】"><font color="#000000">成都</font><br><img src="../image/m_4.gif" title="成都【デドマンワンダーランド】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="金陵【デドマンワンダーランド】"><font color="#000000">金陵</font><br><img src="../image/m_4.gif" title="金陵【デドマンワンダーランド】"></p></div></TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="杭州【デドマンワンダーランド】"><font color="#000000">杭州</font><br><img src="../image/m_4.gif" title="杭州【デドマンワンダーランド】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>6</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="潭州【デドマンワンダーランド】"><font color="#000000">潭州</font><br><img src="../image/m_4.gif" title="潭州【デドマンワンダーランド】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="福州【デドマンワンダーランド】"><font color="#000000">福州</font><br><img src="../image/m_4.gif" title="福州【デドマンワンダーランド】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="夷州【デドマンワンダーランド】"><font color="#000000">夷州</font><br><img src="../image/m_4.gif" title="夷州【デドマンワンダーランド】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>7</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="広州【デドマンワンダーランド】"><font color="#000000">広州</font><br><img src="../image/m_4.gif" title="広州【デドマンワンダーランド】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#ff6633 width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="泉州【デドマンワンダーランド】"><font color="#000000">泉州</font><br><img src="../image/m_4.gif" title="泉州【デドマンワンダーランド】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>8</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>9</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>10</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR>        </TBODY>
+      </TABLE>
+      </TD>
+      <TD bgcolor=#6d614a>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH bgcolor=#F0F0F0>MAP LOG</TH></TR><TR>
+<TD bgcolor=#a9987c>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(28日23時56分9秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(28日21時13分15秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(28日19時9分28秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(28日1時5分36秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(27日21時0分42秒)
+<BR>・<font color=0088CC><B>[仕官]</B></font>新しく流氷の弟子がデドマンワンダーランドに仕官しました。(27日20時6分10秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(27日19時16分42秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(26日23時18分8秒)
+<BR>・<font color=red>【イベント】</font>[886年04月]洪水がおこりました！各地で被害が出ています！(26日22時37分14秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(26日21時6分42秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(26日19時1分58秒)
+<BR>・<font color=red>【イベント】</font>[885年05月]疫病が流行っているようです。街の人々も苦しんでいます。。(26日0時27分17秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(25日23時14分39秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(25日21時11分30秒)
+<BR>・<font color=red>【イベント】</font>[884年03月]各町の商店が賑わっています。(25日19時51分50秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(25日19時7分53秒)
+<BR>・<font color=#FFFF00>【統一】</font>[883年08月]大陸はデドマンワンダーランドによって統一されました！(24日23時32分22秒)
+<BR>・<font color=blue>【支配】</font>[883年08月]デドマンワンダーランドの流水は荊州を支配しました。(24日23時32分22秒)
+<BR>・<font color=red>【滅亡】</font>[883年08月]は滅亡しました。。(24日23時32分22秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(荊州の城付近)(24日23時28分14秒)
+<BR>・7月:デドマンワンダーランドの流水は荊州に入城しました！(24日23時12分48秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(24日23時3分28秒)
+<BR>・6月:デドマンワンダーランドの流水は荊州へ向けて出城しました！(24日22時59分41秒)
+<BR>・<font color=blue>【支配】</font>[883年05月]デドマンワンダーランドの流水は開封を支配しました。(24日22時51分6秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(開封の城付近)(24日22時45分18秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(開封の城付近)(24日22時37分9秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(開封の城付近)(24日22時31分29秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(開封の城付近)(24日22時28分19秒)
+<BR>・4月:デドマンワンダーランドの流水は開封に入城しました！(24日22時15分14秒)
+<BR>・3月:デドマンワンダーランドの流水は開封へ向けて出城しました！(24日22時0分13秒)
+<BR>・<font color=blue>【支配】</font>[883年03月]デドマンワンダーランドの流水は京兆を支配しました。(24日21時51分41秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(京兆の城付近)(24日21時48分13秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(京兆の城付近)(24日21時45分7秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(京兆の城付近)(24日21時42分22秒)
+<BR>・2月:デドマンワンダーランドの流水は京兆に入城しました！(24日21時32分4秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(24日21時1分17秒)
+<BR>・12月:デドマンワンダーランドの流水は京兆へ向けて出城しました！(24日20時56分20秒)
+<BR>・<font color=blue>【支配】</font>[882年11月]デドマンワンダーランドの流水は晋陽を支配しました。(24日20時42分43秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(晋陽の城付近)(24日20時39分54秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(晋陽の城付近)(24日20時37分54秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(晋陽の城付近)(24日20時35分51秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(晋陽の城付近)(24日20時33分48秒)
+<BR>・11月:デドマンワンダーランドの流水は晋陽に入城しました！(24日20時29分44秒)
+<BR>・10月:デドマンワンダーランドの流水は晋陽へ向けて出城しました！(24日20時18分8秒)
+<BR>・<font color=blue>【支配】</font>[882年10月]デドマンワンダーランドの流水は幽州を支配しました。(24日20時11分20秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(幽州の城付近)(24日20時8分14秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(幽州の城付近)(24日20時6分14秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(幽州の城付近)(24日20時4分13秒)
+<BR>・9月:デドマンワンダーランドの流水は幽州に入城しました！(24日19時56分43秒)
+<BR>・8月:デドマンワンダーランドの流水は幽州へ向けて出城しました！(24日19時40分9秒)
+<BR>・<font color=blue>【支配】</font>[882年08月]デドマンワンダーランドの流水は上京を支配しました。(24日19時24分53秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(上京の城付近)(24日19時22分27秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(上京の城付近)(24日19時19分38秒)
+<BR>・7月:デドマンワンダーランドの流水は上京に入城しました！(24日19時4分22秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(24日19時1分42秒)
+<BR>・5月:デドマンワンダーランドの流水は上京へ向けて出城しました！(24日0時39分58秒)
+<BR>・<font color=blue>【支配】</font>[882年04月]デドマンワンダーランドの流水は燕京を支配しました。(24日0時14分17秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(燕京の城付近)(24日0時12分8秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(燕京の城付近)(24日0時7分10秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(燕京の城付近)(24日0時5分8秒)
+<BR>・3月:デドマンワンダーランドの流水は燕京に入城しました！(24日0時0分18秒)
+<BR>・2月:デドマンワンダーランドの流水は燕京へ向けて出城しました！(23日23時40分4秒)
+<BR>・<font color=blue>【支配】</font>[882年02月]デドマンワンダーランドの流水は青州を支配しました。(23日23時36分4秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(青州の城付近)(23日23時33分37秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(青州の城付近)(23日23時31分7秒)
+<BR>・1月:デドマンワンダーランドの流水は青州に入城しました！(23日23時16分10秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(23日23時3分45秒)
+<BR>・12月:デドマンワンダーランドの流水は青州へ向けて出城しました！(23日22時54分53秒)
+<BR>・<font color=blue>【支配】</font>[881年11月]デドマンワンダーランドの流水は寿州を支配しました。(23日22時46分21秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(23日22時44分18秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(23日22時41分38秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(23日22時39分4秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(23日22時36分56秒)
+<BR>・11月:デドマンワンダーランドの流水は寿州に入城しました！(23日22時30分14秒)
+<BR>・10月:デドマンワンダーランドの流水は寿州へ向けて出城しました！(23日22時21分23秒)
+<BR>・<font color=red>【イベント】</font>[881年10月]いなごの大群が畑を襲いました！(23日22時2分48秒)
+<BR>・<font color=blue>【支配】</font>[881年09月]デドマンワンダーランドの流水は金陵を支配しました。(23日21時58分31秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(金陵の城付近)(23日21時56分21秒)
+<BR>・9月:デドマンワンダーランドの流水は金陵に入城しました！(23日21時48分45秒)
+<BR>・8月:デドマンワンダーランドの流水は金陵へ向けて出城しました！(23日21時42分49秒)
+<BR>・城壁『<font color=red>あ〜ぁ、城壁崩れてきたじゃねぇか・・・。</font>』(23日21時20分18秒)
+<BR>・<font color=#ff0000>【敗北】</font>流水は城壁に敗北しました。(金陵の城付近)(23日21時20分18秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(金陵の城付近)(23日21時18分11秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(金陵の城付近)(23日21時16分10秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(金陵の城付近)(23日21時14分9秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(金陵の城付近)(23日21時10分53秒)
+<BR>・7月:デドマンワンダーランドの流水は金陵に入城しました！(23日21時2分20秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(23日21時0分36秒)
+<BR>・6月:デドマンワンダーランドの流水は金陵へ向けて出城しました！(23日20時57分26秒)
+<BR>・<font color=blue>【支配】</font>[881年06月]デドマンワンダーランドの流水は杭州を支配しました。(23日20時45分31秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(23日20時42分49秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(23日20時40分47秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(23日20時37分31秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(23日20時32分27秒)
+<BR>・<font color=0088CC><B>[仕官]</B></font>新しく暁美ほむらがデドマンワンダーランドに仕官しました。(23日20時29分40秒)
+<BR>・5月:デドマンワンダーランドの流水は杭州に入城しました！(23日20時26分3秒)
+<BR>・<font color=red>【イベント】</font>[881年05月]洪水がおこりました！各地で被害が出ています！(23日20時20分20秒)
+<BR>・4月:デドマンワンダーランドの流水は杭州へ向けて出城しました！(23日20時17分15秒)
+<BR>・<font color=blue>【支配】</font>[881年04月]デドマンワンダーランドの流水は福州を支配しました。(23日20時4分55秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(福州の城付近)(23日20時2分23秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(福州の城付近)(23日19時58分22秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(福州の城付近)(23日19時56分21秒)
+<BR>・3月:デドマンワンダーランドの流水は福州に入城しました！(23日19時49分29秒)
+<BR>・2月:デドマンワンダーランドの流水は福州へ向けて出城しました！(23日19時39分44秒)
+<BR>・<font color=blue>【支配】</font>[881年02月]デドマンワンダーランドの流水は泉州を支配しました。(23日19時37分15秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(泉州の城付近)(23日19時34分42秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(泉州の城付近)(23日19時32分42秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(泉州の城付近)(23日19時30分13秒)
+<BR>・1月:デドマンワンダーランドの流水は泉州に入城しました！(23日19時16分42秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(23日19時0分42秒)
+<BR>・10月:デドマンワンダーランドの流水は泉州へ向けて出城しました！(23日0時21分23秒)
+<BR>・<font color=blue>【支配】</font>[880年09月]デドマンワンダーランドの流水は夷州を支配しました。(22日23時47分32秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(夷州の城付近)(22日23時42分36秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(夷州の城付近)(22日23時40分34秒)
+<BR>・7月:デドマンワンダーランドの流水は夷州に入城しました！(22日23時16分36秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(22日23時3分7秒)
+<BR>・4月:デドマンワンダーランドの流水は夷州へ向けて出城しました！(22日22時12分49秒)
+<BR>・<font color=blue>【支配】</font>[880年03月]デドマンワンダーランドの流水は雷州を支配しました。(22日21時45分29秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(22日21時43分2秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(22日21時39分53秒)
+<BR>・1月:デドマンワンダーランドの流水は雷州に入城しました！(22日21時16分36秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(22日21時3分0秒)
+<BR>・10月:デドマンワンダーランドの流水は雷州へ向けて出城しました！(22日20時25分52秒)
+<BR>・<font color=blue>【支配】</font>[879年10月]デドマンワンダーランドの流水は広州を支配しました。(22日20時3分34秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(広州の城付近)(22日20時1分9秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(広州の城付近)(22日19時58分53秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(広州の城付近)(22日19時56分32秒)
+<BR>・9月:デドマンワンダーランドの流水は広州に入城しました！(22日19時41分49秒)
+<BR>・7月:デドマンワンダーランドの流水は広州へ向けて出城しました！(22日19時16分39秒)
+<BR>・<font color=blue>【支配】</font>[879年07月]デドマンワンダーランドの流水は潭州を支配しました。(22日19時9分53秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(潭州の城付近)(22日19時7分51秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(潭州の城付近)(22日19時4分13秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(潭州の城付近)(22日19時2分12秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(22日19時1分12秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(潭州の城付近)(22日19時0分12秒)
+<BR>・6月:デドマンワンダーランドの流水は潭州に入城しました！(22日0時57分11秒)
+<BR>・5月:デドマンワンダーランドの流水は潭州へ向けて出城しました！(22日0時41分8秒)
+<BR>・<font color=blue>【支配】</font>[879年04月]デドマンワンダーランドの流水は成都を支配しました。(22日0時36分12秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(成都の城付近)(22日0時33分43秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(成都の城付近)(22日0時31分3秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(成都の城付近)(22日0時28分32秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(成都の城付近)(22日0時25分55秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(成都の城付近)(22日0時23分24秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(成都の城付近)(22日0時21分22秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(成都の城付近)(22日0時19分22秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(成都の城付近)(22日0時17分12秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(成都の城付近)(22日0時15分12秒)
+<BR>・4月:デドマンワンダーランドの流水は成都に入城しました！(22日0時9分29秒)
+<BR>・2月:デドマンワンダーランドの流水は成都へ向けて出城しました！(21日23時43分15秒)
+<BR>・<font color=blue>【支配】</font>[879年02月]デドマンワンダーランドの流水は鳳翔を支配しました。(21日23時40分55秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時38分54秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時36分46秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時33分28秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時31分28秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時29分4秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時24分1秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時19分38秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時17分25秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(21日23時13分37秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時13分22秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時9分25秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時7分25秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時2分24秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日23時0分9秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(21日22時57分28秒)
+<BR>・12月:デドマンワンダーランドの流水は鳳翔に入城しました！(21日22時47分13秒)
+<BR>・10月:デドマンワンダーランドの流水は鳳翔へ向けて出城しました！(21日22時28分28秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(21日21時17分29秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(21日19時28分36秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(20日23時14分40秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(20日21時0分41秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(20日19時16分14秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(19日23時13分51秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(19日21時18分11秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(19日19時0分0秒)
+<BR>・ゲームプログラムを開始しました。(19日19時0分0秒)
+<BR>・<font color=0088CC><B>[仕官]</B></font>新しく流水がデドマンワンダーランドに仕官しました。(19日18時59分39秒)
+<BR>・<font color=000088><B>【建国】</B></font>新しく大罪猫がデドマンワンダーランドを建国しました。(19日18時21分44秒)
+<BR>・全データを初期化しました。(18日19時0分5秒)
+<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR></TD>
+          </TR>
+        </TBODY>
+      </TABLE>
+</TD>
+    </TR>
+<TR>      <TD colspan=2 bgcolor=#6d614a>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH bgcolor=#F0F0F0>史記</TH></TR><TR>
+<TD bgcolor=#a9987c>・<b><font color=red>【イベント】</font>[886年04月]洪水がおこりました！各地で被害が出ています！</b>(26日22時37分14秒)
+<BR>・<b><font color=red>【イベント】</font>[885年05月]疫病が流行っているようです。街の人々も苦しんでいます。。</b>(26日0時27分17秒)
+<BR>・<b><font color=red>【イベント】</font>[884年03月]各町の商店が賑わっています。</b>(25日19時51分50秒)
+<BR>・<b><font color=#FFFF00>【統一】</font>[883年08月]大陸はデドマンワンダーランドによって統一されました！</b>(24日23時32分22秒)
+<BR>・<b><font color=blue>【支配】</font>[883年08月]デドマンワンダーランドの流水は荊州を支配しました。</b>(24日23時32分22秒)
+<BR>・<b><font color=red>【滅亡】</font>[883年08月]は滅亡しました。。</b>(24日23時32分22秒)
+<BR>・<b><font color=blue>【支配】</font>[883年05月]デドマンワンダーランドの流水は開封を支配しました。</b>(24日22時51分6秒)
+<BR>・<b><font color=blue>【支配】</font>[883年03月]デドマンワンダーランドの流水は京兆を支配しました。</b>(24日21時51分41秒)
+<BR>・<b><font color=blue>【支配】</font>[882年11月]デドマンワンダーランドの流水は晋陽を支配しました。</b>(24日20時42分43秒)
+<BR>・<b><font color=blue>【支配】</font>[882年10月]デドマンワンダーランドの流水は幽州を支配しました。</b>(24日20時11分20秒)
+<BR>・<b><font color=blue>【支配】</font>[882年08月]デドマンワンダーランドの流水は上京を支配しました。</b>(24日19時24分53秒)
+<BR>・<b><font color=blue>【支配】</font>[882年04月]デドマンワンダーランドの流水は燕京を支配しました。</b>(24日0時14分17秒)
+<BR>・<b><font color=blue>【支配】</font>[882年02月]デドマンワンダーランドの流水は青州を支配しました。</b>(23日23時36分4秒)
+<BR>・<b><font color=blue>【支配】</font>[881年11月]デドマンワンダーランドの流水は寿州を支配しました。</b>(23日22時46分21秒)
+<BR>・<b><font color=red>【イベント】</font>[881年10月]いなごの大群が畑を襲いました！</b>(23日22時2分48秒)
+<BR>・<b><font color=blue>【支配】</font>[881年09月]デドマンワンダーランドの流水は金陵を支配しました。</b>(23日21時58分31秒)
+<BR>・<b><font color=blue>【支配】</font>[881年06月]デドマンワンダーランドの流水は杭州を支配しました。</b>(23日20時45分31秒)
+<BR>・<b><font color=red>【イベント】</font>[881年05月]洪水がおこりました！各地で被害が出ています！</b>(23日20時20分20秒)
+<BR>・<b><font color=blue>【支配】</font>[881年04月]デドマンワンダーランドの流水は福州を支配しました。</b>(23日20時4分55秒)
+<BR>・<b><font color=blue>【支配】</font>[881年02月]デドマンワンダーランドの流水は泉州を支配しました。</b>(23日19時37分15秒)
+<BR>・<b><font color=blue>【支配】</font>[880年09月]デドマンワンダーランドの流水は夷州を支配しました。</b>(22日23時47分32秒)
+<BR>・<b><font color=blue>【支配】</font>[880年03月]デドマンワンダーランドの流水は雷州を支配しました。</b>(22日21時45分29秒)
+<BR>・<b><font color=blue>【支配】</font>[879年10月]デドマンワンダーランドの流水は広州を支配しました。</b>(22日20時3分34秒)
+<BR>・<b><font color=blue>【支配】</font>[879年07月]デドマンワンダーランドの流水は潭州を支配しました。</b>(22日19時9分53秒)
+<BR>・<b><font color=blue>【支配】</font>[879年04月]デドマンワンダーランドの流水は成都を支配しました。</b>(22日0時36分12秒)
+<BR>・<b><font color=blue>【支配】</font>[879年02月]デドマンワンダーランドの流水は鳳翔を支配しました。</b>(21日23時40分55秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[875年00月]新しく大罪猫がデドマンワンダーランドを建国しました。</b>(19日18時21分44秒)
+<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR></TD>
+          </TR>
+        </TBODY>
+      </TABLE>
+</TD>
+    </TR>
+  </TBODY>
+</TABLE>
+※街にカーソルを合わせると街の名前が表示されます。
+<p>
+2015/03/01/(Sun) 17:50:07
+<CENTER><HR SIZE=0>
+<font color=998877>十国志NET </font><font size=1 color=998877>第2期</font> <font color=998877>ver.0.65</font><br>
+<font color=998877>ADMINISTARTOR liiu </font><a href="http://lunadraco.sakura.ne.jp/sangokuframe/index.cgi">GAME TOP</a><br>
+<font color=998877>三国志NET ver.2.80 </font><a href="http://www3.to/maccyu2/" target="_top">maccyu</a><br>
+<a href="http://ayfreenet.web.infoseek.co.jp/" target="_blank">HOMEPAGE GARO</a>
+</body></html>

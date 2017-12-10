@@ -1,0 +1,152 @@
+/* ZUKEI */
+
+#zukei{
+position:fixed;
+right:0px;
+bottom:0px;
+}
+#botan {
+position:relative;
+float: left;
+background-color:rgba(30,30,30,0.7);
+width: 60px;
+height: 60px;
+margin:0 20px 10px 0;
+border-radius:8px;
+border:none;
+}
+
+
+/* letter */
+#letter{
+	width:39px;
+	height:30px;
+	background-color:#ffffff;
+    position: absolute;
+    left:18%;
+    bottom:25%;
+}
+#letter:before{
+    content: '';
+	position: absolute;
+	width:0px;
+	height:0px;
+	border-top:solid 20px rgba(30,30,30,0.7);
+	border-right:solid 20px transparent;
+	border-bottom:solid 20px transparent;
+	border-left:solid 20px transparent;
+    left:0px;
+    bottom:-10px;
+}
+#letter:after{
+    content: '';
+	position: absolute;
+	width:0px;
+	height:0px;
+	border-top:solid 18px #ffffff;
+	border-right:solid 18px transparent;
+	border-bottom:solid 18px transparent;
+	border-left:solid 18px transparent;
+    left:2px;
+    bottom:-7px;
+}
+
+/* Reload */
+#reload {
+	position: absolute;
+    width: 27px;
+    height: 13.5px;
+    border-style: solid;
+    border-width: 0px 6px 6px 6px;
+    border-color: #ffffff;
+    border-radius: 0 0 75px 75px;
+    position: absolute;
+    top: 50%;
+    left: 20%;
+}
+#reload:after {
+    content: '';
+    width: 13.5px;
+    height: 13.5px;
+    border-style: solid;
+    border-width: 6px 0 0 6px;
+    border-color: #ffffff;
+    border-radius: 75px 0 0 0;
+    position: absolute;
+    left: -6px;
+    bottom: 13.5px;
+}
+#reload:before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 9px;
+    border-color: transparent transparent transparent #ffffff;
+    bottom: 21px;
+    left: 13.5px;
+}
+
+/* up_arrow */
+#up_arrow{
+	position: absolute;
+	top:-5%;
+	left:25%;
+	width:0;
+	height:0;
+	border: 16px solid transparent;
+	border-bottom-color: #ffffff;
+}
+#up_arrow:after{
+	position: absolute;
+	content: '';
+	top: 16px;
+	left: -8px;
+	width: 16px;
+	height: 16px;
+	background: #ffffff;
+}
+
+/* down_arrow */
+#down_arrow{
+	position: absolute;
+	top:50%;
+	left:25%;
+	width: 0;
+	height: 0;
+	border: 16px solid transparent;
+	border-top-color: #ffffff;
+}
+#down_arrow:after{
+	position: absolute;
+	content: '';
+	top: -32px;
+	left: -8px;
+	width: 16px;
+	height: 16px;
+	background: #ffffff;
+}
+
+/* command_mark */
+#com_in{
+position: absolute;
+top:12%;
+left:40%;
+width: 0;
+height: 0;
+border-top: 36px solid #ffffff;
+border-left: 6px solid transparent;
+border-right: 6px solid transparent;
+border-radius:6px
+}
+#com_in:after{
+position: absolute;
+content:'';
+left:-4px;
+top:1px;
+width:8px;
+height:8px;
+background-color:#ffffff;
+border-radius:4px
+}

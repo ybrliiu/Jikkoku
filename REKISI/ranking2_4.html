@@ -1,0 +1,201 @@
+
+<html>
+<head>
+<meta name="description" content="バトルマップ上で戦う三国志NET。">
+<meta name="keywords" content="十国志NET,三国志NET,ブラウザゲーム,オンラインゲーム,CGIゲーム,無料">
+<link rel="shortcut icon" href="../favicon.ico" >
+<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>十国志NET</title>
+<link rel="stylesheet" href="../js/base.css">
+<script src="../js/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="../js/jqballon.css">
+
+<STYLE type="text/css">
+<!--
+BODY,TR,TD,TH,FORM { font-family : "ＭＳ ゴシック"; font-size: 9pt; }
+a{ text-decoration:none;}
+a:link.mikata { color: blue; font-size: 9pt }
+a:link.enemy { color: red; font-size: 9pt }
+a:link#mikata { color: blue; font-size: 9pt }
+a:link#enemy { color: red; font-size: 9pt }
+a:link    { color: #4682B4 }
+a:visited { color: #4682B4 }
+a:hover   { color: #FFFF00 }
+a:active  { color: #00FF00 }
+.S1 {color:#fff; border-style: double; border-width: 3px;BACKGROUND: #633;}
+
+.dmg { color: #FF0000; font-size: 18pt }
+.clit { color: #0000FF; font-size: 18pt }
+#small { font-size: xx-small; }
+.bmj { color: #000000; font-size: 5pt }
+.r { color: #FF4444; font-size: 10pt }
+.b { color: #4444DD; font-size: 10pt }
+.s { color: #44AAEE; font-size: 10pt }
+.g { color: #44DD44; font-size: 10pt }
+.o { color: #EEAA44; font-size: 10pt }
+-->
+</STYLE>
+
+</head>
+<body background="../image/o.gif" bgcolor="#E0E088" text="" link="#CCAA88" vlink="#AA8855" alink="#AA8855" leftmargin="0" marginwidth="0" marginheight="0">
+
+
+<script type="text/javascript"><!--
+var num = 0;
+
+$(document).ready(function(){
+
+$(".leon333").click(function () {if(num<1){$(this).append($("<div id=ballon style=background-color:rgba(0,0,255,0.7);><table border=0 width=100% height=100%><tr><td align=right height=5><span id=clo><b>×閉じる</b></span></td><tr><td><iframe src=../menu.cgi?id=leon333&send=1 scrolling=yes align=center frameborder=0 width=100% height=100%></iframe></td></tr></table></div>"));}num++;});
+$(".ryuhyo").click(function () {if(num<1){$(this).append($("<div id=ballon style=background-color:rgba(0,0,255,0.7);><table border=0 width=100% height=100%><tr><td align=right height=5><span id=clo><b>×閉じる</b></span></td><tr><td><iframe src=../menu.cgi?id=ryuhyo&send=1 scrolling=yes align=center frameborder=0 width=100% height=100%></iframe></td></tr></table></div>"));}num++;});
+$(".meemee").click(function () {if(num<1){$(this).append($("<div id=ballon style=background-color:rgba(0,0,255,0.7);><table border=0 width=100% height=100%><tr><td align=right height=5><span id=clo><b>×閉じる</b></span></td><tr><td><iframe src=../menu.cgi?id=meemee&send=1 scrolling=yes align=center frameborder=0 width=100% height=100%></iframe></td></tr></table></div>"));}num++;});
+$(".neuro").click(function () {if(num<1){$(this).append($("<div id=ballon style=background-color:rgba(102,102,102,0.7);><table border=0 width=100% height=100%><tr><td align=right height=5><span id=clo><b>×閉じる</b></span></td><tr><td><iframe src=../menu.cgi?id=neuro&send=1 scrolling=yes align=center frameborder=0 width=100% height=100%></iframe></td></tr></table></div>"));}num++;});
+$(".ybrliiu").click(function () {if(num<1){$(this).append($("<div id=ballon style=background-color:rgba(102,102,102,0.7);><table border=0 width=100% height=100%><tr><td align=right height=5><span id=clo><b>×閉じる</b></span></td><tr><td><iframe src=../menu.cgi?id=ybrliiu&send=1 scrolling=yes align=center frameborder=0 width=100% height=100%></iframe></td></tr></table></div>"));}num++;});
+
+
+$(document).on('click','#clo', function(){$("div:last").remove();num = 0;});
+
+});
+--></script>
+
+<CENTER><TABLE WIDTH="80%" height=100% bgcolor=#6d614a>
+<TBODY><TR><TD BGCOLOR=#a9987c WIDTH=100% height=100% align=center>
+<BR>
+<TABLE border=1 width=90% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH bgcolor=#284422><font size=5 color=CCDDCC>- 名 将 一 覧 -</font></TH></TR>
+</TBODY></TABLE>
+
+<BR><p>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=5 bgcolor=#284422><font size=4 color=CCDDCC>大陸の英雄</font></TH></TR>
+<TR><TD align=center>タイトル</TD><TD align=center>数値</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH bgcolor=#6d614a><a href=#sum style="color:FFFFFF">総合能力No.1</a></TH><TH>192</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TH bgcolor=#6d614a><a href=#str style="color:FFFFFF">武力No.1</a></TH><TH>128</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TH bgcolor=#6d614a><a href=#int style="color:FFFFFF">知力No.1</a></TH><TH>66</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TH bgcolor=#6d614a><a href=#lea style="color:FFFFFF">統率力No.1</a></TH><TH>118</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TH bgcolor=#6d614a><a href=#cha style="color:FFFFFF">人望No.1</a></TH><TH>12</TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TH bgcolor=#6d614a><a href=#gold style="color:FFFFFF">所持金No.1</a></TH><TH>金:30484</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TH bgcolor=#6d614a><a href=#rice style="color:FFFFFF">穀物No.1</a></TH><TH>米:40644</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TH bgcolor=#6d614a><a href=#class style="color:FFFFFF">階級値No.1</a></TH><TH>7839</TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TH bgcolor=#6d614a><a href=#bou style="color:FFFFFF">防具威力No.1</a></TH><TH>2</FONT></TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TH bgcolor=#6d614a><a href=#arm style="color:FFFFFF">武器威力No.1</a></TH><TH>36.275</FONT></TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TH bgcolor=#6d614a><a href=#book style="color:FFFFFF">書物威力No.1</a></TH><TH>12.32</FONT></TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TH bgcolor=#6d614a><a href=#sitahei style="color:FFFFFF">倒した兵数No.1</s></TH><TH>0人</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TH bgcolor=#6d614a><a href=#sarehei style="color:FFFFFF">倒された兵数No.1</a></TH><TH>216人</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TH bgcolor=#6d614a><a href=#bou_win style="color:FFFFFF">防衛側勝利回数No.1</a></TH><TH>0回</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TH bgcolor=#6d614a><a href=#kou_win style="color:FFFFFF">侵攻側勝利回数No.1</a></TH><TH>0回</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TH bgcolor=#6d614a><a href=#battle style="color:FFFFFF">戦闘回数No.1</a></TH><TH>97回</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TH bgcolor=#6d614a><a href=#win style="color:FFFFFF">戦闘勝利回数No.1</a></TH><TH>0回</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TH bgcolor=#6d614a><a href=#sihai style="color:FFFFFF">支配回数No.1</a></TH><TH>22回</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TH bgcolor=#6d614a><a href=#kezuri style="color:FFFFFF">城壁削りNo.1</a></TH><TH>1642</TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="str"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=5 bgcolor=#284422><font size=4 color=CCDDCC>豪傑　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>武力</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TD><TH>128</TH><TH><font color=AA0000><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>2</TD><TH>117</TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>3</TD><TH>57</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>4</TD><TH>5</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>5</TD><TH>4</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="int"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=5 bgcolor=#284422><font size=4 color=CCDDCC>秀才　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>知力</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</TH><TH>66</TH><TH><font color=AA0000><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>2</TD><TH>5</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>3</TD><TH>5</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>4</TD><TH>2</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>5</TD><TH>2</TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="lea"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=5 bgcolor=#284422><font size=4 color=CCDDCC>指揮　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>統率力</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>118</TH><TH><font color=AA0000><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>2</TD><TH>112</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>3</TD><TH>59</TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>4</TD><TH>55</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>5</TD><TH>26</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="cha"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=5 bgcolor=#284422><font size=4 color=CCDDCC>魅力　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>人望</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>12</TH><TH><font color=AA0000><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>2</TD><TH>5</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>3</TD><TH>4</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>4</TD><TH>4</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>5</TD><TH>2</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="sum"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=9 bgcolor=#284422><font size=4 color=CCDDCC>名将　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>総合</TD><TD align=center>武力</TD><TD align=center>知力</TD><TD align=center>統率力</TD><TD align=center>人望</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>192</TH><TD>128</TD><TD>5</TD><TD>55</TD><TD>4</TD><TH><font color=AA0000><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>2</TD><TH>190</TH><TD>117</TD><TD>2</TD><TD>59</TD><TD>12</TD><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>3</TD><TH>185</TH><TD>57</TD><TD>5</TD><TD>118</TD><TD>5</TD><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>4</TD><TH>184</TH><TD>4</TD><TD>66</TD><TD>112</TD><TD>2</TD><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>5</TD><TH>37</TH><TD>5</TD><TD>2</TD><TD>26</TD><TD>4</TD><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="gold"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=5 bgcolor=#284422><font size=4 color=CCDDCC>富豪　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>金</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>金:30484</TH><TH><font color=AA0000><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>2</TD><TH>金:20886</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>3</TD><TH>金:20709</TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>4</TD><TH>金:13067</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>5</TD><TH>金:10020</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="rice"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=5 bgcolor=#284422><font size=4 color=CCDDCC>穀物　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>米</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>米:40644</TH><TH><font color=AA0000><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>2</TD><TH>米:20519</TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>3</TD><TH>米:16934</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>4</TD><TH>米:12009</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>5</TD><TH>米:4046</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="class"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=5 bgcolor=#284422><font size=4 color=CCDDCC>功労者　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>階級値</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>7839</TH><TH><font color=AA0000><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>2</TD><TH>6640</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>3</TD><TH>6259</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>4</TD><TH>5936</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>5</TD><TH>5377</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="arm"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=6 bgcolor=#284422><font size=4 color=CCDDCC>武器　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>威力</TD><TD align=center>武器名称</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>36.275</FONT></TH><TH>こおりと一緒に攻撃する武器</TH><TH><font color=AA0000><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>2</TD><TH>20.3</FONT></TH><TH>流水と一緒に攻撃する武器</TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>3</TD><TH>5</FONT></TH><TH>鮮血の魔人斧</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>4</TD><TH>0</FONT></TH><TH>枝</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>5</TD><TH>0</FONT></TH><TH>針金</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="bou"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=6 bgcolor=#284422><font size=4 color=CCDDCC>防具　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>威力</TD><TD align=center>防具名称</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>2</FONT></TH><TH>流水の可愛さから守る防具</TH><TH><font color=AA0000><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>2</TD><TH>2</FONT></TH><TH>こおりの可愛さから守る防具</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>3</TD><TH>0</FONT></TH><TH>紙</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>4</TD><TH>0</FONT></TH><TH>紙の盾</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>5</TD><TH>0</FONT></TH><TH>死せる戦士の鎧</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="book"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=6 bgcolor=#284422><font size=4 color=CCDDCC>書物　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>威力</TD><TD align=center>書物名称</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>12.32</FONT></TH><TH>本「女の子を落とすためには？」</TH><TH><font color=AA0000><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>2</TD><TH>11.9</FONT></TH><TH>紙切れ</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>3</TD><TH>10.01</FONT></TH><TH>空を往く瞳</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>4</TD><TH>7.35</FONT></TH><TH>魔法の光る石板</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>5</TD><TH>0</FONT></TH><TH>紙切れ</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="sitahei"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=5 bgcolor=#284422><font size=4 color=CCDDCC>倒した兵数　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>倒した兵数</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>0人</TH><TH><font color=AA0000><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>2</TD><TH>0人</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>3</TD><TH>0人</TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>4</TD><TH>0人</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>5</TD><TH>0人</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="sarehei"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=5 bgcolor=#284422><font size=4 color=CCDDCC>倒された兵数　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>倒された兵数</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>216人</TH><TH><font color=AA0000><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>2</TD><TH>199人</TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>3</TD><TH>0人</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>4</TD><TH>0人</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>5</TD><TH>0人</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="kou_win"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=5 bgcolor=#284422><font size=4 color=CCDDCC>闘神　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>侵攻側勝利回数</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>0回</TH><TH><font color=AA0000><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>2</TD><TH>0回</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>3</TD><TH>0回</TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>4</TD><TH>0回</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>5</TD><TH>0回</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="bou_win"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=5 bgcolor=#284422><font size=4 color=CCDDCC>守護神　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>防衛側勝利回数</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>0回</TH><TH><font color=AA0000><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>2</TD><TH>0回</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>3</TD><TH>0回</TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>4</TD><TH>0回</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>5</TD><TH>0回</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="battle"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=5 bgcolor=#284422><font size=4 color=CCDDCC>戦神　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>戦闘回数</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>97回</TH><TH><font color=AA0000><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>2</TD><TH>90回</TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>3</TD><TH>5回</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>4</TD><TH>0回</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>5</TD><TH>0回</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="win"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=5 bgcolor=#284422><font size=4 color=CCDDCC>勝神　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>戦闘勝利回数</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>0回</TH><TH><font color=AA0000><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>2</TD><TH>0回</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>3</TD><TH>0回</TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>4</TD><TH>0回</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>5</TD><TH>0回</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="sihai"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=5 bgcolor=#284422><font size=4 color=CCDDCC>支配回数　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>都市支配回数</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>22回</TH><TH><font color=AA0000><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>2</TD><TH>8回</TH><TH><font color=#6d614a><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>3</TD><TH>5回</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>4</TD><TH>0回</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>5</TD><TH>0回</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR>
+</TBODY></TABLE>
+
+<BR><p><a name="kezuri"></a>
+<TABLE border=1 width=80% class=S3 cellspacing=0 CELLPADDING=0><TBODY>
+<TR><TH colspan=5 bgcolor=#284422><font size=4 color=CCDDCC>城壁破壊　１０選</font></TH></TR>
+<TR><TD align=center>順位</TD><TD align=center>城壁削り数</TD><TD align=center colspan=2>名前</TD><TD align=center>所属国</TD></TR><TR><TH><font color=blue>【1】</font></TH><TH>1642</TH><TH><font color=AA0000><span class=ryuhyo>こおり</span></TH><TD width=5><img src=../image/6.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>2</TD><TH>1140</TH><TH><font color=#6d614a><span class=leon333>流水</span></TH><TD width=5><img src=../image/228.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR><TR><TD align=center>3</TD><TH>0</TH><TH><font color=#6d614a><span class=ybrliiu>りーう＠管理人</span></TH><TD width=5><img src=../image/156.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>4</TD><TH>0</TH><TH><font color=#6d614a><span class=neuro>アルスラーン</span></TH><TD width=5><img src=../image/214.gif width=64 height=64></TD><TD align=center>無所属</TD></TR><TR><TD align=center>5</TD><TH>0</TH><TH><font color=#6d614a><span class=meemee>クラスティ</span></TH><TD width=5><img src=../image/311.gif width=64 height=64></TD><TD align=center>D.D.D</TD></TR>
+</TBODY></TABLE>
+
+
+<form action="index.cgi" method="post">
+<input type=submit id=input value="メニューに戻る"></form>
+
+      </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<CENTER><HR SIZE=0>
+<font color=998877>十国志NET </font><font size=1 color=998877>第4期</font> <font color=998877>ver.0.67</font><br>
+<font color=998877>ADMINISTARTOR liiu </font><a href="http://lunadraco.sakura.ne.jp/sangokuframe/index.cgi">GAME TOP</a><br>
+<font color=998877>三国志NET ver.2.80 </font><a href="http://www3.to/maccyu2/" target="_top">maccyu</a><br>
+<a href="http://ayfreenet.web.infoseek.co.jp/" target="_blank">HOMEPAGE GARO</a>
+</body></html>

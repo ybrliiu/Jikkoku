@@ -1,0 +1,36 @@
+#tooltip p {
+position: relative;
+text-decoration: none;
+}
+#tooltip p:after {
+content: attr(data-tooltip);
+position: absolute;
+bottom: 70%;
+left: 85%;
+background: #000;
+padding: 5px 15px;
+color: #fff;
+-webkit-border-radius: 3px;
+-moz-border-radius   : 3px;
+border-radius        :3px;
+white-space: nowrap;
+opacity: 0;
+-webkit-transition: all 0.3s ease;
+-moz-transition   : all 0.3s ease;
+}
+#tooltip p:before {
+content: "";
+position: absolute;
+width: 0;
+height: 0;
+opacity: 0;
+}
+#tooltip p:hover:after {
+bottom: 100%;
+}
+#tooltip p:hover:before {
+bottom: 70%;
+}
+#tooltip p:hover:after, #tooltip p:hover:before {
+opacity: 1;
+}

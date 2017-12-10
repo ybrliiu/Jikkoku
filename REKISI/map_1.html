@@ -1,0 +1,391 @@
+
+<html>
+<head>
+<meta name="description" content="バトルマップ上で戦う三国志NET。">
+<meta name="keywords" content="三国志NET,ブラウザゲーム,オンラインゲーム,CGIゲーム,無料">
+<link rel="shortcut icon" href="../favicon.ico" >
+<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>十国志NET</title>
+<link rel="stylesheet" href="../js/base.css">
+<link rel="stylesheet" href="./tt.css">
+<STYLE type="text/css">
+<!--
+BODY,TR,TD,TH,FORM { font-family : "ＭＳ ゴシック"; font-size: 9pt; }
+a{ text-decoration:none;}
+a:link.mikata { color: blue; font-size: 9pt }
+a:link.enemy { color: red; font-size: 9pt }
+a:link#mikata { color: blue; font-size: 9pt }
+a:link#enemy { color: red; font-size: 9pt }
+a:link    { color: #4682B4 }
+a:visited { color: #4682B4 }
+a:hover   { color: #FFFF00 }
+a:active  { color: #00FF00 }
+.S1 {color:#fff; border-style: double; border-width: 3px;BACKGROUND: #633;}
+
+.dmg { color: #FF0000; font-size: 18pt }
+.clit { color: #0000FF; font-size: 18pt }
+#small { font-size: xx-small; }
+.bmj { color: #000000; font-size: 5pt }
+.r { color: #FF4444; font-size: 10pt }
+.b { color: #4444DD; font-size: 10pt }
+.s { color: #44AAEE; font-size: 10pt }
+.g { color: #44DD44; font-size: 10pt }
+.o { color: #EEAA44; font-size: 10pt }
+-->
+</STYLE>
+<script type="text/javascript" src="../js/ballon.js"></script>
+</head>
+<body background="../image/o.gif" bgcolor="#E0E088" text="" link="#CCAA88" vlink="#AA8855" alink="#AA8855" leftmargin="0" marginwidth="0" marginheight="0">
+
+<TABLE bgcolor=#6d614a width=100% border="0">
+  <TBODY>
+    <TR>
+      <TD bgcolor=#F0F0F0 width=50% valign=top>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH><font color=#444444><font size=4>十国志NET</font> <BR>- 大 陸 地 図 -</font></TH>
+          </TR>
+        </TBODY>
+      </TABLE>
+      <TABLE bgcolor=#F0F0F0 background="../image/mapbg.gif" width=100% height=5 border="0" cellspacing=1>
+        <TBODY>
+          <TR>
+            <TD width=20 bgcolor=#F0F0F0>-</TD>
+<TD width=20 bgcolor=#D0C088>1</TD><TD width=20 bgcolor=#D0C088>2</TD><TD width=20 bgcolor=#D0C088>3</TD><TD width=20 bgcolor=#D0C088>4</TD><TD width=20 bgcolor=#D0C088>5</TD><TD width=20 bgcolor=#D0C088>6</TD><TD width=20 bgcolor=#D0C088>7</TD><TD width=20 bgcolor=#D0C088>8</TD><TD width=20 bgcolor=#D0C088>9</TD><TD width=20 bgcolor=#D0C088>10</TD></TR><TR><TD bgcolor=#C0C088>1</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="上京【はいさい共和国】"><font color="#000000">上京</font><br><img src="../image/m_4.gif" title="上京【はいさい共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>2</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="晋陽【はいさい共和国】"><font color="#000000">晋陽</font><br><img src="../image/m_4.gif" title="晋陽【はいさい共和国】"></p></div></TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="幽州【はいさい共和国】"><font color="#000000">幽州</font><br><img src="../image/m_4.gif" title="幽州【はいさい共和国】"></p></div></TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="燕京【はいさい共和国】"><font color="#000000">燕京</font><br><img src="../image/m_4.gif" title="燕京【はいさい共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>3</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="敦煌【はいさい共和国】"><font color="#000000">敦煌</font><br><img src="../image/m_4.gif" title="敦煌【はいさい共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="京兆【はいさい共和国】"><font color="#000000">京兆</font><br><img src="../image/m_4.gif" title="京兆【はいさい共和国】"></p></div></TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="開封【はいさい共和国】"><font color="#000000">開封</font><br><img src="../image/m_4.gif" title="開封【はいさい共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="青州【はいさい共和国】"><font color="#000000">青州</font><br><img src="../image/m_4.gif" title="青州【はいさい共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>4</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="鳳翔【はいさい共和国】"><font color="#000000">鳳翔</font><br><img src="../image/m_4.gif" title="鳳翔【はいさい共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="荊州【はいさい共和国】"><font color="#000000">荊州</font><br><img src="../image/m_4.gif" title="荊州【はいさい共和国】"></p></div></TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="寿州【はいさい共和国】"><font color="#000000">寿州</font><br><img src="../image/m_3.gif" title="寿州【はいさい共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>5</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="成都【はいさい共和国】"><font color="#000000">成都</font><br><img src="../image/m_4.gif" title="成都【はいさい共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="金陵【はいさい共和国】"><font color="#000000">金陵</font><br><img src="../image/m_4.gif" title="金陵【はいさい共和国】"></p></div></TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="杭州【はいさい共和国】"><font color="#000000">杭州</font><br><img src="../image/m_4.gif" title="杭州【はいさい共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>6</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="潭州【はいさい共和国】"><font color="#000000">潭州</font><br><img src="../image/m_4.gif" title="潭州【はいさい共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="福州【はいさい共和国】"><font color="#000000">福州</font><br><img src="../image/m_4.gif" title="福州【はいさい共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="夷州【はいさい共和国】"><font color="#000000">夷州</font><br><img src="../image/m_4.gif" title="夷州【はいさい共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>7</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="広州【はいさい共和国】"><font color="#000000">広州</font><br><img src="../image/m_4.gif" title="広州【はいさい共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#66CCCC width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="泉州【はいさい共和国】"><font color="#000000">泉州</font><br><img src="../image/m_4.gif" title="泉州【はいさい共和国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>8</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>9</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>10</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR>        </TBODY>
+      </TABLE>
+      </TD>
+      <TD bgcolor=#6d614a>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH bgcolor=#F0F0F0>MAP LOG</TH></TR><TR>
+<TD bgcolor=#a9987c>・<font color=black>[管理人からのお知らせ]</font>バグの原因がわかりました。お騒がせしました。（管理人より）(15日13時33分13秒)
+<BR>・<font color=green>【引き分け】</font>りーう＠管理人と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(15日13時31分4秒)
+<BR>・<font color=green>【引き分け】</font>りーう＠管理人と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(15日13時21分5秒)
+<BR>・<font color=green>【引き分け】</font>りーう＠管理人と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(15日13時18分54秒)
+<BR>・<font color=green>【引き分け】</font>りーう＠管理人と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(15日13時16分24秒)
+<BR>・<font color=green>【引き分け】</font>りーう＠管理人と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(15日13時12分39秒)
+<BR>・<font color=green>【引き分け】</font>りーう＠管理人と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(15日13時7分48秒)
+<BR>・6月:はいさい共和国のあっきーは敦煌に入城しました！(15日0時54分23秒)
+<BR>・<font color=orange>【支援】</font>羊は羊に支援を行いました。(敦煌の城付近)(15日0時49分56秒)
+<BR>・6月:はいさい共和国のあっきーは敦煌へ出兵しました！(15日0時47分16秒)
+<BR>・<font color=orange>【支援】</font>羊は羊に支援を行いました。(敦煌の城付近)(15日0時45分55秒)
+<BR>・<font color=green>【引き分け】</font>りーう＠管理人と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(15日0時40分16秒)
+<BR>・<font color=orange>【支援】</font>羊は羊に支援を行いました。(敦煌の城付近)(15日0時39分50秒)
+<BR>・<font color=green>【引き分け】</font>りーう＠管理人と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(15日0時38分12秒)
+<BR>・<font color=black>[管理人からのお知らせ]</font>バグが起きているようなので検証します。（管理人より）(15日0時37分55秒)
+<BR>・<font color=orange>【支援】</font>羊は羊に支援を行いました。(敦煌の城付近)(15日0時36分50秒)
+<BR>・5月:はいさい共和国のあっきーは鳳翔に入城しました！(15日0時35分5秒)
+<BR>・5月:はいさい共和国のあっきーは鳳翔へ出兵しました！(15日0時30分4秒)
+<BR>・羊『<font color=blue>メェェーーー！</font>』(15日0時20分55秒)
+<BR>・<font color=blue>【勝利】</font>羊はボールペン を倒しました！(敦煌の城付近)(15日0時20分55秒)
+<BR>・<font color=green>【引き分け】</font>羊とボールペン の戦闘は決着がつきませんでした。(敦煌の城付近)(15日0時18分44秒)
+<BR>・<font color=green>【引き分け】</font>羊とボールペン の戦闘は決着がつきませんでした。(敦煌の城付近)(15日0時16分33秒)
+<BR>・4月:無所属のボールペン は反乱をおこし敦煌へ攻め込みました！(15日0時12分17秒)
+<BR>・4月:はいさい共和国の流水は鳳翔に入城しました！(15日0時6分10秒)
+<BR>・3月:はいさい共和国の流水は鳳翔へ出兵しました！(14日23時42分25秒)
+<BR>・1月:はいさい共和国の流水は京兆に入城しました！(14日23時18分52秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(14日23時0分31秒)
+<BR>・12月:はいさい共和国の流水は京兆へ出兵しました！(14日22時49分18秒)
+<BR>・<font color=#FFFF00>【統一】</font>[935年11月]大陸ははいさい共和国によって統一されました！(14日22時37分45秒)
+<BR>・<font color=blue>【支配】</font>[935年11月]はいさい共和国のあっきーは敦煌を支配しました。(14日22時37分45秒)
+<BR>・<font color=red>【滅亡】</font>[935年11月]闇の王は滅亡しました。。(14日22時37分45秒)
+<BR>・11月:はいさい共和国の名無しのIRISHは敦煌へ出兵しました！(14日22時37分18秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時35分42秒)
+<BR>・<font color=orange>【支援】</font>羊はあっきーに支援を行いました。(敦煌の城付近)(14日22時35分35秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時33分39秒)
+<BR>・11月:はいさい共和国の名無しのIRISHは鳳翔に入城しました！(14日22時32分9秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時31分36秒)
+<BR>・11月:はいさい共和国の流水の弟子は敦煌に入城しました！(14日22時31分2秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時29分32秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時27分19秒)
+<BR>・11月:はいさい共和国の羊は敦煌に入城しました！(14日22時25分51秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時25分16秒)
+<BR>・11月:はいさい共和国の流水は荊州に入城しました！(14日22時25分12秒)
+<BR>・11月:はいさい共和国の名無しのIRISHは鳳翔へ出兵しました！(14日22時23分36秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時23分14秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時21分11秒)
+<BR>・[放置]：ケトは削除されました。(14日22時20分54秒)
+<BR>・10月:はいさい共和国の流水は荊州へ出兵しました！(14日22時20分54秒)
+<BR>・<font color=blue>【支配】</font>[935年10月]はいさい共和国の名無しのIRISHは京兆を支配しました。(14日22時19分33秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時19分8秒)
+<BR>・10月:はいさい共和国の名無しのIRISHは京兆に入城しました！(14日22時17分33秒)
+<BR>・10月:はいさい共和国の流水の弟子は敦煌へ出兵しました！(14日22時17分22秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時17分5秒)
+<BR>・10月:はいさい共和国の羊は敦煌へ出兵しました！(14日22時15分39秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時14分55秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時12分53秒)
+<BR>・<font color=blue>【支配】</font>[935年09月]はいさい共和国の羊は鳳翔を支配しました。(14日22時10分53秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時10分49秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(14日22時10分47秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(14日22時8分52秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時8分46秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(14日22時7分52秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時6分43秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(14日22時6分8秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(14日22時5分29秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時4分41秒)
+<BR>・<font color=orange>【支援】</font>羊は羊に支援を行いました。(鳳翔の城付近)(14日22時4分38秒)
+<BR>・9月:はいさい共和国の名無しのIRISHは京兆へ出兵しました！(14日22時3分59秒)
+<BR>・<font color=orange>【支援】</font>羊は流水の弟子に支援を行いました。(鳳翔の城付近)(14日22時3分18秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(鳳翔の城付近)(14日22時2分57秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時2分39秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日22時0分36秒)
+<BR>・9月:はいさい共和国の羊は鳳翔に入城しました！(14日21時58分25秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日21時58分20秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日21時56分0秒)
+<BR>・9月:はいさい共和国の流水の弟子は鳳翔に入城しました！(14日21時54分1秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(14日21時53分39秒)
+<BR>・<font color=blue>【支配】</font>[935年09月]はいさい共和国の名無しのIRISHは晋陽を支配しました。(14日21時53分38秒)
+<BR>・9月:はいさい共和国の名無しのIRISHは晋陽に入城しました！(14日21時51分32秒)
+<BR>・9月:はいさい共和国の羊は鳳翔へ出兵しました！(14日21時47分22秒)
+<BR>・9月:はいさい共和国のあっきーは敦煌に入城しました！(14日21時46分39秒)
+<BR>・9月:はいさい共和国の名無しのIRISHは晋陽へ出兵しました！(14日21時46分27秒)
+<BR>・9月:はいさい共和国の名無しのIRISHは幽州に入城しました！(14日21時41分15秒)
+<BR>・8月:はいさい共和国のあっきーは敦煌へ出兵しました！(14日21時39分55秒)
+<BR>・8月:はいさい共和国の流水は寿州に入城しました！(14日21時38分6秒)
+<BR>・8月:はいさい共和国の羊は成都に入城しました！(14日21時37分48秒)
+<BR>・8月:はいさい共和国のあっきーは鳳翔に入城しました！(14日21時33分37秒)
+<BR>・8月:はいさい共和国の名無しのIRISHは幽州へ出兵しました！(14日21時33分32秒)
+<BR>・8月:はいさい共和国の流水は寿州へ出兵しました！(14日21時29分0秒)
+<BR>・8月:はいさい共和国の流水の弟子は鳳翔へ出兵しました！(14日21時24分3秒)
+<BR>・8月:はいさい共和国の羊は成都へ出兵しました！(14日21時23分24秒)
+<BR>・<font color=blue>【支配】</font>[935年08月]はいさい共和国の名無しのIRISHは上京を支配しました。(14日21時23分16秒)
+<BR>・7月:はいさい共和国のあっきーは鳳翔へ出兵しました！(14日21時21分3秒)
+<BR>・<font color=blue>【支配】</font>[935年07月]はいさい共和国の流水の弟子は成都を支配しました。(14日21時19分16秒)
+<BR>・7月:はいさい共和国の羊は潭州に入城しました！(14日21時19分13秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(成都の城付近)(14日21時17分42秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(成都の城付近)(14日21時16分8秒)
+<BR>・7月:はいさい共和国の名無しのIRISHは上京に入城しました！(14日21時14分46秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(成都の城付近)(14日21時14分27秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(成都の城付近)(14日21時13分10秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(成都の城付近)(14日21時12分18秒)
+<BR>・7月:はいさい共和国の羊は潭州へ出兵しました！(14日21時10分24秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(成都の城付近)(14日21時10分17秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(成都の城付近)(14日21時10分7秒)
+<BR>・7月:はいさい共和国の流水は金陵に入城しました！(14日21時9分28秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(成都の城付近)(14日21時8分5秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(成都の城付近)(14日21時7分48秒)
+<BR>・7月:はいさい共和国の名無しのIRISHは上京へ出兵しました！(14日21時7分9秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(成都の城付近)(14日21時5分59秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(成都の城付近)(14日21時5分4秒)
+<BR>・<font color=orange>【支援】</font>名無しのIRISHは名無しのIRISHに支援を行いました。(燕京の城付近)(14日21時4分8秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(成都の城付近)(14日21時2分31秒)
+<BR>・7月:はいさい共和国の羊は金陵に入城しました！(14日21時2分28秒)
+<BR>・<font color=blue>【支配】</font>[935年07月]はいさい共和国の名無しのIRISHは燕京を支配しました。(14日21時1分55秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(14日21時1分28秒)
+<BR>・6月:はいさい共和国のあっきーは成都に入城しました！(14日21時0分45秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(成都の城付近)(14日21時0分10秒)
+<BR>・6月:はいさい共和国の名無しのIRISHは燕京に入城しました！(14日20時59分54秒)
+<BR>・6月:はいさい共和国の流水は金陵へ出兵しました！(14日20時57分55秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(成都の城付近)(14日20時57分49秒)
+<BR>・6月:はいさい共和国の名無しのIRISHは燕京へ出兵しました！(14日20時56分26秒)
+<BR>・6月:はいさい共和国の流水の弟子は成都に入城しました！(14日20時53分31秒)
+<BR>・<font color=blue>【支配】</font>[935年06月]はいさい共和国の名無しのIRISHは幽州を支配しました。(14日20時52分45秒)
+<BR>・6月:はいさい共和国のあっきーは成都へ出兵しました！(14日20時52分14秒)
+<BR>・6月:はいさい共和国の流水は福州に入城しました！(14日20時51分21秒)
+<BR>・6月:はいさい共和国の名無しのIRISHは幽州に入城しました！(14日20時50分37秒)
+<BR>・6月:はいさい共和国のあっきーは潭州に入城しました！(14日20時50分4秒)
+<BR>・6月:はいさい共和国の名無しのIRISHは幽州へ出兵しました！(14日20時48分36秒)
+<BR>・6月:はいさい共和国の羊は金陵へ出兵しました！(14日20時46分54秒)
+<BR>・6月:はいさい共和国のあっきーは潭州へ出兵しました！(14日20時45分9秒)
+<BR>・6月:はいさい共和国の流水は福州へ出兵しました！(14日20時44分29秒)
+<BR>・<font color=blue>【支配】</font>[935年06月]はいさい共和国の名無しのIRISHは開封を支配しました。(14日20時42分53秒)
+<BR>・<font color=green>【引き分け】</font>名無しのIRISHと城壁の戦闘は決着がつきませんでした。(開封の城付近)(14日20時40分42秒)
+<BR>・5月:はいさい共和国の流水の弟子は成都へ出兵しました！(14日20時39分12秒)
+<BR>・<font color=blue>【支配】</font>[935年05月]はいさい共和国のあっきーは金陵を支配しました。(14日20時38分47秒)
+<BR>・<font color=green>【引き分け】</font>名無しのIRISHと城壁の戦闘は決着がつきませんでした。(開封の城付近)(14日20時38分6秒)
+<BR>・流水『<font color=blue>やりました！</font>』(14日20時37分17秒)
+<BR>・<font color=blue>【勝利】</font>流水はボールペン を倒しました！(泉州の城付近)(14日20時37分17秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と流水の戦闘は決着がつきませんでした。(泉州の城付近)(14日20時36分16秒)
+<BR>・<font color=green>【引き分け】</font>名無しのIRISHと城壁の戦闘は決着がつきませんでした。(開封の城付近)(14日20時35分40秒)
+<BR>・<font color=blue>【支配】</font>[935年05月]はいさい共和国の羊は福州を支配しました。(14日20時33分51秒)
+<BR>・5月:はいさい共和国のあっきーは金陵に入城しました！(14日20時33分43秒)
+<BR>・5月:はいさい共和国の名無しのIRISHは開封に入城しました！(14日20時33分38秒)
+<BR>・5月:はいさい共和国の流水は泉州に入城しました！(14日20時32分46秒)
+<BR>・5月:闇の王のボールペン は泉州に入城しました！(14日20時30分19秒)
+<BR>・5月:はいさい共和国の羊は福州に入城しました！(14日20時30分18秒)
+<BR>・<font color=blue>【支配】</font>[935年05月]はいさい共和国の流水の弟子は荊州を支配しました。(14日20時29分57秒)
+<BR>・5月:はいさい共和国の名無しのIRISHは開封へ出兵しました！(14日20時29分39秒)
+<BR>・5月:はいさい共和国の羊は泉州へ出兵しました！(14日20時28分33秒)
+<BR>・5月:はいさい共和国のあっきーは金陵へ出兵しました！(14日20時27分47秒)
+<BR>・<font color=green>【引き分け】</font>流水とボールペン の戦闘は決着がつきませんでした。(泉州-福州間)(14日20時27分24秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時27分13秒)
+<BR>・5月:はいさい共和国の流水は泉州へ出兵しました！(14日20時25分19秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時24分29秒)
+<BR>・<font color=green>【引き分け】</font>名無しのIRISHと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時24分6秒)
+<BR>・5月:闇の王のボールペン は泉州へ出兵しました！(14日20時24分1秒)
+<BR>・5月:はいさい共和国の羊は福州に入城しました！(14日20時23分56秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時22分9秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時22分1秒)
+<BR>・<font color=green>【引き分け】</font>名無しのIRISHと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時21分53秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時20分3秒)
+<BR>・<font color=green>【引き分け】</font>名無しのIRISHと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時19分51秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時19分32秒)
+<BR>・<font color=blue>【支配】</font>[935年04月]闇の王のボールペン は福州を支配しました。(14日20時19分1秒)
+<BR>・4月:はいさい共和国の流水は福州に入城しました！(14日20時18分35秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時17分55秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時17分32秒)
+<BR>・<font color=green>【引き分け】</font>名無しのIRISHと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時17分32秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(福州の城付近)(14日20時16分53秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時15分36秒)
+<BR>・<font color=green>【引き分け】</font>名無しのIRISHと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時15分31秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時15分14秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(福州の城付近)(14日20時14分44秒)
+<BR>・<font color=green>【引き分け】</font>名無しのIRISHと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時13分31秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時13分13秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時13分4秒)
+<BR>・4月:はいさい共和国の羊は福州へ出兵しました！(14日20時12分39秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(福州の城付近)(14日20時12分28秒)
+<BR>・<font color=green>【引き分け】</font>名無しのIRISHと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時11分29秒)
+<BR>・<font color=green>【引き分け】</font>あっきーと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時10分53秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時10分51秒)
+<BR>・<font color=green>【引き分け】</font>名無しのIRISHと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時9分27秒)
+<BR>・4月:はいさい共和国のあっきーは荊州に入城しました！(14日20時8分45秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時8分41秒)
+<BR>・4月:はいさい共和国の流水は福州へ出兵しました！(14日20時8分18秒)
+<BR>・<font color=green>【引き分け】</font>名無しのIRISHと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時7分20秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時6分32秒)
+<BR>・4月:闇の王のボールペン は福州に入城しました！(14日20時6分4秒)
+<BR>・4月:はいさい共和国の名無しのIRISHは荊州に入城しました！(14日20時5分16秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時4分19秒)
+<BR>・4月:はいさい共和国の羊は金陵に入城しました！(14日20時3分35秒)
+<BR>・4月:はいさい共和国の名無しのIRISHは寿州へ出兵しました！(14日20時3分18秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時1分48秒)
+<BR>・<font color=green>【引き分け】</font>名無しのIRISHと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日20時0分52秒)
+<BR>・3月:はいさい共和国の流水は金陵に入城しました！(14日20時0分17秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日19時58分53秒)
+<BR>・<font color=green>【引き分け】</font>名無しのIRISHと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日19時58分50秒)
+<BR>・3月:闇の王のボールペン は福州へ出兵しました！(14日19時58分37秒)
+<BR>・<font color=green>【引き分け】</font>名無しのIRISHと城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日19時56分46秒)
+<BR>・<font color=green>【引き分け】</font>流水の弟子と城壁の戦闘は決着がつきませんでした。(荊州の城付近)(14日19時56分37秒)
+<BR></TD>
+          </TR>
+        </TBODY>
+      </TABLE>
+</TD>
+    </TR>
+<TR>      <TD colspan=2 bgcolor=#6d614a>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH bgcolor=#F0F0F0>史記</TH></TR><TR>
+<TD bgcolor=#a9987c>・<b><font color=blown>【反乱】</font>[936年04月]敦煌でボールペン が反乱をおこしました。</b>(15日0時12分17秒)
+<BR>・<b><font color=#FFFF00>【統一】</font>[935年11月]大陸ははいさい共和国によって統一されました！</b>(14日22時37分45秒)
+<BR>・<b><font color=blue>【支配】</font>[935年11月]はいさい共和国のあっきーは敦煌を支配しました。</b>(14日22時37分45秒)
+<BR>・<b><font color=red>【滅亡】</font>[935年11月]闇の王は滅亡しました。。</b>(14日22時37分45秒)
+<BR>・<b><font color=blue>【支配】</font>[935年10月]はいさい共和国の名無しのIRISHは京兆を支配しました。</b>(14日22時19分33秒)
+<BR>・<b><font color=blue>【支配】</font>[935年09月]はいさい共和国の羊は鳳翔を支配しました。</b>(14日22時10分53秒)
+<BR>・<b><font color=blue>【支配】</font>[935年09月]はいさい共和国の名無しのIRISHは晋陽を支配しました。</b>(14日21時53分38秒)
+<BR>・<b><font color=blue>【支配】</font>[935年08月]はいさい共和国の名無しのIRISHは上京を支配しました。</b>(14日21時23分16秒)
+<BR>・<b><font color=blue>【支配】</font>[935年07月]はいさい共和国の流水の弟子は成都を支配しました。</b>(14日21時19分16秒)
+<BR>・<b><font color=blue>【支配】</font>[935年07月]はいさい共和国の名無しのIRISHは燕京を支配しました。</b>(14日21時1分55秒)
+<BR>・<b><font color=blue>【支配】</font>[935年06月]はいさい共和国の名無しのIRISHは幽州を支配しました。</b>(14日20時52分45秒)
+<BR>・<b><font color=blue>【支配】</font>[935年06月]はいさい共和国の名無しのIRISHは開封を支配しました。</b>(14日20時42分53秒)
+<BR>・<b><font color=blue>【支配】</font>[935年05月]はいさい共和国のあっきーは金陵を支配しました。</b>(14日20時38分47秒)
+<BR>・<b><font color=blue>【支配】</font>[935年05月]はいさい共和国の羊は福州を支配しました。</b>(14日20時33分51秒)
+<BR>・<b><font color=blue>【支配】</font>[935年05月]はいさい共和国の流水の弟子は荊州を支配しました。</b>(14日20時29分57秒)
+<BR>・<b><font color=blue>【支配】</font>[935年04月]闇の王のボールペン は福州を支配しました。</b>(14日20時19分1秒)
+<BR>・<b><font color=blue>【支配】</font>[935年03月]闇の王のボールペン は金陵を支配しました。</b>(14日19時52分53秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>こちらが待っていた分、そちらにはハンデがあります。それについてはどうなんでしょうか？（闇の王軍師：ボールペン より）</b>(14日19時26分28秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>そちらの真意を尋ねている間に侵略や攻撃をされるのは甚だ遺憾です。こちらの過失はないはずですが？（闇の王軍師：ボールペン より）</b>(14日19時25分44秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>入城の前にそちらの声明をきかせていただきたいんですがいかがでしょうか。（闇の王軍師：ボールペン より）</b>(14日19時21分59秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>エ・・・・・・・・・・・・・・・・・（闇の王軍師：ボールペン より）</b>(14日19時18分34秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>開戦の定義に合致していますか？いま一度確認お願いします。（闇の王軍師：ボールペン より）</b>(14日19時11分44秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【935年1月】より、　闇の王さんへ侵攻させていただきますのでよろしくお願いします。（はいさい共和国君主：名無しのIRISHより）</b>(13日16時24分41秒)
+<BR>・<b><font color=red>【イベント】</font>[932年10月]疫病が流行っているようです。街の人々も苦しんでいます。。</b>(12日22時26分3秒)
+<BR>・<b><font color=red>【イベント】</font>[931年04月]疫病が流行っているようです。街の人々も苦しんでいます。。</b>(11日22時32分35秒)
+<BR>・<b><font color=red>【イベント】</font>[922年07月]各町の商店が賑わっています。</b>(5日23時4分46秒)
+<BR>・<b><font color=red>【イベント】</font>[914年09月]今年は豊作になりそうです。</b>(31日21時55分39秒)
+<BR>・<b><font color=red>【イベント】</font>[913年06月]大地震がおこりました！</b>(30日22時44分26秒)
+<BR>・<b><font color=red>【イベント】</font>[907年06月]今年は豊作になりそうです。</b>(26日22時42分44秒)
+<BR>・<b><font color=red>【イベント】</font>[905年04月]疫病が流行っているようです。街の人々も苦しんでいます。。</b>(25日20時6分45秒)
+<BR>・<b><font color=blue>【支配】</font>[902年04月]闇の王のラシードは燕京を支配しました。</b>(23日20時18分17秒)
+<BR>・<b><font color=red>【滅亡】</font>[902年04月]は滅亡しました。。</b>(23日20時18分17秒)
+<BR>・<b><font color="#666666">【反乱】</font>[901年01月]燕京は農民の反乱軍に支配されました。</b>(22日21時3分2秒)
+<BR>・<b><font color=blue>【支配】</font>[900年09月]闇の王のボールペン は幽州を支配しました。</b>(22日19時54分58秒)
+<BR>・<b><font color=red>【滅亡】</font>[900年09月]は滅亡しました。。</b>(22日19時54分58秒)
+<BR>・<b><font color="#666666">【反乱】</font>[900年07月]幽州は農民の反乱軍に支配されました。</b>(22日19時0分6秒)
+<BR>・<b><font color=red>【イベント】</font>[899年10月]いなごの大群が畑を襲いました！</b>(21日22時3分55秒)
+<BR>・<b><font color=red>【イベント】</font>[898年10月]大地震がおこりました！</b>(21日0時1分44秒)
+<BR>・<b><font color=red>【イベント】</font>[895年06月]今年は豊作になりそうです。</b>(18日22時43分44秒)
+<BR>・<b><font color=blue>【支配】</font>[894年09月]はいさい共和国の名無しのIRISHは青州を支配しました。</b>(18日19時42分29秒)
+<BR>・<b><font color=red>【滅亡】</font>[894年09月]みしゃくじさまは滅亡しました。。</b>(18日19時42分29秒)
+<BR>・<b><font color=blue>【支配】</font>[893年03月]闇の王のボールペン は燕京を支配しました。</b>(17日19時58分47秒)
+<BR>・<b><font color=red>【滅亡】</font>[893年03月]は滅亡しました。。</b>(17日19時58分47秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【894年7月】よりみしゃくじさまに侵攻させていただきますのでよろしくお願いします（はいさい共和国君主：名無しのIRISHより）</b>(17日18時33分1秒)
+<BR>・<b><font color=blue>【支配】</font>[892年09月]闇の王のボールペン は敦煌を支配しました。</b>(17日0時5分13秒)
+<BR>・<b><font color=red>【滅亡】</font>[892年09月]よろしくねは滅亡しました。。</b>(17日0時5分13秒)
+<BR>・<b><font color=blue>【支配】</font>[892年08月]闇の王の悠@celebrityは鳳翔を支配しました。</b>(16日23時42分36秒)
+<BR>・<b><font color=blue>【支配】</font>[892年08月]闇の王のボールペン は成都を支配しました。</b>(16日23時21分15秒)
+<BR>・<b><font color=blue>【支配】</font>[892年07月]闇の王の悠@celebrityは開封を支配しました。</b>(16日23時11分53秒)
+<BR>・<b><font color=blue>【支配】</font>[892年07月]闇の王のケトは京兆を支配しました。</b>(16日23時5分5秒)
+<BR>・<b><font color="#666666">【反乱】</font>[892年07月]燕京は農民の反乱軍に支配されました。</b>(16日23時2分55秒)
+<BR>・<b><font color=blue>【支配】</font>[892年06月]闇の王の悠@celebrityは幽州を支配しました。</b>(16日22時56分48秒)
+<BR>・<b><font color=blue>【支配】</font>[892年06月]よろしくねの流水は幽州を支配しました。</b>(16日22時54分6秒)
+<BR>・<b><font color=blue>【支配】</font>[892年05月]よろしくねの流水は開封を支配しました。</b>(16日22時39分19秒)
+<BR>・<b><font color=blue>【支配】</font>[892年05月]闇の王の悠@celebrityは晋陽を支配しました。</b>(16日22時37分33秒)
+<BR>・<b><font color=blue>【支配】</font>[892年05月]よろしくねの流水は京兆を支配しました。</b>(16日22時23分56秒)
+<BR>・<b><font color=blue>【支配】</font>[892年05月]闇の王の悠@celebrityは幽州を支配しました。</b>(16日22時20分58秒)
+<BR>・<b><font color=blue>【支配】</font>[892年04月]闇の王の悠@celebrityは上京を支配しました。</b>(16日22時2分28秒)
+<BR>・<b><font color=blue>【支配】</font>[892年03月]よろしくねのよろしくねは上京を支配しました。</b>(16日21時48分48秒)
+<BR>・<b><font color=red>【滅亡】</font>[892年03月]統一国家ムーリクーワサは滅亡しました。。</b>(16日21時48分48秒)
+<BR>・<b><font color=blue>【支配】</font>[892年03月]闇の王の悠@celebrityは燕京を支配しました。</b>(16日21時42分5秒)
+<BR>・<b><font color=blue>【支配】</font>[892年02月]よろしくねの流水は成都を支配しました。</b>(16日21時26分28秒)
+<BR>・<b><font color=blue>【支配】</font>[892年02月]闇の王の悠@celebrityは開封を支配しました。</b>(16日21時22分45秒)
+<BR>・<b><font color=blue>【支配】</font>[892年01月]よろしくねのよろしくねは燕京を支配しました。</b>(16日21時16分57秒)
+<BR>・<b><font color=blue>【支配】</font>[891年12月]よろしくねのよろしくねは開封を支配しました。</b>(16日20時41分37秒)
+<BR>・<b><font color=blue>【支配】</font>[891年11月]闇の王のラシードは成都を支配しました。</b>(16日20時39分46秒)
+<BR>・<b><font color=blue>【支配】</font>[891年11月]よろしくねの流水は幽州を支配しました。</b>(16日20時31分26秒)
+<BR>・<b><font color=blue>【支配】</font>[891年11月]闇の王の悠@celebrityは京兆を支配しました。</b>(16日20時24分14秒)
+<BR>・<b><font color=blue>【支配】</font>[891年10月]よろしくねの流水は晋陽を支配しました。</b>(16日20時20分37秒)
+<BR>・<b><font color=blue>【支配】</font>[891年10月]よろしくねのよろしくねは京兆を支配しました。</b>(16日20時10分23秒)
+<BR>・<b><font color=blue>【支配】</font>[891年08月]よろしくねのよろしくねは鳳翔を支配しました。</b>(16日19時38分41秒)
+<BR>・<b><font color=blue>【支配】</font>[891年04月]統一国家ムーリクーワサのボールペン は鳳翔を支配しました。</b>(16日0時22分35秒)
+<BR>・<b><font color=blue>【支配】</font>[891年02月]統一国家ムーリクーワサのボールペン は京兆を支配しました。</b>(15日23時46分26秒)
+<BR>・<b><font color=blue>【支配】</font>[890年12月]統一国家ムーリクーワサのボールペン は晋陽を支配しました。</b>(15日22時57分7秒)
+<BR>・<b><font color=blue>【支配】</font>[890年11月]闇の王のケトは開封を支配しました。</b>(15日22時26分1秒)
+<BR>・<b><font color=red>【滅亡】</font>[890年11月]は滅亡しました。。</b>(15日22時26分1秒)
+<BR>・<b><font color=blue>【支配】</font>[890年08月]統一国家ムーリクーワサのボールペン は上京を支配しました。</b>(15日21時47分29秒)
+<BR>・<b><font color=blue>【支配】</font>[890年08月]闇の王の悠@celebrityは幽州を支配しました。</b>(15日21時27分37秒)
+<BR>・<b><font color="#666666">【反乱】</font>[890年07月]開封は農民の反乱軍に支配されました。</b>(15日21時2分14秒)
+<BR>・<b><font color=blue>【支配】</font>[890年06月]統一国家ムーリクーワサのボールペン は燕京を支配しました。</b>(15日21時2分0秒)
+<BR>・<b><font color=blue>【支配】</font>[890年06月]よろしくねのよろしくねは上京を支配しました。</b>(15日20時42分24秒)
+<BR>・<b><font color=blue>【支配】</font>[890年05月]統一国家ムーリクーワサのボールペン は幽州を支配しました。</b>(15日20時40分32秒)
+<BR>・<b><font color=blue>【支配】</font>[890年05月]統一国家ムーリクーワサのボールペン は開封を支配しました。</b>(15日20時20分14秒)
+<BR>・<b><font color=blue>【支配】</font>[890年04月]よろしくねの流水は開封を支配しました。</b>(15日20時9分4秒)
+<BR>・<b><font color=blue>【支配】</font>[890年03月]統一国家ムーリクーワサのボールペン は開封を支配しました。</b>(15日19時56分23秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>８９１年１０月（１６日８時）に闇の王さんに攻めさせてもらいます（よろしくね君主：よろしくねより）</b>(15日19時49分19秒)
+<BR>・<b><font color=blue>【支配】</font>[890年03月]闇の王の悠@celebrityは開封を支配しました。</b>(15日19時49分2秒)
+<BR>・<b><font color=blue>【支配】</font>[890年02月]統一国家ムーリクーワサのボールペン は開封を支配しました。</b>(15日19時36分25秒)
+<BR>・<b><font color=blue>【支配】</font>[890年02月]よろしくねの流水は晋陽を支配しました。</b>(15日19時35分14秒)
+<BR>・<b><font color=blue>【支配】</font>[889年09月]統一国家ムーリクーワサのボールペン は晋陽を支配しました。</b>(14日23時50分40秒)
+<BR>・<b><font color=red>【滅亡】</font>[889年09月]ぴ～ちぽりんは滅亡しました。。</b>(14日23時50分40秒)
+<BR>・<b><font color=blue>【支配】</font>[889年08月]よろしくねの流水は幽州を支配しました。</b>(14日23時44分32秒)
+<BR>・<b><font color=blue>【支配】</font>[889年06月]統一国家ムーリクーワサのボールペン は幽州を支配しました。</b>(14日23時13分15秒)
+<BR>・<b><font color=blue>【支配】</font>[889年06月]よろしくねの流水は燕京を支配しました。</b>(14日23時10分25秒)
+<BR>・<b><font color=blue>【支配】</font>[889年05月]よろしくねの流水は幽州を支配しました。</b>(14日22時32分27秒)
+<BR>・<b><font color=blue>【支配】</font>[889年04月]よろしくねの流水は開封を支配しました。</b>(14日22時8分47秒)
+<BR>・<b><font color=blue>【支配】</font>[889年03月]よろしくねの流水は京兆を支配しました。</b>(14日21時41分59秒)
+<BR>・<b><font color=blue>【支配】</font>[889年01月]よろしくねのよろしくねは成都を支配しました。</b>(14日21時4分4秒)
+<BR>・<b><font color=blue>【支配】</font>[888年11月]よろしくねの流水は鳳翔を支配しました。</b>(14日20時37分1秒)
+<BR>・<b><font color=blue>【支配】</font>[888年11月]統一国家ムーリクーワサのボールペン は鳳翔を支配しました。</b>(14日20時34分44秒)
+<BR></TD>
+          </TR>
+        </TBODY>
+      </TABLE>
+</TD>
+    </TR>
+  </TBODY>
+</TABLE>
+※街にカーソルを合わせると街の名前が表示されます。
+<p>
+2015/02/15/(Sun) 14:00:59
+<CENTER><HR SIZE=0>
+<font color=998877>十国志NET </font><font size=1 color=998877>第1期</font> <font color=998877>ver.0.64fix2</font><br>
+<font color=998877>ADMINISTARTOR liiu </font><a href="http://lunadraco.sakura.ne.jp/sangokuframe/index.cgi">GAME TOP</a><br>
+<font color=998877>三国志NET ver.2.80 </font><a href="http://www3.to/maccyu2/" target="_top">maccyu</a><br>
+<a href="http://ayfreenet.web.infoseek.co.jp/" target="_blank">HOMEPAGE GARO</a>
+</body></html>

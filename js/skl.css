@@ -1,0 +1,59 @@
+/*mydaa/myskl2.plスキル一覧修得順用*/
+
+.waku{
+border-radius:4px;
+background-color:#FFFFFF;
+border: 2px #888888 solid;
+margin-top: 5px;
+margin-right: 0px;
+margin-bottom: 5px;
+margin-left: 0px;
+padding: 10px; 
+}
+.waku:hover{
+border: 2px #FF0000 solid;
+}
+
+.waku2{
+padding: 0px;
+width:45px; 
+}
+
+.sen{
+width:100%;
+border-top: 0px;
+border-right: 0px;
+border-bottom: 2px #888888 solid;
+border-left: 0px;
+}
+
+.tate{
+height:3px;
+}
+
+.radius{
+border-radius:5px;
+}
+
+
+.skliti{
+border: 1px #000000 solid;
+background-color:#EEEEEE;
+padding:5px;
+overflow:scroll;
+width:80%;
+height:50%;
+}
+
+
+
+.swaku{
+border-radius:5px;
+background-color:#FFFFFF;
+border: 2px #884422 solid;
+text-align:left;
+padding: 10px; 
+width:90%;
+}
+
+

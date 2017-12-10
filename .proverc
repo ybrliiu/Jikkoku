@@ -1,0 +1,9 @@
+--exec "perl -Ilib -It/lib -MTest::Name::FromLine"
+--lib
+--color
+--failures
+--recurse
+--merge
+--timer
+--trap
+

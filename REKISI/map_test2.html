@@ -1,0 +1,359 @@
+
+<html>
+<head>
+<meta name="description" content="バトルマップ上で戦う三国志NET。">
+<meta name="keywords" content="三国志NET,ブラウザゲーム,オンラインゲーム,CGIゲーム,無料">
+<link rel="shortcut icon" href="../favicon.ico" >
+<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>十国志NET</title>
+<link rel="stylesheet" href="../js/base.css">
+<link rel="stylesheet" href="./tt.css">
+<STYLE type="text/css">
+<!--
+BODY,TR,TD,TH,FORM { font-family : "ＭＳ ゴシック"; font-size: 9pt; }
+a{ text-decoration:none;}
+a:link.mikata { color: blue; font-size: 9pt }
+a:link.enemy { color: red; font-size: 9pt }
+a:link#mikata { color: blue; font-size: 9pt }
+a:link#enemy { color: red; font-size: 9pt }
+a:link    { color: #4682B4 }
+a:visited { color: #4682B4 }
+a:hover   { color: #FFFF00 }
+a:active  { color: #00FF00 }
+.S1 {color:#fff; border-style: double; border-width: 3px;BACKGROUND: #633;}
+
+.dmg { color: #FF0000; font-size: 18pt }
+.clit { color: #0000FF; font-size: 18pt }
+#small { font-size: xx-small; }
+.bmj { color: #000000; font-size: 5pt }
+.r { color: #FF4444; font-size: 10pt }
+.b { color: #4444DD; font-size: 10pt }
+.s { color: #44AAEE; font-size: 10pt }
+.g { color: #44DD44; font-size: 10pt }
+.o { color: #EEAA44; font-size: 10pt }
+-->
+</STYLE>
+<script type="text/javascript" src="../js/ballon.js"></script>
+</head>
+<body background="../image/o.gif" bgcolor="#E0E088" text="" link="#CCAA88" vlink="#AA8855" alink="#AA8855" leftmargin="0" marginwidth="0" marginheight="0">
+
+<TABLE bgcolor=#6d614a width=100% border="0">
+  <TBODY>
+    <TR>
+      <TD bgcolor=#F0F0F0 width=50% valign=top>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH><font color=#444444><font size=4>十国志NET</font> <BR>- 大 陸 地 図 -</font></TH>
+          </TR>
+        </TBODY>
+      </TABLE>
+      <TABLE bgcolor=#F0F0F0 background="../image/mapbg.gif" width=100% height=5 border="0" cellspacing=1>
+        <TBODY>
+          <TR>
+            <TD width=20 bgcolor=#F0F0F0>-</TD>
+<TD width=20 bgcolor=#D0C088>1</TD><TD width=20 bgcolor=#D0C088>2</TD><TD width=20 bgcolor=#D0C088>3</TD><TD width=20 bgcolor=#D0C088>4</TD><TD width=20 bgcolor=#D0C088>5</TD><TD width=20 bgcolor=#D0C088>6</TD><TD width=20 bgcolor=#D0C088>7</TD><TD width=20 bgcolor=#D0C088>8</TD><TD width=20 bgcolor=#D0C088>9</TD><TD width=20 bgcolor=#D0C088>10</TD></TR><TR><TD bgcolor=#C0C088>1</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="上京【神聖マグノリア帝国】"><font color="#000000">上京</font><br><img src="../image/m_4.gif" title="上京【神聖マグノリア帝国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>2</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="晋陽【神聖マグノリア帝国】"><font color="#000000">晋陽</font><br><img src="../image/m_4.gif" title="晋陽【神聖マグノリア帝国】"></p></div></TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="幽州【神聖マグノリア帝国】"><font color="#000000">幽州</font><br><img src="../image/m_4.gif" title="幽州【神聖マグノリア帝国】"></p></div></TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="燕京【神聖マグノリア帝国】"><font color="#000000">燕京</font><br><img src="../image/m_4.gif" title="燕京【神聖マグノリア帝国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>3</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="敦煌【神聖マグノリア帝国】"><font color="#000000">敦煌</font><br><img src="../image/m_4.gif" title="敦煌【神聖マグノリア帝国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="京兆【神聖マグノリア帝国】"><font color="#000000">京兆</font><br><img src="../image/m_4.gif" title="京兆【神聖マグノリア帝国】"></p></div></TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="開封【神聖マグノリア帝国】"><font color="#000000">開封</font><br><img src="../image/m_4.gif" title="開封【神聖マグノリア帝国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="青州【神聖マグノリア帝国】"><font color="#000000">青州</font><br><img src="../image/m_4.gif" title="青州【神聖マグノリア帝国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>4</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="鳳翔【神聖マグノリア帝国】"><font color="#000000">鳳翔</font><br><img src="../image/m_4.gif" title="鳳翔【神聖マグノリア帝国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="荊州【神聖マグノリア帝国】"><font color="#000000">荊州</font><br><img src="../image/m_4.gif" title="荊州【神聖マグノリア帝国】"></p></div></TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="寿州【神聖マグノリア帝国】"><font color="#000000">寿州</font><br><img src="../image/m_4.gif" title="寿州【神聖マグノリア帝国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>5</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="成都【神聖マグノリア帝国】"><font color="#000000">成都</font><br><img src="../image/m_4.gif" title="成都【神聖マグノリア帝国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="金陵【神聖マグノリア帝国】"><font color="#000000">金陵</font><br><img src="../image/m_4.gif" title="金陵【神聖マグノリア帝国】"></p></div></TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="杭州【神聖マグノリア帝国】"><font color="#000000">杭州</font><br><img src="../image/m_4.gif" title="杭州【神聖マグノリア帝国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>6</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="潭州【神聖マグノリア帝国】"><font color="#000000">潭州</font><br><img src="../image/m_4.gif" title="潭州【神聖マグノリア帝国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="福州【神聖マグノリア帝国】"><font color="#000000">福州</font><br><img src="../image/m_4.gif" title="福州【神聖マグノリア帝国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="夷州【神聖マグノリア帝国】"><font color="#000000">夷州</font><br><img src="../image/m_4.gif" title="夷州【神聖マグノリア帝国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>7</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="広州【神聖マグノリア帝国】"><font color="#000000">広州</font><br><img src="../image/m_4.gif" title="広州【神聖マグノリア帝国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH bgcolor=#0000FF width="30" height="30" align=center valign=middle><div id="tooltip"><p data-tooltip="泉州【神聖マグノリア帝国】"><font color="#000000">泉州</font><br><img src="../image/m_4.gif" title="泉州【神聖マグノリア帝国】"></p></div></TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>8</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>9</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR><TR><TD bgcolor=#C0C088>10</td><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH><TH width="30" height="30" align=center valign=middle>&nbsp;</TH></TR>        </TBODY>
+      </TABLE>
+      </TD>
+      <TD bgcolor=#6d614a>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH bgcolor=#F0F0F0>MAP LOG</TH></TR><TR>
+<TD bgcolor=#a9987c>・1月:神聖マグノリア帝国の流水は寿州に入城しました！(31日19時8分3秒)
+<BR>・1月:神聖マグノリア帝国の流水は寿州へ出兵しました！(31日19時5分36秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(31日19時1分33秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(30日23時5分53秒)
+<BR>・2月:神聖マグノリア帝国のボールペン は京兆に入城しました！(30日21時42分34秒)
+<BR>・2月:神聖マグノリア帝国のボールペン は京兆へ出兵しました！(30日21時26分46秒)
+<BR>・1月:神聖マグノリア帝国のボールペン は荊州に入城しました！(30日21時12分21秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(30日21時3分41秒)
+<BR>・12月:神聖マグノリア帝国の流水は金陵に入城しました！(30日21時2分5秒)
+<BR>・流水『<font color=blue>やりました！</font>』(30日20時59分57秒)
+<BR>・<font color=blue>【勝利】</font>流水は悠@celebrityを倒しました！(金陵-荊州間)(30日20時59分57秒)
+<BR>・<font color=green>【引き分け】</font>流水と悠@celebrityの戦闘は決着がつきませんでした。(金陵-荊州間)(30日20時55分31秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と悠@celebrityの戦闘は決着がつきませんでした。(金陵-荊州間)(30日20時55分8秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と悠@celebrityの戦闘は決着がつきませんでした。(金陵-荊州間)(30日20時50分7秒)
+<BR>・<font color=green>【引き分け】</font>流水と悠@celebrityの戦闘は決着がつきませんでした。(金陵-荊州間)(30日20時49分30秒)
+<BR>・12月:神聖マグノリア帝国の流水は荊州へ出兵しました！(30日20時47分8秒)
+<BR>・12月:神聖マグノリア帝国のボールペン は金陵へ出兵しました！(30日20時46分26秒)
+<BR>・12月:無所属の悠@celebrityは荊州へ出兵しました！(30日20時42分36秒)
+<BR>・<font color=red>【イベント】</font>[897年12月]各町の商店が賑わっています。(30日20時41分54秒)
+<BR>・<font color=green>【引き分け】</font>流水と悠@celebrityの戦闘は決着がつきませんでした。(金陵の城付近)(30日20時40分16秒)
+<BR>・11月:神聖マグノリア帝国の流水は金陵に入城しました！(30日20時37分59秒)
+<BR>・11月:無所属の悠@celebrityは金陵に入城しました！(30日20時35分16秒)
+<BR>・11月:神聖マグノリア帝国の流水は金陵へ出兵しました！(30日20時31分56秒)
+<BR>・11月:無所属の悠@celebrityは金陵へ出兵しました！(30日20時30分21秒)
+<BR>・<font color=green>【引き分け】</font>流水と悠@celebrityの戦闘は決着がつきませんでした。(寿州の城付近)(30日20時29分37秒)
+<BR>・10月:無所属の悠@celebrityは反乱をおこし寿州へ攻め込みました！(30日20時27分44秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(30日19時7分30秒)
+<BR>・5月:神聖マグノリア帝国のボールペン は荊州に入城しました！(30日0時48分52秒)
+<BR>・5月:神聖マグノリア帝国のボールペン は荊州へ出兵しました！(30日0時30分42秒)
+<BR>・5月:神聖マグノリア帝国のボールペン は金陵に入城しました！(30日0時22分32秒)
+<BR>・4月:神聖マグノリア帝国のボールペン は金陵へ出兵しました！(30日0時18分1秒)
+<BR>・<font color=#165e83>【簒奪】</font>[897年04月]神聖マグノリア帝国の君主は流水に変わりました。(30日0時4分46秒)
+<BR>・<font color=#165e83>【簒奪】</font>[897年04月]الدولة الحليةの国名は神聖マグノリア帝国に変わり君主はボールペン に変わりました。(30日0時4分15秒)
+<BR>・<font color=#165e83>【簒奪】</font>[897年04月]الدولة الحليةの君主は流水に変わりました。(30日0時0分45秒)
+<BR>・<font color=#165e83>【簒奪】</font>[897年03月]神聖マグノリア帝国の国名はالدولة الحليةに変わり君主はボールペン に変わりました。(29日23時53分41秒)
+<BR>・<font color=red>【イベント】</font>[897年03月]洪水がおこりました！各地で被害が出ています！(29日23時43分37秒)
+<BR>・<font color=880088><b>【解雇】</b></font>かな打ち JISは神聖マグノリア帝国国から解雇されました。(29日23時42分52秒)
+<BR>・<font color=orange>【支援】</font>ケトは流水に支援を行いました。(寿州の城付近)(29日23時40分51秒)
+<BR>・<font color=orange>【支援】</font>ケトは流水に支援を行いました。(寿州の城付近)(29日23時33分33秒)
+<BR>・<font color=blue>【支配】</font>[897年02月]神聖マグノリア帝国の流水は寿州を支配しました。(29日23時26分5秒)
+<BR>・<font color=red>【滅亡】</font>[897年02月]闇の王は滅亡しました。。(29日23時26分5秒)
+<BR>・<font color=green>【引き分け】</font>よろしくねと城壁の戦闘は決着がつきませんでした。(寿州の城付近)(29日23時25分55秒)
+<BR>・<font color=green>【引き分け】</font>ケトと城壁の戦闘は決着がつきませんでした。(寿州の城付近)(29日23時25分46秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日23時24分48秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(29日23時23分57秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(29日23時23分50秒)
+<BR>・<font color=green>【引き分け】</font>ケトと城壁の戦闘は決着がつきませんでした。(寿州の城付近)(29日23時23分36秒)
+<BR>・<font color=green>【引き分け】</font>よろしくねと城壁の戦闘は決着がつきませんでした。(寿州の城付近)(29日23時23分8秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日23時22分40秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(29日23時21分55秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(29日23時21分47秒)
+<BR>・<font color=green>【引き分け】</font>ケトと城壁の戦闘は決着がつきませんでした。(寿州の城付近)(29日23時21分25秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日23時20分39秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(29日23時19分50秒)
+<BR>・<font color=green>【引き分け】</font>流水と城壁の戦闘は決着がつきませんでした。(寿州の城付近)(29日23時19分41秒)
+<BR>・<font color=green>【引き分け】</font>ケトと城壁の戦闘は決着がつきませんでした。(寿州の城付近)(29日23時19分23秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日23時18分39秒)
+<BR>・ボールペン 『<font color=blue></font>』(29日23時17分37秒)
+<BR>・<font color=blue>【勝利】</font>ボールペン はデミを倒しました！(寿州の城付近)(29日23時17分37秒)
+<BR>・<font color=green>【引き分け】</font>流水とデミの戦闘は決着がつきませんでした。(寿州の城付近)(29日23時16分55秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日23時16分29秒)
+<BR>・<font color=yellowgreen>【妨害】</font>デミはケトに混乱させられました。(寿州の城付近)(29日23時15分26秒)
+<BR>・1月:神聖マグノリア帝国のボールペン は寿州に入城しました！(29日23時15分13秒)
+<BR>・<font color=green>【引き分け】</font>流水とデミの戦闘は決着がつきませんでした。(寿州の城付近)(29日23時14分30秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日23時14分28秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日23時12分26秒)
+<BR>・<font color=green>【引き分け】</font>流水とデミの戦闘は決着がつきませんでした。(寿州の城付近)(29日23時10分27秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日23時10分22秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日23時8分19秒)
+<BR>・<font color=green>【引き分け】</font>流水とデミの戦闘は決着がつきませんでした。(寿州の城付近)(29日23時8分14秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日23時6分19秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日23時4分17秒)
+<BR>・<font color=green>【引き分け】</font>流水とデミの戦闘は決着がつきませんでした。(寿州の城付近)(29日23時4分6秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(29日23時2分43秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日23時2分15秒)
+<BR>・<font color=green>【引き分け】</font>流水とデミの戦闘は決着がつきませんでした。(寿州の城付近)(29日23時1分53秒)
+<BR>・12月:神聖マグノリア帝国のボールペン は寿州へ出兵しました！(29日23時1分32秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日23時0分8秒)
+<BR>・流水『<font color=red>やりました！</font>』(29日22時59分52秒)
+<BR>・<font color=#ff0000>【敗北】</font>悠@celebrityは流水に敗北しました。(寿州の城付近)(29日22時59分52秒)
+<BR>・<font color=green>【引き分け】</font>流水と悠@celebrityの戦闘は決着がつきませんでした。(寿州の城付近)(29日22時59分21秒)
+<BR>・ボールペン 『<font color=red></font>』(29日22時57分57秒)
+<BR>・<font color=#ff0000>【敗北】</font>羊はボールペン に敗北しました。(開封の城付近)(29日22時57分57秒)
+<BR>・12月:神聖マグノリア帝国のよろしくねは寿州に入城しました！(29日22時57分54秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日22時57分53秒)
+<BR>・<font color=green>【引き分け】</font>流水と悠@celebrityの戦闘は決着がつきませんでした。(寿州の城付近)(29日22時57分17秒)
+<BR>・<font color=green>【引き分け】</font>ケトと悠@celebrityの戦闘は決着がつきませんでした。(寿州の城付近)(29日22時57分6秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と羊の戦闘は決着がつきませんでした。(開封の城付近)(29日22時57分2秒)
+<BR>・<font color=green>【引き分け】</font>悠@celebrityとケトの戦闘は決着がつきませんでした。(寿州の城付近)(29日22時56分40秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日22時55分44秒)
+<BR>・<font color=green>【引き分け】</font>羊とボールペン の戦闘は決着がつきませんでした。(開封の城付近)(29日22時55分39秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と羊の戦闘は決着がつきませんでした。(開封の城付近)(29日22時54分41秒)
+<BR>・12月:神聖マグノリア帝国のケトは寿州に入城しました！(29日22時54分11秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日22時53分42秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(開封の城付近)(29日22時53分15秒)
+<BR>・12月:神聖マグノリア帝国のボールペン は開封に入城しました！(29日22時52分8秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日22時51分39秒)
+<BR>・12月:神聖マグノリア帝国の流水は寿州に入城しました！(29日22時51分28秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(開封の城付近)(29日22時51分15秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日22時49分39秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(開封の城付近)(29日22時49分3秒)
+<BR>・12月:闇の王の悠@celebrityは寿州に入城しました！(29日22時49分0秒)
+<BR>・12月:神聖マグノリア帝国のよろしくねは寿州へ出兵しました！(29日22時48分43秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(敦煌の城付近)(29日22時47分38秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(開封の城付近)(29日22時46分55秒)
+<BR>・12月:神聖マグノリア帝国のケトは寿州へ出兵しました！(29日22時45分37秒)
+<BR>・11月:闇の王の悠@celebrityは荊州へ出兵しました！(29日22時45分9秒)
+<BR>・11月:闇の王の悠@celebrityは寿州に入城しました！(29日22時44分57秒)
+<BR>・11月:神聖マグノリア帝国の流水は寿州へ出兵しました！(29日22時44分33秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(開封の城付近)(29日22時44分9秒)
+<BR>・<font color=green>【引き分け】</font>悠@celebrityとボールペン の戦闘は決着がつきませんでした。(寿州-開封間)(29日22時42分12秒)
+<BR>・11月:闇の王のIRISHは敦煌に入城しました！(29日22時42分0秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(開封の城付近)(29日22時41分58秒)
+<BR>・11月:神聖マグノリア帝国のケトは荊州に入城しました！(29日22時40分51秒)
+<BR>・<font color=blue>【支配】</font>[896年11月]神聖マグノリア帝国の流水は荊州を支配しました。(29日22時40分14秒)
+<BR>・11月:闇の王のIRISHは鳳翔へ出兵しました！(29日22時40分2秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(開封の城付近)(29日22時39分57秒)
+<BR>・11月:闇の王の悠@celebrityは開封へ出兵しました！(29日22時39分39秒)
+<BR>・11月:神聖マグノリア帝国のボールペン は開封へ出兵しました！(29日22時39分22秒)
+<BR>・<font color=blue>【支配】</font>[896年11月]神聖マグノリア帝国のよろしくねは金陵を支配しました。(29日22時38分55秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(開封の城付近)(29日22時37分53秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(開封の城付近)(29日22時35分52秒)
+<BR>・11月:神聖マグノリア帝国の流水は荊州に入城しました！(29日22時35分34秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(開封の城付近)(29日22時33分49秒)
+<BR>・11月:闇の王のIRISHは敦煌に入城しました！(29日22時33分43秒)
+<BR>・11月:神聖マグノリア帝国のよろしくねは金陵に入城しました！(29日22時32分11秒)
+<BR>・11月:神聖マグノリア帝国のボールペン は寿州に入城しました！(29日22時32分9秒)
+<BR>・11月:神聖マグノリア帝国のケトは荊州へ出兵しました！(29日22時32分7秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(開封の城付近)(29日22時31分36秒)
+<BR>・11月:闇の王のIRISHは敦煌へ出兵しました！(29日22時28分25秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(開封の城付近)(29日22時27分46秒)
+<BR>・<font color=green>【引き分け】</font>羊と城壁の戦闘は決着がつきませんでした。(開封の城付近)(29日22時25分43秒)
+<BR>・11月:神聖マグノリア帝国のボールペン は寿州へ出兵しました！(29日22時25分8秒)
+<BR>・11月:闇の王の悠@celebrityは寿州に入城しました！(29日22時24分57秒)
+<BR>・11月:闇の王のIRISHは鳳翔に入城しました！(29日22時23分17秒)
+<BR>・10月:神聖マグノリア帝国のよろしくねは金陵へ出兵しました！(29日22時20分50秒)
+<BR>・10月:闇の王の悠@celebrityは杭州へ出兵しました！(29日22時20分18秒)
+<BR>・10月:神聖マグノリア帝国のよろしくねは福州に入城しました！(29日22時19分0秒)
+<BR>・10月:神聖マグノリア帝国のよろしくねは杭州へ出兵しました！(29日22時18分48秒)
+<BR>・10月:神聖マグノリア帝国のよろしくねは福州に入城しました！(29日22時18分30秒)
+<BR>・<font color=blue>【支配】</font>[896年10月]神聖マグノリア帝国のボールペン は杭州を支配しました。(29日22時18分22秒)
+<BR>・10月:闇の王のIRISHは鳳翔へ出兵しました！(29日22時18分4秒)
+<BR>・10月:闇の王の羊は開封に入城しました！(29日22時16分47秒)
+<BR>・10月:神聖マグノリア帝国のよろしくねは杭州へ出兵しました！(29日22時16分27秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(杭州の城付近)(29日22時16分8秒)
+<BR>・10月:闇の王のIRISHは京兆に入城しました！(29日22時14分42秒)
+<BR>・10月:神聖マグノリア帝国のボールペン は杭州に入城しました！(29日22時13分52秒)
+<BR>・10月:神聖マグノリア帝国のボールペン は杭州へ出兵しました！(29日22時10分34秒)
+<BR>・10月:闇の王のIRISHは京兆へ出兵しました！(29日22時9分34秒)
+<BR>・10月:神聖マグノリア帝国のよろしくねは福州に入城しました！(29日22時8分58秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(開封の城付近)(29日22時7分35秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(開封の城付近)(29日22時5分23秒)
+<BR>・10月:神聖マグノリア帝国の流水は荊州へ出兵しました！(29日22時3分40秒)
+<BR>・<font color=blue>【支配】</font>[896年10月]神聖マグノリア帝国のボールペン は福州を支配しました。(29日22時3分3秒)
+<BR>・<font color=green>【引き分け】</font>IRISHと城壁の戦闘は決着がつきませんでした。(開封の城付近)(29日22時2分35秒)
+<BR>・10月:神聖マグノリア帝国のボールペン は福州に入城しました！(29日22時0分42秒)
+<BR>・10月:闇の王のIRISHは開封に入城しました！(29日22時0分22秒)
+<BR>・9月:神聖マグノリア帝国のよろしくねは福州へ出兵しました！(29日21時57分53秒)
+<BR>・9月:闇の王の羊は開封へ出兵しました！(29日21時56分3秒)
+<BR>・<font color=#008080><b>【声明】</b></font>申し訳ありません。間違って城付近MAPに立ち入ってしまいました。（神聖マグノリア帝国宰相：ボールペン より）(29日21時54分10秒)
+<BR>・9月:神聖マグノリア帝国のボールペン は泉州へ出兵しました！(29日21時52分38秒)
+<BR>・9月:神聖マグノリア帝国のボールペン は福州に入城しました！(29日21時52分14秒)
+<BR>・9月:闇の王のIRISHは開封へ出兵しました！(29日21時44分1秒)
+<BR>・9月:神聖マグノリア帝国のボールペン は福州へ出兵しました！(29日21時42分9秒)
+<BR>・7月:<font color=orange>収穫</font>で各武将に米が支払われました。(29日21時2分35秒)
+<BR>・1月:<font color=orange>税金</font>で各武将に給与が支払われました。(29日19時40分50秒)
+<BR>・IRISHは闇の王に寝返りました。(29日11時11分9秒)
+<BR>・<font color=blue>【支配】</font>[895年12月]神聖マグノリア帝国のボールペン は雷州を支配しました。(29日0時43分44秒)
+<BR>・<font color=red>【滅亡】</font>[895年12月]花組は滅亡しました。。(29日0時43分44秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時41分42秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時39分39秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時36分49秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時33分8秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時30分1秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時27分39秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時24分42秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時22分32秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時20分21秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時18分11秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時15分57秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時13分54秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時10分49秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時8分44秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時6分37秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時3分50秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(29日0時0分32秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(28日23時58分29秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(28日23時56分28秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(28日23時53分14秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(28日23時50分54秒)
+<BR>・8月:神聖マグノリア帝国のよろしくねは夷州へ出兵しました！(28日23時50分22秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(28日23時48分40秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(28日23時46分36秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(28日23時44分35秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(28日23時41分13秒)
+<BR>・<font color=blue>【支配】</font>[895年08月]神聖マグノリア帝国のよろしくねは泉州を支配しました。(28日23時38分44秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(28日23時38分32秒)
+<BR>・<font color=green>【引き分け】</font>よろしくねと城壁の戦闘は決着がつきませんでした。(泉州の城付近)(28日23時36分33秒)
+<BR>・<font color=green>【引き分け】</font>ボールペン と城壁の戦闘は決着がつきませんでした。(雷州の城付近)(28日23時35分12秒)
+<BR>・<font color=green>【引き分け】</font>よろしくねと城壁の戦闘は決着がつきませんでした。(泉州の城付近)(28日23時34分28秒)
+<BR></TD>
+          </TR>
+        </TBODY>
+      </TABLE>
+</TD>
+    </TR>
+<TR>      <TD colspan=2 bgcolor=#6d614a>
+      <TABLE width=100% border="0">
+        <TBODY>
+          <TR>
+            <TH bgcolor=#F0F0F0>史記</TH></TR><TR>
+<TD bgcolor=#a9987c>・<b><font color=red>【イベント】</font>[897年12月]各町の商店が賑わっています。</b>(30日20時41分54秒)
+<BR>・<b><font color=blown>【反乱】</font>[897年10月]寿州で悠@celebrityが反乱をおこしました。</b>(30日20時27分44秒)
+<BR>・<b><font color=#165e83>【簒奪】</font>[897年04月]神聖マグノリア帝国の君主は流水に変わりました。</b>(30日0時4分46秒)
+<BR>・<b><font color=#165e83>【簒奪】</font>[897年04月]الدولة الحليةの国名は神聖マグノリア帝国に変わり君主はボールペン に変わりました。</b>(30日0時4分15秒)
+<BR>・<b><font color=#165e83>【簒奪】</font>[897年04月]الدولة الحليةの君主は流水に変わりました。</b>(30日0時0分45秒)
+<BR>・<b><font color=#165e83>【簒奪】</font>[897年03月]神聖マグノリア帝国の国名はالدولة الحليةに変わり君主はボールペン に変わりました。</b>(29日23時53分41秒)
+<BR>・<b><font color=red>【イベント】</font>[897年03月]洪水がおこりました！各地で被害が出ています！</b>(29日23時43分37秒)
+<BR>・<b><font color=blue>【支配】</font>[897年02月]神聖マグノリア帝国の流水は寿州を支配しました。</b>(29日23時26分5秒)
+<BR>・<b><font color=red>【滅亡】</font>[897年02月]闇の王は滅亡しました。。</b>(29日23時26分5秒)
+<BR>・<b><font color=blue>【支配】</font>[896年11月]神聖マグノリア帝国の流水は荊州を支配しました。</b>(29日22時40分14秒)
+<BR>・<b><font color=blue>【支配】</font>[896年11月]神聖マグノリア帝国のよろしくねは金陵を支配しました。</b>(29日22時38分55秒)
+<BR>・<b><font color=blue>【支配】</font>[896年10月]神聖マグノリア帝国のボールペン は杭州を支配しました。</b>(29日22時18分22秒)
+<BR>・<b><font color=blue>【支配】</font>[896年10月]神聖マグノリア帝国のボールペン は福州を支配しました。</b>(29日22時3分3秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>申し訳ありません。間違って城付近MAPに立ち入ってしまいました。（神聖マグノリア帝国宰相：ボールペン より）</b>(29日21時54分10秒)
+<BR>・<b><font color=blue>【支配】</font>[895年12月]神聖マグノリア帝国のボールペン は雷州を支配しました。</b>(29日0時43分44秒)
+<BR>・<b><font color=red>【滅亡】</font>[895年12月]花組は滅亡しました。。</b>(29日0時43分44秒)
+<BR>・<b><font color=blue>【支配】</font>[895年08月]神聖マグノリア帝国のよろしくねは泉州を支配しました。</b>(28日23時38分44秒)
+<BR>・<b><font color=blue>【支配】</font>[895年06月]神聖マグノリア帝国のよろしくねは夷州を支配しました。</b>(28日22時50分21秒)
+<BR>・<b><font color=red>【滅亡】</font>[895年06月]は滅亡しました。。</b>(28日22時50分21秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【896年10月】より闇の王さんに侵攻させて頂きます、よろしくお願い致します！（神聖マグノリア帝国君主：流水より）</b>(28日21時59分44秒)
+<BR>・<b><font color=blue>【支配】</font>[894年11月]闇の王の羊は福州を支配しました。</b>(28日20時33分30秒)
+<BR>・<b><font color=red>【イベント】</font>[894年10月]大地震がおこりました！</b>(28日20時2分4秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【895年1月】より花組さんに侵攻させて頂きます、よろしくお願い致します！（神聖マグノリア帝国君主：流水より）</b>(27日20時32分4秒)
+<BR>・<b><font color=blue>【支配】</font>[892年10月]神聖マグノリア帝国のよろしくねは開封を支配しました。</b>(27日0時17分33秒)
+<BR>・<b><font color=red>【滅亡】</font>[892年10月]エルカミーノは滅亡しました。。</b>(27日0時17分33秒)
+<BR>・<b><font color=blue>【支配】</font>[892年07月]神聖マグノリア帝国のボールペン は晋陽を支配しました。</b>(26日23時16分31秒)
+<BR>・<b><font color=red>【滅亡】</font>[892年07月]モッコシ国は滅亡しました。。</b>(26日23時16分31秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>侵攻させて頂きました、すいませんです。（神聖マグノリア帝国君主：流水より）</b>(26日23時9分20秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>既に解体された国である為、前倒しとなりましたが（神聖マグノリア帝国君主：流水より）</b>(26日23時9分16秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>モッコシ国さんは既に武将がおらず、（神聖マグノリア帝国君主：流水より）</b>(26日23時6分48秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【894年1月】より、モッコシ国さんへ侵攻させて頂きます、よろしくお願い致します！（神聖マグノリア帝国君主：流水より）</b>(26日22時4分8秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>訂正です。すいません。（神聖マグノリア帝国君主：流水より）</b>(26日22時3分30秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【894年4月】より、モッコシ国へ侵攻させて頂きます、よろしくお願い致します！（神聖マグノリア帝国君主：流水より）</b>(26日22時0分59秒)
+<BR>・<b><font color=blue>【支配】</font>[891年11月]神聖マグノリア帝国のよろしくねは上京を支配しました。</b>(26日20時37分25秒)
+<BR>・<b><font color=red>【滅亡】</font>[891年11月]グレイ・フォックスは滅亡しました。。</b>(26日20時37分25秒)
+<BR>・<b><font color=blue>【支配】</font>[891年05月]花組のIRISHは雷州を支配しました。</b>(26日0時26分18秒)
+<BR>・<b><font color=blue>【支配】</font>[891年04月]神聖マグノリア帝国のボールペン は広州を支配しました。</b>(26日0時21分31秒)
+<BR>・<b><font color=blue>【支配】</font>[891年04月]神聖マグノリア帝国のよろしくねは潭州を支配しました。</b>(26日0時5分29秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【892年10月】より、エルカミーノさんに侵攻させて頂きます、よろしくお願い致します！（神聖マグノリア帝国君主：流水より）</b>(25日23時59分26秒)
+<BR>・<b><font color=blue>【支配】</font>[891年02月]神聖マグノリア帝国のよろしくねは成都を支配しました。</b>(25日23時34分4秒)
+<BR>・<b><font color=red>【滅亡】</font>[891年02月]某Nランドは滅亡しました。。</b>(25日23時34分4秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【891年6月】よりグレイ・フォックスさんに侵攻させて頂きます、よろしくです！（神聖マグノリア帝国君主：流水より）</b>(24日22時44分42秒)
+<BR>・<b><font color=blue>【支配】</font>[889年04月]神聖マグノリア帝国のよろしくねは青州を支配しました。</b>(24日22時17分29秒)
+<BR>・<b><font color=blue>【支配】</font>[889年03月]神聖マグノリア帝国のボールペン は燕京を支配しました。</b>(24日21時41分8秒)
+<BR>・<b><font color=blue>【支配】</font>[889年02月]神聖マグノリア帝国のボールペン は幽州を支配しました。</b>(24日21時29分1秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【891年1月】より某Nランドさんに侵攻させて頂きます、よろしくお願い致します！（神聖マグノリア帝国君主：流水より）</b>(24日21時18分52秒)
+<BR>・<b><font color=blue>【支配】</font>[888年10月]神聖マグノリア帝国のよろしくねは京兆を支配しました。</b>(24日20時23分1秒)
+<BR>・<b><font color=blue>【支配】</font>[888年07月]神聖マグノリア帝国のよろしくねは鳳翔を支配しました。</b>(24日19時15分44秒)
+<BR>・<b><font color=red>【滅亡】</font>[888年07月]野良猫は滅亡しました。。</b>(24日19時15分44秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[888年06月]新しくモッコシがモッコシ国を建国しました。</b>(24日2時11分42秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【887年10月】より、野良猫さんに侵攻させて頂きます、よろしくお願い致します！（神聖マグノリア帝国君主：流水より）</b>(23日0時54分14秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>訂正です、すいません。（神聖マグノリア帝国君主：流水より）</b>(23日0時53分37秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【887年10月】（神聖マグノリア帝国君主：流水より）</b>(23日0時51分58秒)
+<BR>・<b><font color=blue>【支配】</font>[886年05月]闇の王の羊は杭州を支配しました。</b>(22日22時40分5秒)
+<BR>・<b><font color=red>【イベント】</font>[886年05月]洪水がおこりました！各地で被害が出ています！</b>(22日22時39分50秒)
+<BR>・<b><font color=red>【イベント】</font>[886年02月]洪水がおこりました！各地で被害が出ています！</b>(22日21時33分41秒)
+<BR>・<b><font color=#008080><b>【声明】</b></font>【887年5月】さんに野良猫さんに侵攻させて頂きます、よろしくお願い致します！（神聖マグノリア帝国君主：流水より）</b>(22日21時17分14秒)
+<BR>・<b><font color=blue>【支配】</font>[884年06月]闇の王の羊は金陵を支配しました。</b>(21日21時0分55秒)
+<BR>・<b><font color=blue>【支配】</font>[884年04月]闇の王の羊は荊州を支配しました。</b>(21日20時17分48秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[879年11月]新しくグンペルトがエルカミーノを建国しました。</b>(18日20時27分10秒)
+<BR>・<b><font color=red>【イベント】</font>[878年08月]疫病が流行っているようです。街の人々も苦しんでいます。。</b>(17日21時21分7秒)
+<BR>・<b><font color=red>【イベント】</font>[877年09月]各町の商店が賑わっています。</b>(16日23時43分7秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[876年06月]新しくうんざんが某Nランドを建国しました。</b>(16日12時39分53秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[876年06月]新しくNullがグレイ・フォックスを建国しました。</b>(16日9時44分47秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[875年00月]新しくIRISHが花組を建国しました。</b>(15日18時44分10秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[875年00月]新しく流水が神聖マグノリア帝国を建国しました。</b>(15日1時3分4秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[875年00月]新しくaaaが野良猫を建国しました。</b>(15日0時9分8秒)
+<BR>・<b><font color=000088><B>【建国】</B></font>[875年00月]新しく悠@celebrityが闇の王を建国しました。</b>(14日20時29分33秒)
+<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR>・<BR></TD>
+          </TR>
+        </TBODY>
+      </TABLE>
+</TD>
+    </TR>
+  </TBODY>
+</TABLE>
+※街にカーソルを合わせると街の名前が表示されます。
+<p>
+2014/12/31/(Wed) 20:04:35
+<CENTER><HR SIZE=0>
+<font color=998877>十国志NET </font><font size=1 color=998877>テスト第2期</font> <font color=998877>ver.0.63fix</font><br>
+<font color=998877>ADMINISTARTOR liiu </font><a href="http://lunadraco.sakura.ne.jp/sangokuframe/index.cgi">GAME TOP</a><br>
+<font color=998877>三国志NET ver.2.80 </font><a href="http://www3.to/maccyu2/" target="_top">maccyu</a><br>
+<a href="http://ayfreenet.web.infoseek.co.jp/" target="_blank">HOMEPAGE GARO</a>
+</body></html>

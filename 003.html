@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="shortcut icon" href="./favicon.ico" >
+<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>十国志NET</title>
+<link rel="stylesheet" href="js/base.css">
+
+<STYLE type="text/css">
+<!--
+BODY,TR,TD,TH,FORM { font-family : "メイリオ","Yu Gothic","VL Gothic","Ubuntu","monospace"; font-size: 9pt; }
+a{ text-decoration:none;}
+a:link.mikata { color: blue; font-size: 9pt }
+a:link.enemy { color: red; font-size: 9pt }
+a:link#mikata { color: blue; font-size: 9pt }
+a:link#enemy { color: red; font-size: 9pt }
+a:link    { color: #4682B4 }
+a:visited { color: #4682B4 }
+a:hover   { color: #FFFF00 }
+a:active  { color: #00FF00 }
+.S1 {color:#fff; border-style: double; border-width: 3px;BACKGROUND: #633;}
+
+.dmg { color: #FF0000; font-size: 18pt }
+.clit { color: #0000FF; font-size: 18pt }
+#small { font-size: xx-small; }
+.bmj { color: #000000; font-size: 5pt }
+.r { color: #FF4444; font-size: 10pt }
+.b { color: #4444DD; font-size: 10pt }
+.s { color: #44AAEE; font-size: 10pt }
+.g { color: #44DD44; font-size: 10pt }
+.o { color: #EEAA44; font-size: 10pt }
+-->
+</STYLE>
+<script type="text/javascript" src="js/ballon.js"></script>
+</head>
+<body background="./image/o.gif" bgcolor="#E0E088" text="" link="#CCAA88" vlink="#AA8855" alink="#AA8855" leftmargin="0" marginwidth="0" marginheight="0">
+
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/12/11　</td><td>・リセットしました。</td></tr>
+<tr><td></td><td><font color=red><b>・12/12(土)19:00から第10期更新開始です！ぜひご参加ください！</b></font></td></tr>
+<tr><td></td><td><b>・主な変更点</b></td></tr>
+<tr><td></td><td>　士気(MPのようなパラメータ)の導入。BM上で行動をした時などに消費します。</td></tr>
+<tr><td></td><td>　NPCがプレイヤーを攻撃してくるようになりました。</td></tr>
+<tr><td></td><td>・その他の変更点は<a href="rireki.html#ten" target="_blank">こちら</a></td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/12/04　</td><td>・専用BBSにて来期の変更予定点を公開しました。</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/12/04　</td><td>・スピッツベルゲンの皆さん、統一おめでとうございます。</td></tr>
+<tr><td></td><td><font color=red><b>・来期(第10期)の開催(リセット)は、12/11(金)19:00を予定しています。宜しくお願いします！</b></font></td></tr>
+<tr><td></td><td><b>要望や提案、感想などありましたら専用BBSの方にお願いします。</b></td></tr>
+<tr><td></td><td>・来期の仕様変更予定点、改造予定点などは後日専用BBSで公開予定です。</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/11/01　</td><td>・更新時間がおかしくなる不具合が発生していました。ご迷惑をおかけしました。</td></tr>
+<tr><td></td><td>コマンドが実行されなかったなどの被害がでた方には補填をしますので専用BBSに報告してください。</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/8/21　</td><td>・リセットしました。</td></tr>
+<tr><td></td><td><font color=red><b>・8/22(土)19:00から第9期更新開始です！ぜひご参加ください！</b></font></td></tr>
+<tr><td></td><td><b>・主な変更点</b> BM自動モードの本格稼働、BM自動モードで自動移動が可能に</td></tr>
+<tr><td></td><td>・その他の変更点は<a href="rireki.html#nine" target="_blank">こちら</a></td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/8/15　</td><td>・専用BBSにて来期の変更予定点を公開しました。</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/8/13　</td><td>・孤島の皆さん、統一おめでとうございます。</td></tr>
+<tr><td></td><td><font color=red><b>・来期(第9期)の開催(リセット)は、8/21(金)19:00を予定しています。宜しくお願いします！</b></font></td></tr>
+<tr><td></td><td><b>要望や提案、感想などありましたら専用BBSの方にお願いします。</b></td></tr>
+<tr><td></td><td>・来期の仕様変更予定点、改造予定点などは後日専用BBSで公開予定です。</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/7/23　</td><td>・リセットしました。</td></tr>
+<tr><td></td><td><font color=red><b>・7/24(金)19:00から第8期更新開始です！ぜひご参加ください！</b></font></td></tr>
+<tr><td></td><td><b>・主な変更点</b> スキルが金で購入可能に、ルールの厳密化（一度目を通すようおねがいします）。</td></tr>
+<tr><td></td><td>・その他の変更点は<a href="rireki.html#eight" target="_blank">こちら</a></td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/7/23　</td><td>・専用BBSにて来期の変更点を公開しました。</td></tr>
+<tr><td></td><td>遅くなり申し訳ありません。</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/7/18　</td><td>・エステリア公国の皆さん、統一おめでとうございます。</td></tr>
+<tr><td></td><td><font color=red><b>・来期(第8期)の開催(リセット)は、7/23(木)19:00を予定しています。宜しくお願いします！</b></font></td></tr>
+<tr><td></td><td><b>要望や提案、感想などありましたら専用BBSの方にお願いします。</b></td></tr>
+<tr><td></td><td>・来期の仕様変更予定点、改造予定点は後日専用BBSで公開予定です。</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/6/29　</td><td>・リセットしました。</td></tr>
+<tr><td></td><td><font color=red><b>・6/30(火)19:00から第7期更新開始です！ぜひご参加ください！</b></font></td></tr>
+<tr><td></td><td><b>・主な変更点</b> 出城する際の仕様変更(迂回阻止度の導入) 後方都市を簡単に荒らせなくなりました。</td></tr>
+<tr><td></td><td>・その他の変更点は<a href="rireki.html#seven" target="_blank">こちら</a></td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/6/27　</td><td>・来期の変更予定点を公開しました。</td></tr>
+<tr><td></td><td>・UIが変更されました。表示がおかしくなると思うので、ブラウザのキャッシュをクリアするか、<a href="./js/zukei.css" target="blank_">こちら</a>を２回ほど読み込んでください。</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/6/23　</td><td>・落ちこぼれ共和国の皆さん、統一おめでとうございます。</td></tr>
+<tr><td></td><td><font color=red><b>・来期(第7期)の開催(リセット)は、6/29(月)19:00を予定しています。宜しくお願いします！</b></font></td></tr>
+<tr><td></td><td><b>要望や提案、感想などありましたら専用BBSの方にお願いします。</b></td></tr>
+<tr><td></td><td>・専用BBSで報告された不具合は修正済みです。</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/6/12　</td><td>・計数攻撃のバグを修正。</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/6/10　</td><td>・バトルマップのUIを変更しました。使いにくい場合は設定から以前の表示に戻せたりします。</td></tr>
+<tr><td></td><td>新UIの感想などがあれば掲示板に書いてください。</td></tr>
+<tr><td></td><td>・その他不具合を修正。</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/5/17　</td><td>・リセットしました。</td></tr>
+<tr><td></td><td><font color=red><b>・5/18(月)19:00から第6期更新開始です！ぜひご参加ください！</b></font></td></tr>
+<tr><td></td><td>・変更点の公開が遅れて申し訳ないです。。</td></tr>
+<tr><td></td><td><b>・主な変更点</b> 仁官用の新スキル追加、効果付き装備の実装</td></tr>
+<tr><td></td><td>・その他の変更点は<a href="rireki.html#six" target="_blank">こちら</a></td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/5/11　</td><td>・布団大好き共和国の皆さん、統一おめでとうございます。</td></tr>
+<tr><td></td><td><font color=red><b>・来期(第6期)の開催(リセット)は、5/17(日)19:00からを予定しています。宜しくお願いします！</b></font></td></tr>
+<tr><td></td><td><b>要望や提案、感想などありましたら専用BBSの方にお願いします。</b></td></tr>
+<tr><td></td><td>・来期の仕様変更予定点、改造予定点は後日専用BBSで公開予定です。</td></tr>
+<tr><td></td><td>・歴代統一国を更新しました。(今期から自動更新です)</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/5/10　</td><td>・名将一覧からNPCが除外されるようになりました。</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/5/03　</td><td>・マイページでの攻城時の攻撃力の表示がおかしくなっていたバグ修正。</td></tr>
+<tr><td></td><td>・UIが若干変わっています。表示がおかしい場合はブラウザのキャッシュをクリアするか、<a href="./js/zukei.css" target="blank_">こちら</a>を２回ほど読み込んでください。</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/4/27　</td><td>・リセットしました。</td></tr>
+<tr><td></td><td><font color=red><b>・4/28(火)19:00から第5期更新開始です！ぜひご参加ください！</b></font></td></tr>
+<tr><td></td><td>・変更点は<a href="rireki.html#five" target="_blank">こちら</a></td></tr>
+<tr><td></td><td>・前期の分の歴代統一国を更新してました。(お知らせし忘れてました)</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/4/22　</td><td>・D.D.Dの皆さん、統一おめでとうございます。</td></tr>
+<tr><td></td><td><font color=red><b>・来期(第5期)の開催(リセット)は、4/27(月)19:00からを予定しています。宜しくお願いします！</b></font></td></tr>
+<tr><td></td><td><b>要望や提案、感想などありましたら専用BBSの方にお願いします。</b></td></tr>
+<tr><td></td><td>・来期の仕様変更予定点、改造予定点は後日専用BBSで公開予定です。</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/4/09　</td><td>・忙しかったので自動リセット装置を使ってましたが失敗したようです。。ご迷惑をお掛けして申し訳ないです。</td></tr>
+<tr><td></td><td><font color=red><b>・リセットは4/09(木)19:00に変更です。第4期更新開始は4/10(金)19:00からです。宜しくおねがいします。</b></font></td></tr>
+<tr><td></td><td><b>・追記:宣戦布告から開戦まで19ヶ月(１日)→37ヶ月(2日)かかるようになりました。</b></td></tr>
+<tr><td></td><td>・その他変更点は<a href="rireki.html#four" target="_blank">こちら</a></td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/4/08　</td><td><s>・リセットしました。(自動でしてるので失敗してたらすいません)</s></td></tr>
+<tr><td></td><td><s><font color=red><b>・3/09(木)19:00から第4期更新開始です！ぜひご参加ください！</b></s></font></td></tr>
+<tr><td></td><td>・変更点はあとでのせます(専用BBSの変更予定点と同じです。)</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/4/05　</td><td>・(本当は)平和主義共和国の皆さん、統一おめでとうございます。</td></tr>
+<tr><td></td><td><font color=red><b>・来期(第4期)の開催(リセット)は、4/8(水)19:00からを予定しています。宜しくお願いします！</b></font></td></tr>
+<tr><td></td><td><b>要望や提案、感想などありましたら専用BBSの方にお願いします。</b></td></tr>
+<tr><td></td><td>・来期の仕様変更予定点、改造予定点を専用BBSにて公開しました。</td></tr>
+<tr><td></td><td>・歴代統一国を更新しました。</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/3/16　</td><td>・BMで残りの行動待機時間などがカウントダウンされるようになりました。</td></tr>
+<tr><td></td><td>・その他細かいUI変更。</td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/3/03　</td><td>・リセットしました。少し遅くなり申し訳ないです。</td></tr>
+<tr><td></td><td><b>・3/04(水)19:00から第3期更新開始です！ぜひご参加ください！</b></td></tr>
+<tr><td></td><td>・主な変更点</td></tr>
+<tr><td></td><td>　宣戦布告システムを実装しました。</td></tr>
+<tr><td></td><td>　宣戦布告システム実装に伴い宣戦布告関連のルールが撤廃されました。</td></tr>
+<tr><td></td><td>・その他の変更点や詳細は<a href="rireki.html#three" target="_blank">こちら</a></td></tr>
+</table>
+<hr class="kugiri">
+<table cellspacing="0">
+<tr><td>●2015/3/01　</td><td>・[訂正]宣戦布告から開戦までの時間は現実で24時間→ゲーム内時間で19ヶ月</td></tr>
+<tr><td></td><td>・歴代統一国を更新しました。</td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2015/2/28　</td><td>●来期の変更予定点について</td></tr>
+<tr><td></td><td>・宣戦布告関連をシステム化</font></td></tr>
+<tr><td></td><td>・宣戦布告関連システム化に伴ったルール変更(宣戦布告関連のルールが撤廃されます)</td></tr>
+<tr><td></td><td>・宣戦布告から開戦までの時間は現実で24時間→ゲーム内時間で18ヶ月になります。</td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2015/2/26　</td><td>・デドマンワンダーランドの皆様、統一おめでとうございます。</td></tr>
+<tr><td></td><td><font color=red><b>・来期(第3期)の開催(リセット)は、3/3(火)19:00からを予定しています。宜しくお願いします。</b></font></td></tr>
+<tr><td></td><td><b>要望や提案、感想などありましたら専用BBSの方にお願いします。</b></td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2015/2/18　</td><td>・リセットしました。</td></tr>
+<tr><td></td><td><b>・2/19(木)19:00から第2期更新開始です！ぜひご参加ください！</b></td></tr>
+<tr><td></td><td>・主な変更点</td></tr>
+<tr><td></td><td>　宣戦布告関連のルールが変更されました。国宛での布告は任意になります。</td></tr>
+<tr><td></td><td>　部隊システムが大きく変更されました。また、自動集合ができるようになりました。</td></tr>
+<tr><td></td><td>　戦闘時の武器、防具の成長条件が変わりました。</td></tr>
+<tr><td></td><td>　武官用スキルを追加。</td></tr>
+<tr><td></td><td>・その他の変更点や詳細は<a href=\"rireki.html#two\" target=\"_blank\">こちら</a></td></tr>
+<tr><td></td><td>・宣戦布告システムの実装は間に合いませんでした。申し訳ないです。</td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2015/2/15　</td><td>・来期の仕様&ルール変更予定点を専用BBSにて公開しました。</td></tr>
+<tr><td></td><td><b>皆さんの意見が聞きたい所もあるのでもしよかったら専用BBSに書き込みお願いしますm__m</b></td></tr>
+<tr><td></td><td>・歴代統一国を更新しました。</td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2015/2/15　</td><td>・はいさい共和国の皆様、統一おめでとうございます。</td></tr>
+<tr><td></td><td>・宣戦布告関連でお騒がせして申し訳ないです。来期からはシステム化します。</td></tr>
+<tr><td></td><td><font color=red><b>・来期(第2期)の開催(リセット)は、2/18(水)19:00からを予定しています。宜しくお願いします！</b></font></td></tr>
+<tr><td></td><td>来期の変更予定点は後ほど専用BBSで公開します。</td></tr>
+<tr><td></td><td><b>また、要望や提案、感想などありましたら専用BBSの方にお願いします。</b></td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2015/1/4　</td><td>・リセットしました。</td></tr>
+<tr><td></td><td><b>・1/5(月)19:00から第1期更新開始です！ぜひご参加ください！</b></td></tr>
+<tr><td></td><td>・前期からの主な変更点</td></tr>
+<tr><td></td><td>給料がでやすくなりました。以前の1.5倍ほどでます。</td></tr>
+<tr><td></td><td>文官用のスキル追加。</td></tr>
+<tr><td></td><td>統官兵の弱体化、武官兵の強化</td></tr>
+<tr><td></td><td>BM自動モードの機能停止（処理が重すぎるためです。申し訳ないです）</td></tr>
+<tr><td></td><td>・その他の変更点は<a href=\"rireki.html#one\" target=\"_blank\">こちら</a></td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2014/1/4　</td><td>・来期の変更点を専用BBSに公開しました。遅くなり申し訳ないです。</td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2014/12/31　</td><td>・神聖マグノリア帝国の皆様、統一おめでとうございます。</td></tr>
+<tr><td></td><td><b><font color=red>・来期(第1期)の開催(リセット)は、1/4(日)19:00からを予定しています。宜しくお願いします！</font></b></td></tr>
+<tr><td></td><td>但し、来期の変更点に時間がかかる作業が多いこと、</td></tr>
+<tr><td></td><td>管理人が忙しいことなどによりもう少し遅くなるかもしれません。</td></tr>
+<tr><td></td><td>来期の変更予定点は後ほど専用BBSで公開します。</td></tr>
+<tr><td></td><td><b>また、要望や提案、感想などありましたら専用BBSの方にお願いします。</b></td></tr>
+<tr><td></td><td>・歴代統一国を更新しました。</td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2014/12/15　</td><td>・前期からの変更点に書き忘れてたことがあったので<a href=\"rireki.html\" target=\"_blank\">こちら</a>に追記しました。申し訳ございません。</td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2014/12/14　</td><td><b>・12/15(月)19:00からテスト第2期更新開始です！ぜひご参加ください！。</b></td></tr>
+<tr><td></td><td>・重大な変更点</td></tr>
+<tr><td></td><td>BM上で行動可能な時間帯、コマンドが実行される時間帯は19:00～25:00</td></tr>
+<tr><td></td><td>城壁の弱体化、兵種のバランス調整、城壁耐久力が経過年数に応じて増えるようになりました。</td></tr>
+<tr><td></td><td>たくさんありすぎるので詳しくは<a href=\"rireki.html\" target=\"_blank\">こちら</a>をご覧下さい。</td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2014/12/11　</td><td>・星組の皆様、統一おめでとうございます。</td></tr>
+<tr><td></td><td><b><font color=red>・来期(テスト第2期)の開催(リセット)は、12/14(日)19:00からを予定しています。宜しくお願いします！</font></b></td></tr>
+<tr><td></td><td>・テスト期に参加して下さった皆様、ありがとうございました。</td></tr>
+<tr><td></td><td>バグや調整不足な点が多く申し訳ございませんでしたm__m</td></tr>
+<tr><td></td><td>・歴代統一国を更新しました。</td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2014/12/06　</td><td>・細かいバグを修正。</td></tr>
+<tr><td></td><td>・来期の仕様変更予定点をまとめました。専用BBSにかいてあります。</td></tr>
+<tr><td></td><td>意見を下さった方、ありがりがとうございましたm__m</td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2014/11/30　</td><td>・入城した時にもログが残るようになりました。</td></tr>
+<tr><td></td><td>・専用BBSにて来期への要望や修正案を募集しています。</td></tr>
+<tr><td></td><td><font color=\"red\">※特に、コマンドの実行間隔の短縮、BM上での行動待機時間の短縮</td></tr>
+<tr><td></td><td><font color=\"red\">BM上で行動可能な時間帯、コマンドが実行される時間帯の制限</td></tr>
+<tr><td></td><td><font color=\"red\">について意見を聞かせていただきたいので宜しくお願いしますm__m</font></td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2014/11/26　</td><td>・BM上を自動で行動できるシステムを実装しました。</td></tr>
+<tr><td></td><td>設定画面、もしくは出撃中のステータス画面から使えます。</td></tr>
+<tr><td></td><td>※動作がまだ不安定です。ご了承くださいm__m</td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2014/11/09　</td><td>・味方と同じMAPにいると自分を対象に選択できないバグ修正。</td></tr>
+<tr><td></td><td>・呪術兵の能力がおかしくなっていたので修正。ご迷惑お掛けしました。</td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2014/11/08　</td><td>・燕京から青州に行けなくなっていた問題を修正しました。ご迷惑お掛けしました。</td></tr>
+<tr><td></td><td>・建国コマンドの仕様を変更しました。</td></tr>
+<tr><td></td><td>部隊員で忠誠値100の人のみ、建国時に同じ国に所属するようにしました。</td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2014/11/02　</td><td>国力比較が見れなくなっていた問題を修正しました。</td></tr>
+<tr><td></td><td>国民数0人の国のとこで0除算が発生していたのが原因でした。</td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2014/10/31　</td><td>ログにより詳細な記録を残すようにしました。</td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2014/10/28　</td><td>表記間違い、コマンド選択時の不具合修正。</td></tr>
+</table>
+<hr class=\"kugiri\">
+<table cellspacing=\"0\">
+<tr><td>●2014/10/22　</td><td>10/27(月)19:00からテスト期更新開始です！ぜひご参加ください！</td></tr>
+<tr><td></td><td>バグや要望、意見などがございましたら専用BBSに書き込んでください。</td></tr>
+<tr><td></td><td>※テスト期なので期中の仕様変更もあります。ご了承ください。</td></tr>
+<tr><td></td><td>※管理人はプログラムの様子を見るため無所属にいます。</td></tr>
+</table>
+
+<CENTER><HR SIZE=0>
+<font color=998877>十国志NET </font><br>
+<font color=998877>ADMINISTARTOR liiu </font><a href="http://lunadraco.sakura.ne.jp/sangokuframe/index.cgi">GAME TOP</a><br>
+<font color=998877>三国志NET ver.2.80 </font><a href="http://www3.to/maccyu2/" target="_top">maccyu</a><br>
+<a href="http://ayfreenet.web.infoseek.co.jp/" target="_blank">HOMEPAGE GARO</a>
+</body></html>
