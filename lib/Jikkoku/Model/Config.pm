@@ -3,7 +3,7 @@ package Jikkoku::Model::Config {
   use Jikkoku;
   use FindBin;
 
-  use constant DIR_PATH => 'etc/';
+  use constant DIR_PATH => './etc/';
 
   my @CONFIG_FILES = qw/
     game
@@ -22,10 +22,10 @@ package Jikkoku::Model::Config {
 
   sub load {
     my ($class, @config_files) = @_;
-    for (@config_files) {
+    for my $file_name (@config_files) {
       %Config = (
         %Config,
-        %{ do(DIR_PATH() . "$_.conf") },
+        %{ do( DIR_PATH() . "$file_name.conf") },
       );
     }
   }

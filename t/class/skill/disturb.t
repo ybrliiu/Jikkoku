@@ -1,18 +1,13 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
-use Jikkoku::Model::Chara;
-use Jikkoku::Model::BattleMap;
-use Jikkoku::Class::Chara::ExtChara;
+my $container = Test::Jikkoku::Container->new;
+my $chara = $container->get('test.ext_chara');
 
-my $CLASS = 'Jikkoku::Class::Skill::Disturb::Stuck';
-use_ok $CLASS;
+subtest Stuck => sub {
 
-{
-  my $chara_model = Jikkoku::Model::Chara->new;
-  my $battle_map_model = Jikkoku::Model::BattleMap->new;
-  my $chara = Jikkoku::Class::Chara::ExtChara->new(chara => $chara_model->get('ybrliiu'));
+  my $CLASS = 'Jikkoku::Class::Skill::Disturb::Stuck';
+  use_ok $CLASS;
+
   ok my $skill = $CLASS->new({ chara => $chara });
   $chara->intellect(100);
   ok !$chara->states->get('Stuck')->is_available(time);
@@ -42,6 +37,6 @@ EOS
   chomp($description_of_acquire);
   is $skill->description_of_acquire, $description_of_acquire;
 
-}
+};
 
 done_testing;

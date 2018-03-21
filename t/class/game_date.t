@@ -1,6 +1,4 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
 use_ok 'Jikkoku::Class::GameDate';
 ok(my $game_date = Jikkoku::Class::GameDate->new);
@@ -12,7 +10,7 @@ is $game_date->month, $month + 1;
 
 ok $game_date->month( $month );
 ok $game_date->date;
-is $game_date->map_bg_color, '#60AF60';
+is $game_date->map_bg_color, '#FFE0E0';
 ok $game_date->save;
 
 subtest 'init' => sub {

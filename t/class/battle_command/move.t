@@ -1,7 +1,4 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-use Test::Name::FromLine;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Class::BattleCommand::Move';
 use_ok $CLASS;

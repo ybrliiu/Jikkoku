@@ -4,9 +4,11 @@ package Jikkoku::Model::Role::Division {
   use Jikkoku;
 
   use Carp;
-  use Option ();
+  use Option;
+  use Try::Tiny;
   use Module::Load;
   use Jikkoku::Util;
+  use namespace::autoclean;
 
   with 'Jikkoku::Model::Role::Base';
 
@@ -43,15 +45,17 @@ package Jikkoku::Model::Role::Division {
     Carp::croak 'Too few arguments (required: $primary_attribute_value)' if @_ < 2;
 
     # inline 展開しているためか, eval を二重にいないと例外を補足できない
-    my $obj = eval {
-      eval { $self->INFLATE_TO->new($primary_attribute_value) };
+    try {
+      my $obj = $self->INFLATE_TO->new($primary_attribute_value);
+      option $obj;
+    } catch {
+      my $e = $_;
+      if ( $e->isa('Jikkoku::Role::FileHandlerException') ) {
+        none;
+      } else {
+        die $e;
+      }
     };
-    if (my $e = $@) {
-      warn $e;
-      Option::none;
-    } else {
-      Option::option($obj);
-    }
   }
 
   sub get_all {

@@ -7,7 +7,8 @@ package Jikkoku {
   our $VERSION = "0.79_00";
 
   sub import {
-    $_->import for qw/strict warnings/;
+    my $class = shift;
+    $_->import for qw( strict warnings );
     feature->import(':5.14');
   }
 

@@ -1,6 +1,4 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Class::BattleMap::Node';
 use_ok $CLASS;

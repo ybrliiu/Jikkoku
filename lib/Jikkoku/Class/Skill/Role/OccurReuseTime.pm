@@ -1,4 +1,4 @@
-package Jikkoku::Class::Skill::Role::OccurReusetime {
+package Jikkoku::Class::Skill::Role::OccurReuseTime {
 
   use Mouse::Role;
   use Jikkoku;

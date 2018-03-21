@@ -1,6 +1,4 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 use Test2::IPC;
 use Time::HiRes qw( usleep );
 
@@ -165,17 +163,19 @@ package Player {
 }
 
 subtest 'いろんなデータでオブジェクト作成をためす' => sub {
-  ok( Player->new('ybrliiu') );
-  ok( Player->new('meemee') );
-  ok( Player->new('leon333') );
-  ok( Player->new('ryuhyo') );
-  ok( Player->new('soukou') );
-  ok( Player->new('define') );
-  ok( Player->new('king') );
+  ok( Player->new('haruka') );
+  ok( Player->new('yuuu') );
+  ok( Player->new('kotone') );
+  ok( Player->new('sizuku') );
+  ok( Player->new('yuzu') );
+  ok( Player->new('kotone') );
 };
 
+my $container = Test::Jikkoku::Container->new;
+my $chara_id = $container->get('test.chara_id');
+
 subtest 'lock' => sub {
-  my $player = Player->new('ybrliiu');
+  my $player = Player->new($chara_id);
   ok $player->lock;
 
   my $pid = fork();
@@ -195,24 +195,24 @@ subtest 'lock' => sub {
 };
 
 subtest 'commit' => sub {
-  my $player = Player->new('ybrliiu');
+  my $player = Player->new($chara_id);
   $player->lock;
   $player->lock;
   ok $player->force(100);
   ok $player->commit;
   is $player->force, 100;
-  my $same_player = Player->new('ybrliiu');
+  my $same_player = Player->new($chara_id);
   is $same_player->force, 100;
 };
 
 subtest 'abort' => sub {
-  my $player = Player->new('ybrliiu');
+  my $player = Player->new($chara_id);
   $player->lock;
   my $before_bm_id = $player->soldier_battle_map->get('battle_map_id');
   ok $player->soldier_battle_map->set(battle_map_id => 22);
   ok $player->abort;
   is $player->soldier_battle_map->get('battle_map_id'), $before_bm_id;
-  my $same_player = Player->new('ybrliiu');
+  my $same_player = Player->new($chara_id);
   is $same_player->soldier_battle_map->get('battle_map_id'), $before_bm_id;
 };
 
@@ -220,7 +220,7 @@ subtest 'abort' => sub {
 subtest 'lock中, 他プロセスから読み込むこと自体は可能か' => sub {
   my $pid = fork();
   if ($pid == 0) {
-    my $player = Player->new('ybrliiu');
+    my $player = Player->new($chara_id);
     $player->lock;
     usleep(2000);
     $player->intellect(99);
@@ -228,7 +228,7 @@ subtest 'lock中, 他プロセスから読み込むこと自体は可能か' => 
     exit;
   } else {
     usleep(1000);
-    lives_ok { my $player = Player->new('ybrliiu') };
+    lives_ok { my $player = Player->new($chara_id) };
     waitpid($pid, 0);
   }
 };
@@ -237,7 +237,7 @@ subtest '整合性(commit)' => sub {
   my $pid = fork();
   if ($pid == 0) {
     {
-      my $player = Player->new('ybrliiu');
+      my $player = Player->new($chara_id);
       ok $player->lock;
       usleep(2000);
       $player->intellect(99);
@@ -246,7 +246,7 @@ subtest '整合性(commit)' => sub {
     exit;
   } else {
     {
-      my $player = Player->new('ybrliiu');
+      my $player = Player->new($chara_id);
       usleep(1000);
       ok $player->lock;
       is $player->intellect, 99;
@@ -254,7 +254,7 @@ subtest '整合性(commit)' => sub {
     waitpid($pid, 0);
   }
 
-  my $player = Player->new('ybrliiu');
+  my $player = Player->new($chara_id);
   $player->lock;
   $player->intellect(1);
   $player->commit;
@@ -262,13 +262,13 @@ subtest '整合性(commit)' => sub {
 
 subtest '整合性(abort)' => sub {
 
-  my $player = Player->new('ybrliiu');
+  my $player = Player->new($chara_id);
   my $before_intellect = $player->intellect;
 
   my $pid = fork();
   if ($pid == 0) {
     {
-      my $player = Player->new('ybrliiu');
+      my $player = Player->new($chara_id);
       ok $player->lock;
       usleep(2000);
       $player->intellect(99);
@@ -277,7 +277,7 @@ subtest '整合性(abort)' => sub {
     exit;
   } else {
     {
-      my $player = Player->new('ybrliiu');
+      my $player = Player->new($chara_id);
       usleep(1000);
       ok $player->lock;
       is $player->intellect, $before_intellect;

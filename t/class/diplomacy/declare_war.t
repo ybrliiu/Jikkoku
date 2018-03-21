@@ -1,6 +1,4 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
 use Jikkoku::Model::Country;
 use Jikkoku::Model::GameDate;
@@ -28,7 +26,7 @@ subtest not_accpted => sub {
   );
 
   is $declare_war->start_game_date->year, 885;
-  is $declare_war->show_status( 0, $country_model ), '(本当は)平和主義共和国へ短縮布告を要請中 (885年03月より開戦)';
+  is $declare_war->show_status( 0, $country_model ), '美里西高校へ短縮布告を要請中 (885年03月より開戦)';
 };
 
 subtest accepted => sub {
@@ -46,7 +44,7 @@ subtest accepted => sub {
     })
   );
 
-  is $declare_war->show_status(0, $country_model), '1875年12月から(本当は)平和主義共和国と戦争';
+  is $declare_war->show_status(0, $country_model), '1875年12月から美里西高校と戦争';
 };
 
 done_testing;

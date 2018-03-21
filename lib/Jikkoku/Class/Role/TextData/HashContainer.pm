@@ -52,7 +52,7 @@ package Jikkoku::Class::Role::TextData::HashContainer {
     my ($class, $args) = @_;
     validate_values $args => [qw/ textdata /];
     # 空文字列の場合は空HashRefを返す
-    (eval $args->{textdata}) || {};
+    $args->{textdata} ? (eval $args->{textdata} // {}) : {};
   }
 
   __PACKAGE__->meta->make_immutable;

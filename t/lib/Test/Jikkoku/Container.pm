@@ -32,7 +32,7 @@ package Test::Jikkoku::Container {
 
     $container->{'service.battle_command.battle.is_siege'} = 0;
 
-    $container->{'test.chara_id'} = 'ybrliiu';
+    $container->{'test.chara_id'} = 'haruka';
     $container->{'test.chara'} = sub {
       $self->get('model.chara')
         ->get($self->get('test.chara_id'))
@@ -54,7 +54,7 @@ package Test::Jikkoku::Container {
         });
     };
 
-    $container->{'test.enemy_id'} = 'soukou';
+    $container->{'test.enemy_id'} = 'yuuu';
     $container->{'test.enemy'} = sub {
       $self->get('model.chara')
         ->get($self->get('test.enemy_id'))

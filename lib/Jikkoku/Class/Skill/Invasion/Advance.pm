@@ -21,7 +21,7 @@ package Jikkoku::Class::Skill::Invasion::Advance {
 
   with qw(
     Jikkoku::Class::Skill::Invasion::Invasion
-    Jikkoku::Class::Skill::Role::OccurReusetime
+    Jikkoku::Class::Skill::Role::OccurReuseTime
     Jikkoku::Class::Skill::Role::UsedInBattleMap
     Jikkoku::Class::Skill::Role::UsedInBattleMap::Purchasable
     Jikkoku::Class::Skill::Role::UsedInBattleMap::NotDependOnAbilities
