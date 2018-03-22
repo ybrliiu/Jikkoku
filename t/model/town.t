@@ -1,7 +1,4 @@
-use v5.14;
-use warnings;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Model::Town';
 use_ok $CLASS;
@@ -71,10 +68,10 @@ subtest 'distance' => sub {
 };
 
 subtest 'defender_list' => sub {
-  use Jikkoku::Model::Chara;
   use Jikkoku::Model::BattleMap;
-  my $chara_model = Jikkoku::Model::Chara->new;
-  my $chara = $chara_model->get('ybrliiu');
+  my $container = Test::Jikkoku::Container->new;
+  my $chara_model = $container->get('model.chara');
+  my $chara = $container->get('test.chara');
   my $battle_map = Jikkoku::Model::BattleMap->new->get( $chara->town_id );
   my $town = $model->get( $chara->town_id );
   ok( my $defender_list = $town->defender_list($battle_map, $chara_model) );

@@ -1,10 +1,5 @@
-use v5.14;
-use warnings;
-use Test::More;
-use Test::Exception;
-use Test::Name::FromLine;
-
-use constant Node => 'Jikkoku::Class::BattleMap::Node';
+use Test::Jikkoku;
+use aliased 'Jikkoku::Class::BattleMap::Node';
 
 my $CLASS = 'Jikkoku::Model::BattleMap';
 use_ok $CLASS;

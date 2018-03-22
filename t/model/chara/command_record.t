@@ -1,10 +1,9 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
 use_ok 'Jikkoku::Model::Chara::CommandRecord';
-
-ok my $command_record = Jikkoku::Model::Chara::CommandRecord->new('ybrliiu');
+my $container = Test::Jikkoku::Container->new;
+my $chara_id = $container->get('test.chara_id');
+ok my $command_record = Jikkoku::Model::Chara::CommandRecord->new($chara_id);
 is @{ $command_record->get_all }, $command_record->MAX;
 ok $command_record->input(
   $command_record->INFLATE_TO->new({

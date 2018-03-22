@@ -1,6 +1,4 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
 use_ok 'Jikkoku::Model::Weapon::Attr';
 ok( my $model = Jikkoku::Model::Weapon::Attr->new );

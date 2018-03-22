@@ -7,7 +7,7 @@ package Jikkoku::Model::BattleMap {
 
   use constant {
     CLASS    => 'Jikkoku::Class::BattleMap',
-    DIR_PATH => 'etc/battle_map_data/',
+    DIR_PATH => './etc/battle_map_data/',
   };
   
   sub new {

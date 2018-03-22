@@ -1,6 +1,4 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
 use_ok 'Jikkoku::Model::HistoryLog';
 ok(my $history_logger = Jikkoku::Model::HistoryLog->new);

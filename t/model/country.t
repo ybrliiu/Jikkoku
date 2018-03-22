@@ -1,7 +1,4 @@
-use v5.14;
-use warnings;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Model::Country';
 use_ok $CLASS;
@@ -10,7 +7,7 @@ ok(my $model = $CLASS->new);
 
 {
   my $country_id = 2;
-  my $before_country_name = '梁山泊';
+  my $before_country_name = '桜Trick';
   my $change_country_name = 'Perl Mongers';
 
   ok( my $country = $model->get($country_id) );
@@ -22,7 +19,7 @@ ok(my $model = $CLASS->new);
   ok $model->save;
 
   ok $country->king;
-  is $country->king_name, 'りーう＠管理人';
+  is $country->king_name, '園田美月';
   ok $country->is_headquarters_exist;
 
   subtest 'commit and abort' => sub {
@@ -48,17 +45,17 @@ ok(my $model = $CLASS->new);
 
   subtest 'color' => sub {
     ok 1;
-    is $country->color, '#ff69b4';
-    is $country->background_color, '#ffd0db';
-    is $country->background_color_rgba, '255,105,180,';
+    is $country->color, '#66cccc';
+    is $country->background_color, '#ccffff';
+    is $country->background_color_rgba, '102,204,204,'
   };
 
   subtest 'number_of_chara_participate_available' => sub {
     require Jikkoku::Model::Chara;
     my $chara_model = Jikkoku::Model::Chara->new;
     ok my $num = $country->number_of_chara_participate_available($chara_model, $model);
-    is $num, 5;
-    is @{ $country->members($chara_model) }, 4;
+    is $num, 6;
+    is @{ $country->members($chara_model) }, 3;
     ok $country->can_participate($chara_model, $model);
   };
 

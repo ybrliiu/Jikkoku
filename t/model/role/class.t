@@ -1,9 +1,4 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-
-use Jikkoku::Model::Chara;
-use Jikkoku::Class::Chara::ExtChara;
+use Test::Jikkoku;
 
 use_ok 'Jikkoku::Model::Role::Class';
 
@@ -54,7 +49,8 @@ package TestModel::Result {
 
 is ref(TestModel->MODULES), 'ARRAY';
 
-my $chara = Jikkoku::Class::Chara::ExtChara->new(chara => Jikkoku::Model::Chara->new->get('ybrliiu'));
+my $container = Test::Jikkoku::Container->new;
+my $chara = $container->get('test.ext_chara');
 ok( my $model = TestModel->new(chara => $chara) );
 ok( my $state = $model->get('Stuck') );
 is $state->name, '足止め';

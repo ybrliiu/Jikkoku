@@ -1,15 +1,11 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-
-use Jikkoku::Model::Chara;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Model::LoginList';
 use_ok $CLASS;
 
 ok( my $model = $CLASS->new ); 
-my $chara_model = Jikkoku::Model::Chara->new;
-my $chara = $chara_model->get('ybrliiu');
+my $container = Test::Jikkoku::Container->new;
+my $chara     = $container->get('test.chara');
 ok $model->add($chara);
 
 ok $model->update;

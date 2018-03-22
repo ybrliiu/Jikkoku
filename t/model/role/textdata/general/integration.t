@@ -1,6 +1,4 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Model::Role::TextData::General::Integration';
 use_ok $CLASS;
@@ -32,7 +30,7 @@ subtest new => sub {
 subtest get => sub {
   dies_ok { $country_model->get };
   ok my $country = $country_model->get(1);
-  is $country->name, '(本当は)平和主義共和国';
+  is $country->name, '美里西高校';
   dies_ok { $country_model->get(10) };
 };
 
@@ -43,7 +41,7 @@ subtest get_with_option => sub {
   my $some = $country_model->get_with_option(1);
   ok $some->isa('Option::Some');
   ok my $country = $some->get;
-  is $country->name, '(本当は)平和主義共和国';
+  is $country->name, '美里西高校';
 };
 
 subtest get_all => sub {

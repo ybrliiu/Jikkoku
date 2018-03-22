@@ -1,8 +1,4 @@
-use v5.14;
-use warnings;
-use Test::More;
-use Test::Exception;
-use Test::Name::FromLine;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Model::Chara';
 use_ok $CLASS;
@@ -20,10 +16,21 @@ diag $_->name for @$chara_list;
 ok(my $chara_list_to_hash = $CLASS->to_hash($chara_list));
 is ref $chara_list_to_hash, 'HASH';
 
+subtest get_all_with_result => sub {
+  ok my $chara = $model->get_with_option('haruka')->get;
+  ok my $result = $model->get_all_with_result;
+  my @allies = map {
+    $_->name . "\n"
+  } @{
+    $result->get_charactors_by_country_id_with_result($chara->country_id)->get_all
+  };
+  is @allies, 6;
+};
+
 {
   my $change_force = 200;
   my $change_morale = 100;
-  my $chara_id = 'leon333';
+  my $chara_id = 'haruka';
 
   ok(my $chara = $CLASS->get($chara_id));
   my $before_force = $chara->force;
@@ -44,8 +51,8 @@ is ref $chara_list_to_hash, 'HASH';
   ok $chara->soldier_battle_map(move_point_charge_time => 120);
 
   subtest 'states_data' => sub {
-    is $chara->states_data->get_with_option('hoge')->get, 100;
     ok $chara->states_data->set(fuga => 200);
+    is $chara->states_data->get_with_option('fuga')->get, 200;
   };
 
   subtest 'money' => sub {
@@ -67,8 +74,8 @@ is ref $chara_list_to_hash, 'HASH';
   };
 
   subtest 'can_protect' => sub {
-    my $you = $model->get_with_option('meemee')->get;
-    ok not $you->can_protect($chara);
+    my $you = $model->get_with_option('yuuu')->get;
+    ok $you->can_protect($chara);
   };
 
 }

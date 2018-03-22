@@ -1,7 +1,4 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-use Test::Name::FromLine;
+use Test::Jikkoku;
 
 use Jikkoku::Model::GameDate;
 use Jikkoku::Model::Country;
@@ -85,12 +82,12 @@ subtest 'declare_war already_sended_by_receiver' => sub {
 
 ok( $diplomacy_list = $diplomacy_model->get_by_country_id( $country_id ) );
 is @$diplomacy_list, 3;
-ok grep $_->show_status($country_id, $country_model) =~ /\(本当は\)平和主義共和国/, @$diplomacy_list;
+ok grep $_->show_status($country_id, $country_model) =~ /美里西高校/, @$diplomacy_list;
 
 ok $diplomacy_model->delete_by_country_id( $country_id2 );
 ok( $diplomacy_list = $diplomacy_model->get_by_country_id( $country_id ) );
 is @$diplomacy_list, 0;
-ok not grep $_->show_status($country_id, $country_model) =~ /\(本当は\)平和主義共和国/, @$diplomacy_list;
+ok not grep $_->show_status($country_id, $country_model) =~ /美里西高校/, @$diplomacy_list;
 
 # 攻撃できるかどうかのテスト
 subtest 'can_attack, can_passage' => sub {

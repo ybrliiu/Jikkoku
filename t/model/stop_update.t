@@ -1,11 +1,8 @@
-use v5.14;
-use warnings;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Model::StopUpdate';
 use_ok $CLASS;
-ok $CLASS->count;
-ok $CLASS->update_end_until;
+is $CLASS->count, 18;
+is $CLASS->update_end_until, 0;
 
 done_testing;

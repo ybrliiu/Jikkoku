@@ -1,15 +1,10 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-
-use Jikkoku::Model::Chara;
-use Jikkoku::Class::Chara::ExtChara;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Model::Skill';
 use_ok $CLASS;
 
-my $chara_model = Jikkoku::Model::Chara->new;
-my $chara = Jikkoku::Class::Chara::ExtChara->new(chara => $chara_model->get_with_option('ybrliiu')->get);
+my $container = Test::Jikkoku::Container->new;
+my $chara     = $container->get('test.ext_chara');
 ok my $model2 = Jikkoku::Model::Skill->new(chara => $chara);
 ok @{ $model2->get_all_with_result };
 ok my $skills = $model2->get_all_with_result;

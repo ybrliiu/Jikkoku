@@ -1,13 +1,13 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Model::Chara::Profile';
 use_ok $CLASS;
 
+my $container = Test::Jikkoku::Container->new;
 ok( my $model = $CLASS->new );
-ok( my $profile = $model->get('ybrliiu') );
-is $profile->get, '管理人です';
+my $chara_id = $container->get('test.chara_id');
+ok( my $profile = $model->get($chara_id) );
+is $profile->get, "優ちゃん大好き\n";
 
 subtest 'create - delete' => sub {
   ok $model->create('test_user');

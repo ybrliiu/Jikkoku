@@ -1,7 +1,4 @@
-use v5.14;
-use warnings;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Model::Unite';
 use_ok $CLASS;

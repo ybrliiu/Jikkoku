@@ -26,6 +26,18 @@ my @charactors = (
     id => 'yuzu',
     name => '飯塚ゆず',
   },
+  {
+    id => 'mituki',
+    name => '園田美月',
+  },
+  {
+    id => 'rina',
+    name => '坂井理奈',
+  },
+  {
+    id => 'sumisumi',
+    name => '乙川澄',
+  },
 );
 
 for my $chara_data (@charactors) {

@@ -11,7 +11,7 @@ package Jikkoku::Model::Role::General {
   sub get {
     my ($self, $primary_attribute_value) = @_;
     Carp::croak 'Too few arguments (required: $primary_attribute_value)' if @_ < 2;
-    $self->data->{$primary_attribute_value} // Carp::croak "no such data($primary_attribute_value)";
+    $self->data->{$primary_attribute_value} // Carp::confess "no such data($primary_attribute_value)";
   }
 
   sub get_with_option {

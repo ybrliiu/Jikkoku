@@ -1,6 +1,4 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Model::Role::Division';
 use_ok $CLASS;
@@ -37,10 +35,12 @@ package Jikkoku::Model::Player::Result {
 }
 
 ok my $model = Jikkoku::Model::Player->new;
+my $container = Test::Jikkoku::Container->new;
+my $chara_id = $container->get('test.chara_id');
 
 subtest get_with_option => sub {
   dies_ok { $model->get_with_option };
-  ok my $chara = $model->get_with_option('ybrliiu')->get;
+  ok my $chara = $model->get_with_option($chara_id)->get;
   ok $chara->isa( $model->INFLATE_TO );
   ok my $none = $model->get_with_option('HOHOHOHO');
   ok $none->isa('Option::None');
@@ -48,13 +48,13 @@ subtest get_with_option => sub {
 
 subtest get_all => sub {
   ok my $charactors = $model->get_all;
-  is @$charactors, 7;
+  is @$charactors, 9;
 };
 
 subtest get_all_with_result => sub {
   ok my $charactors_result = $model->get_all_with_result;
   ok my $same_country = $charactors_result->get_charactors_by_country_id(1);
-  is @$same_country, 2;
+  is @$same_country, 6;
 };
 
 subtest foreach => sub {

@@ -1,7 +1,4 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-use Test::Name::FromLine;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Model::ExtensiveStateRecord';
 use_ok $CLASS;
@@ -9,7 +6,7 @@ use_ok $CLASS;
 ok (my $model = $CLASS->new);
 ok $model->lock;
 my $args = {
-  giver_id         => 'ybrliiu',
+  giver_id         => 'haruka',
   state_id         => 'Protect',
   available_time   => time,
 };

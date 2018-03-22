@@ -1,12 +1,12 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Model::Chara::BattleActionReservation';
 use_ok $CLASS;
 
 ok( my $model = $CLASS->new );
-ok( my $list = $model->get('ybrliiu')->get(10) );
+my $container = Test::Jikkoku::Container->new;
+my $chara_id = $container->get('test.chara_id');
+ok( my $list = $model->get($chara_id)->get(10) );
 is @$list, 10;
 
 my $test_id = 'test_player';

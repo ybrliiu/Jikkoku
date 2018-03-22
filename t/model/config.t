@@ -1,8 +1,4 @@
-use v5.14;
-use warnings;
-use Test::More;
-use Test::Exception;
-use Test::Name::FromLine;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Model::Config';
 use_ok $CLASS;

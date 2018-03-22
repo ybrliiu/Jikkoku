@@ -25,7 +25,7 @@ subtest 'is_chara_has_position' => sub {
 
 subtest 'number_of_chara_participate_available' => sub {
   ok my $num = $ext_country->number_of_chara_participate_available;
-  is $num, 4;
+  is $num, 6;
   is @{ $ext_country->members }, 6;
   ok !$ext_country->can_participate;
 };

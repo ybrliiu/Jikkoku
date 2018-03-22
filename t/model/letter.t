@@ -1,6 +1,4 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Model::Letter';
 use_ok $CLASS;
@@ -12,7 +10,8 @@ is @$letter_list, 10;
 subtest 'add_country_letter' => sub {
   use Jikkoku::Model::Chara;
   use Jikkoku::Model::Country;
-  my $sender          = Jikkoku::Model::Chara->new->get('ybrliiu');
+  my $container = Test::Jikkoku::Container->new;
+  my $sender    = $container->get('test.chara');
   my $country_model   = Jikkoku::Model::Country->new;
   my $receive_country = $country_model->get_with_option(0)->get_or_else( $country_model->neutral );
   my $message         = 'HELL WORLD!!';
