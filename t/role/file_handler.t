@@ -1,6 +1,4 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 use Test2::IPC;
 use Time::HiRes qw( usleep );
 
@@ -25,7 +23,7 @@ package Log {
     $self->{fh} = undef;
   }
 
-  sub file_path { 'somethig.txt' }
+  sub file_path { 'something.txt' }
 
   sub abort {
     my $self = shift;

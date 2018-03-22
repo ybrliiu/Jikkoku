@@ -1,7 +1,4 @@
-use v5.24;
-use warnings;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
 use_ok 'Jikkoku::Role::Singleton';
 
