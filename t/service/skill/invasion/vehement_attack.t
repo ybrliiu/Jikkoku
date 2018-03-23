@@ -1,7 +1,4 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-use Test::Jikkoku::Container;
+use Test::Jikkoku;
 
 # 戦闘中にテストするために作った event
 package Tester {
@@ -61,14 +58,12 @@ package Tester {
 
 }
 
-use constant VehementAttack => 'Jikkoku::Service::Skill::Invasion::VehementAttack';
+use aliased 'Jikkoku::Service::Skill::Invasion::VehementAttack';
 
 use_ok VehementAttack;
 
 my $container = Test::Jikkoku::Container->new;
-
 my $battle_loop = $container->get('service.battle_command.battle.battle_loop');
-
 $battle_loop->chara->soldier->num(50);
 $battle_loop->target->soldier->num(50);
 
@@ -128,8 +123,11 @@ my $get_log_num = ($battle_loop->current_turn + 1) * 3;
 my $chara_logs = $battle_loop->chara->battle_logger->get($get_log_num);
 my $target_logs = $battle_loop->target->battle_logger->get($get_log_num);
 
+my ($chara_name, $target_name)
+  = ($battle_loop->chara->name, $battle_loop->target->name);
+
 subtest 'confirm_target_skill' => sub {
-  my $str = 'りーう＠管理人は宋江の部隊を激しく攻め立てています！';
+  my $str = "${chara_name}は${target_name}の部隊を激しく攻め立てています！";
   my @logs = grep { $_ =~ /$str/ } @$chara_logs;
   is @logs, $battle_loop->current_turn + 1;
   @logs = grep { $_ =~ /$str/ } @$target_logs;
@@ -137,7 +135,7 @@ subtest 'confirm_target_skill' => sub {
 };
 
 subtest 'confirm_enemy_skill' => sub {
-  my $str = '宋江はりーう＠管理人の部隊を激しく攻め立てています！';
+  my $str = "${target_name}は${chara_name}の部隊を激しく攻め立てています！";
   my @logs = grep { $_ =~ /$str/ } @$target_logs;
   is @logs, $battle_loop->current_turn + 1;
   @logs = grep { $_ =~ /$str/ } @$chara_logs;

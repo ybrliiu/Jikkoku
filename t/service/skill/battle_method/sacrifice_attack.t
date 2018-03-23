@@ -1,19 +1,13 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-use Test::Jikkoku::Container;
-
-use constant SacrificeAttack => 'Jikkoku::Service::Skill::BattleMethod::SacrificeAttack';
+use Test::Jikkoku;
+use aliased 'Jikkoku::Service::Skill::BattleMethod::SacrificeAttack';
 
 use_ok SacrificeAttack;
 
 my $container = Test::Jikkoku::Container->new;
-
 my $skill_param = +{
   category => 'BattleMethod',
   id       => 'SacrificeAttack',
 };
-
 my $chara_skill = $container->get('test.battle_chara')->skills->get($skill_param);
 my $enemy_skill = $container->get('test.battle_enemy')->skills->get($skill_param);
 
@@ -56,7 +50,7 @@ subtest 'not siege' => sub {
   my $target_logs = $battle_loop->target->battle_logger->get($get_log_num);
 
   subtest 'confirm_target_skill' => sub {
-    my $str = '宋江は自軍の兵士を犠牲にし';
+    my $str = $battle_loop->target->name . 'は自軍の兵士を犠牲にし';
     my @logs = grep { /$str/ } @$target_logs;
     is @logs, grep { /$str/ } @$chara_logs;
     for my $log (@logs) {
@@ -66,7 +60,7 @@ subtest 'not siege' => sub {
   };
 
   subtest 'confirm_enemy_skill' => sub {
-    my $str = 'りーう＠管理人は自軍の兵士を犠牲にし、';
+    my $str = $battle_loop->chara->name . 'は自軍の兵士を犠牲にし、';
     my @logs = grep { /$str/ } @$target_logs;
     is @logs, grep { /$str/ } @$chara_logs;
     for my $log (@logs) {
@@ -115,7 +109,7 @@ subtest 'siege' => sub {
   my $target_logs = $battle_loop->target->battle_logger->get($get_log_num);
 
   subtest 'confirm_target_skill' => sub {
-    my $str = '宋江は自軍の兵士を犠牲にし';
+    my $str = $battle_loop->target->name . 'は自軍の兵士を犠牲にし';
     my @logs = grep { /$str/ } @$target_logs;
     is @logs, grep { /$str/ } @$chara_logs;
     for my $log (@logs) {
@@ -125,7 +119,7 @@ subtest 'siege' => sub {
   };
 
   subtest 'confirm_enemy_skill' => sub {
-    my $str = 'りーう＠管理人は自軍の兵士を犠牲にし、';
+    my $str = $battle_loop->chara->name . 'は自軍の兵士を犠牲にし、';
     my @logs = grep { /$str/ } @$target_logs;
     is @logs, grep { /$str/ } @$chara_logs;
     for my $log (@logs) {

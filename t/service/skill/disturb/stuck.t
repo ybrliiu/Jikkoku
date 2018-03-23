@@ -1,23 +1,16 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-
-use Jikkoku::Model::Chara;
-use Jikkoku::Class::Chara::ExtChara;
-use Jikkoku::Service::Chara::Soldier::Sortie;
+use Test::Jikkoku;
 
 my $CLASS = 'Jikkoku::Service::Skill::Disturb::Stuck';
 use_ok $CLASS;
 
-my $chara_model = Jikkoku::Model::Chara->new;
-my $chara =
-  Jikkoku::Class::Chara::ExtChara->new( chara => $chara_model->get_with_option('ybrliiu')->get );
-my $meemee = $chara_model->get_with_option('meemee')->get;
+my $container = Test::Jikkoku::Container->new;
+my $chara = $container->get('test.ext_chara');
+my $target = $container->get('test.ext_enemy');
 
 subtest success_case => sub {
   my $stuck = $CLASS->new({
     chara     => $chara,
-    target_id => 'meemee',
+    target_id => $target->id,
   });
   eval { $stuck->exec };
   diag $@;

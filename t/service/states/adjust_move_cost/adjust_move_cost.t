@@ -1,16 +1,11 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
+use Test::Jikkoku;
 
-use Jikkoku::Model::Chara;
-use Jikkoku::Class::Chara::ExtChara;
-
-use_ok 'Jikkoku::Service::States::AdjustMoveCost::AdjustMoveCost';
+my $CLASS = 'Jikkoku::Service::States::AdjustMoveCost::AdjustMoveCost';
+use_ok $CLASS;
 
 # 準備
-my $chara_model = Jikkoku::Model::Chara->new;
-my $_chara = $chara_model->get('ybrliiu');
-my $chara  = Jikkoku::Class::Chara::ExtChara->new(chara => $_chara);
+my $container = Test::Jikkoku::Container->new;
+my $chara = $container->get('test.ext_chara');
 my $state = $chara->states->get('Stuck');
 
 subtest 'adjust case' => sub {
@@ -22,7 +17,7 @@ subtest 'adjust case' => sub {
 
   my $service;
   lives_ok {
-    $service = Jikkoku::Service::States::AdjustMoveCost::AdjustMoveCost->new({
+    $service = $CLASS->new({
       chara       => $chara,
       origin_cost => 5,
     });

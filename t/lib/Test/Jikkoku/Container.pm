@@ -16,6 +16,7 @@ package Test::Jikkoku::Container {
     my $container = $self->container;
 
     $container->{'model.chara'} = sub { $self->model('Chara')->new };
+    $container->{'model.battle_map'} = sub { $self->model('BattleMap')->new };
 
     $container->{'service.battle_command.battle.battle_loop'} = sub {
       my $self = shift;
@@ -38,8 +39,7 @@ package Test::Jikkoku::Container {
         ->get($self->get('test.chara_id'))
     };
     $container->{'test.ext_chara'} = sub {
-      $self->class('Chara::ExtChara')
-        ->new(chara => $self->get('test.chara'))
+      $self->class('Chara::ExtChara')->new(chara => $self->get('test.chara'))
     };
     $container->{'test.battle_chara'} = sub {
       $self->service('BattleCommand::Battle::Chara')
@@ -54,10 +54,13 @@ package Test::Jikkoku::Container {
         });
     };
 
-    $container->{'test.enemy_id'} = 'yuuu';
+    $container->{'test.enemy_id'} = 'mituki';
     $container->{'test.enemy'} = sub {
       $self->get('model.chara')
         ->get($self->get('test.enemy_id'))
+    };
+    $container->{'test.ext_enemy'} = sub {
+      $self->class('Chara::ExtChara')->new(chara => $self->get('test.enemy'));
     };
     $container->{'test.battle_enemy'} = sub {
       $self->service('BattleCommand::Battle::Chara')

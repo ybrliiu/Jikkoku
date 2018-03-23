@@ -232,20 +232,22 @@ package Jikkoku::Class::Chara::ExtChara {
 
   sub attack_power {
     my $self = shift;
-    $self->soldier->attack_power(@_) + $self->force + $self->weapon->power + 
+    my $power = $self->soldier->attack_power($self, @_) + $self->force + $self->weapon->power + 
     $self->position->match(
       Some => sub { $_->increase_attack_power },
       None => sub { 0 },
     );
+    int $power;
   }
 
   sub defence_power {
     my $self = shift;
-    $self->soldier->defence_power(@_) + ($self->soldier->training / 2) + $self->guard->power +
+    my $power = $self->soldier->defence_power($self, @_) + ($self->soldier->training / 2) + $self->guard->power +
     $self->position->match(
       Some => sub { $_->increase_defence_power },
       None => sub { 0 },
     );
+    int $power;
   }
 
   __PACKAGE__->_generate_save_log_method;

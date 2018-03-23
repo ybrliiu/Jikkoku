@@ -1,13 +1,9 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-use Test::Jikkoku::Container;
+use Test::Jikkoku;
 
-use constant BattleLoop  => 'Jikkoku::Service::BattleCommand::Battle::BattleLoop';
+use aliased 'Jikkoku::Service::BattleCommand::Battle::BattleLoop';
 use_ok BattleLoop;
 
 my $container = Test::Jikkoku::Container->new;
-
 my $b_chara = $container->get('test.battle_chara');
 $b_chara->soldier->num(100);
 my $b_target = $container->get('test.battle_enemy');

@@ -1,13 +1,7 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-use Test::Name::FromLine;
-
+use Test::Jikkoku;
 use Jikkoku::Model::Config;
-use Jikkoku::Model::Chara;
 use Jikkoku::Model::Town;
 use Jikkoku::Model::BattleMap;
-use Jikkoku::Class::Chara::ExtChara;
 
 my $CLASS = 'Jikkoku::Service::BattleCommand::Entry';
 use_ok $CLASS;
@@ -17,8 +11,9 @@ my $game_config = Jikkoku::Model::Config->get->{game};
 local $game_config->{update_start_hour} = 0;
 local $game_config->{update_end_hour}   = 24;
 
-my $chara_model      = Jikkoku::Model::Chara->new;
-my $chara            = Jikkoku::Class::Chara::ExtChara->new(chara => $chara_model->get_with_option('ybrliiu')->get);
+my $container = Test::Jikkoku::Container->new;
+my $chara = $container->get('test.ext_chara');
+$chara->town_id(10);
 my $town_model       = Jikkoku::Model::Town->new;
 my $battle_map_model = Jikkoku::Model::BattleMap->new;
 

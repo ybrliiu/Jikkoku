@@ -1,7 +1,5 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-use Test::Jikkoku::Container;
+use Test::Jikkoku;
+use aliased 'Jikkoku::Service::Skill::BattleMethod::KaisinAttack';
 
 # 戦闘中の最大ダメージを記録するために作ったevent
 package Peeper {
@@ -15,14 +13,10 @@ package Peeper {
 
 }
 
-use constant KaisinAttack => 'Jikkoku::Service::Skill::BattleMethod::KaisinAttack';
-
 use_ok KaisinAttack;
 
 my $container = Test::Jikkoku::Container->new;
-
 my $battle_loop = $container->get('service.battle_command.battle.battle_loop');
-
 $battle_loop->chara->soldier->num(100);
 $battle_loop->target->soldier->num(100);
 
@@ -81,7 +75,7 @@ my $target_logs = $battle_loop->target->battle_logger->get($get_log_num);
 
 subtest 'confirm chara skill' => sub {
   my @logs = reverse @$chara_logs;
-  my $str = 'りーう＠管理人が会心攻撃を仕掛けました';
+  my $str = $battle_loop->chara->name . 'が会心攻撃を仕掛けました';
   if ( grep { /$str/ } @logs ) {
     for my $i (0 .. $#logs) {
       if ($logs[$i] =~ /$str/) {
@@ -97,7 +91,7 @@ subtest 'confirm chara skill' => sub {
 
 subtest 'confirm enemy skill' => sub {
   my @logs = reverse @$target_logs;
-  my $str = '宋江が会心攻撃を仕掛けました';
+  my $str = $battle_loop->target->name . 'が会心攻撃を仕掛けました';
   if ( grep { /$str/ } @logs ) {
     for my $i (0 .. $#logs) {
       if ($logs[$i] =~ /$str/) {

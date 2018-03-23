@@ -1,16 +1,10 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-use Test::Jikkoku::Container;
-
-use constant KeisuAttack => 'Jikkoku::Service::Skill::BattleMethod::KeisuAttack';
+use Test::Jikkoku;
+use aliased 'Jikkoku::Service::Skill::BattleMethod::KeisuAttack';
 
 use_ok KeisuAttack;
 
 my $container = Test::Jikkoku::Container->new;
-
 my $battle_loop = $container->get('service.battle_command.battle.battle_loop');
-
 $battle_loop->chara->soldier->num(50);
 $battle_loop->target->soldier->num(50);
 
@@ -51,9 +45,10 @@ my $chara_logs = $battle_loop->chara->battle_logger->get($get_log_num);
 my $target_logs = $battle_loop->target->battle_logger->get($get_log_num);
 
 subtest 'confirm_target_skill' => sub {
-  my @logs = grep { $_ =~ /りーう＠管理人が計数攻撃を仕掛けました。/ } @$chara_logs;
+  my $str = $battle_loop->chara->name . 'が計数攻撃を仕掛けました。';
+  my @logs = grep { $_ =~ /$str/ } @$chara_logs;
   is @logs, $battle_loop->current_turn + 1;
-  @logs = grep { $_ =~ /りーう＠管理人が計数攻撃を仕掛けました。/ } @$target_logs;
+  @logs = grep { $_ =~ /$str/ } @$target_logs;
   is @logs, $battle_loop->current_turn + 1;
   # スキル効果で与えているダメージが正しいか確認
   my $count = $battle_loop->current_turn;
@@ -64,9 +59,10 @@ subtest 'confirm_target_skill' => sub {
 };
 
 subtest 'confirm_enemy_skill' => sub {
-  my @logs = grep { $_ =~ /宋江が計数攻撃を仕掛けました。/ } @$target_logs;
+  my $str = $battle_loop->target->name . 'が計数攻撃を仕掛けました。';
+  my @logs = grep { $_ =~ /$str/ } @$target_logs;
   is @logs, $battle_loop->current_turn + 1;
-  @logs = grep { $_ =~ /宋江が計数攻撃を仕掛けました。/ } @$chara_logs;
+  @logs = grep { $_ =~ /$str/ } @$chara_logs;
   my $count = $battle_loop->current_turn;
   for my $log (@logs) {
     like $log, qr/(??{ $enemy_skill->PLUS_TAKE_DAMAGE + $count })/;

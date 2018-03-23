@@ -1,7 +1,4 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-use Test::Jikkoku::Container;
+use Test::Jikkoku;
 
 # 戦闘中にテストするために作った event
 package Tester {
@@ -58,7 +55,7 @@ package Tester {
 
 }
 
-use constant Offensive => 'Jikkoku::Service::Skill::Command::Offensive';
+use aliased 'Jikkoku::Service::Skill::Command::Offensive';
 
 use_ok Offensive;
 
@@ -68,6 +65,7 @@ my $battle_loop = $container->get('service.battle_command.battle.battle_loop');
 
 $battle_loop->chara->soldier->num(50);
 $battle_loop->target->soldier->num(50);
+$battle_loop->target->force(140);
 
 my $skill_param = +{
   category => 'Command',
@@ -126,7 +124,7 @@ my $chara_logs = $battle_loop->chara->battle_logger->get($get_log_num);
 my $target_logs = $battle_loop->target->battle_logger->get($get_log_num);
 
 subtest 'confirm_target_skill' => sub {
-  my $str = 'りーう＠管理人が攻勢を行いました！';
+  my $str = $battle_loop->chara->name . 'が攻勢を行いました！';
   my @logs = grep { $_ =~ /$str/ } @$chara_logs;
   is @logs, $battle_loop->current_turn + 1;
   @logs = grep { $_ =~ /$str/ } @$target_logs;
@@ -134,7 +132,7 @@ subtest 'confirm_target_skill' => sub {
 };
 
 subtest 'confirm_enemy_skill' => sub {
-  my $str = '宋江が攻勢を行いました！';
+  my $str = $battle_loop->target->name . 'が攻勢を行いました！';
   my @logs = grep { $_ =~ /$str/ } @$target_logs;
   is @logs, $battle_loop->current_turn + 1;
   @logs = grep { $_ =~ /$str/ } @$chara_logs;

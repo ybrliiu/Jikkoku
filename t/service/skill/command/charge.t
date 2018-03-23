@@ -1,7 +1,5 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-use Test::Jikkoku::Container;
+use Test::Jikkoku;
+use aliased 'Jikkoku::Service::Skill::Command::Charge';
 
 # 戦闘中にテストするために作った event
 package Tester {
@@ -29,8 +27,6 @@ package Tester {
   __PACKAGE__->meta->make_immutable;
 
 }
-
-use constant Charge => 'Jikkoku::Service::Skill::Command::Charge';
 
 use_ok Charge;
 
@@ -98,7 +94,7 @@ my $chara_logs = $battle_loop->chara->battle_logger->get($get_log_num);
 my $target_logs = $battle_loop->target->battle_logger->get($get_log_num);
 
 subtest 'confirm_target_skill' => sub {
-  my $str = 'りーう＠管理人の部隊は敵部隊に突撃しました！';
+  my $str = $battle_loop->chara->name . 'の部隊は敵部隊に突撃しました！';
   my @logs = grep { $_ =~ /$str/ } @$chara_logs;
   is @logs, $battle_loop->current_turn + 1;
   @logs = grep { $_ =~ /$str/ } @$target_logs;
@@ -106,7 +102,7 @@ subtest 'confirm_target_skill' => sub {
 };
 
 subtest 'confirm_enemy_skill' => sub {
-  my $str = '宋江の部隊は敵部隊に突撃しました！';
+  my $str = $battle_loop->target->name . 'の部隊は敵部隊に突撃しました！';
   my @logs = grep { $_ =~ /$str/ } @$target_logs;
   is @logs, $battle_loop->current_turn + 1;
   @logs = grep { $_ =~ /$str/ } @$chara_logs;

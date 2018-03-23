@@ -1,17 +1,13 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-
-use Jikkoku::Model::Chara;
-use Jikkoku::Class::Chara::ExtChara;
+use Test::Jikkoku;
+use Jikkoku::Model::BattleMap;
 
 my $CLASS = 'Jikkoku::Service::BattleMap::DestinationNodeGetter';
 use_ok $CLASS;
 
-my $chara_model = Jikkoku::Model::Chara->new;
-my $chara       = Jikkoku::Class::Chara::ExtChara->new(chara => $chara_model->get_with_option('ybrliiu')->get);
+my $container = Test::Jikkoku::Container->new;
+my $chara = $container->get('test.ext_chara');
+my $chara_model = $container->get('model.chara');
 my $charactors  = $chara_model->get_all_with_result;
-require Jikkoku::Model::BattleMap;
 my $battle_map_model = Jikkoku::Model::BattleMap->new;
 my $soldier = $chara->soldier;
 $soldier->sortie_to_staying_towns_castle($battle_map_model);

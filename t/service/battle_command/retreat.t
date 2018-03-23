@@ -1,12 +1,6 @@
-use Jikkoku;
-use Test::More;
-use Test::Exception;
-use Test::Name::FromLine;
-
-use Jikkoku::Model::Chara;
+use Test::Jikkoku;
 use Jikkoku::Model::Town;
 use Jikkoku::Model::BattleMap;
-use Jikkoku::Class::Chara::ExtChara;
 
 my $CLASS = 'Jikkoku::Service::BattleCommand::Retreat';
 use_ok $CLASS;
@@ -16,11 +10,10 @@ my $game_config = Jikkoku::Model::Config->get->{game};
 local $game_config->{update_start_hour} = 0;
 local $game_config->{update_end_hour}   = 24;
 
-my $c_m = Jikkoku::Model::Chara->new;
+my $container = Test::Jikkoku::Container->new;
+my $chara = $container->get('test.ext_chara');
 my $battle_map_model = Jikkoku::Model::BattleMap->new;
 my $town_model = Jikkoku::Model::Town->new;
-
-my $chara = Jikkoku::Class::Chara::ExtChara->new(chara => $c_m->get('ybrliiu'));
 
 subtest '城地形の上で自国都市に撤退' => sub {
   ok( my $retreat = $CLASS->new({chara => $chara}) );
