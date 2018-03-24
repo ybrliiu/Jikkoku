@@ -5,6 +5,8 @@ my $layout = take_in 'templates/layouts/default.pl';
 
 sub {
   my $args = shift;
+  my ($announcements, $game_conf, $game_date, $game_record, $login_list, $map_logs, $history_logs, $cache_id, $cache_pass)
+    = map { $args->{$_} } qw( announcements game_conf game_date game_record login_list map_logs history_logs cache_id cache_pass );
   my $this = sub {
     qq{
 <table width="100%" cellpadding="0" cellspacing="0" border="0"
@@ -17,7 +19,7 @@ sub {
       <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
        <!-- hatena! -->
-       <a href="http://b.hatena.ne.jp/entry/lunadraco.sakura.ne.jp/sangokuframe/index.cgi" class="hatena-bookmark-button" data-hatena-bookmark-title="十国志NET" data-hatena-bookmark-layout="simple-balloon" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+       <a href="http://b.hatena.ne.jp/entry/lunadraco.sakura.ne.jp/sangokuframe/index.cgi" class="hatena-bookmark-button" data-hatena-bookmark-title="十国志NET" data-hatena-bookmark-layout="simple-balloon" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only\@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
        <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
        <!-- google plus -->
        <script src="https://apis.google.com/js/platform.js" async defer>
@@ -78,12 +80,12 @@ sub {
                 <tr><td>&nbsp;</td></tr>
                 <tr>
                   <td align="center">
-                    ログイン人数：@{[ scalar @login_list ]}人
+                    ログイン人数：@{[ scalar @$login_list ]}人
                   </td>
                 </tr>
                 <tr>
                   <td align="center">
-                    最大登録人数($ENTRY_MAX人)
+                    最大登録人数($game_conf->{max_chara}人)
                   </td>
                 </tr>
               </tr>
@@ -96,12 +98,12 @@ sub {
               <form action="/chara/mypage" method="POST">
                 <input type="hidden" name="mode" value="STATUS">
                 <tr>
-                  <th bgcolor=$TD_C2 height=5>USER ID</th>
-                  <td><input type="text" size="10" name="id" value="$_id"></td>
+                  <th bgcolor="#F0F0F0" height=5>USER ID</th>
+                  <td><input type="text" size="10" name="id" value="$cache_id"></td>
                 </tr>
                 <TR>
-                  <TH bgcolor=$TD_C2 height=5>PASS WORD</th>
-                  <td><input type="password" size="10" name="pass" value="$_pass"></TD>
+                  <TH bgcolor="#F0F0F0" height=5>PASS WORD</th>
+                  <td><input type="password" size="10" name="pass" value="$cache_pass"></TD>
                 </TR>
                 <tr>
                   <td colspan="2" align="left">
@@ -109,18 +111,25 @@ sub {
                   </td>
                 </TR>
 <TR><td bgcolor=#cbba9e align=center colspan=2><input type="submit" id="input" value="ログイン"></td></tr></form>
-<TR><td align="center" bgcolor=$TD_C2 colspan="2"><a href="./idpw.cgi">【ID、パスワードを忘れた方】</a></th></TR>
+<TR><td align="center" bgcolor="#F0F0F0" colspan="2"><a href="./idpw.cgi">【ID、パスワードを忘れた方】</a></th></TR>
 </table>
 
 </TD><TD align=center width="80%">
 <p><TABLE width=95% height=140 bgcolor=#6d614a>
-<TR><TD align=center bgcolor=#cbba9e><h1><br><font color=#6d614a>$GAME_TITLE</font></h1><p><h2><font color=#6d614a>$KI</font></h2>
-
+<TR>
+  <TD align=center bgcolor=#cbba9e>
+  <h1>
+    <br>
+    <font color=#6d614a>$game_conf->{title}</font>
+  </h1>
+  <p>
+    <h2><font color=#6d614a>@{[ $game_record->period ]}</font></h2>
+  </p>
 <br>
 <b>更新時間、BM行動可能時間：19:00～24:59</b>
 <br>
 
-<br><font size=2 color=#6d614a><B>[$new_date]</b><BR>次回の更新まで <B>$next_time</B> 分<BR></font>
+<br><font size=2 color=#6d614a><B>[@{[ $game_date->date ]}]</b><BR>次回の更新まで <B>@{[ $game_date->min_until_next_update ]}</B> 分<BR></font>
 
 <br>
 <table><tbody>
@@ -140,7 +149,7 @@ sub {
             </tr>
           </table>
         }
-      } $announce_model->get_all->@*) . qq{
+      } @$announcements) . qq{
         <hr class="kugiri">
         <table cellspacing="0">
           <tr>
@@ -161,15 +170,31 @@ sub {
 <TR><TD colspan="2" align=center valign="top" width=100%>
 
 <br>
-<TABLE width=100% BGCOLOR=$TD_C2 cellspacing=1 id="small"><TBODY></TBODY></TABLE>
+<table width=100% bgcolor="#f0f0f0" cellspacing=1 id="small"><tbody></tbody></table>
 <table width=90%><TR><TD>
-<CENTER><HR size=0><p align=right>[<font color=8E6C68>TOTAL ACCESS<font color=red><B> $total_count </font></B>HIT</font>]</p>
+<CENTER><HR size=0><p align=right>[<font color=8E6C68>TOTAL ACCESS<font color=red><B> @{[ $game_record->access_count ]} </font></B>HIT</font>]</p>
 </TD></TR>
 <TR><TD colspan="2"><div class="midasi3"><b><font size="2">&nbsp;MAP LOG</b></font></div></TD></TR>
-<TR><TD bgcolor=#cbba9c colspan="2" width=80% height=20 class="maru"><font color=#6d614a size=2>$S_MES</font></TD></TR>
+<TR>
+  <TD bgcolor=#cbba9c colspan="2" width=80% height=20 class="maru">
+    <font color=#6d614a size=2>
+    } . do {
+      join "\n", map { qq{<font color="#008800">$_</font><br>} } @$map_logs;
+    } . qq{
+    </font>
+  </TD>
+</TR>
 <TR><TD colspan="2"><div class="midasi3"><b><font size="2">&nbsp;史記</font></div></b></TD></TR>
-<TR><TD bgcolor=#cbba9c colspan="2" width=80% height=20 class="maru"><font color=#6d614a size=2>$D_MES</font></TD></TR>
-$ACT_MES</table>
+<TR>
+  <TD bgcolor=#cbba9c colspan="2" width=80% height=20 class="maru">
+    <font color=#6d614a size=2>
+    } . do {
+      join "\n", map { qq{<font color="#008800">$_</font><br>} } @$history_logs;
+    } . qq{
+    </font>
+  </TD>
+</TR>
+</table>
 <br>
 <br>
 </TBODY></TABLE>
@@ -181,6 +206,7 @@ ID:<input type=text name=id size=7>
 PASS:<input type=password name=pass size=7>
 <input type=submit id=input value=管理者>
 </form>
+    };
   };
   $layout->($this, $args);
 };

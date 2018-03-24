@@ -6,25 +6,26 @@ package Jikkoku::Web {
   use Module::Load;
   use Jikkoku::Web::Router;
 
-  our $ABSOLUTERY_URL;
+  # 廃止予定
+  our $ABSOLUTERY_URL = '';
 
-  has 'router' => ( is => 'ro', isa => 'Jikkoku::Web::Router', default => sub { Jikkoku::Web::Router->new } );
+  has 'router' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Web::Router',
+    default => sub { Jikkoku::Web::Router->new }
+  );
 
   sub BUILD {
     my $self = shift;
-
-    unless (defined $ABSOLUTERY_URL) {
-      $ABSOLUTERY_URL = $ENV{HTTP_HOST} . $ENV{SCRIPT_NAME};
-      my ($file_name) = ($ABSOLUTERY_URL =~ m!([^/]+$)!);
-      $ABSOLUTERY_URL =~ s/$file_name//g;
-    }
-
     $self->dispatch;
   }
 
   sub dispatch {
     my $self = shift;
     my $router = $self->router;
+
+    my $root = $router->root(path => '', controller => 'Jikkoku::Web::Controller::Root');
+    $root->any('/');
 
     my $chara = $router->root(
       path       => '/chara',
@@ -87,25 +88,27 @@ package Jikkoku::Web {
 
   sub run {
     my $self = shift;
-    my ($dest, $capture, $is_method_allowed)
-      = $self->router->match($ENV{REQUEST_METHOD}, $ENV{PATH_INFO});
-
-    if (%$dest && $is_method_allowed) {
-      my $controller = $dest->{controller};
-      my $action     = $dest->{action};
-      state $is_loaded = {};
-      unless ($is_loaded->{$controller}) {
-        load $controller;
-        $is_loaded->{$controller} = 1;
+    sub {
+      my $env = shift;
+      my ($dest, $capture, $is_method_allowed)
+        = $self->router->match($env->{REQUEST_METHOD}, $env->{PATH_INFO});
+      if (%$dest && $is_method_allowed) {
+        my $controller = $dest->{controller};
+        my $action     = $dest->{action};
+        state $is_loaded = {};
+        unless ($is_loaded->{$controller}) {
+          load $controller;
+          $is_loaded->{$controller} = 1;
+        }
+        my $c = $controller->new(env => $env);
+        $c->$action;
+      } else {
+        # Jikkoku::Template が2度よみこまれる妙なエラーの抑止のためrequireを使用
+        require Jikkoku::Web::Controller;
+        my $c = Jikkoku::Web::Controller->new(env => $env);
+        $c->render_error('そのページは存在しません');
       }
-      my $c = $controller->new;
-      $c->$action;
-    } else {
-      # Jikkoku::Template が2度よみこまれる妙なエラーの抑止のためrequireを使用
-      require Jikkoku::Web::Controller;
-      my $c = Jikkoku::Web::Controller->new;
-      $c->render_error('そのページは存在しません');
-    }
+    };
   }
 
   __PACKAGE__->meta->make_immutable;

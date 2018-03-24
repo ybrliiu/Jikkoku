@@ -42,7 +42,7 @@ package Jikkoku::Web::Router {
 
   sub any {
     my $self = shift;
-    $self->add([qw/GET POST/], @_);
+    $self->add([qw/ GET POST /], @_);
   }
 
   sub root {

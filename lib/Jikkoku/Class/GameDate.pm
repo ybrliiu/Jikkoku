@@ -19,6 +19,7 @@ package Jikkoku::Class::GameDate {
     # コマンド実行間隔 (秒)
     COMMAND_INTERVAL => 60 * 20,
     ONE_YEAR_MONTH   => 12,
+    ONE_MIN_SEC      => 60,
   };
 
   with 'Jikkoku::Class::Role::TextData::Single';
@@ -115,6 +116,11 @@ package Jikkoku::Class::GameDate {
     } else {
       '#884422';
     }
+  }
+
+  sub min_until_next_update {
+    my $self = shift;
+    int(($self->time + COMMAND_INTERVAL - time) / ONE_MIN_SEC);
   }
 
   sub npc_lank {
