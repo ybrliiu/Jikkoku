@@ -6,6 +6,7 @@ package Jikkoku::Web::Controller {
   use HTTP::Headers;
   use Plack::Request;
   use Plack::Response;
+  use Jikkoku::Container;
   use Module::Load;
   use Jikkoku::Template qw( take_in );
   use Jikkoku::Model::Config;
@@ -45,9 +46,21 @@ package Jikkoku::Web::Controller {
     builder => '_build_req',
   );
 
+  has 'container' => (
+    is      => 'ro',
+    isa     => 'Jikkoku::Container',
+    lazy    => 1,
+    builder => '_build_container',
+  );
+
   sub _build_req {
     my $self = shift;
     Plack::Request->new($self->env);
+  }
+
+  sub _build_container {
+    my $self = shift;
+    Jikkoku::Container->new;
   }
 
   with 'Jikkoku::Role::Loader';

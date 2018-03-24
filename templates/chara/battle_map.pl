@@ -46,7 +46,7 @@ sub {
 
   my $button_generator = take_in 'templates/chara/parts/button.pl';
   my $move_button = $button_generator->({
-    url   => url_for('/chara/battle-action/move'),
+    url   => '/chara/battle-action/move',
     name  => '移動',
     chara => $chara,
   });
@@ -153,7 +153,7 @@ sub {
       };
     } . qq{
                 @{[ $button_generator->({
-                  url   => url_for('/chara/battle-action/charge-move-point'),
+                  url   => '/chara/battle-action/charge-move-point',
                   name  => '移動ポイント補充',
                   chara => $chara,
                   class => ['hidden-contents'],
@@ -198,7 +198,7 @@ sub {
               <td>@{[ $check_point->target_bm_name ]}へ</td>
               <td colspan="3">
                 @{[ $button_generator->({
-                  url   => url_for('/chara/battle-action/' . ($battle_map->is_castle_around_map ? 'exit' : 'entry')),
+                  url   => '/chara/battle-action/' . ($battle_map->is_castle_around_map ? 'exit' : 'entry'),
                   name  => $battle_map->is_castle_around_map ? '出城' : '入城',
                   chara => $chara,
                 })->({
@@ -220,7 +220,7 @@ sub {
             </tr>
             <tr>
               <td>陣形変更</td>
-              <form action="@{[ url_for '/chara/battle-action/change-formation' ]}" method="POST">
+              <form action="/chara/battle-action/change-formation'" method="POST">
               <td>
                 <select name="formation-id">
                   @{[ map {
@@ -268,7 +268,7 @@ sub {
               <td class="middle">BM自動モード : $mode</td>
               <td class="middle">
                 @{[ $button_generator->({
-                  url   => url_for('/chara/battle-action/switch-bm-auto-mode'),
+                  url   => '/chara/battle-action/switch-bm-auto-mode',
                   name  => "${button_mes}にする",
                   chara => $chara,
                 })->({ switch_mode => $button_mes }) ]}

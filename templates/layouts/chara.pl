@@ -13,7 +13,7 @@ sub {
 
     my $mydata_button_origin = sub {
       my $top = qq{
-        <form action="@{[ static_file('mydata.cgi') ]}" method="post">
+        <form action="mydata.cgi" method="post">
           <input type="hidden" name="id" value="@{[ $chara->id ]}">
           <input type="hidden" name="pass" value="@{[ $chara->pass ]}">
       };
@@ -56,26 +56,26 @@ sub {
       </div>
       <li>▼ゲーム関連
         <ul>
-        <li><a href="@{[ static_file 'index.cgi' ]}" target="_blank">・ゲームトップ</a></li>
-        <li><a href="@{[ static_file 'bbs.cgi' ]}?name=@{[ $chara->name ]}&icon=@{[ $chara->icon ]}" target="_blank">・専用BBS</a></li>
-        <li><a href="@{[ static_file 'manual.html' ]}" target="_blank">・説明書</a></li>
-        <li><a href="@{[ static_file 'mydata.cgi' ]}?id=@{[ $chara->id ]}&pass=@{[ $chara->pass ]}&mode=ZATU_BBS" target="_blank">・雑談BBS</a></li>
-        <li><a href="@{[ static_file 'entry.cgi' ]}?mode=RESISDENTS&id=@{[ $chara->id ]}&pass=@{[ $chara->pass ]}" target="_blank">・初心者向け説明</a></li>
+        <li><a href="@{[ 'index.cgi' ]}" target="_blank">・ゲームトップ</a></li>
+        <li><a href="@{[ 'bbs.cgi' ]}?name=@{[ $chara->name ]}&icon=@{[ $chara->icon ]}" target="_blank">・専用BBS</a></li>
+        <li><a href="@{[ 'manual.html' ]}" target="_blank">・説明書</a></li>
+        <li><a href="@{[ 'mydata.cgi' ]}?id=@{[ $chara->id ]}&pass=@{[ $chara->pass ]}&mode=ZATU_BBS" target="_blank">・雑談BBS</a></li>
+        <li><a href="@{[ 'entry.cgi' ]}?mode=RESISDENTS&id=@{[ $chara->id ]}&pass=@{[ $chara->pass ]}" target="_blank">・初心者向け説明</a></li>
         <li><a href="http://www9.atwiki.jp/jikkokusinet/pages/1.html" target="_blank">・十国志NETwiki</a></li>
-        <li><a href="@{[ static_file 'REKISI/index.html' ]}" target="_blank">・歴代統一国</a></li>
-        <li><a href="@{[ static_file 'aicon.cgi' ]}" target="_blank">・アイコン一覧</a></li>
-        <li><a href="@{[ static_file 'rireki.html' ]}" target="_blank">・改造履歴</a></li>
-        <li><a href="@{[ static_file 'manual.html#hatena' ]}" target="_blank">・困った時は</a></li>
+        <li><a href="@{[ 'REKISI/index.html' ]}" target="_blank">・歴代統一国</a></li>
+        <li><a href="@{[ 'aicon.cgi' ]}" target="_blank">・アイコン一覧</a></li>
+        <li><a href="@{[ 'rireki.html' ]}" target="_blank">・改造履歴</a></li>
+        <li><a href="@{[ 'manual.html#hatena' ]}" target="_blank">・困った時は</a></li>
         </ul>
       </li>
-      <li><form action="@{[ static_file 'status.cgi' ]}" method="post"><input type=hidden name=id value=@{[ $chara->id ]}>
+      <li><form action="@{[ 'status.cgi' ]}" method="post"><input type=hidden name=id value=@{[ $chara->id ]}>
       <input type=hidden name=pass value=@{[ $chara->pass ]}><input type=hidden name=mode value=STATUS>
       <input type=submit value="マイページ"></form></li>
       <li>▼武将情報
         <ul>
           <li>@{[ $mydata_button->(MYDATA => '設定&戦績') ]}</li>
           <li>
-            <form action="@{[ static_file 'auto_in.cgi' ]}" method="post"><input type=hidden name=id value=@{[ $chara->id ]}>
+            <form action="@{[ 'auto_in.cgi' ]}" method="post"><input type=hidden name=id value=@{[ $chara->id ]}>
             <input type=hidden name=pass value=@{[ $chara->pass ]}>
             <input type=submit value="・BM行動予約"></form>
           </li>
@@ -89,7 +89,7 @@ sub {
       <li>▼手紙
         <ul>
           <li>@{[ $mydata_button->(LETTER => '個人宛手紙') ]}</li>
-          <li><form action="@{[ static_file 'log.cgi' ]}" method="post"><input type=hidden name=id value=@{[ $chara->id ]}>
+          <li><form action="@{[ 'log.cgi' ]}" method="post"><input type=hidden name=id value=@{[ $chara->id ]}>
           <input type=hidden name=pass value=@{[ $chara->pass ]}><input type=submit value="・手紙ログ"></form></li>
         </ul>
       </li>
@@ -97,25 +97,25 @@ sub {
         <ul>
           <li>@{[ $mydata_button->(COUNTRY_TALK => '会議室') ]}</li>
           <li>@{[ $mydata_button->(LOCAL_RULE => '国法') ]}</li>
-          <li><form action="@{[ static_file 'mycou.cgi' ]}" method="post"><input type=hidden name=id value=@{[ $chara->id ]}>
+          <li><form action="@{[ 'mycou.cgi' ]}" method="post"><input type=hidden name=id value=@{[ $chara->id ]}>
           <input type=hidden name=pass value=@{[ $chara->pass ]}><input type=submit value="・国データ"></form></li>
-          <li><form action="@{[ static_file 'mycou2.cgi' ]}" method="post"><input type=hidden name=id value=@{[ $chara->id ]}>
+          <li><form action="@{[ 'mycou2.cgi' ]}" method="post"><input type=hidden name=id value=@{[ $chara->id ]}>
           <input type=hidden name=pass value=@{[ $chara->pass ]}><input type=submit value="・国の武将データ"></form></li>
           <li>@{[ $mydata_button->(KING_COM => '司令部') ]}</li>
         </ul>
       </li>
       <li>▼都市情報
         <ul>
-        <li><form action="@{[ static_file 'mylog.cgi' ]}" method="post"><input type=hidden name=id value=@{[ $chara->id ]}>
+        <li><form action="@{[  'mylog.cgi' ]}" method="post"><input type=hidden name=id value=@{[ $chara->id ]}>
         <input type=hidden name=pass value=@{[ $chara->pass ]}><input type=submit value="・滞在武将一覧"></form></li>
         </ul>
       </li>
       <li>▼ゲーム情報
         <ul>
-        <li><a href="@{[ static_file 'map.cgi' ]}" target="_blank">・勢力図</a></li>
-        <li><a href="@{[ static_file 'ranking.cgi' ]}" target="_blank">・登録武将一覧</a></li>
-        <li><a href="@{[ static_file 'ranking2.cgi' ]}" target="_blank">・名将一覧</a></li>
-        <li><a href="@{[ static_file 'graph.cgi' ]}" target="_blank">・国力比較</a></li>
+        <li><a href="@{[  'map.cgi' ]}" target="_blank">・勢力図</a></li>
+        <li><a href="@{[  'ranking.cgi' ]}" target="_blank">・登録武将一覧</a></li>
+        <li><a href="@{[  'ranking2.cgi' ]}" target="_blank">・名将一覧</a></li>
+        <li><a href="@{[  'graph.cgi' ]}" target="_blank">・国力比較</a></li>
         </ul>
       </li>
       </div>

@@ -1,5 +1,5 @@
 use Jikkoku;
-use Jikkoku::Template;
+use Jikkoku::Template qw( take_in );
 
 my $layout = take_in 'templates/layouts/default.pl';
 
@@ -7,6 +7,7 @@ sub {
   my $args = shift;
   my ($announcements, $game_conf, $game_date, $game_record, $login_list, $map_logs, $history_logs, $cache_id, $cache_pass)
     = map { $args->{$_} } qw( announcements game_conf game_date game_record login_list map_logs history_logs cache_id cache_pass );
+
   my $this = sub {
     qq{
 <table width="100%" cellpadding="0" cellspacing="0" border="0"
@@ -123,7 +124,7 @@ sub {
     <font color=#6d614a>$game_conf->{title}</font>
   </h1>
   <p>
-    <h2><font color=#6d614a>@{[ $game_record->period ]}</font></h2>
+    <h2><font color=#6d614a>@{[ $game_record->formatted_period ]}</font></h2>
   </p>
 <br>
 <b>更新時間、BM行動可能時間：19:00～24:59</b>
@@ -179,7 +180,7 @@ sub {
   <TD bgcolor=#cbba9c colspan="2" width=80% height=20 class="maru">
     <font color=#6d614a size=2>
     } . do {
-      join "\n", map { qq{<font color="#008800">$_</font><br>} } @$map_logs;
+      join "\n", map { qq{●<font color="#008800">$_</font><br>} } @$map_logs;
     } . qq{
     </font>
   </TD>
@@ -189,7 +190,7 @@ sub {
   <TD bgcolor=#cbba9c colspan="2" width=80% height=20 class="maru">
     <font color=#6d614a size=2>
     } . do {
-      join "\n", map { qq{<font color="#008800">$_</font><br>} } @$history_logs;
+      join "\n", map { qq{●<font color="#008800">$_</font><br>} } @$history_logs;
     } . qq{
     </font>
   </TD>

@@ -55,7 +55,7 @@ package Jikkoku::Role::Logger {
   sub get {
     my ($self, $limit) = @_;
     Carp::croak 'Too few arguments (required: $limit)' if @_ < 2;
-    [ @{ $self->data }[0 .. $limit - 1] ];
+    [ grep { defined } @{ $self->data }[0 .. $limit - 1] ];
   }
 
   sub get_all {

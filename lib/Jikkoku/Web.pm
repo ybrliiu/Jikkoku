@@ -2,12 +2,9 @@ package Jikkoku::Web {
 
   use Mouse;
   use Jikkoku;
-
   use Module::Load;
   use Jikkoku::Web::Router;
-
-  # 廃止予定
-  our $ABSOLUTERY_URL = '';
+  use Jikkoku::Web::Controller;
 
   has 'router' => (
     is      => 'ro',
@@ -103,8 +100,6 @@ package Jikkoku::Web {
         my $c = $controller->new(env => $env);
         $c->$action;
       } else {
-        # Jikkoku::Template が2度よみこまれる妙なエラーの抑止のためrequireを使用
-        require Jikkoku::Web::Controller;
         my $c = Jikkoku::Web::Controller->new(env => $env);
         $c->render_error('そのページは存在しません');
       }
