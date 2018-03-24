@@ -12,7 +12,7 @@ package Jikkoku::Class::Role::TextData::Division {
   # $textdata -> $id
   around _buildargs_textdata => sub {
     my ($orig, $class, $id) = @_;
-    open(my $fh, '<', $class->file_path($id)) or throw("file open error" . $class->file_path($id), $!);
+    open(my $fh, '<', $class->file_path($id)) or throw("file open error " . $class->file_path($id), $!);
     my @textdata = <$fh>;
     $fh->close;
     $class->$orig( $textdata[0] );

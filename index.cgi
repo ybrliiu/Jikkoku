@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/home/sandbox/.plenv/shims/perl
 
 #################################################################
 #   【免責事項】                                                #
@@ -9,8 +9,8 @@
 #################################################################
 
 require './ini_file/index.ini';
-require 'suport.pl';
-require 'check_com.cgi';
+require './suport.pl';
+require './check_com.cgi';
 
 use lib './lib', './extlib';
 use CGI::Carp qw/fatalsToBrowser/;

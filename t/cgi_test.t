@@ -1,13 +1,10 @@
-use v5.24;
-use warnings;
-use Test::More;
+use Test::Jikkoku;
 use Plack::Test;
 use HTTP::Request::Common;
 use Plack::Loader;
 use Plack::Util ();
 
 my $app = Plack::Util::load_psgi('to_psgi.psgi');
-
 
 test_psgi $app => sub {
   my ($cb) = @_;
@@ -16,7 +13,7 @@ test_psgi $app => sub {
   # ここでのみ無効化する
   local $ENV{HARNESS_ACTIVE} = 0;
 
-  my %form_info = (id => 'ybrliiu', pass => 'doodoo5');
+  my %form_info = (id => 'haruka', pass => 'qwerty');
 
   subtest 'index.cgi' => sub {
     my $res = $cb->(GET 'index.cgi');
@@ -31,13 +28,13 @@ test_psgi $app => sub {
 
     my $res = $cb->(POST 'status.cgi', [%form_info, mode => 'STATUS']);
     is $res->code, 200;
-    like $res->content, qr/りーう＠管理人/;
+    like $res->content, qr/高山春香/;
   };
 
   subtest 'newbm.cgi' => sub {
     my $res = $cb->(POST 'newbm.cgi', [%form_info, mode => 'STATUS']);
     is $res->code, 200;
-    like $res->content, qr/りーう＠管理人/;
+    like $res->content, qr/高山春香/;
   };
 
   subtest 'mydata.cgi' => sub {

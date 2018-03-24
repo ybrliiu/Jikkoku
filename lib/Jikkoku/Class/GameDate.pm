@@ -2,7 +2,6 @@ package Jikkoku::Class::GameDate {
 
   use Mouse;
   use Jikkoku;
-
   use Time::Piece;
   use Jikkoku::Model::Config;
 
