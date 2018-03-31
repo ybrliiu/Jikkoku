@@ -18,11 +18,10 @@ qq{
     <meta http-equiv="Content-Script-Type" content="text/javascript">
     <title>十国志NET</title>
 
-    <script src="@{[  'public/js/jquery-3.1.0.min.js' ]}"></script>
-    <script src="@{[  'public/js/jikkoku.js' ]}"></script>
+    <script src="@{[  'js/jikkoku.js' ]}"></script>
     @{[ map { qq{<script src="} .  "public/js/$_.js" . qq{"></script>\n} } @JS_FILES ]}
-    <link rel="stylesheet" href="@{[  'public/css/base.css' ]}">
-    @{[ map { qq{<link rel="stylesheet" href="} .  "public/css/$_.css" . qq{">\n} } @CSS_FILES ]}
+    <link rel="stylesheet" href="@{[  'css/base.css' ]}">
+    @{[ map { qq{<link rel="stylesheet" href="} .  "css/$_.css" . qq{">\n} } @CSS_FILES ]}
   
     <style type="text/css">
       table, table *, input, input *, button, button *, p, span, div, div * { font-size: $font_size; }

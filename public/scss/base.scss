@@ -1,87 +1,43 @@
-@charset "UTF-8";
+@charset "utf-8";
 
-/* default 装飾 */
-* {
-  font-family : "メイリオ", "Yu Gothic", "VL Gothic", "Ubuntu", "monospace";
+@import 'config';      // 設定変数一覧
+@import 'parts/color'; // 色一覧 etc/config/color.conf より出力
+
+/* サイト全体の外観 */
+body, div, tr, td, th, form {
+  font-family: "メイリオ", "Yu Gothic", "VL Gothic", "Ubuntu", "monospace";
+  font-size: 9pt;
+  color: #222;
+  line-height: 1.3em;
 }
 
 body {
-  background: #fff url("../../image/o.gif");
+  background: $white url('/images/background.png');
   margin: 0;
+  padding: 0;
 }
 
-p { margin: 5px; }
-
-a { text-decoration:none; }
-a:link    { color: #4682B4; }
-a:visited { color: #4682B4; }
-a:hover   { color: #FFFF00; }
-a:active  { color: #00FF00; }
-
-/* フォーム */
-textarea, input[type="text"], input[type="password"] {
-  background-color:#F7F7F7;
-  border: 1px #888888 solid;
-  margin: 2px;
-  padding: 2px;
-  border-radius:4px;
+a {
+  text-decoration:none;
+  &:link { color:$link-blue; }
+  &:visited { color:$link-blue; }
+  &:hover { color:$yellow; }
+  &:active { color:$truegreen; }
 }
 
-textarea:hover, input[type="text"]:hover, input[type="password"]:hover {
-  background-color:#FFFFFF;
-  border: 1px #0000FF solid;
-  margin: 2px;
-  padding: 2px;
-  border-radius:4px;
-}
+ul {
+  margin: 0;
+  padding: 0;
 
-textarea:focus, input[type="text"]:focus, input[type="password"]:focus {
-  background-color:#FFFFFF;
-  border: 1px #0000FE solid;
-  margin: 2px;
-  padding: 2px;
-  border-radius:4px;
-}
-
-select {
-  border: 1px #888888 solid;
-  margin: 2px;
-  padding: 2px;
-  border-radius:4px;
-}
-
-input[type="text"][disabled] {
-  background-color: #CCCCCC;
-}
-
-button, input[type="submit"] {
-  background-color: rgba(235, 235, 235, 0.65);
-  border: 1px #888888 solid;
-  margin: 2px;
-  font-size: 115%;
-  color: #111111;
-  padding : 4px;
-  min-width: 60px;
-  border-radius: 4px;
-  box-shadow: inset -1px -1px 3px rgba(000, 000, 000, 0.5);
-}
-
-button:hover, input[type="submit"]:hover {
-  background-color: #66A2D4;
-  box-shadow: inset 0px 0px 0px rgba(000, 000, 000, 0);
-}
-
-button:active, input[type="submit"]:active {
-  background-color: #366294;
-  box-shadow: inset 1px 1px 3.3px rgba(000, 000, 000, 0.7);
-}
-
-/* レイアウト */
-body, footer, .centering {                                                                                                                    
-  width: 100%;
-  max-width: 1300px;
-  margin-left: auto;
-  margin-right: auto;
+  li {
+    margin: 0 0 0 1em;
+    padding: 0;
+    list-style-type: none;
+    &:before {
+      content: '・';
+      margin: 0 0 0 -1em;
+    }
+  }
 }
 
 /* レイアウト用ボックス */
@@ -92,8 +48,7 @@ body, footer, .centering {
   margin-right: auto;
 }
 
-/* 中央揃え */
-.center {
+.centering {
   @extend %base;
   float: left;
   $margin: 20px;
@@ -113,7 +68,7 @@ body, footer, .centering {
 }
 
 /* Nカラムでhtml書くときの枠 */
-body {
+#wrapper {
   @extend %base;
   $pad: 11px;
 
@@ -124,10 +79,6 @@ body {
       margin-bottom: $pad;
       &:last-child { margin-bottom: 0; }
     }
-  }
-
-  .padding-top {
-    padding-top: $pad !important;
   }
 
   .grid-around {
@@ -147,44 +98,505 @@ body {
     float: left;
   }
 
-  footer {
-    @extend .center;
-    border-top: solid 1px #AAA;
+  .footer {
+    @extend .centering;
+    background-color: $darkred;
+    border-top: solid 1px $silver;
     padding: 0;
+    span { color: $lightdarkred; }
   }
 
   .divider {
     float: left;
   }
+
+  #title {
+    position: relative;
+    width: 100%;
+    padding: $pad 0 $pad 0;
+    h1 {
+      $border: 3px;
+      $border-left: 20px;
+      $padding: 11px;
+      margin: 0;
+      padding: $padding 0 $padding $border-left + 10px;
+      background-color: $white;
+      border-left: $border-left solid $darkred;
+      border-bottom: $border solid $darkred;
+      border-top: $border solid $darkred;
+      &:before {
+        content: '';
+        left: $border-left - 1px;
+        top: $pad + $border;
+        position: absolute;
+        border-top: $border-left solid transparent;
+        border-bottom: $border-left solid transparent;
+        border-left: $border-left solid $darkred;
+      }
+    }
+  }
+
+  #explain {
+    width: 100%;
+    > div {
+      width: 100%;
+      background-color: $lightorange;
+      border: solid $brown 5px;
+      border-radius: 4px;
+      padding: 5px;
+      font-size: 11pt;
+    }
+  }
+
+  @mixin show-message-field($color) {
+    background-color: rgba($color, 0.3);
+    border: solid $color 4px;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 9pt;
+    color: $color;
+    font-weight: bold;
+    text-align: left;
+    h2 {
+      color: $color;
+      margin: 3px;
+    }
+  }
+
+  #success {
+    $success-green: #16b6B6;
+    @include show-message-field($success-green);
+  }
+
+  #error {
+    $error-red: #E74C3C;
+    @include show-message-field($error-red);
+  }
+
 }
 
-/* utils */
+/* タイルテーブル */
+.tile-table {
+  background-color: $white;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
+  th {
+    background-color: $darkred;
+    color: $lightorange;
+    padding: 3px;
+  }
+  td {
+    text-align: left;
+    vertical-align: middle;
+    border: 1px $border-orange solid;
+    background-color: $lightorange;
+    padding: 3px;
+  }
+}
+
+/* レイアウトテーブル */
+.layout-table {
+  th, td {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+}
+
+/* map */
+#map {
+  max-width: 750px;
+
+  td {
+    background-color: initial;
+    border: initial;
+    padding: initial;
+  }
+
+  table {
+    width: 100%;
+    background-color: $lightgreen;
+    padding: 7px;
+    border: 3px $darkred solid;
+    border-radius: 5px;
+
+    td {
+      width: 50px;
+      text-align: center;
+      border: 0px;
+      padding: 2px 0 0 0;
+      font-size: 10pt;
+      font-weight: bold;
+    }
+  }
+
+}
+
+/* アイコン選択部 */
+#choosed-icon-frame {
+  width: $ICON_WIDTH + 18px;
+  background-color: $white;
+  border: 3px $darkred inset;
+  border-radius: 3px;
+  margin: 4px;
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+  img {
+    background-color: $lightblack;
+    margin-bottom: 3px;
+  }
+}
+
+/* スクロール */
+.scroll {
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 強制中央揃え */
+.center {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* 見出し用 */
+h1 { font-size: 17pt; }
+
+h2 {
+  font-size: 12pt;
+  margin: 2px;
+}
+
+/* 見出し1 */
+#headline span {
+  padding:0 12px 0 12px;
+  border-right:8px $darkred solid;
+  border-left:8px $darkred solid;
+}
+
+/* アイコン用 */
+.icon {
+  width: $ICON_WIDTH;
+  height: $ICON_HEIGHT;
+  margin: 0;
+}
+
+/* ---- 横線 */
+.botted-line {
+  border-top: 0px;
+  border-right: 0px;
+  border-bottom: 1px $lightblack dotted;
+  border-left: 0px;
+}
+
+/* display: none; */
+.display-none {
+  display: none;
+}
+
+/* 文字色 */
+@mixin charcter-color($color) {
+  color: $color;
+  font-weight: bold;
+}
+.black { @include charcter-color($black); }
+.blue { @include charcter-color($blue); }
+.lightblue { @include charcter-color($lightblue); }
+.darkblue { @include charcter-color($darkblue); }
+.red { @include charcter-color($red); }
+.green { @include charcter-color($green); }
+.white { @include charcter-color($white); }
+
+
+/* 背景 */
+@mixin background-color($color) { background-color: $color }
+.background-black { @include background-color($black) }
+.background-white { @include background-color($white) }
+.background-lightdarkred { @include background-color($lightdarkred) }
+.background-lightorange { @include background-color($lightorange) }
+
 
 /* 横の大きさ */
 $width-list: 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100;
 @each $pc in $width-list {
   .width-#{$pc}pc{
-    $tmp: "%";
-    width: #{$pc}#{$tmp};
+    $a: %;
+    width: #{$pc}#{$a};
   }
 }
 
-/* 文字色 */
-.black     { color: #000000; }
-.blue      { color: #0000ff; }
-.lightblue { color: #87ceeb; }
-.darkblue  { color: #00008b; }
-.red       { color: #ff0000; }
-.green     { color: #008000; }
-.white     { color: #f9f9f9; }
-.navy      { color: #000080; }
-.silver    { color: #998877; }
 
-.icon {
-  width: 64px;
-  height: 64px;
+/* フォーム */
+
+$border-form:#888888; // フォームの外枠の色
+
+/* ページ番号一覧 */
+.pagination {
+  display: inline-block;
+  margin-top: 7px;
+  height: 22px;
+  li {
+    display: inline;
+    a {
+      position: relative;
+      padding: 6px 9px;
+      color: $darkred;
+      background-color: $white;
+      border: 1px $darkred solid;
+
+      &.current {
+        color: $white;
+        background-color: $darkred;
+      }
+
+      &:hover {
+        color: $white;
+        background-color: $darkred;
+      }
+
+    }
+
+    &:before {
+      content: initial;
+      margin: initial;
+    }
+
+  }
 }
 
-@import 'tool-tip.scss';
-@import 'menu.scss';
+%form-base {
+  display: inline-block;
+  min-width: 80px;
+  background-color: #EEEEEE;
+  border: 1px $border-form solid;
+  margin: 4px;
+  border-radius:4px;
+}
+
+form { display:inline-block; }
+
+select {
+  @extend %form-base;
+  padding: 7px 7px;
+  option {
+    padding: 0px;
+    background-color: #EEEEEE;
+  }
+}
+
+input[type="submit"], input[type="button"] {
+  @extend %form-base;
+  padding: 7px 20px;
+  vertical-align: middle;
+  color: #111111;
+  &:hover{ background-color: #DDDDDD }
+  &:active{ background-color: #BBBBBB }
+}
+
+input[type="number"] {
+  width: 100px;
+}
+
+textarea, input[type="text"], input[type="number"], input[type="email"], input[type="password"]{
+  display: inline-block;
+  background-color:#F4F4F4;
+  border: 1px $border-form solid;
+  margin: 4px;
+  padding: 7px 7px;
+  border-radius:3px;
+  border-bottom-right-radius:10px;
+  &:hover{
+    background-color:$white;
+    border: 1px $blue solid;
+  }
+  &:focus{
+    background-color:$white;
+    border: 1px $blue solid;
+  }
+  &[disabled]{
+    background-color:$ash;
+    border: 1px $border-form solid;
+  }
+}
+
+/* エラーメッセージ用 */
+label {
+  display: inline-block;
+  margin-bottom: 0.25em;
+  line-height: 2.0em;
+  font-weight: bold;
+  &.error {
+    display: none;
+  }
+  &.field-with-error {
+    display: inline;
+    color: $red;
+    font-weight: bold;
+  }
+}
+
+textarea.field-with-error, input.field-with-error {
+  border: 1px $red solid;
+}
+
+ul.error-list {
+  li {
+    color: $red;
+    font-weight: bold;
+  }
+}
+
+/* おしゃれなラジオボタン&チェックボックス用 */
+.snazzy-radio, .snazzy-checkbox {
+  position: relative;
+  margin: 4px;
+  cursor: pointer;
+  input {
+    opacity: 0;
+    position: absolute;
+  }
+  span:before, span:after {
+    box-sizing: border-box;
+    content: '';
+    display: block;
+    position: absolute;
+    transition: all 0.25s;
+  }
+}
+
+.snazzy-radio {
+  padding-left: 25px;
+  span {
+    padding-right: 5px;
+    &:before {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      top: 2px;
+      left: 0;
+      background: #fff;
+      border: 1px solid #c3c5c4;
+    }
+    &:after {
+      border-radius: 50%;
+      background: $black;
+      top: 12px;
+      left: 10px;
+      width: 0;
+      height: 0;
+    }
+  }
+  input:checked + span:after {
+    width: 10px;
+    height: 10px;
+    top: 7px;
+    left: 5px;
+  }
+  input:checked + span:before {
+    background: $white;
+  }
+  input:focus + span:before {
+    border: 2px solid $link-blue;
+  }
+  input:hover + span:before {
+    border: 2px solid $greenblue;
+  }
+}
+
+.snazzy-checkbox {
+  padding-left: 28px;
+  span {
+    &:before {
+      width: 20px;
+      height: 20px;
+      top: 2px;
+      left: 0;
+      background: #fff;
+      border: 1px solid #c3c5c4;
+    }
+    &:after {
+      display: block;
+      content: '';
+      position: absolute;
+      top: 0.75em;
+      left: 0.55em;
+      width: 0px;
+      height: 0px;
+      border-left: 0px solid $black;
+      border-bottom: 0px solid $black;
+      transform: rotate(-45deg);
+    }
+  }
+  input:checked + span:after {
+    width: 12px;
+    height: 8px;
+    top: 7px;
+    left: 4px;
+    border-left: 3px solid $black;
+  	border-bottom: 3px solid $black;
+  }
+  input:checked + span:before {
+    background: #fff;
+    border: 2px solid $link-blue;
+  }
+  input:hover + span:before {
+    border: 2px solid $greenblue;
+  }
+}
+
+.snazzy-nopadding {
+  padding-left: 20px;
+  span {
+    padding-right: 1px;
+  }
+}
+
+
+/* アイコンリストテーブル */
+#icon-table {
+  width: 764px;
+  td {
+    font-weight: bold;
+    text-align: center;
+    transition: 0.5s;
+    &:hover { background-color: rgba(255, 255, 255, 0.1); }
+  }
+  img { margin-bottom: 3px; }
+}
+
+/* ツールチップ */
+#tooltip {
+  position:relative;
+  span {
+    display:block;
+    position:absolute;
+    color:$white;
+    text-decoration:none;
+    visibility:hidden;
+    width:170px;
+    z-index:0;
+    top:20px;
+    left:10px;
+    padding:5px;
+    background:rgba(000,000,000,0.7);
+    border:solid 1px #a9987c;
+    border-radius:5px;
+  }
+  &:hover,&:hover span{
+    visibility:visible;
+    z-index:2;
+  }
+}
+
+
+/* 部品群 */
+
+/* ナビゲートボタン */
+@import 'parts/nav-button';
+/* プレイヤーメニュー */
+@import 'parts/player-menu';
+/* sortable */
+@import 'parts/sortable';
 

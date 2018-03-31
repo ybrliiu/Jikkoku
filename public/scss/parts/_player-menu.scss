@@ -1,0 +1,83 @@
+// メニュー
+
+#player-menu {
+  width: 100%;
+  height: 50px;
+  box-sizing: border-box;
+  $thin-darkred: $darkred + #333;
+  background: -moz-linear-gradient(top, $thin-darkred, $darkred);
+  background: -webkit-gradient(linear, left top, left bottom, from($thin-darkred), to($darkred));
+  border: solid 1px $ash;
+  line-height: initial;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+
+  > div {
+    width:30px;
+    height:30px;
+    float:left;
+  }
+
+  > li {
+    position: relative;
+    float: left;
+    padding: 14px 0 0 0;
+    width: 105px;
+    height: 48px;
+    font-weight: bold;
+    font-size: 11pt;
+    text-align: center;
+    vertical-align: middle;
+    list-style:none;
+    color: $lightdarkred;
+    border: 0px;
+
+    > a {
+      display: inline-block;
+      width: 130px;
+      height: 20px;
+      color: $lightdarkred;
+    } 
+
+    ul {
+      display: none;
+      position: absolute;
+      z-index: 1;
+      top: 50px;
+      left: -1px;
+      padding: 7px 0 7px 0;
+      background: $lightdarkred;
+      border: solid 1px rgba(#000, 0.2);
+      border-radius: 4px;
+      box-shadow: 2px 2px 5px 5px rgba(#000, 0.2);
+
+      &:before {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 0;
+        top: -7px;
+        left: 26px;
+        $border: 7px;
+        border-bottom: $border solid $lightdarkred;
+        border-left: $border solid transparent;
+        border-right: $border solid transparent;
+      }
+
+      li {
+        list-style-type: none;
+        margin: 0;
+        padding: 8px 16px;
+        width: 150px;
+        text-align: left;
+        font-weight: normal;
+        border: none;     
+        a { color: $darkred; }
+        &:hover {
+          background-color: $gray;
+          color: $white;
+        }
+      }
+    }
+
+  }
+}
